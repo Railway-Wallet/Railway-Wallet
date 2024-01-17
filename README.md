@@ -5,4 +5,4 @@ Need help? See https://t.me/railwaywallet
 
 ––
 
-Vitruvian Apps Ltd. (c) 2023. All Rights Reserved.
+Vitruvian Apps Ltd. (c) 2024. All Rights Reserved.
