@@ -1718,6 +1718,17 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
+"@railgun-community/circomlibjs@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@railgun-community/circomlibjs/-/circomlibjs-0.0.8.tgz#e3d6c43629bf3428726e44af7845e0cb982bb38e"
+  integrity sha512-ZqDUxS1DkxoZ7Nz6n1awTBjFaunDR64WQSwj2XtGOjx3ZQVpaVoSaIxbp0egsZPzyr70uRm7PQ76ZDeUwLyNkg==
+  dependencies:
+    "@railgun-community/ffjavascript" "0.1.0"
+    blake-hash "^2.0.0"
+    blake2b "^2.1.3"
+    web3 "^1.6.0"
+    web3-utils "^1.6.0"
+
 "@railgun-community/curve25519-scalarmult-rsjs@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@railgun-community/curve25519-scalarmult-rsjs/-/curve25519-scalarmult-rsjs-0.2.4.tgz#bb0f6cd72a3318bb937a6049528d117f620b1dc2"
@@ -1728,14 +1739,15 @@
   resolved "https://registry.yarnpkg.com/@railgun-community/curve25519-scalarmult-wasm/-/curve25519-scalarmult-wasm-0.1.5.tgz#edb5e40a8f1fdb7f7e0de1d04e8badabe41cb2a8"
   integrity sha512-Cur8uM/IdNW3WzUwdPloDG1CF0rpSBDWq2yGXJMZ7IMeBGdc4Jj0h9tnNMFRZ35ZuCVVbZ3yClmqSa4PsbpdGQ==
 
-"@railgun-community/engine@7.2.7":
-  version "7.2.7"
-  resolved "https://registry.yarnpkg.com/@railgun-community/engine/-/engine-7.2.7.tgz#2c0a5a8ac9552de3964d414588a1a58bc7ec37fa"
-  integrity sha512-+JQ8EjNSLbGyKRAIsqiN0d/0MQX446LlFWmjZUv0HiAAD25wzy+hWmRiFD4KPkhRu0NZTzg7yNJ7s4EvBp5afg==
+"@railgun-community/engine@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@railgun-community/engine/-/engine-7.3.0.tgz#8c61d04c104651d3e77ff9db1489c5c444caa263"
+  integrity sha512-iVSRBVO7ZKyvDo6JxgqQkzoWpk14jJp2b0LDHisAAG6H/D0l37frxWuq+dBqXOnD2cT85HgP4KWAk1RnUzCN/g==
   dependencies:
     "@noble/ciphers" "^0.4.0"
     "@noble/ed25519" "^1.7.1"
     "@noble/hashes" "^1.3.2"
+    "@railgun-community/circomlibjs" "0.0.8"
     "@railgun-community/curve25519-scalarmult-wasm" "0.1.5"
     "@railgun-community/poseidon-hash-wasm" "1.0.0"
     "@scure/base" "^1.1.1"
@@ -1744,13 +1756,19 @@
     browserify-aes "^1.2.0"
     buffer-xor "^2.0.2"
     chai-as-promised "^7.1.1"
-    circomlibjs hsg88/circomlibjs#ffjavascrip.0.1.0
     encoding-down "^7.1.0"
     ethereum-cryptography "^2.0.0"
     ethers "github:Railgun-Community/ethers.js#v6.7.10"
     fast-text-encoding "^1.0.6"
     levelup "^5.1.1"
     msgpack-lite "^0.1.26"
+
+"@railgun-community/ffjavascript@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@railgun-community/ffjavascript/-/ffjavascript-0.1.0.tgz#e4f37f81a25972225744907efd3c405383b5262c"
+  integrity sha512-wyFr5da1alJzahCKtf8ZF6qegWsIgi+OdSvRBlqXtRyJTY/deRCYrrYJdKNQwivqwR9SHlcqtUm18Ba+oJjTmg==
+  dependencies:
+    big-integer "^1.6.48"
 
 "@railgun-community/poseidon-hash-rsjs@0.1.0":
   version "0.1.0"
@@ -1781,10 +1799,10 @@
     "@waku/sdk" "0.0.23"
     libp2p "^1.1.2"
 
-"@railgun-community/wallet@7.3.4":
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/@railgun-community/wallet/-/wallet-7.3.4.tgz#1287386c95c32f6ef0aaf481e205760c09780082"
-  integrity sha512-0cFsQYY5LPhucdMch+6EaBDVFiOgAosctYJTbpVt6EjArbz2R1CrTyWbGFo5vxjRy0UIGlqNTt2KvWjkbe8NAQ==
+"@railgun-community/wallet@7.4.1":
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/@railgun-community/wallet/-/wallet-7.4.1.tgz#d33bcf3f22fa5261ff4ff6f488b602fa7fcdca53"
+  integrity sha512-s2eTPa+MQcWuwYzVAY8sP1eV/19ALnO1oSEbcrlOhn8srvRIwYlI/6zmrRRQQi1NzEtHWDnCAY7Lh9bvemzxOg==
   dependencies:
     "@graphql-mesh/cache-localforage" "^0.7.20"
     "@graphql-mesh/cross-helpers" "^0.3.4"
@@ -1797,7 +1815,7 @@
     "@graphql-mesh/types" "^0.91.14"
     "@graphql-mesh/utils" "^0.43.22"
     "@noble/ed25519" "^1.7.1"
-    "@railgun-community/engine" "7.2.7"
+    "@railgun-community/engine" "7.3.0"
     "@railgun-community/shared-models" "6.4.0"
     "@whatwg-node/fetch" "^0.8.4"
     assert "2.0.0"
@@ -3183,16 +3201,6 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-circomlibjs@hsg88/circomlibjs#ffjavascrip.0.1.0:
-  version "0.0.8"
-  resolved "https://codeload.github.com/hsg88/circomlibjs/tar.gz/fee5b3c479caa3db1e34cbfdedad763d74277844"
-  dependencies:
-    blake-hash "^2.0.0"
-    blake2b "^2.1.3"
-    ffjavascript hsg88/ffjavascript#fix-utils-native
-    web3 "^1.6.0"
-    web3-utils "^1.6.0"
-
 class-is@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/class-is/-/class-is-1.1.0.tgz#9d3c0fba0440d211d843cec3dedfa48055005825"
@@ -4514,12 +4522,6 @@ fastq@^1.6.0:
   integrity sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==
   dependencies:
     reusify "^1.0.4"
-
-ffjavascript@hsg88/ffjavascript#fix-utils-native:
-  version "0.1.0"
-  resolved "https://codeload.github.com/hsg88/ffjavascript/tar.gz/e586e4e36f323acabe1805b01ea10070c413c6ec"
-  dependencies:
-    big-integer "^1.6.48"
 
 file-entry-cache@^6.0.1:
   version "6.0.1"

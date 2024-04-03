@@ -1,6 +1,6 @@
 {
   "name": "railway-reactjs",
-  "version": "5.14.112",
+  "version": "5.14.113",
   "private": true,
   "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
   "license": "GPL-3.0-only",
@@ -34,7 +34,7 @@
     "@railgun-community/cookbook": "2.6.1",
     "@railgun-community/shared-models": "6.4.0",
     "@railgun-community/waku-relayer-client-web": "6.2.12",
-    "@railgun-community/wallet": "7.3.4",
+    "@railgun-community/wallet": "7.4.1",
     "@railway-developer/actionsheet-react": "github:railway-developer/actionsheet-react",
     "@reduxjs/toolkit": "1.9.5",
     "@simbathesailor/use-what-changed": "^2.0.0",

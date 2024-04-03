@@ -1,4 +1,4 @@
-# Railway Web
+# Railway Desktop & Web
 
 ## Setup
 
@@ -25,6 +25,10 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run electron:start`
+
+Builds and runs the desktop app using electron. The process depends on `concurrently` and `wait-on` to know when to launch the electron instance. If the app fails to launch after `npm start`, you can simply run `electron .` to run the electron app.
 
 ---
 

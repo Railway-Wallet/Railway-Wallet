@@ -328,7 +328,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
     selectRelayerFeeERC20Modal,
     showRelayerFeeERC20Modal,
     onDismissSelectRelayerFee,
-  } = useRelayerFeeERC20(erc20AmountRecipients);
+  } = useRelayerFeeERC20(erc20AmountRecipients, useRelayAdapt);
 
   const {
     selectedRelayer,
@@ -1204,11 +1204,13 @@ export const ReviewTransactionView: React.FC<Props> = ({
                 {isRelayerTransaction ? (
                   <>
                     <SelectableListItem
-                      title="Gas fee (via relayer)"
+                      title="Gas fee"
                       titleIconSource={relayerLockedIcon}
                       description={
                         selectedGasDetails && selectedRelayer
-                          ? shortenWalletAddress(selectedRelayer.railgunAddress)
+                          ? `via relayer ${shortenWalletAddress(
+                              selectedRelayer.railgunAddress,
+                            )}`
                           : relayerFeeIsEstimating
                           ? relayerFeeText
                           : ''
