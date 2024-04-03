@@ -1,0 +1,82 @@
+@import '@scss/styleguide';
+
+$drawerWidth: 712px;
+
+@mixin defaultDrawerStyles {
+  position: fixed;
+  height: 100%;
+  width: $drawerWidth;
+  top: 0px;
+  z-index: $z-index-drawers;
+  transition: transform 0.2s ease-in-out;
+  border-width: 0px;
+  border-style: solid;
+  border-color: $buttonBorder;
+}
+
+.drawerContent {
+  @include defaultDrawerStyles;
+  right: -$drawerWidth;
+  transform: translateX(-100%);
+  border-left-width: 1px;
+}
+
+.drawerContentFromLeft {
+  @include defaultDrawerStyles;
+  left: -$drawerWidth;
+  transform: translateX(100%);
+  border-right-width: 1px;
+}
+
+.hideContainer {
+  transform: translateX(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  background-color: gray4();
+  padding: 12px 24px;
+}
+
+.headerText {
+  margin: 2px 0 3px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.closeIcon {
+  cursor: pointer;
+  margin-right: 24px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  display: flex;
+
+  &:hover {
+    border-color: $buttonBorder;
+  }
+}
+
+.drawerContainer {
+  height: 100%;
+  background-color: $black;
+}
+
+.content {
+  background-color: gray5(0.9);
+  position: absolute;
+  top: 75px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+
+.gradient {
+  height: 3px;
+  width: 100%;
+}

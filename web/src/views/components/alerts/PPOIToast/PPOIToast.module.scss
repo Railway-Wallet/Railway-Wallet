@@ -1,0 +1,101 @@
+@import '@scss/styleguide';
+
+@mixin commonContainer {
+  padding: 16px;
+  border-radius: 4px;
+  background-color: gray5();
+  border: 1px solid gray9();
+  width: 320px;
+}
+
+.toastContainer {
+  @include commonContainer;
+  position: relative;
+  z-index: calc($z-index-drawers - 1);
+  pointer-events: auto;
+  cursor: progress;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    border: 1px solid $white;
+    background-color: gray6();
+  }
+}
+
+.toastContainerError {
+  cursor: default;
+}
+
+.progressText {
+  white-space: nowrap;
+}
+
+.title {
+  font-size: 18px;
+}
+
+.headerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.progressBar {
+  margin: 12px 0;
+}
+
+.progressContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tooltip {
+  @include commonContainer;
+  padding: 0 16px;
+  word-wrap: break-word;
+  opacity: 1;
+}
+
+.warningText {
+  @include paragraphSmall;
+  color: $white;
+  text-align: center;
+}
+
+.textContentContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.errorText {
+  @include label;
+  align-self: center;
+  text-align: center;
+  margin: 12px 0;
+  word-break: break-word;
+}
+
+.retryButton {
+  width: 100%;
+}
+
+.loadingTryAgain {
+  margin-top: 12px;
+}
+
+.loadingBatchContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  margin-top: 12px;
+}

@@ -1,0 +1,21 @@
+@import '@scss/styleguide';
+@import './NFTListItem/NFTListItem.module.scss';
+
+.nftContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px 0 148px 0;
+  width: calc(
+    calc(
+        $NftBorderWidth + $NftImageWidth + $NftBorderWidth + $NftMarginSide * 2
+      ) * $NftsPerRow
+  );
+
+  margin: 0 -8px;
+}
+
+.placeholderText {
+  margin: 12px 8px 0px 8px;
+  @include paragraphSmall;
+  color: $labelSecondary;
+}

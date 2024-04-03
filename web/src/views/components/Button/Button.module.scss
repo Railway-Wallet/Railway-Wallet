@@ -1,0 +1,79 @@
+@import '@scss/styleguide';
+
+.button {
+  width: 144px;
+  height: 48px;
+  background-color: gray(0.5);
+  border: 1px solid $buttonBorder;
+  border-radius: 4px;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    border-color: gray8(0.6);
+    background-color: gray2(0.72);
+  }
+}
+
+.buttonIconOnly {
+  padding: 12px 12px;
+  width: inherit;
+}
+
+.buttonActive {
+  background-color: gray5(0.4);
+}
+
+.text {
+  font-weight: 900;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.subText {
+  color: $labelSecondary;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.disabled {
+  background-color: gray5();
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconRight {
+  margin-left: 12px;
+}
+
+.iconLeft {
+  margin-right: 12px;
+}
+
+.rowContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.rowContainerSpreadEvenly {
+  justify-content: space-evenly;
+}
+
+.columnContainer {
+  display: flex;
+  flex-direction: column;
+}

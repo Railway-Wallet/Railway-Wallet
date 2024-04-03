@@ -1,0 +1,88 @@
+@import '@scss/styleguide';
+
+.container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  padding: 0 12px 48px 0;
+}
+
+.currencyText {
+  display: flex;
+  align-items: center;
+}
+
+.innerText {
+  padding-right: 4px;
+  font-weight: 600;
+  color: $labelSecondary;
+}
+
+.balanceText {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.symbolText {
+  padding-top: 4px;
+}
+
+.naText {
+  padding-top: 4px;
+}
+
+.titleStyle {
+  color: text();
+  @include heading3;
+}
+
+.descriptionStyle {
+  color: $textSecondary;
+  @include label;
+  margin: 1px 0 3px 0;
+}
+
+.titleCurrencyStyle {
+  color: $labelSecondary;
+  @include heading4;
+  letter-spacing: 3px;
+}
+
+.rightBalances {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  margin-right: 16px;
+  height: 100%;
+}
+
+.spinnerContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding-right: 12px;
+}
+
+.tokenIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+.titleStyles {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

@@ -1,0 +1,71 @@
+
+
+$white: #fff;
+$black: #000000;
+$danger: #ff0000;
+$buttonBorder: #a0a0a051;
+$screenBackground: #000000;
+$gray6_50: rgb(14, 14, 15);
+$cardSurface: rgb(30, 30, 30);
+$darkItemHover: rgba(99, 99, 99, 0.5);
+$lightItemHover: rgba(117, 117, 117, 0.5);
+$screenBackgroundAlpha: #000000b3;
+$offWhiteText: rgb(210, 210, 210);
+$inputBorder: rgba(235, 235, 245, 0.25);
+$textSecondary: rgba(235, 235, 245, 0.42);
+$labelSecondary: rgba(235, 235, 245, 0.7);
+$lighterLabelSecondary: rgba(235, 235, 245, 0.5);
+$tableWhite: #f3f3f3;
+$tableGray: #d7d7d7;
+
+@function txGreen($decimalOpacity: 1) {
+  @return rgba(5, 158, 121, $decimalOpacity);
+}
+@function txRed($decimalOpacity: 1) {
+  @return rgba(172, 8, 67, $decimalOpacity);
+}
+@function txOrange($decimalOpacity: 1) {
+  @return rgba(255, 165, 0, $decimalOpacity);
+}
+@function txYellow($decimalOpacity: 1) {
+  @return rgba(225, 156, 23, $decimalOpacity);
+}
+@function error($decimalOpacity: 1) {
+  @return rgba(255, 55, 95, $decimalOpacity);
+}
+@function text($decimalOpacity: 1) {
+  @return rgba(255, 255, 255, $decimalOpacity);
+}
+@function gray($decimalOpacity: 1) {
+  @return rgba(23, 23, 23, $decimalOpacity);
+}
+@function gray2($decimalOpacity: 1) {
+  @return rgba(99, 99, 99, $decimalOpacity);
+}
+@function gray3($decimalOpacity: 1) {
+  @return rgba(61, 61, 61, $decimalOpacity);
+}
+@function gray4($decimalOpacity: 1) {
+  @return rgba(58, 58, 60, $decimalOpacity);
+}
+@function gray5($decimalOpacity: 1) {
+  @return rgba(44, 44, 46, $decimalOpacity);
+}
+@function gray6($decimalOpacity: 1) {
+  @return rgba(28, 28, 30, $decimalOpacity);
+}
+@function gray7($decimalOpacity: 1) {
+  @return rgba(117, 117, 117, $decimalOpacity);
+}
+@function gray8($decimalOpacity: 1) {
+  @return rgba(141, 141, 147, $decimalOpacity);
+}
+@function gray9($decimalOpacity: 1) {
+  @return rgba(92, 92, 92, $decimalOpacity);
+}
+@function gray10($decimalOpacity: 1) {
+  @return rgba(72, 72, 72, $decimalOpacity);
+}
+@function black($decimalOpacity: 1) {
+  @return rgba(0, 0, 0, $decimalOpacity);
+}

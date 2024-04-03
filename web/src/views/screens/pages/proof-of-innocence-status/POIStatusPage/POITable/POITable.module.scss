@@ -1,0 +1,67 @@
+@import '@scss/styleguide';
+
+.table {
+  width: 100%;
+  border: 1px solid gray5();
+  background-color: gray6();
+  border-radius: 4px;
+  padding: 10px;
+  border-spacing: 4px;
+}
+
+.tableHeader {
+  @include caption;
+  font-weight: bold;
+  padding: 15px 10px;
+  white-space: nowrap;
+  background-color: black(0.5);
+  color: $white;
+  border-radius: 4px;
+}
+
+.tableTitle {
+  @include caption;
+  width: 100%;
+}
+
+.tableRow {
+  background-color: $tableWhite;
+}
+
+.tableRowOdd {
+  background-color: $tableGray;
+}
+
+.tableRow td {
+  @include caption;
+  text-align: center;
+  padding: 8px;
+  color: $black;
+  border-radius: 4px;
+  max-width: 140px;
+  overflow-wrap: break-word;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.action {
+  white-space: nowrap;
+  background-color: gray();
+}
+
+.tableValue {
+  font-size: 15px;
+}
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+}

@@ -1,0 +1,21 @@
+@import '@scss/styleguide';
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+.fullLengthButtonStyle {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+}
+
+.description {
+  white-space: pre-wrap;
+}

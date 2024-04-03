@@ -1,0 +1,38 @@
+@import '@scss/styleguide';
+
+.pageContainer {
+  padding: 24px;
+  display: flex;
+  width: 100%;
+  background-color: $cardSurface;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.headerRow {
+  margin-top: 48px;
+  align-content: flex-start;
+}
+
+.headerText {
+  @include heading1;
+  color: text();
+  margin-bottom: 12px;
+  letter-spacing: 2.4px;
+}
+
+.headerUnBoldText {
+  font-family: $inconsolata;
+  letter-spacing: 1.5px;
+}
+
+.headerSubtext {
+  @include paragraph;
+  color: $textSecondary;
+}

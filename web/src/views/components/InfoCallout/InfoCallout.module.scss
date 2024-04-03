@@ -1,0 +1,57 @@
+@import '@scss/styleguide';
+
+.infoAlertWrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.border {
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.contentContainer {
+  display: flex;
+  align-items: center;
+  padding: 8px 0 8px 4px;
+}
+
+.content {
+  padding: 2px 12px;
+  display: flex;
+  justify-content: flex-start;
+  background-color: $black;
+  border-radius: 4px;
+  align-items: center;
+  white-space: pre-wrap;
+}
+
+.blackCenter {
+  background-color: $black;
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.icon {
+  color: text();
+}
+
+.text {
+  @include caption;
+  color: text();
+  padding: 0 16px;
+  word-break: break-word;
+}
+
+.ctaButton {
+  @include paragraphSmall;
+  color: text();
+  text-decoration-line: underline;
+  cursor: pointer;
+  pointer-events: inherit;
+
+  &:hover {
+    font-weight: bold;
+  }
+}

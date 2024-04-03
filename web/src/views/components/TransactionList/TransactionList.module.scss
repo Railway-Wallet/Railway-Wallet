@@ -1,0 +1,10 @@
+@import '@scss/styleguide';
+
+.placeholder {
+  margin: 0px 4px 16px 4px;
+}
+
+.placeholderText {
+  @include paragraphSmall;
+  color: $labelSecondary;
+}

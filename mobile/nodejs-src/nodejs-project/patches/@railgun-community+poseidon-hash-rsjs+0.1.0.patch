@@ -1,0 +1,25 @@
+diff --git a/node_modules/@railgun-community/poseidon-hash-rsjs/index.js b/node_modules/@railgun-community/poseidon-hash-rsjs/index.js
+index 4733969..ce19da0 100644
+--- a/node_modules/@railgun-community/poseidon-hash-rsjs/index.js
++++ b/node_modules/@railgun-community/poseidon-hash-rsjs/index.js
+@@ -3,7 +3,19 @@
+ const runtimeRequire =
+   typeof __webpack_require__ === 'function' ? __non_webpack_require__ : require;
+ 
+-const rsjs = runtimeRequire(__dirname + '/index.node');
++const path = require('path');
++const rsjs = runtimeRequire(
++  path.resolve(
++    __dirname,
++    'node_modules',
++    '@railgun-community',
++    'poseidon-hash-rsjs',
++    'build',
++    'Release',
++    'index.node'
++  )
++);
++
+ 
+ const SCALAR_FIELD =
+   21888242871839275222246405745257275088548364400416034343698204186575808495617n;

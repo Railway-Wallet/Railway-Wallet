@@ -1,0 +1,21 @@
+@import '@scss/styleguide';
+
+.description {
+  margin-top: 12px;
+  @include paragraph;
+}
+
+.shieldInitialContainer {
+  padding: 24px;
+}
+
+.nextButton {
+  width: 100%;
+  margin: 32px 0;
+}
+
+.nextButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}

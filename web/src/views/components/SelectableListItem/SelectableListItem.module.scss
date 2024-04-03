@@ -1,0 +1,67 @@
+@import '@scss/styleguide';
+
+.rowWrapper {
+  background-color: gray6();
+  border: 1px solid $inputBorder;
+  border-radius: 4px;
+  padding: 4px 0;
+}
+
+.hovered {
+  border-color: $white;
+  cursor: pointer;
+}
+
+.listItem {
+  padding: 4px 0;
+}
+
+.titleIcon {
+  padding: 1px 0 0 6px;
+}
+
+.titleStyle {
+  @include paragraph;
+  color: text();
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.leftDescriptionStyle {
+  color: $textSecondary;
+  @include caption;
+}
+
+.rightWrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 9px;
+}
+
+.rightTextWrapper {
+  align-items: flex-end;
+  padding-right: 12px;
+  max-width: 260px;
+}
+
+.rightText {
+  @include paragraph;
+  color: $labelSecondary;
+  text-align: right;
+}
+
+.rightSubtext {
+  @include caption;
+  color: $textSecondary;
+  text-align: right;
+}
+
+.headerTextWrapper {
+  display: flex;
+}
+
+.headerIcon {
+  padding: 5px 0 0 10px;
+}

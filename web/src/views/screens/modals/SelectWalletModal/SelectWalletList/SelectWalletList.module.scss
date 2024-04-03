@@ -1,0 +1,63 @@
+@import '@scss/styleguide';
+
+.container {
+  max-height: 460px;
+  overflow: scroll;
+}
+
+.tokenList {
+  padding: 16px;
+}
+
+.tokenListContentContainer {
+  padding-bottom: 30px;
+}
+
+.rightBalances {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding-right: 16px;
+}
+
+.titleStyle {
+  color: text();
+  @include heading4;
+  text-align: right;
+}
+
+.descriptionContainer {
+  display: flex;
+}
+
+.descriptionStyle {
+  margin-top: 0px;
+}
+
+.descriptionTextStyle {
+  margin-top: 5px;
+  color: $lighterLabelSecondary;
+  @include labelSmall;
+}
+
+.rightTextStyle {
+  margin-top: 4px;
+  color: $textSecondary;
+  @include caption;
+}
+
+.placeholder {
+  padding: 0 32px;
+  margin-top: 20%;
+  text-align: center;
+  color: $labelSecondary;
+  @include label;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px 0 4px;
+}

@@ -1,0 +1,72 @@
+@import '@scss/styleguide';
+
+.newWalletCardContainer {
+  background-color: $cardSurface;
+  border-radius: 4px;
+  border: 1px solid $inputBorder;
+  margin-top: 16px;
+  padding-bottom: 12px;
+}
+
+.headerBackground {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px 20px;
+}
+
+.sectionHeaderText {
+  @include heading3;
+  color: text();
+  margin-left: 16px;
+  position: relative;
+  bottom: 1px;
+}
+
+.bottomSection {
+  padding: 16px;
+}
+
+.addressQrWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 0 12px;
+}
+
+.button {
+  background-color: gray();
+  border: 1px solid $buttonBorder;
+  margin-left: 8px;
+  max-width: 52px;
+}
+
+.fieldName {
+  @include label;
+  color: gray8();
+  text-transform: uppercase;
+}
+
+.field {
+  margin: 12px 0 24px 0;
+  @include paragraph;
+  color: $white;
+  word-break: break-word;
+}
+
+.logoWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  max-width: 400px;
+}
+
+.logo {
+  margin: 16px 24px 0 0;
+  object-fit: contain;
+}

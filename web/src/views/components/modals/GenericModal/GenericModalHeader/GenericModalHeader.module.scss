@@ -1,0 +1,43 @@
+@import '@scss/styleguide';
+
+.headerText {
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 16px;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.headerLeftContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.closeContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.dismissIcon {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  margin-right: 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  &:hover {
+    border-color: $buttonBorder;
+  }
+}
+
+.headerContainerNoClose {
+  padding-left: 8px;
+}

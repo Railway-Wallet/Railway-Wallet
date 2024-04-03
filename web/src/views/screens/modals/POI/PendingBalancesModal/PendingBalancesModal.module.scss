@@ -1,0 +1,30 @@
+@import '@scss/styleguide';
+
+.loadingContainer {
+  height: 100px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.itemList {
+  padding-top: 16px;
+}
+
+.noTxItem {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: $labelSecondary;
+  @include paragraph;
+}
+
+.fullLengthButtonStyle {
+  width: max-content;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+}

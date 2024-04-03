@@ -1,0 +1,45 @@
+@import '@scss/styleguide';
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  position: fixed;
+  width: 100%;
+  top: 40%;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.errorText {
+  @include caption;
+  color: text();
+  text-align: center;
+  max-width: 560px;
+}
+
+.loadingText {
+  @include caption;
+  color: text();
+  text-align: center;
+  padding: 0 16px;
+}
+
+.retryButtonContainer {
+  margin-top: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  height: 52px;
+  width: fit-content;
+  margin: 0 8px 12px 8px;
+}
+
+.progressBarContainer {
+  width: 200px;
+  margin-top: 20px;
+}

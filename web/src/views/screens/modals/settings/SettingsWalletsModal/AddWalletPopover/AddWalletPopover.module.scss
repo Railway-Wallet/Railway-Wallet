@@ -1,0 +1,33 @@
+@import '@scss/styleguide';
+
+.popoverContent {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray9();
+  background-color: gray5();
+  border-radius: 4px;
+}
+
+.button {
+  padding: 12px 16px;
+  box-shadow: none;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  border-width: 0px;
+  min-width: 178px;
+}
+
+.hr {
+  height: 1px;
+  background-color: gray9();
+}
+
+.buttonText {
+  font-size: 18px;
+}
+
+.addButton {
+  height: 40px;
+  min-width: 180px;
+}

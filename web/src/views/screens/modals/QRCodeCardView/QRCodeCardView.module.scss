@@ -1,0 +1,46 @@
+@import '@scss/styleguide';
+
+.cardWrapper {
+  flex-direction: column;
+  display: flex;
+  margin-top: 16px;
+  background-color: gray();
+  align-items: center;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid gray4();
+}
+
+.titleText {
+  @include heading3;
+  color: text();
+  text-align: center;
+}
+
+.qrCodeWrapper {
+  margin: 24px 24px 16px 24px;
+  background-color: $white;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.addressText {
+  @include caption;
+  color: $labelSecondary;
+  text-align: center;
+  padding: 0 24px;
+  margin: 8px 0 24px 0;
+}
+
+.buttonsWrapper {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.button {
+  background-color: gray6(0.72);
+}

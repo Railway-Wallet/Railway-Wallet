@@ -1,0 +1,63 @@
+@import '@scss/styleguide';
+
+.barContainer {
+  min-width: 640px;
+  height: 69px;
+  min-height: 69px;
+  display: flex;
+  padding: 0 16px;
+}
+
+.innerContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.startIcon {
+  margin-right: 16px;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  margin-right: 24px;
+}
+
+.mainText {
+  @include caption;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+}
+
+.subText {
+  @include caption;
+  color: $labelSecondary;
+  display: flex;
+  align-items: center;
+  margin-top: 3px;
+}
+
+.innerText {
+  text-decoration: underline;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button {
+  height: 56px;
+  align-self: center;
+  margin-left: 8px;
+  width: fit-content;
+
+  min-width: 168px;
+}
+
+.activeWalletButtonText {
+  min-width: max-content;
+  margin-right: 24px;
+}

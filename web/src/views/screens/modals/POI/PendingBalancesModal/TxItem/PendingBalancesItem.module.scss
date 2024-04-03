@@ -1,0 +1,96 @@
+@import '@scss/styleguide';
+
+.transactionItemWrapper {
+  margin-bottom: 12px;
+  background-color: gray6();
+  border-radius: 4px;
+  border: 1px solid gray();
+}
+
+.leftViewContainer {
+  padding: 10px 16px;
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.statusIndicator {
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.statusText {
+  @include labelSmall;
+  color: $white;
+}
+
+.transactionText {
+  @include caption;
+  color: text();
+  word-break: break-word;
+  margin-bottom: 4px;
+}
+
+.memoText {
+  @include caption;
+  color: $labelSecondary;
+  font-style: italic;
+  word-break: break-word;
+  margin-bottom: 4px;
+  max-width: 100%;
+}
+
+.memoTextHovered {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.failedErrorText {
+  @include caption;
+  color: text();
+  word-break: break-word;
+  margin-bottom: 4px;
+}
+
+.feeText {
+  @include caption;
+  color: $textSecondary;
+  word-break: break-word;
+  margin-bottom: 4px;
+}
+
+.footerText {
+  @include caption;
+  margin-top: 6px;
+  color: $labelSecondary;
+}
+
+.footerWrapper {
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.footerTextWrapper {
+  margin-bottom: 10px;
+}
+
+.poiStatusTextWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  margin-top: 6px;
+
+  .footerText {
+    margin-top: 0;
+  }
+}
+
+.bottomActionButton {
+  margin-top: 4px;
+}

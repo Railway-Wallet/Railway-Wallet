@@ -1,0 +1,48 @@
+@import '@scss/styleguide';
+
+.recipeLoadingViewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.loadingTitle {
+  @include heading4;
+  color: text();
+  margin: 24px 0;
+}
+
+.errorTitle {
+  @include heading3;
+  color: text();
+  margin: 48px 0 24px 0;
+}
+
+.errorMessage {
+  color: $danger;
+  text-align: center;
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  margin: 0 28px;
+}
+
+.textAndImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

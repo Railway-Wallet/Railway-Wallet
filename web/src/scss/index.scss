@@ -1,0 +1,84 @@
+@font-face {
+  font-family: 'Inconsolata';
+  font-display: swap;
+  unicode-range: U+000-5FF;
+  src: local('Inconsolata'),
+    url(../assets/fonts/inconsolata.woff2) format('woff2');
+}
+
+html {
+  background-color: #000;
+}
+
+body {
+  margin: 0;
+}
+
+body,
+input,
+textarea,
+code,
+tt,
+pre {
+  font-family: 'Inconsolata', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+p,
+img,
+.no-text-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -khtml-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.text-select {
+  -webkit-user-select: inherit;
+  -moz-user-select: inherit;
+  -ms-user-select: inherit;
+  user-select: inherit;
+  -khtml-user-select: inherit;
+  -webkit-touch-callout: inherit;
+}
+
+p {
+  pointer-events: none;
+}
+
+@import './styleguide.scss';

@@ -1,0 +1,38 @@
+@import '@scss/styleguide';
+
+.listItem {
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  padding-right: 24px;
+}
+
+.hr {
+  background-color: gray3();
+  height: 1;
+  margin: 0 16px;
+}
+
+.walletItemDescription {
+  color: gray8();
+  line-height: 1.25;
+  white-space: pre-line;
+  font-size: 14px;
+}
+
+.walletItemContainer {
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 16px;
+  max-height: 424px;
+}
+
+.recoveryWalletItemContainer {
+  .listItem:hover {
+    background: $darkItemHover;
+  }
+}

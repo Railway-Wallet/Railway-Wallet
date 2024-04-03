@@ -1,0 +1,23 @@
+@import '@scss/styleguide';
+
+.header {
+  padding: 0 16px;
+}
+
+.disclaimer {
+  padding: 0 16px;
+  font-size: 16px;
+  color: $labelSecondary;
+  margin: 8px 0 12px 0;
+}
+
+.vpkContainer {
+  padding: 16px;
+}
+
+.vpkText {
+  color: text();
+  font-weight: bold;
+  word-break: break-word;
+  white-space: pre-wrap;
+}

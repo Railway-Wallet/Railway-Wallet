@@ -1,0 +1,47 @@
+@import '@scss/styleguide';
+
+.tokenIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+.leftViewContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-right: 12px;
+}
+
+.titleStyles {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+@mixin iconContainer {
+  background-color: gray6();
+  box-shadow: 2px 2px 5px $black;
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+}
+
+.iconContainerRight {
+  @include iconContainer;
+  margin-left: -6px;
+  z-index: 1;
+}
+
+.iconContainerLeft {
+  @include iconContainer;
+  z-index: 2;
+}
+
+.descriptionStyle {
+  color: $textSecondary;
+  @include label;
+  margin: 1px 0 3px 0;
+}

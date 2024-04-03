@@ -1,0 +1,24 @@
+@import '@scss/styleguide';
+
+.errorText {
+  color: error();
+  padding: 8px 0 0 6px;
+  font-size: 15px;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.nextButton {
+  width: fit-content;
+  margin-top: 24px;
+}
+
+.nextButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}

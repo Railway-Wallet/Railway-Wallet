@@ -1,0 +1,38 @@
+@import '@scss/styleguide';
+
+.right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.headerText {
+  margin-top: 24px;
+  padding: 0 12px;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.actionButton {
+  border: none;
+  box-shadow: none;
+  width: 80px;
+  background-color: gray5();
+}
+
+.currencyContainer {
+  margin: 16px 0 8px 0;
+}
+
+.control {
+  background-color: gray3();
+  border: 1px solid gray9();
+  color: $white;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  border-radius: 4px;
+  margin: 20px 0;
+}

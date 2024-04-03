@@ -1,0 +1,66 @@
+diff --git a/node_modules/nodejs-mobile-react-native/index.js b/node_modules/nodejs-mobile-react-native/index.js
+index fb09c48..51446d1 100644
+--- a/node_modules/nodejs-mobile-react-native/index.js
++++ b/node_modules/nodejs-mobile-react-native/index.js
+@@ -17,7 +17,12 @@ class MessageCodec {
+   // static methods.
+   constructor(_event, ..._payload) {
+     this.event = _event;
+-    this.payload = JSON.stringify(_payload);
++    this.payload = JSON.stringify(_payload, function (key, value) {
++      if (typeof value === 'bigint') {
++        return '$#BIGINT#$' + value.toString();
++      }
++      return value;
++    });
+   };
+ 
+   // Serialize the message payload and the message.
+@@ -31,7 +36,13 @@ class MessageCodec {
+   static deserialize(message) {
+     var envelope = JSON.parse(message);
+     if (typeof envelope.payload !== 'undefined') {
+-      envelope.payload = JSON.parse(envelope.payload);
++      envelope.payload = JSON.parse(envelope.payload, function (key, value) {
++        if (typeof value === 'string' &&
++          value.startsWith('$#BIGINT#$')) {
++          return BigInt(value.slice(10));
++        }
++        return value
++      });
+     }
+     return envelope;
+   };
+diff --git a/node_modules/nodejs-mobile-react-native/install/resources/nodejs-modules/builtin_modules/rn-bridge/index.js b/node_modules/nodejs-mobile-react-native/install/resources/nodejs-modules/builtin_modules/rn-bridge/index.js
+index c6280bf..7e40f4f 100644
+--- a/node_modules/nodejs-mobile-react-native/install/resources/nodejs-modules/builtin_modules/rn-bridge/index.js
++++ b/node_modules/nodejs-mobile-react-native/install/resources/nodejs-modules/builtin_modules/rn-bridge/index.js
+@@ -26,7 +26,12 @@ class MessageCodec {
+   // static methods.
+   constructor(_event, ..._payload) {
+     this.event = _event;
+-    this.payload = JSON.stringify(_payload);
++    this.payload = JSON.stringify(_payload, function (key, value) {
++      if (typeof value === 'bigint') {
++        return '$#BIGINT#$' + value.toString();
++      }
++      return value;
++    });
+   };
+ 
+   // Serialize the message payload and the message.
+@@ -40,7 +45,13 @@ class MessageCodec {
+   static deserialize(message) {
+     var envelope = JSON.parse(message);
+     if (typeof envelope.payload !== 'undefined') {
+-      envelope.payload = JSON.parse(envelope.payload);
++      envelope.payload = JSON.parse(envelope.payload, function (key, value) {
++        if (typeof value === 'string' &&
++          value.startsWith('$#BIGINT#$')) {
++          return BigInt(value.slice(10));
++        }
++        return value;
++      });
+     }
+     return envelope;
+   };

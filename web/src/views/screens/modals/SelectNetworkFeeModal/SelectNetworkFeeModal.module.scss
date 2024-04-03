@@ -1,0 +1,46 @@
+@import '@scss/styleguide';
+
+.wrapper {
+  flex: 1;
+  background-color: gray5();
+}
+
+.listWrapper {
+  padding: 8px;
+}
+
+.listHeader {
+  @include label;
+  color: $labelSecondary;
+  margin-bottom: 12px;
+}
+
+.rightText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  margin-right: 16px;
+}
+
+.rightTitle {
+  color: text();
+  @include heading4;
+}
+
+.rightDescription {
+  color: $textSecondary;
+  @include label;
+}
+
+.saveButton {
+  width: 100%;
+  margin: 12px 0 8px 9;
+}
+
+.saveButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}

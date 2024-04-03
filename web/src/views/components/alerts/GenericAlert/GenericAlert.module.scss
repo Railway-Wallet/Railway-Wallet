@@ -1,0 +1,27 @@
+@import '@scss/styleguide';
+
+.messageText {
+  @include paragraphSmall;
+  margin-bottom: 16px;
+  padding: 0 8px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.inputContainer {
+  margin-bottom: 20px;
+}
+
+.inputLabel {
+  margin-bottom: 20px;
+}
+
+.bottomSubmitContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.bottomSubmitStyles {
+  width: auto;
+}

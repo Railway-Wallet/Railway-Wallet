@@ -1,0 +1,32 @@
+@import '@scss/styleguide';
+
+.warningText {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.buttonText {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.cancelButton {
+  margin-right: 8px;
+}
+
+.dangerText {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: $danger;
+}
+
+.deleteButton {
+  margin-left: 8px;
+}

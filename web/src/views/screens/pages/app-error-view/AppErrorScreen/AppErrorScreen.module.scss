@@ -1,0 +1,54 @@
+@import '@scss/styleguide';
+
+.textWrapper {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  top: 30%;
+  right: 0;
+  left: 0;
+  position: absolute;
+}
+
+.errorText {
+  @include paragraph;
+  color: text();
+  line-height: 24px;
+  text-align: center;
+  max-width: 1090px;
+  margin: 0 auto;
+}
+
+.buttonContainer {
+  margin-top: 32px;
+  justify-content: center;
+  display: flex;
+}
+
+.recoveryButtonContainer {
+  margin-top: 16px;
+  justify-content: center;
+  display: flex;
+}
+
+.loadingText {
+  @include caption;
+  color: text();
+  text-align: center;
+  padding: 0 16px;
+}
+
+.buttonStyles {
+  min-width: 300px;
+}
+
+.footerText {
+  @include caption;
+  color: $textSecondary;
+  text-align: center;
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+}

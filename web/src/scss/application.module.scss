@@ -1,0 +1,62 @@
+
+
+$z-index-base: 1;
+$z-index-drawers: 20;
+$z-index-modals: 30;
+$z-index-submenus: 40;
+$z-index-toast: 50;
+$z-index-alerts: 60;
+
+:export {
+  zIndexBase: 1;
+  zIndexDrawers: 20;
+  zIndexModals: 30;
+  zIndexSubmenus: 40;
+  zIndexToast: 50;
+  zIndexAlerts: 60;
+}
+
+.selectable-text {
+  -webkit-user-select: inherit;
+  -moz-user-select: inherit;
+  -ms-user-select: inherit;
+  user-select: inherit;
+  -khtml-user-select: inherit;
+  -webkit-touch-callout: inherit;
+}
+
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.overlay-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(
+      to top,
+      rgba(19, 21, 25, 0.5),
+      rgba(19, 21, 25, 0.5)
+    ),
+    url('../../public/img/overlay.png');
+  background-size: auto, 200px 75px;
+  background-position: center, center;
+  background-repeat: no-repeat, repeat;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}

@@ -1,0 +1,13 @@
+@import '@scss/styleguide';
+
+.header {
+  padding: 20px 0 6px;
+}
+
+.disclaimer {
+  padding: 0 20px;
+  font-size: 16px;
+  margin: 24px 0 12px 0;
+  color: $labelSecondary;
+  text-align: center;
+}

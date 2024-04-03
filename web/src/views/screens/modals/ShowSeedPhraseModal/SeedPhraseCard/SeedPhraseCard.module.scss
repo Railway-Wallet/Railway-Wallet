@@ -1,0 +1,73 @@
+@import '@scss/styleguide';
+
+.cardContainer {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bottomButtons {
+  display: flex;
+  margin-top: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+.bottomButton {
+  width: 100%;
+  margin-left: 8px;
+  justify-content: center;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+}
+
+.unblurSeedPhraseText {
+  text-align: center;
+}
+
+.seedPhraseBlur {
+  .text-item {
+    filter: blur(9px);
+  }
+}
+
+.loadingLabel {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.nextButton {
+  width: 100%;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.showSeedPhraseContainer {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+
+  .showSeedPhraseButton {
+    cursor: pointer;
+
+    .text-item {
+      color: $offWhiteText !important;
+
+      &:hover {
+        color: text() !important;
+      }
+    }
+  }
+}

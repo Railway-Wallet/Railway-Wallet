@@ -1,0 +1,57 @@
+@import '@scss/styleguide';
+
+.addTokensSelectScreenContainer {
+  padding: 24px;
+}
+
+.actionContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchContainer {
+  margin-right: 16px;
+  flex-grow: 1;
+}
+
+.cardContainer {
+  max-height: calc(100vh - 292px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.customTokenButton {
+  display: flex;
+}
+
+.customTokenButtonText {
+  font-size: 18px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0px;
+  border-top: 1px solid gray();
+  width: 100%;
+  background-color: gray6();
+  box-shadow: 0px 1px 4px black(0.8);
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 36px 24px;
+  align-items: center;
+}
+
+.selectedTokens {
+  @include label;
+  color: $white;
+  text-align: center;
+}
+
+.saveButton {
+  margin-top: 24px;
+  width: max-content;
+}

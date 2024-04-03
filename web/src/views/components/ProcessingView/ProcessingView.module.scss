@@ -1,0 +1,70 @@
+@import '@scss/styleguide';
+
+.blurView {
+  flex: 1;
+}
+
+.pageWrapper {
+  align-items: center;
+  padding: 32px;
+  width: 360px;
+  min-height: 260px;
+  border: 2px solid $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.spinner {
+  justify-content: center;
+}
+
+.spinnerContainer {
+  margin-top: 12px;
+}
+
+.processingWrapper {
+  background-color: $screenBackgroundAlpha;
+}
+
+.failWrapper {
+  background-color: $screenBackgroundAlpha;
+}
+
+.iconContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.progressBarContainer {
+  width: 100px;
+  margin-top: 20px;
+}
+
+.subtleText {
+  margin: 36px 36px 0 36px;
+  color: $labelSecondary;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.boldText {
+  margin: 36px 36px 10px 36px;
+  font-size: 22px;
+  color: text();
+  text-align: center;
+  white-space: pre-wrap;
+}
+.errorText {
+  margin: 36px;
+  color: text();
+  text-align: center;
+  white-space: pre-wrap;
+}
+.warningText {
+  margin-top: 48px;
+  color: text();
+  text-align: center;
+  white-space: pre-wrap;
+}

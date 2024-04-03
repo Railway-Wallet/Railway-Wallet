@@ -1,0 +1,60 @@
+.container {
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.title {
+  color: text();
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.descriptionContainer {
+  padding: 6px 0 4px 0;
+  flex: 1;
+  min-width: 0px;
+}
+
+.description {
+  font-size: 14px;
+  color: text();
+}
+
+.marginVerticalNone {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.iconMarginLeft {
+  margin-left: 0px;
+  margin-right: 16px;
+}
+
+.iconMarginRight {
+  margin-right: 0px;
+}
+
+.leftContainer {
+  margin: 6px 16px 6px 0;
+  padding-left: 16px;
+  display: flex;
+  flex: 1;
+  min-width: 0px;
+}
+
+.rightContainer {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rightContainerEven {
+  min-width: 50%;
+}

@@ -1,0 +1,63 @@
+@import '@scss/styleguide';
+
+.recipientAddressInput {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  width: 100%;
+}
+
+.recipientLabel {
+  @include label;
+  margin: 12px 0;
+}
+
+.knownWalletContainer {
+  display: flex;
+  align-items: center;
+  margin: 6px 0 0 6px;
+}
+
+.resolvedAddressText {
+  color: $labelSecondary;
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+  word-break: break-word;
+}
+
+.knownWalletName {
+  color: $labelSecondary;
+  padding: 2px 0 0 6px;
+  font-size: 15px;
+}
+
+.errorText {
+  color: error();
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+}
+
+.buttonLabel {
+  @include label;
+  text-transform: none;
+}
+
+.inputRightView {
+  display: flex;
+}
+
+.inputSpinner {
+  margin-right: 12px;
+}
+
+.inputInsetButton {
+  justify-content: center;
+  width: fit-content;
+  height: 32px;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

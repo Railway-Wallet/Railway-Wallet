@@ -1,0 +1,56 @@
+@import '@scss/styleguide';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 24px;
+}
+
+.downloadButton {
+  min-width: fit-content;
+  width: 100%;
+  margin-top: 36px;
+}
+
+.captionText {
+  @include caption;
+  margin-top: 36px;
+  color: text();
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.titleText {
+  @include heading3;
+  margin-top: 36px;
+  color: text();
+}
+
+.selector {
+  margin-top: 12px;
+  max-width: 350px;
+}
+
+.clickableFieldWrapper {
+  margin-top: 32px;
+}
+
+.syncText {
+  margin-top: 12px;
+  color: text();
+  @include heading4;
+}
+
+.syncButton {
+  min-width: fit-content;
+  margin-top: 24px;
+}
+
+.syncDescription {
+  margin-top: 24px;
+}
+
+.warningCallout {
+  margin-top: 24px;
+}

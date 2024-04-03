@@ -1,0 +1,27 @@
+@import '@scss/styleguide';
+
+.genericModalContent {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  outline: none;
+}
+
+.content {
+  padding: 0 16px 16px 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  max-height: calc(100% - 80px);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.header {
+  padding: 21px 16px 16px 16px;
+}

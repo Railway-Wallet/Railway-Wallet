@@ -1,0 +1,36 @@
+@import '@scss/styleguide';
+
+.actionButton {
+}
+
+.inputContainer {
+  margin-bottom: 16px;
+}
+
+.errorText {
+  margin-top: 12px;
+  color: error();
+  padding: 0 4px;
+}
+
+.disclaimerText {
+  margin: 28px 0 16px 0;
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+.inputIcon {
+  padding: 0 10px 0 12px;
+}
+
+.listHeader {
+  @include label;
+  color: $labelSecondary;
+  margin: 0 0 8px 4px;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

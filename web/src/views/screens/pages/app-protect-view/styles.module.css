@@ -1,0 +1,129 @@
+.blurClass {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.5;
+}
+
+.box {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border: 1px solid;
+  border-radius: 5px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  align-content: center;
+  background-color: white;
+  color: black;
+}
+
+.box > div {
+  padding: 10px;
+}
+
+.boxTitle {
+  background-color: black;
+  color: white;
+  font-size: x-large;
+}
+
+.boxButton {
+  align-self: flex-end;
+}
+
+.skChase {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  animation: sk-chase 2.5s infinite linear both;
+  left: 50%;
+  top: 50%;
+}
+
+.skChaseDot {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: skChaseDot 2s infinite ease-in-out both;
+}
+
+.skChaseDot:before {
+  content: '';
+  display: block;
+  width: 25%;
+  height: 25%;
+  background-color: black;
+  border-radius: 100%;
+  animation: skChaseDot-before 2s infinite ease-in-out both;
+}
+
+.skChaseDot:nth-child(1) {
+  animation-delay: -1.1s;
+}
+.skChaseDot:nth-child(2) {
+  animation-delay: -1s;
+}
+.skChaseDot:nth-child(3) {
+  animation-delay: -0.9s;
+}
+.skChaseDot:nth-child(4) {
+  animation-delay: -0.8s;
+}
+.skChaseDot:nth-child(5) {
+  animation-delay: -0.7s;
+}
+.skChaseDot:nth-child(6) {
+  animation-delay: -0.6s;
+}
+.skChaseDot:nth-child(1):before {
+  animation-delay: -1.1s;
+}
+.skChaseDot:nth-child(2):before {
+  animation-delay: -1s;
+}
+.skChaseDot:nth-child(3):before {
+  animation-delay: -0.9s;
+}
+.skChaseDot:nth-child(4):before {
+  animation-delay: -0.8s;
+}
+.skChaseDot:nth-child(5):before {
+  animation-delay: -0.7s;
+}
+.skChaseDot:nth-child(6):before {
+  animation-delay: -0.6s;
+}
+
+@keyframes sk-chase {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes skChaseDot {
+  80%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes skChaseDot-before {
+  50% {
+    transform: scale(0.4);
+  }
+  100%,
+  0% {
+    transform: scale(1);
+  }
+}

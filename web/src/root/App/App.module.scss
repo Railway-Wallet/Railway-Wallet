@@ -1,0 +1,59 @@
+@import '@scss/styleguide';
+
+.appContainer {
+  background-color: $black;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+}
+
+.mobileContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 27vh;
+}
+
+.mobileTitle {
+  @include heading1;
+  letter-spacing: 0.5rem;
+  margin: 20px -0.5rem 0 0;
+  padding: 0 36px;
+}
+
+.mobileDescription {
+  @include caption;
+  margin-top: 32px;
+  text-align: center;
+  padding: 0 36px;
+}
+
+.mobileStoreLogoWrapper {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mobileStoreLogo {
+  background-color: $black;
+  border: 1px solid $white;
+  border-radius: 4px;
+  margin: 12px 8px 0 8px;
+}
+
+.mobileFooter {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  align-content: center;
+}
+
+.mobileFooterText {
+  @include caption;
+  margin-bottom: 24px;
+  text-align: center;
+}

@@ -1,0 +1,43 @@
+@import '@scss/styleguide';
+
+.tokenList {
+  padding: 16px;
+}
+
+.tokenListContentContainer {
+  padding-bottom: 30px;
+}
+
+.rightBalances {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding-right: 16px;
+}
+
+.titleStyle {
+  @include heading4;
+  text-align: right;
+  color: text();
+}
+
+.errorStyle {
+  @include label;
+  text-align: right;
+  color: $labelSecondary;
+}
+
+.descriptionStyle {
+  @include label;
+  color: $labelSecondary;
+  margin-top: 2px;
+}
+
+.placeholder {
+  @include label;
+  text-align: center;
+  color: $labelSecondary;
+  padding: 0 32px;
+  margin-top: 20%;
+}

@@ -1,0 +1,51 @@
+@import '@scss/styleguide';
+
+.sectionHeader {
+  padding: 0 4px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.sectionHeaderTitle {
+  @include heading4;
+}
+
+.sectionHeaderRightText {
+  color: $labelSecondary;
+  font-size: 16px;
+  padding-right: 0;
+}
+
+.amountInputContainer {
+  display: flex;
+}
+
+.selectTokenButton {
+  width: fit-content;
+  margin-left: 8px;
+  min-width: 128px;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+}
+
+.inputInsetButton {
+  justify-content: center;
+  width: fit-content;
+  height: 32px;
+}
+
+.feeDisclaimerContainer {
+  padding: 16px 12px 0 12px;
+}
+
+.feeDisclaimer {
+  @include caption;
+  line-height: 15px;
+  color: $textSecondary;
+  font-size: 13px;
+}

@@ -1,0 +1,148 @@
+@import '@scss/styleguide';
+
+.reviewTransactionViewContainer {
+  flex: 1;
+  padding: 12px;
+}
+
+.warningInfoCallout {
+  margin-top: 8px;
+}
+
+.selectSignerTypeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+
+  .selectSignerTypeButton {
+    display: flex;
+    flex-direction: column;
+
+    .selectSignerTypeButtonInfo {
+      margin-top: 5px;
+      align-self: flex-end;
+      @include labelSmall;
+      color: $labelSecondary;
+
+      &:hover {
+        color: text();
+      }
+    }
+  }
+}
+
+.networkFeeWrapper {
+  margin-top: 12px;
+}
+
+.textFieldWrapper {
+  margin-top: 8px;
+}
+
+.bottomButtonWrapper {
+  margin-top: 24px;
+  padding: 0 16px;
+}
+
+.bottomButtonDivider {
+  height: 8px;
+}
+
+.bottomButtonProofExpirationText {
+  @include label;
+  color: text();
+  align-self: center;
+  text-align: center;
+}
+
+.bottomRelayerName {
+  @include label;
+  color: text();
+  align-self: center;
+  text-align: center;
+}
+
+.errorText {
+  @include label;
+  font-size: 18px;
+  color: error();
+  margin: 24px 24px 0 24px;
+  word-break: break-word;
+}
+
+.gasEstimateRetryButton {
+  margin: 12px 24px 4px 24px;
+}
+
+.relayerFeeWarningContainer {
+  display: flex;
+}
+
+.relayerFeeWarning {
+  color: error();
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+}
+
+.sendButton {
+  width: 100%;
+  margin: 24px 0 8px 0;
+}
+
+.sendButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.relayerOverrideContainer {
+  margin-bottom: 12px;
+}
+
+.inputInsetButton {
+  justify-content: center;
+  width: fit-content;
+  height: 32px;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+}
+
+.advancedOptionsButton {
+  justify-content: flex-end;
+  margin: 12px 0 0 4px;
+}
+
+.gasEstimateProgressBarContainer {
+  height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  margin-right: 16px;
+  padding-bottom: 2px;
+}
+
+.gasEstimateProgressLabel {
+  color: $labelSecondary;
+  @include caption;
+  text-align: right;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.poiCalloutContainer {
+  margin-top: 25px;
+}
+
+.showMoreErrorContainer {
+  margin: 5px 24px 0 24px;
+}
+
+.showMoreErrorText {
+  @include label;
+}

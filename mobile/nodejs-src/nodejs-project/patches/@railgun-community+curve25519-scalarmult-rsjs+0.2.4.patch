@@ -1,0 +1,24 @@
+diff --git a/node_modules/@railgun-community/curve25519-scalarmult-rsjs/index.js b/node_modules/@railgun-community/curve25519-scalarmult-rsjs/index.js
+index 69e245c..2757cb6 100644
+--- a/node_modules/@railgun-community/curve25519-scalarmult-rsjs/index.js
++++ b/node_modules/@railgun-community/curve25519-scalarmult-rsjs/index.js
+@@ -3,7 +3,18 @@
+ const runtimeRequire =
+   typeof __webpack_require__ === 'function' ? __non_webpack_require__ : require;
+ 
+-const {scalarmult} = runtimeRequire(__dirname + '/index.node');
++const path = require('path');
++const {scalarmult} = runtimeRequire(
++  path.resolve(
++    __dirname, 
++    'node_modules', 
++    '@railgun-community', 
++    'curve25519-scalarmult-rsjs', 
++    'build', 
++    'Release', 
++    'index.node'
++  )
++);
+ 
+ module.exports = {
+   scalarMultiply(point, scalar) {

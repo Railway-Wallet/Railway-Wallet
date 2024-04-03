@@ -1,0 +1,23 @@
+.innerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.titleAndIcon {
+  display: flex;
+  align-items: center;
+}
+
+.headerText {
+  margin-right: 12px;
+}
+
+.rightGroup {
+  display: flex;
+}
+
+.button {
+  margin-left: 8px;
+}

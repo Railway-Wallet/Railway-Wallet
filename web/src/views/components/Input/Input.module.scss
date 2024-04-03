@@ -1,0 +1,86 @@
+@import '@scss/styleguide';
+
+.inputContainer {
+  display: flex;
+  min-height: 46px
+    ;
+  background-color: gray6(0.5);
+  border-radius: 4px;
+  padding-left: 12px;
+  border: 1px solid gray9();
+  align-items: center;
+  flex-grow: 1;
+
+  &:not(.disabledContainer, .selectedContainer):hover {
+    background-color: gray5(0.5);
+    border-color: $textSecondary;
+    outline-width: 0px;
+  }
+
+  &.inputError {
+    border-color: error();
+  }
+
+  &.selectedContainer {
+    background-color: gray5();
+    border-color: text();
+    outline-width: 0px;
+  }
+
+  &.startIconInputContainer {
+    padding-left: 4px;
+  }
+
+  &.clickableInput {
+    cursor: pointer;
+  }
+
+  &.disabledContainer {
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  font-size: 17px;
+  width: 100%;
+  font-weight: 800;
+  color: $white;
+  background-color: gray6(0);
+  border: none;
+  outline-width: 0px;
+  color: text();
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: $inconsolata;
+  overflow: hidden;
+
+  &.selectedInput {
+    background-color: gray5();
+  }
+
+  &.clickableInput {
+    cursor: pointer;
+  }
+
+  &.disabledInput {
+    cursor: not-allowed;
+  }
+
+  &.textarea {
+    padding: 12px 0;
+    word-break: break-word;
+    text-overflow: wrap;
+    white-space: pre-wrap;
+    resize: none;
+    align-self: center;
+  }
+}
+
+.icon {
+  align-self: center;
+  margin: 2px 8px 0px 8px;
+}
+
+.rightView {
+  margin: 0 12px 0 8px;
+}

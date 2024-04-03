@@ -1,0 +1,16 @@
+@import '@scss/styleguide';
+
+.text {
+  font-size: 18px;
+  color: text();
+  font-weight: 400;
+  font-family: $inconsolata;
+  margin: 0;
+  font-style: normal;
+}
+
+.clickable {
+  cursor: pointer;
+  pointer-events: all;
+  width: fit-content;
+}

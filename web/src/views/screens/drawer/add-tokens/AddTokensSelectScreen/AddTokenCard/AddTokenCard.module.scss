@@ -1,0 +1,43 @@
+@import '@scss/styleguide';
+
+.addERC20CardContainer {
+  background-color: gray10();
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4px;
+  height: 44px;
+  margin-bottom: 8px;
+  padding: 12px;
+}
+
+.checkedContainer {
+  background-color: $cardSurface;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  padding-right: 12px;
+  height: 32px;
+  width: 32px;
+}
+
+.tokenText {
+  color: gray8();
+}
+
+.checkedTokenText {
+  color: $white;
+}
+
+.symbolText {
+  color: gray8();
+}
+
+.checkedSymbolText {
+  color: $textSecondary;
+}

@@ -1,0 +1,108 @@
+@import '@scss/styleguide';
+
+.settingsItemContainer {
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-bottom: 16px;
+  max-height: 424px;
+}
+
+@mixin common-icon {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  padding-right: 16px;
+}
+
+.listHeader {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.itemTitle {
+  font-family: $inconsolataMono;
+  padding-bottom: 5px;
+}
+
+.itemDescription {
+  font-family: $inconsolataMono;
+  color: gray8();
+}
+
+.listItem {
+  margin: 8px 0;
+  cursor: pointer;
+  &:hover {
+    background: $darkItemHover;
+  }
+
+  &.listItemNoHover:hover {
+    background: none;
+    cursor: default;
+  }
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  padding-right: 24px;
+
+  &.rightContainerClickable {
+    cursor: pointer;
+  }
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.closeContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 6px;
+}
+
+.closeIcon {
+  @include common-icon;
+}
+
+.backIcon {
+  @include common-icon;
+  height: 18px;
+  width: 18px;
+}
+
+.hr {
+  background-color: gray3();
+  height: 1px;
+  margin: 0 16px;
+}
+
+.walletItemDescription {
+  color: gray8();
+  line-height: 1.25;
+  white-space: pre-line;
+  font-size: 14px;
+}
+
+.headerText {
+  margin-top: 24px;
+  padding: 0 12px;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.placeholderText {
+  font-size: 14;
+  margin-top: 16;
+  padding: 0 12px;
+}
+
+.bold {
+  font-weight: bold;
+}

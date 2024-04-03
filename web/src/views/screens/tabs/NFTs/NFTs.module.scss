@@ -1,0 +1,52 @@
+@import '@scss/styleguide';
+
+.outerContainer {
+  background-image: linear-gradient(
+    to top,
+    rgba(19, 21, 25, 0),
+    rgba(19, 21, 25, 1)
+  );
+  width: 100%;
+  min-width: 600px;
+}
+
+.pageContainer {
+  padding: 24px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: $cardSurface;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.headerRow {
+  margin-top: 48px;
+  align-content: flex-start;
+}
+
+.headerText {
+  @include heading1;
+  color: text();
+  margin-bottom: 12px;
+}
+
+.headerSubtext {
+  @include paragraph;
+  color: $textSecondary;
+}
+
+.placeholderText {
+  @include paragraphSmall;
+  color: $labelSecondary;
+}
+
+.mainSectionWrapper {
+  margin-top: 32px;
+}
+
+.sectionHeader {
+  @include heading4;
+  color: text();
+  margin-top: 16px;
+}

@@ -1,0 +1,54 @@
+@import '@scss/styleguide';
+
+.balanceCurrencyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 18px;
+  font-size: 58px;
+}
+
+.balanceContainer {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.tokenIcon {
+  width: 24px;
+  height: 24px;
+  align-self: center;
+}
+
+.balanceText {
+  @include label;
+  color: text();
+  margin-left: 12px;
+}
+
+.balanceTextTokenSymbol {
+  color: $textSecondary;
+}
+
+.currencySymbol {
+  color: gray8();
+  padding-right: 10px;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.priceContainer {
+  display: flex;
+  margin-top: 4px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.priceText {
+  @include caption;
+  color: $textSecondary;
+  margin-left: 12px;
+}

@@ -1,0 +1,32 @@
+@import '@scss/styleguide';
+
+.walletScreenContainer {
+  background-image: linear-gradient(
+    to top,
+    rgba(19, 21, 25, 0),
+    rgba(19, 21, 25, 1)
+  );
+  width: 100%;
+  min-width: 600px;
+}
+
+.container {
+  width: 100%;
+  height: calc(100vh - 98px);
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 48px 0 48px;
+
+  max-width: 640px;
+  width: 84%;
+}

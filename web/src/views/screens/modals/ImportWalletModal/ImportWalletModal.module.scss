@@ -1,0 +1,32 @@
+@import '@scss/styleguide';
+
+.inputContainer {
+  margin-bottom: 6px;
+}
+
+.disclaimerText {
+  margin: 12px 0 24px 0;
+}
+
+.inputIcon {
+  padding: 0 10px 0 12px;
+}
+
+.advancedOptionsButton {
+  justify-content: flex-end;
+  margin: 12px 0 0 4px;
+}
+
+.advancedOptions {
+  padding: 24px 0 8px 0;
+}
+
+.walletCreationDateLabel {
+  @include caption;
+  margin: 18px 0 10px 4px;
+  color: $lighterLabelSecondary;
+}
+
+.warningCallout {
+  margin-top: 8px;
+}

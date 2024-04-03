@@ -1,0 +1,122 @@
+
+
+$inconsolata: 'Inconsolata', 'sans-serif';
+$inconsolataMono: 'Inconsolata', monospace;
+$inconsolataLight: 'Inconsolata-Light', $inconsolata;
+$inconsolataRegular: 'Inconsolata-Regular', $inconsolata;
+$inconsolataSemiBold: 'Inconsolata-SemiBold', $inconsolata;
+$inconsolataBold: 'Inconsolata-Bold', $inconsolata;
+$inconsolataExtraBold: 'Inconsolata-ExtraBold', $inconsolata;
+
+:export {
+  fontFamily: $inconsolata;
+}
+
+$light: 300;
+$regular: 400;
+$medium: 500;
+
+@mixin heading1 {
+  padding-top: 10px;
+  font-family: $inconsolataBold;
+  font-weight: $medium;
+  font-size: 44px;
+  letter-spacing: -1px;
+  line-height: 48px;
+}
+
+@mixin heading2 {
+  font-family: $inconsolataBold;
+  font-weight: $medium;
+  font-size: 34px;
+  letter-spacing: 0px;
+  line-height: 40px;
+}
+
+@mixin heading3 {
+  font-family: $inconsolataBold;
+  font-weight: $medium;
+  font-size: 22px;
+  letter-spacing: 0px;
+  line-height: 24px;
+}
+
+@mixin heading4 {
+  font-family: $inconsolataBold;
+  font-weight: $medium;
+  font-size: 18px;
+  letter-spacing: 0px;
+  line-height: 24px;
+}
+
+@mixin button {
+  font-family: $inconsolataExtraBold;
+  font-weight: $medium;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  line-height: 26px;
+}
+
+@mixin paragraph {
+  font-family: $inconsolataRegular;
+  font-weight: $regular;
+  font-size: 19px;
+  letter-spacing: 0px;
+  line-height: 24px;
+}
+
+@mixin paragraphSmall {
+  font-family: $inconsolataRegular;
+  font-weight: $regular;
+  font-size: 16px;
+  letter-spacing: 0px;
+  line-height: 20px;
+}
+
+@mixin label {
+  font-family: $inconsolataExtraBold;
+  font-weight: $medium;
+  font-size: 16px;
+  letter-spacing: 1px;
+  line-height: 20px;
+}
+
+@mixin labelSmall {
+  font-family: $inconsolataExtraBold;
+  font-weight: $medium;
+  font-size: 14px;
+  letter-spacing: 1px;
+  line-height: 17px;
+}
+
+@mixin caption {
+  font-family: $inconsolataSemiBold;
+  font-weight: $medium;
+  font-size: 15px;
+  letter-spacing: 0px;
+  line-height: 18px;
+}
+
+@mixin actionText {
+  font-family: $inconsolataRegular;
+  font-weight: $regular;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  line-height: 21px;
+}
+
+@mixin numpad {
+  font-family: $inconsolataLight;
+  font-weight: $light;
+  font-size: 44px;
+  letter-spacing: 0px;
+  line-height: 44px;
+}
+
+@mixin numpadSmall {
+  font-family: $inconsolata;
+  font-weight: $light;
+  font-size: 36px;
+  letter-spacing: 0px;
+  line-height: 42px;
+}

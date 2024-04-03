@@ -1,0 +1,13 @@
+@import '@scss/styleguide';
+
+.walletCardSlideButtonsContainer {
+  margin: 20px 16px 0 16px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  background-color: gray(0.88);
+  margin: 8px 8px 0 8px;
+}

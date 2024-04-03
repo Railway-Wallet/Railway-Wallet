@@ -1,0 +1,28 @@
+@import '@scss/styleguide';
+
+.description {
+  margin-top: 12px;
+  @include paragraph;
+}
+
+.unshieldInitialContainer {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nextButtonWrapper {
+  margin: 32px 0;
+  width: 100%;
+}
+
+.nextButton {
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.nextButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}

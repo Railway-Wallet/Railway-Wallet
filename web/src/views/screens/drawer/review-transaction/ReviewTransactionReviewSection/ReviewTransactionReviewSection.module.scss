@@ -1,0 +1,181 @@
+@import '@scss/styleguide';
+
+.reviewSection {
+  border-radius: 4px;
+  background-color: gray6();
+  padding: 18px 16px 18px 16px;
+  margin: 12px;
+  border: 1px solid gray4();
+}
+
+.walletNameIconWrapper {
+  display: flex;
+  align-items: center;
+  margin: 0 0 12px 2px;
+}
+
+.walletNameText {
+  @include caption;
+  color: $labelSecondary;
+  margin-left: 8px;
+}
+
+.reviewTokenContainerWithFee {
+  display: flex;
+  margin-bottom: 4px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.reviewTokenContainer {
+  display: flex;
+  margin-bottom: 14px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.tokenIcon {
+  width: 28px;
+}
+
+.tokenText {
+  @include heading3;
+  display: flex;
+  align-items: baseline;
+  padding: 0 20px 0 12px;
+  letter-spacing: -0.2px;
+}
+
+.cancelTransactionText {
+  @include caption;
+}
+
+.cancelOriginalFeeText {
+  margin-top: 12px;
+  @include caption;
+}
+
+.cancelTransactionID {
+  word-break: break-word;
+  color: $labelSecondary;
+  margin-top: 4px;
+}
+
+.modifyTextButton {
+  @include caption;
+  color: text();
+}
+
+.modifyContainer {
+  display: flex;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.includedFeeRow {
+  display: flex;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.includedFeeText {
+  @include labelSmall;
+  padding: 0 12px 0 40px;
+}
+
+.modifyTextButtonContainer {
+  padding: 0 12px 0 40px;
+}
+
+.minimumLabel {
+  @include caption;
+  color: $labelSecondary;
+}
+
+.swapPriceUpdatedButton {
+  @include caption;
+  color: error();
+}
+
+.includedFeeTokenAmount {
+  color: $textSecondary;
+}
+
+.nftTexts {
+  display: flex;
+  flex-direction: column;
+}
+
+.tokenAmount {
+  color: text();
+  padding-right: 10px;
+}
+
+.tokenSymbol {
+  @include heading4;
+  color: $labelSecondary;
+}
+
+.tokenSymbolSmall {
+  font-size: 15px;
+}
+
+.tokenAmountsWrapper {
+  margin: 4px 0;
+}
+
+.arrowIconWrapper {
+  margin: 16px 0;
+}
+
+.nftImage {
+  margin: 6px 8px 0 0;
+  width: 64px;
+  max-height: 100px;
+  border-radius: 4px;
+}
+
+.vaultTextWrapper {
+  padding-left: 40px;
+  margin-bottom: 16px;
+}
+
+.vaultExchangeRateText {
+  @include labelSmall;
+  color: $labelSecondary;
+}
+
+.vaultApyText {
+  @include labelSmall;
+  color: $textSecondary;
+}
+
+.recipeFeeTextWrapper {
+  padding-left: 40px;
+}
+
+.recipeFeeTitle {
+  margin-top: 6px;
+  @include caption;
+  color: $labelSecondary;
+}
+
+.recipeFeeAmount {
+  @include caption;
+  color: $textSecondary;
+}
+
+.minimumTokenAmountsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding-left: 40px;
+}
+
+.minimumTokenAmount {
+  @include labelSmall;
+}
+
+.swapDestinationAddressContainer {
+  margin-bottom: 16px;
+}

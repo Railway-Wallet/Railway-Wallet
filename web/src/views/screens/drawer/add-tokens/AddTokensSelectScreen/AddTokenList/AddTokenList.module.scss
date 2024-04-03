@@ -1,0 +1,45 @@
+@import '@scss/styleguide';
+
+.listHeader {
+  @include label;
+  color: $labelSecondary;
+  margin: 0 18px;
+}
+
+.tokenListContentContainer {
+  padding: 24px 0 36px 0;
+  width: 100%;
+}
+
+.tokenList {
+  margin: 16px 16px 0 16px;
+}
+
+.addedContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  height: 100%;
+}
+
+.descriptionStyle {
+  @include label;
+  margin-top: 2px;
+  color: $labelSecondary;
+}
+
+.addedText {
+  @include caption;
+  color: $white;
+}
+
+.addTokenInfoText {
+  @include caption;
+  color: $white;
+  margin-right: 5px;
+}
+
+.noAddedTokensContainer {
+  margin: 0 0 36px 0;
+}

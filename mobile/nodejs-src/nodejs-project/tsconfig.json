@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "outDir": ".",
+    "baseUrl": ".",
+    "rootDir": "src",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "useUnknownInCatchVariables": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["node", "mocha"],
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "src/**/__tests__", "src/test", "tools", "dist"],
+  "ts-node": {
+    "files": true
+  }
+}

@@ -1,0 +1,42 @@
+@import '@scss/styleguide';
+
+.wrapper {
+  flex: 1;
+  background-color: gray5();
+}
+
+.placeholder {
+  padding: 0 32px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: $white;
+  @include label;
+}
+
+.footer {
+  width: 100%;
+}
+
+.footerContent {
+  padding: 24px 16px 16px 16px;
+  justify-content: center;
+}
+
+.footerText {
+  @include actionText;
+  color: $white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.footerTextButtonWrapper {
+  margin-top: 4;
+  display: flex;
+  justify-content: center;
+}
+
+.privatePublicButton {
+  margin-left: 12px;
+  height: 44px;
+}

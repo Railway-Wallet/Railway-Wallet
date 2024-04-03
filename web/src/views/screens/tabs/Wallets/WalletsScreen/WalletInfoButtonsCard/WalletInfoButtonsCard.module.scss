@@ -1,0 +1,55 @@
+@import '@scss/styleguide';
+
+.cardContentContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 28px;
+}
+
+.walletTitle {
+  cursor: pointer;
+  margin-top: 8px;
+  font-family: $inconsolataMono;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.addressContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.walletBalance {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 32px;
+}
+
+.pendingBalance {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  @include labelSmall;
+  color: $labelSecondary;
+
+  &:hover {
+    color: text();
+  }
+}
+
+.currencySymbol {
+  color: gray8();
+  padding-right: 10px;
+  font-size: 42px;
+  font-weight: 800;
+}

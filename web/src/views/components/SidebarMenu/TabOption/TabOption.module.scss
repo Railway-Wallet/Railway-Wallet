@@ -1,0 +1,68 @@
+@import '@scss/styleguide';
+
+.sidebarLinkContainer {
+  display: flex;
+  align-items: center;
+  padding-left: 18px;
+  border-radius: 4px;
+  width: 224px;
+  margin-top: 6px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:not(.disabled):hover {
+    background-color: gray2(0.5);
+    border-color: gray8(0.6);
+  }
+}
+
+.selectedLink {
+  background-color: gray2();
+  border-color: gray8();
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.enabledText {
+  color: $white;
+}
+
+.disabledText {
+  color: $textSecondary;
+}
+
+.link {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 18px;
+  text-decoration: none;
+  width: 100%;
+}
+
+.text {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.selectedDApp {
+  margin-top: 5px;
+  font-size: 16px;
+  color: $labelSecondary;
+}
+
+.badgeContainer {
+  pointer-events: none;
+  padding: 2px 8px;
+  background-color: txYellow();
+  border-radius: 50%;
+  text-align: center;
+}
+
+.badge {
+  @include labelSmall;
+  letter-spacing: 0px;
+}

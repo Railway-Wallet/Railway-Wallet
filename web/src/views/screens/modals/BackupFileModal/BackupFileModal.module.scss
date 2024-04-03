@@ -1,0 +1,29 @@
+@import '@scss/styleguide';
+
+.dropContainer {
+  height: 200px;
+  border-radius: 8px;
+  border: 1px solid $white;
+  text-align: center;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.instructionsText {
+  margin: 0 20px;
+}
+
+.errorText {
+  margin: 0 20px;
+  color: error();
+  font-size: 15px;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

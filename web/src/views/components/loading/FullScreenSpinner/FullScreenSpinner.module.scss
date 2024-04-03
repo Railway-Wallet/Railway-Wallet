@@ -1,0 +1,33 @@
+@import '@scss/styleguide';
+
+.fullScreenSpinnerContainer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  z-index: $z-index-modals;
+}
+
+.spinnerContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: gray(0.94);
+  border: 1px solid gray4();
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.text {
+  margin-top: 32px;
+  color: $labelSecondary;
+  @include caption;
+  padding: 0 32px;
+  text-align: center;
+}

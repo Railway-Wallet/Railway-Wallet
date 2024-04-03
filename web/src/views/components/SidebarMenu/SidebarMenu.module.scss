@@ -1,0 +1,173 @@
+@import '@scss/styleguide';
+
+@mixin scanContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 25px;
+  z-index: 2;
+}
+
+.historyScanContainer {
+  @include scanContainer;
+  bottom: 100px;
+}
+
+.txidScanContainer {
+  @include scanContainer;
+  bottom: 130px;
+}
+
+.sideBarMenuContainer {
+  padding: 32px 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-width: 300px;
+  background-color: gray5();
+  border-width: 0px;
+  border-right: 1px solid gray6();
+  position: relative;
+}
+
+.imageLink {
+  padding-top: 2px;
+}
+
+.image {
+  height: 16px;
+  padding-right: 12px;
+}
+
+.logoContainer {
+  padding: 0 24px;
+  z-index: 3;
+}
+
+.railwayLogoText {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.4rem;
+  margin-right: -0.4rem;
+  text-align: center;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.selectorsWrapper {
+  margin-top: 24px;
+}
+
+.selector {
+  margin-top: 8px;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  flex: 1;
+  padding-top: 10vh;
+}
+
+.settingsLink {
+  color: $white;
+  font-size: 16px;
+  padding: 20px 18px 0 0;
+  text-decoration: none;
+  width: 100%;
+}
+
+.control {
+  background-color: gray3();
+  border-color: gray9();
+  border-width: 1;
+  border-style: solid;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  border-radius: 4px;
+}
+
+.indicatorSeparator {
+  color: transparent;
+}
+
+.inputText {
+  color: $white;
+  padding-left: 16px;
+  font-family: $inconsolata;
+}
+
+.menu {
+  border-radius: 4px;
+}
+
+.menuList {
+  padding: 0;
+  font-family: $inconsolata;
+}
+
+.valueContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.settingsImage {
+  padding-top: 20px;
+}
+
+.settingsButtonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0;
+  z-index: 2;
+}
+
+.settingsButton {
+  background-color: gray3();
+  border-width: 0px;
+  box-shadow: none;
+  justify-content: flex-start;
+}
+
+.settingsButtonText {
+  font-size: 16px;
+  font-weight: 400;
+  padding-left: 18px;
+}
+
+.settingsDrawer {
+  padding: 8px 0 32px 0;
+}
+
+.swirl {
+  z-index: 1;
+  height: 148px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10vh;
+  background-size: cover;
+  background-repeat: none;
+}
+
+.historyScanText {
+  @include caption;
+  font-size: 13px;
+  margin-left: 12px;
+  color: $textSecondary;
+}

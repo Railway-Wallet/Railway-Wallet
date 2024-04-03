@@ -1,0 +1,22 @@
+.fullLengthButtonStyle {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+}
+
+.singleLineButtonStyle {
+  white-space: nowrap;
+}
+
+.footerButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.docButton {
+  padding: 30px 20px;
+}

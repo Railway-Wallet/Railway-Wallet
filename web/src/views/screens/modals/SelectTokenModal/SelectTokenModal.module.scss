@@ -1,0 +1,27 @@
+@import '@scss/styleguide';
+
+.wrapper {
+  flex: 1;
+  background-color: gray5();
+}
+
+.footer {
+  width: 100%;
+}
+
+.footerContent {
+  padding: 24px 16px 16px 16px;
+  justify-content: center;
+}
+
+.footerText {
+  @include caption;
+  color: $white;
+  text-align: center;
+}
+
+.footerTextButtonWrapper {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,16 @@
+@import '@scss/styleguide';
+
+.toastWrapper {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  right: 16px;
+  position: absolute;
+  top: 118px;
+  align-items: flex-end;
+}
+
+.wrapperMinorPadding {
+  top: 20px;
+}

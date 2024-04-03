@@ -1,0 +1,42 @@
+@import '@scss/styleguide';
+
+.customTokenScreenContainer {
+  flex: 1;
+  margin-top: 16px;
+  padding: 24px;
+}
+
+.spacer {
+  height: 24px;
+  width: 100%;
+}
+
+.checkmarkIcon {
+  margin: 0 12px;
+}
+
+.label {
+  margin-bottom: 8px;
+}
+
+.submitButton {
+  width: 100%;
+  justify-content: center;
+}
+
+.errorTextWrapper {
+  margin: 0 16px;
+}
+
+.errorText {
+  @include label;
+  color: error();
+  align-self: center;
+  text-align: center;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

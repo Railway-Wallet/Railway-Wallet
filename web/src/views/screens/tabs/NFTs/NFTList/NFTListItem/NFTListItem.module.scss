@@ -1,0 +1,99 @@
+@import '@scss/styleguide';
+
+$NftsPerRow: 3;
+$NftImageWidth: 228px;
+$NftBorderWidth: 1px;
+$NftMarginSide: 8px;
+
+.container {
+  position: relative;
+  border-radius: 8px;
+  background-color: $cardSurface;
+  border: $NftBorderWidth solid gray5();
+  width: $NftImageWidth;
+  height: 292px;
+  margin: 12px $NftMarginSide 8px $NftMarginSide;
+  overflow: hidden;
+
+  &:hover {
+    border-color: $white;
+  }
+}
+
+.imageWrapper {
+  height: $NftImageWidth;
+  width: 100%;
+  background-color: gray();
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageWrapperHovered {
+  opacity: 0.4;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: none;
+  overflow: hidden;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.titleBadgeWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  @include caption;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: text();
+  margin-right: 6px;
+}
+
+.subtitle {
+  margin-top: 2px;
+  @include caption;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: $textSecondary;
+}
+
+.hoveringSubtitle {
+  cursor: pointer;
+  color: text();
+  text-decoration: underline;
+}
+
+.buttonsWrapper {
+  position: absolute;
+  top: 72px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  background-color: gray();
+  margin-bottom: 6px;
+  opacity: 0.88;
+}
+
+.tooltip {
+  border: 1px solid $white;
+  background-color: gray();
+  opacity: 1;
+}

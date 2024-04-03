@@ -1,0 +1,8 @@
+@import '@scss/styleguide';
+
+.headerSubtext {
+  @include label;
+  margin-top: 1px;
+  color: $labelSecondary;
+  font-weight: bold;
+}

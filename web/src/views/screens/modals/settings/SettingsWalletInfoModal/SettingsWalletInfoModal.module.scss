@@ -1,0 +1,161 @@
+@import '@scss/styleguide';
+
+@mixin item-container {
+  border-radius: 4px;
+  background-color: gray6(0.5);
+  border: 1px solid gray9();
+  padding: 16px;
+}
+
+.activeWalletButton {
+  &.disabled {
+    cursor: auto !important;
+  }
+
+  &:not(.disabled):hover {
+    background: $lightItemHover !important;
+  }
+}
+
+.itemTitle {
+  padding-bottom: 5px;
+}
+
+.itemDescription {
+  color: gray8();
+}
+
+.listItem {
+  margin: 4px 0;
+  cursor: pointer;
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  padding-right: 24px;
+}
+
+.hr {
+  background-color: $textSecondary;
+  height: 1px;
+  margin-left: 16px;
+}
+
+.walletItemDescription {
+  color: gray8();
+  line-height: 1.25;
+  white-space: pre-line;
+}
+
+.availableText {
+  margin-top: 36px;
+  padding-left: 12px;
+  font-size: 16px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.editIcon {
+  padding-right: 10px;
+}
+
+.sectionHeader {
+  margin: 24px 0 16px 4px;
+}
+
+.settingsRelayersModalContainer {
+  @include item-container;
+}
+
+.itemContainerUpperSpacing {
+  margin-top: 8px;
+}
+
+.itemInnerContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  align-items: center;
+}
+
+.flexContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subheader {
+  padding-right: 8px;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.label {
+  @include caption;
+  word-break: break-word;
+  color: $labelSecondary;
+}
+
+.itemCard {
+  @include item-container;
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
+.activeWalletCard {
+  border-color: gray8();
+}
+
+.cardHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerText {
+  padding-bottom: 4px;
+}
+
+.phraseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+.danger {
+  color: $danger;
+}
+
+.spacer {
+  margin-top: 10px;
+}
+
+.defaultRPCList {
+  margin: 0 10px 12px 10px;
+}
+
+.defaultRPCProviderInfoText {
+  @include labelSmall;
+  color: $labelSecondary;
+  word-break: break-word;
+  margin-bottom: 10px;
+}
+
+.marginTop {
+  margin-top: 8px;
+}
+.warningText {
+  margin-top: 24px;
+}
+
+.submitButton {
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+}

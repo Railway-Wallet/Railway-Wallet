@@ -1,0 +1,40 @@
+@import '@scss/styleguide';
+
+.dApp {
+  border: 1px solid gray4();
+  border-radius: 4px;
+  background-color: $gray6_50;
+  padding: 10px 0;
+  margin-bottom: 6px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $white;
+  }
+}
+
+.dAppTitle {
+  @include heading4;
+  color: text();
+  line-height: 18px;
+}
+
+.dAppDescription {
+  @include label;
+  margin-top: 4px;
+  color: $textSecondary;
+  word-wrap: break-word;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: gray5(0.6);
+  margin-right: 16px;
+  border-radius: 6px;
+  border: 1px solid $buttonBorder;
+  align-self: center;
+}

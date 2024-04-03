@@ -1,0 +1,206 @@
+@import '@scss/styleguide';
+
+.tokenListWrapper {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tokenListBalances {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  margin-right: 16px;
+}
+
+.tokenListBalance {
+  @include heading3;
+  margin-top: -2px;
+  color: text();
+}
+
+.currencyStyle {
+  @include label;
+  color: $labelSecondary;
+  letter-spacing: 3px;
+}
+
+.descriptionStyle {
+  @include label;
+  margin-top: 2;
+  color: $labelSecondary;
+}
+
+.addTokenDescription {
+  margin-top: 32px;
+  @include caption;
+}
+
+.addTokenButton {
+  width: 100%;
+  margin: 32px 0;
+}
+
+.addTokenButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.newTokenButton {
+  margin: 24px 0 8px 0;
+  min-width: 200px;
+  justify-self: flex-end;
+}
+
+.newTokenButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.amountInputContainer {
+  display: flex;
+}
+
+.approveTokenButton {
+  margin: 24px 0 8px 0;
+  width: fit-content;
+}
+
+.selectTokenButton {
+  width: fit-content;
+  margin-left: 4px;
+}
+
+.selectTokenButtonDisabled {
+  border-color: transparent;
+  background-color: transparent;
+  &:not(.disabled):hover {
+    border-color: transparent;
+    background-color: transparent;
+    cursor: inherit;
+  }
+}
+
+.bottomButton {
+  margin: 0 24px;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.tokenBalanceText {
+  color: $textSecondary;
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.errorAddressText {
+  color: error();
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+}
+
+.buttonGroup {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.amountActionButton {
+  margin-top: 5px;
+  justify-content: center;
+  min-width: 240px;
+}
+
+.closeIcon {
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  height: fit-content;
+
+  &:hover {
+    border-color: $buttonBorder;
+  }
+}
+
+.inputInsetButton {
+  justify-content: center;
+  width: fit-content;
+  height: 32px;
+}
+
+.addTokenContainer {
+  display: flex;
+  margin: 24px 0 12px 0;
+  justify-content: space-between;
+}
+
+.addTokenLabel {
+  @include label;
+}
+
+.baseTokenShieldCallout {
+  margin-top: 24px;
+}
+
+.calculatedIconContainer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -10px;
+  border: 2px solid gray5();
+  border-radius: 50%;
+  background-color: gray6();
+  height: 32px;
+  width: 32px;
+}
+
+.amountRowContainer {
+  position: relative;
+}
+
+.errorText {
+  @include label;
+  margin-top: 12px;
+  color: error();
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.checkboxContainer {
+  margin: 15px 0px 10px 5px;
+}
+
+.checkbox {
+  margin-top: 6px;
+}
+
+.tokenBalanceWithFeesText {
+  color: $textSecondary;
+  padding: 8px 0 0 0;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.feeCheckboxDisclaimerInfo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

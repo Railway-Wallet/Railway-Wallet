@@ -1,0 +1,54 @@
+@import '@scss/styleguide';
+@import 'react-datepicker/dist/react-datepicker.css';
+
+.date-picker-calendar {
+  background-color: gray5();
+  border-color: $inputBorder;
+}
+
+.react-datepicker__day--selected {
+  background-color: gray6();
+  color: $black;
+  font-family: $inconsolata;
+}
+
+.react-datepicker__day {
+  color: text();
+  font-family: $inconsolata;
+  &:hover {
+    background: gray2();
+  }
+}
+
+.react-datepicker__header {
+  background-color: gray5();
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: text();
+  font-family: $inconsolata;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker__day-name {
+  color: text();
+  font-family: $inconsolata;
+}
+
+.react-datepicker__day--outside-month {
+  color: gray7();
+  font-family: $inconsolata;
+  pointer-events: none;
+}
+
+.react-datepicker__day.react-datepicker__day--keyboard-selected {
+  background: none;
+  &:hover {
+    background: gray2();
+  }
+}

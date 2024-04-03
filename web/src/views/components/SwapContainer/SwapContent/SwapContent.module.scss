@@ -1,0 +1,50 @@
+@import '@scss/styleguide';
+
+.sectionSell {
+  margin-top: 12px;
+  padding: 16px 12px 32px 12px;
+}
+
+.sectionBuy {
+  margin-top: 16px;
+  padding: 36px 12px 12px 12px;
+  border-radius: 6px;
+  background-color: gray2(0.25);
+}
+
+.switchButtonContainer {
+  position: relative;
+}
+
+.switchButton {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -8px;
+  height: 48px;
+  z-index: 0;
+}
+
+.nextButton {
+  width: 100%;
+  margin: 24px 0 12px 0;
+}
+
+.nextButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.errorText {
+  color: error();
+  font-size: 16px;
+  padding: 0 12px;
+  margin: 24px 0 12px 0;
+}
+
+.errorShowMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

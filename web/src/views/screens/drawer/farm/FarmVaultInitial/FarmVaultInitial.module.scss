@@ -1,0 +1,103 @@
+@import '@scss/styleguide';
+
+.description {
+  @include paragraph;
+}
+
+.sendInitialContainer {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nextButton {
+  width: 100%;
+  margin: 32px 0;
+}
+
+.nextButtonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.farmingSourceLabel {
+  @include label;
+  margin-bottom: 12px;
+  margin-top: 36px;
+}
+
+.amountLabel {
+  @include label;
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+
+.amountInputContainer {
+  display: flex;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+}
+
+.tokenBalanceText {
+  color: $textSecondary;
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+}
+
+.inputInsetButton {
+  justify-content: center;
+  width: fit-content;
+  height: 32px;
+}
+
+.amountActionButton {
+  justify-content: center;
+  min-width: 240px;
+}
+
+.errorAddressText {
+  color: error();
+  padding: 6px 0 0 6px;
+  font-size: 15px;
+}
+
+.buttonGroup {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.tokenListWrapper {
+  margin-top: 24px;
+}
+
+.farmingSourceMoreInfoLinkContainer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: end;
+}
+
+.farmingSourceMoreInfoLink {
+  @include caption;
+  color: $labelSecondary;
+  flex: 0;
+  min-width: fit-content;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.infoCalloutReady {
+  margin-top: 24px;
+}

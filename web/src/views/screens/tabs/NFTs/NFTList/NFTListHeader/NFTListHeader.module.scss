@@ -1,0 +1,24 @@
+.innerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-right: 16px;
+}
+
+.titleAndIcon {
+  display: flex;
+  align-items: center;
+}
+
+.headerText {
+  margin-right: 12px;
+}
+
+.searchAndButtons {
+  display: flex;
+}
+
+.button {
+  margin-right: 8px;
+}

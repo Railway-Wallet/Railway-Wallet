@@ -1,0 +1,11 @@
+diff --git a/node_modules/leveldown-nodejs-mobile/binding.js b/node_modules/leveldown-nodejs-mobile/binding.js
+index 8e7d43e..33c70a7 100644
+--- a/node_modules/leveldown-nodejs-mobile/binding.js
++++ b/node_modules/leveldown-nodejs-mobile/binding.js
+@@ -1 +1,5 @@
+-module.exports = require('bindings')({ bindings: 'leveldown.node', name: 'leveldown-nodejs-mobile' })
++module.exports = require('bindings')({ 
++  bindings: 'leveldown.node', 
++  name: 'leveldown-nodejs-mobile',
++  module_root: __dirname
++})

@@ -1,0 +1,51 @@
+@import '@scss/styleguide';
+
+.toastContainer {
+  z-index: $z-index-toast;
+  max-width: 580px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.toastOuterContent {
+  margin: 8px;
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+.border {
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.toastContent {
+  padding: 18px 32px;
+  background-color: $gray6_50;
+}
+
+.textIconWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.textSubtextWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0 16px;
+}
+
+.messageText {
+  @include paragraph;
+  color: text();
+}
+
+.subtext {
+  @include caption;
+  color: $labelSecondary;
+  margin-top: 4px;
+}

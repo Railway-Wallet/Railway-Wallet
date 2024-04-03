@@ -1,0 +1,66 @@
+@import '@scss/styleguide';
+
+.settingsListContainer {
+  padding-bottom: 24px;
+}
+
+.listItem {
+  padding-left: 16px;
+  border-radius: 0;
+  cursor: pointer;
+  &:hover {
+    background-color: $darkItemHover;
+  }
+}
+
+.sectionHeader {
+  padding: 24px 0 8px 28px;
+  font-size: 18px;
+  font-family: $inconsolataMono;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.itemTitle {
+  font-family: $inconsolataMono;
+}
+
+.itemDescription {
+  font-family: $inconsolataMono;
+  color: gray8();
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  padding-right: 24px;
+}
+
+.link {
+  text-decoration: none;
+  display: block;
+}
+
+.titleLink {
+  text-decoration: none;
+  display: block;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 24px 0;
+  background: gray5();
+}
+
+.footerText {
+  @include caption;
+  color: $textSecondary;
+}
+
+.dangerText {
+  color: $danger;
+}

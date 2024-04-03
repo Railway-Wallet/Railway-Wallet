@@ -1,0 +1,121 @@
+@import '@scss/styleguide';
+
+.pageContainer {
+  padding: 24px;
+  display: flex;
+  width: 100%;
+  background-color: $cardSurface;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.tokenSpinnerContainer {
+  align-self: center;
+  margin-right: 12px;
+}
+
+.rightBalancesContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  margin-right: 16px;
+  height: 100%;
+}
+
+.rightBalancesText {
+  @include heading4;
+  font-size: 20px;
+}
+
+.headerRow {
+  margin-top: 48px;
+  align-content: flex-start;
+}
+
+.headerText {
+  @include heading1;
+  color: text();
+  margin-bottom: 12px;
+  letter-spacing: 2.4px;
+}
+
+.headerUnBoldText {
+  font-family: $inconsolata;
+  letter-spacing: 1.5px;
+}
+
+.headerSubtext {
+  @include paragraph;
+  color: $textSecondary;
+}
+
+.descriptionStyle {
+  color: $textSecondary;
+  @include label;
+  margin: 1px 0 3px 0;
+}
+
+.liquidityTypeSelector {
+  margin-left: 8px;
+  min-width: 200px;
+}
+
+.liquidityTypeSelectorControl {
+  height: 100%;
+}
+
+.liquidityContent {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10%;
+}
+
+.poolList {
+  margin-top: 8px;
+}
+
+.spinnerContainer {
+  align-self: center;
+  margin-top: 32px;
+  margin-right: 12px;
+}
+
+.placeholderText {
+  @include paragraphSmall;
+  color: $labelSecondary;
+  margin-top: 32px;
+}
+
+.liquiditySourcesWrapper {
+  margin-top: 32px;
+}
+
+.horizontalLine {
+  height: 1px;
+  width: 100%;
+  margin-right: 36px;
+  background-color: $inputBorder;
+}
+
+.liquiditySourcesListText {
+  @include paragraphSmall;
+  color: $textSecondary;
+  margin-top: 24px;
+}
+
+.liquiditySourcesListWrapper {
+  display: flex;
+  margin-top: 24px;
+}
+
+.liquiditySourceButton {
+  margin-right: 16px;
+  min-width: fit-content;
+}

@@ -1,0 +1,62 @@
+@import '@scss/styleguide';
+
+.shieldStatusLink {
+  color: $white;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: bold;
+  }
+}
+
+.walletCardSlideFooterContainer {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.footerIconText {
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  flex-grow: 1;
+  max-width: 240px;
+  padding-left: 4px;
+}
+
+.footerIcon {
+  display: flex;
+  max-width: 20px;
+  max-height: 22px;
+  margin-right: 16px;
+  overflow: visible;
+  align-self: center;
+}
+
+.footerText {
+  @include caption;
+  line-height: 17px;
+  align-self: center;
+  margin-right: 15px;
+}
+
+.footerTextUnderline {
+  text-decoration-line: underline;
+  font-weight: bold;
+}
+
+.shieldStatusLink {
+  color: $white;
+  cursor: pointer;
+}

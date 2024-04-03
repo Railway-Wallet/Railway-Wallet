@@ -1,0 +1,52 @@
+@import '@scss/styleguide';
+
+.description {
+  @include paragraph;
+  margin-bottom: 24px;
+}
+
+.sendInitialContainer {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.infoCalloutReady {
+  margin-top: 24px;
+}
+
+.button {
+  width: 100%;
+  margin: 32px 0;
+}
+
+.buttonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.settingsLabel {
+  @include label;
+  margin: 12px 0;
+}
+
+.itemCard {
+  border-radius: 4px;
+  background-color: gray6(0.5);
+  border: 1px solid gray9();
+  padding: 8px 14px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.phraseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slippageText {
+  @include label;
+}

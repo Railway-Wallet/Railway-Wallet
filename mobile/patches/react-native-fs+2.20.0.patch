@@ -1,0 +1,10 @@
+diff --git a/node_modules/react-native-fs/android/src/main/AndroidManifest.xml b/node_modules/react-native-fs/android/src/main/AndroidManifest.xml
+index 6e54f65..2182a5a 100644
+--- a/node_modules/react-native-fs/android/src/main/AndroidManifest.xml
++++ b/node_modules/react-native-fs/android/src/main/AndroidManifest.xml
+@@ -1,5 +1,4 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="com.rnfs" >
+-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+ </manifest>

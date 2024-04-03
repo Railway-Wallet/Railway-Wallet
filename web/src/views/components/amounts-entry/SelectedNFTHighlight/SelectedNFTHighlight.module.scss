@@ -1,0 +1,47 @@
+@import '@scss/styleguide';
+
+.container {
+  border-radius: 8px;
+  background-color: $cardSurface;
+  width: 180px;
+  border: 1px solid gray5();
+  height: 240px;
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+    border-color: $white;
+  }
+}
+
+.imageWrapper {
+  height: 180px;
+  width: 100%;
+  background-color: gray();
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.4;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: none;
+  overflow: hidden;
+}
+
+.textWrapper {
+  padding: 12px;
+}
+
+.title {
+  @include caption;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: text();
+}

@@ -1,0 +1,22 @@
+.newWalletSuccessContainer {
+  flex: 1;
+  max-height: 480px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 14px;
+}
+
+.lastCard {
+  margin-bottom: 24px;
+}
+
+.scrollViewContentContainer {
+  padding-bottom: 0px;
+}
+
+.finishButton {
+  width: 100%;
+  margin-top: 12px;
+  justify-content: center;
+}

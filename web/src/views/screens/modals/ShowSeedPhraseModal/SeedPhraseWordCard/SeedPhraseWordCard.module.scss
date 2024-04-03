@@ -1,0 +1,12 @@
+@import '@scss/styleguide';
+
+.card {
+  border-radius: 4px;
+  background-color: gray6(0.5);
+  border: 1px solid gray9();
+  padding: 10px;
+  width: fit-content;
+  margin: 0 3px 6px 3px;
+  justify-content: center;
+  display: flex;
+}

@@ -1,0 +1,75 @@
+@import '@scss/styleguide';
+
+.viewingKeyBlur {
+  filter: blur(3px);
+}
+
+.showViewingKeyContainer {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 10px;
+
+  .showViewingKeyButton {
+    cursor: pointer;
+
+    .text-item {
+      color: $offWhiteText !important;
+
+      &:hover {
+        color: text() !important;
+      }
+    }
+  }
+}
+
+.wrapper {
+  flex: 1;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 20px 0 36px 0;
+}
+
+.continueButton {
+  width: 100%;
+  justify-content: center;
+}
+
+.spacer {
+  margin-bottom: 20px;
+}
+
+.vpkContainer {
+  padding: 0px 24px;
+}
+
+.vpkText {
+  color: text();
+  font-weight: bold;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.unblurViewingKeyText {
+  text-align: center;
+}
+
+.bottomButtons {
+  display: flex;
+  margin-top: 18px;
+  justify-content: center;
+  width: 100%;
+}
+
+.bottomButton {
+  width: 100%;
+  justify-content: center;
+}
+
+.lastBottomButton {
+  margin-left: 8px;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+}

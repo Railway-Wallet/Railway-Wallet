@@ -1,0 +1,32 @@
+@import '@scss/styleguide';
+
+.wrapper {
+  flex: 1;
+  padding: 32px;
+}
+
+.topButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.optionsButton {
+  padding-right: 4px;
+  cursor: pointer;
+}
+
+.topInfoCallout {
+  margin-bottom: 8px;
+}
+
+.transactionsHeaderText {
+  @include label;
+  text-transform: uppercase;
+  color: text();
+  margin: 0 0 12px 4px;
+}
+
+.transactionsWrapper {
+  margin: 42px 0 24px 0;
+}

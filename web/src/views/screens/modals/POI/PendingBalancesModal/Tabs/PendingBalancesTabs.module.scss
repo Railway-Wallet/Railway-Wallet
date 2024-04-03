@@ -1,0 +1,31 @@
+@import '@scss/styleguide';
+
+.poiTabContainer {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid gray7(1);
+  justify-content: space-between;
+}
+
+.poiTab {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+
+  .poiTabText {
+    @include heading4;
+    color: $labelSecondary;
+  }
+
+  &.poiTabSelected {
+    border-bottom: 1px solid white;
+
+    .poiTabText {
+      color: $white;
+    }
+  }
+}

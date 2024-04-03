@@ -1,0 +1,50 @@
+@import '@scss/styleguide';
+
+.checkbox {
+  appearance: inherit;
+  height: 14px;
+  width: 14px;
+  background-color: gray10();
+  border: 1px solid $labelSecondary;
+  border-radius: 2px;
+  margin: 0px;
+  padding: 0px;
+  cursor: pointer;
+  padding-block: 0px;
+  padding-inline: 0px;
+}
+.medium {
+  height: 18px;
+  width: 18px;
+}
+
+.big {
+  height: 22px;
+  width: 22px;
+}
+
+.checkboxContainer {
+  padding-top: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.checkboxContainerLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  @include label;
+}

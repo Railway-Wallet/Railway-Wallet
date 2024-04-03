@@ -1,0 +1,23 @@
+@import '@scss/styleguide';
+
+.container {
+  display: flex;
+}
+
+.textContainer {
+  display: flex;
+  width: fit-content;
+}
+
+.text {
+  pointer-events: inherit;
+  color: $labelSecondary;
+  font-size: 16px;
+  font-weight: 500;
+
+  &.hovered {
+    color: $white;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

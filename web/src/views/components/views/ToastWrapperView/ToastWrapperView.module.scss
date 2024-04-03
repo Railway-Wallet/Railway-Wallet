@@ -1,0 +1,12 @@
+@import '@scss/styleguide';
+
+.toastsWrapper {
+  pointer-events: none;
+  position: absolute;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@assets/*": ["./assets/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@models/*": ["./models/*"],
+      "@root/*": ["./root/*"],
+      "@services/*": ["./services/*"],
+      "@utils/*": ["./utils/*"],
+      "@views/*": ["./views/*"],
+      "@components/*": ["./views/components/*"],
+      "@screens/*": ["./views/screens/*"],
+      "@react-shared": ["./react-shared/src/index"],
+      "@scss/*": ["./scss/*"]
+    }
+  }
+}

@@ -1,0 +1,75 @@
+@import '@scss/styleguide';
+
+.receiveTokensContainer {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 24px;
+}
+
+.cardContent {
+  background-color: gray6();
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid gray7();
+  margin-top: 18px;
+}
+
+.titleText {
+  @include heading3;
+  color: text();
+  text-align: center;
+  margin-top: 24px;
+}
+
+.qrCodeWrapper {
+  margin: 24px 24px 0 24px;
+  background-color: $white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.railAddressSwitcherWrapper {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: center;
+}
+
+.addressContainer {
+  max-width: 300px;
+  margin-top: 24px;
+}
+
+.addressText {
+  color: gray8();
+  word-break: break-word;
+  text-align: center;
+}
+
+.railAddressSwitcherText {
+  @include label;
+  color: $white;
+  font-size: 24px;
+  line-height: 24px;
+  margin: 0 24px;
+}
+
+.copyButtonContainer {
+  margin: 24px 0 28px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.copyButton {
+  min-width: fit-content;
+}
+
+.arrowButton {
+  width: 48px;
+  align-items: center;
+}

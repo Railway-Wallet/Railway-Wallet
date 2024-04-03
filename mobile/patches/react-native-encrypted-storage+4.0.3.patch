@@ -1,0 +1,14 @@
+diff --git a/node_modules/react-native-encrypted-storage/android/src/main/java/com/emeraldsanto/encryptedstorage/RNEncryptedStorageModule.java b/node_modules/react-native-encrypted-storage/android/src/main/java/com/emeraldsanto/encryptedstorage/RNEncryptedStorageModule.java
+index 68a6c9b..2d3ad04 100644
+--- a/node_modules/react-native-encrypted-storage/android/src/main/java/com/emeraldsanto/encryptedstorage/RNEncryptedStorageModule.java
++++ b/node_modules/react-native-encrypted-storage/android/src/main/java/com/emeraldsanto/encryptedstorage/RNEncryptedStorageModule.java
+@@ -36,7 +36,8 @@ public class RNEncryptedStorageModule extends ReactContextBaseJavaModule {
+ 
+         catch (Exception ex) {
+             Log.e(NATIVE_MODULE_NAME, "Failed to create encrypted shared preferences! Failing back to standard SharedPreferences", ex);
+-            this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
++            // PATCHED: Remove android fallback to standard sharedPreferences
++            // this.sharedPreferences = context.getSharedPreferences(RNEncryptedStorageModule.SHARED_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+         }
+     }
+ 

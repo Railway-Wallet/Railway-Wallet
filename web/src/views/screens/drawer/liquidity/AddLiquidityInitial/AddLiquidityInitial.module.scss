@@ -1,0 +1,74 @@
+@import '@scss/styleguide';
+
+.description {
+  @include paragraph;
+}
+
+.sendInitialContainer {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  width: 100%;
+  margin: 32px 0;
+}
+
+.buttonText {
+  font-size: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.selectPoolLabel {
+  @include label;
+  margin-bottom: 12px;
+  margin-top: 36px;
+}
+
+.poolMoreInfoLinkContainer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: end;
+}
+
+.poolMoreInfoLink {
+  @include caption;
+  color: $labelSecondary;
+  flex: 0;
+  min-width: fit-content;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.infoCalloutReady {
+  margin-top: 24px;
+}
+
+.itemCard {
+  border-radius: 4px;
+  background-color: gray6(0.5);
+  border: 1px solid gray9();
+  padding: 8px 14px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.phraseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slippageText {
+  @include label;
+}
+
+.settingsLabel {
+  @include label;
+  margin: 12px 0;
+}

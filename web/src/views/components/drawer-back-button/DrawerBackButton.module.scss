@@ -1,0 +1,22 @@
+@import '@scss/styleguide';
+
+.topButtonContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin: 24px 12px 0 24px;
+}
+
+.backButtonContainer {
+  display: flex;
+  margin-left: 4px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.backButton {
+  padding-right: 8px;
+}
+
+.backButtonText {
+  @include label;
+}
