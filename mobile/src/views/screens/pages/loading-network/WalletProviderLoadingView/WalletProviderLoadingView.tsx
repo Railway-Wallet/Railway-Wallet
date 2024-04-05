@@ -27,6 +27,7 @@ import {
   refreshRailgunBalances,
   setNetworkByName,
   SettingsForNetwork,
+  store,
   styleguide,
   useAppDispatch,
   useReduxSelector,
@@ -44,7 +45,16 @@ type Props = {
   navigation: NavigationProp<RootStackParamList, 'WalletProviderLoading'>;
 };
 
-const CHECK_PROVIDER_LOADED_DELAY = 100;
+const CHECK_PROVIDER_LOADED_DELAY = 400;
+const CHECK_ARTIFACTS_PROGRESS_DELAY = 1000;
+
+const PROGRESS_START = 5;
+const PROGRESS_PROVIDER_LOADED = 20;
+const PROGRESS_ARTIFACTS_LOADED = 80;
+const PROGRESS_WALLETS_LOADED = 95;
+const PROGRESS_END = 100;
+
+const SWELL_FACTOR = 0.15;
 
 export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   const { network } = useReduxSelector('network');
@@ -52,6 +62,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   const dispatch = useAppDispatch();
 
   const [progress, setProgress] = useState(0);
+  const [progressStatus, setProgressStatus] = useState<string>('Loading...');
   const [error, setError] = useState<Optional<Error>>();
 
   const [hasWallets, setHasWallets] = useState<boolean>(false);
@@ -106,6 +117,10 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
     setProgress(amount / 100);
   };
 
+  const swellProgressTowards = (target: number) => {
+    setProgress(current => current + (target / 100 - current) * SWELL_FACTOR);
+  };
+
   const waitForProviderToLoad = async (): Promise<boolean> => {
     if (ProviderLoader.firstProviderLoaded) {
       return true;
@@ -113,6 +128,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
       return false;
     }
     await delay(CHECK_PROVIDER_LOADED_DELAY);
+    swellProgressTowards(PROGRESS_PROVIDER_LOADED);
     return waitForProviderToLoad();
   };
 
@@ -126,7 +142,9 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   };
 
   const loadNetworkAndWallets = async (loadNetwork: Network) => {
-    updateProgress(5);
+    updateProgress(PROGRESS_START);
+
+    setProgressStatus('Connecting to networks...');
     const loaded = await waitForProviderToLoad();
     if (!loaded) {
       setError(
@@ -139,10 +157,21 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
       reloadProvider(network.current);
       return;
     }
+    updateProgress(PROGRESS_PROVIDER_LOADED);
+
+    setProgressStatus('Downloading prover artifacts...');
+    while (store.getState().artifactsProgress.progress < 1) {
+      await delay(CHECK_ARTIFACTS_PROGRESS_DELAY);
+      updateProgress(
+        store.getState().artifactsProgress.progress *
+          (PROGRESS_ARTIFACTS_LOADED - PROGRESS_PROVIDER_LOADED) +
+          PROGRESS_PROVIDER_LOADED,
+      );
+    }
+    updateProgress(PROGRESS_ARTIFACTS_LOADED);
+
     try {
-      const initialProgressLoadWallets = 25;
-      const finalProgressLoadWallets = 95;
-      updateProgress(initialProgressLoadWallets);
+      setProgressStatus('Loading Railway wallets...');
 
       const walletService = new WalletService(
         dispatch,
@@ -154,13 +183,13 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
         (walletLoadProgress: number) => {
           updateProgress(
             (walletLoadProgress *
-              (finalProgressLoadWallets - initialProgressLoadWallets)) /
+              (PROGRESS_WALLETS_LOADED - PROGRESS_ARTIFACTS_LOADED)) /
               100 +
-              initialProgressLoadWallets,
+              PROGRESS_ARTIFACTS_LOADED,
           );
         },
       );
-      updateProgress(finalProgressLoadWallets);
+      updateProgress(PROGRESS_WALLETS_LOADED);
 
       if (hasWallets) {
         const walletTokenService = new WalletTokenService(dispatch);
@@ -176,7 +205,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
         );
       }
 
-      updateProgress(100);
+      updateProgress(PROGRESS_END);
 
       navigateHome();
     } catch (cause) {
@@ -312,10 +341,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
         )}
         {!isDefined(error) && (
           <>
-            <Text style={styles.loadingText}>
-              Loading Railway wallets, connecting to networks and scanning
-              transactions...
-            </Text>
+            <Text style={styles.loadingText}>{progressStatus}</Text>
             <View style={styles.progressBarWrapper}>
               <ProgressBar
                 progress={progress}

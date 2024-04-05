@@ -6,6 +6,8 @@ import {
   AppDispatch,
   AppSettingsService,
   BlockedRelayerService,
+  BridgeEvent,
+  bridgeListen,
   getRelayAdaptTransactionError,
   loadBalancesFromCache,
   logDev,
@@ -15,6 +17,7 @@ import {
   refreshRailgunBalances,
   RemoteConfig,
   SavedAddressService,
+  setArtifactsProgress,
   setAuthKey,
 } from '@react-shared';
 import { startEngine } from '@services/engine/engine';
@@ -35,6 +38,10 @@ export class AppStartService {
   }
 
   runAppStartTasks = async (remoteConfig?: RemoteConfig) => {
+    bridgeListen(BridgeEvent.OnArtifactsProgress, (progress: number) => {
+      this.dispatch(setArtifactsProgress(progress));
+    });
+
     if (!this.recoveryMode) {
       await AppSettingsService.loadSettingsFromStorage(this.dispatch);
       await AppSettingsService.setLocale(getCurrentLocaleMobile());
@@ -42,36 +49,12 @@ export class AppStartService {
       const networkService = new NetworkService(this.dispatch);
       const network = await networkService.loadNetworkFromStorage();
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      networkService.loadProviderForNetwork(network);
-
-      if (remoteConfig) {
-        const {
-          wakuPubSubTopic,
-          additionalDirectPeers,
-          wakuPeerDiscoveryTimeout,
-        } = remoteConfig;
-
-        const poiActiveListKeys = POI_REQUIRED_LISTS.map(list => list.key);
-
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        WakuRelayer.start(
-          this.dispatch,
-          network,
-          wakuPubSubTopic,
-          additionalDirectPeers,
-          wakuPeerDiscoveryTimeout,
-          poiActiveListKeys,
-        );
-      }
+      await networkService.loadProviderForNetwork(network);
 
       const blockedRelayerService = new BlockedRelayerService(this.dispatch);
       await blockedRelayerService.loadBlockedRelayersFromStorage();
 
       await startEngine(this.dispatch, remoteConfig);
-
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      ProviderLoader.loadEngineProvider(network.name, this.dispatch);
 
       PendingTransactionWatcher.start(
         this.dispatch,
@@ -87,9 +70,31 @@ export class AppStartService {
         loadBalancesFromCache(this.dispatch),
       ]);
 
-      const artifactService = new ArtifactServiceMobile(this.dispatch);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      artifactService.downloadAndLoadInitialArtifacts();
+      setTimeout(async () => {
+        await ProviderLoader.loadEngineProvider(network.name, this.dispatch);
+
+        const artifactService = new ArtifactServiceMobile(this.dispatch);
+        await artifactService.downloadAndLoadInitialArtifacts();
+
+        if (remoteConfig) {
+          const {
+            wakuPubSubTopic,
+            additionalDirectPeers,
+            wakuPeerDiscoveryTimeout,
+          } = remoteConfig;
+
+          const poiActiveListKeys = POI_REQUIRED_LISTS.map(list => list.key);
+
+          await WakuRelayer.start(
+            this.dispatch,
+            network,
+            wakuPubSubTopic,
+            additionalDirectPeers,
+            wakuPeerDiscoveryTimeout,
+            poiActiveListKeys,
+          );
+        }
+      });
     }
 
     const storedPin = await getEncryptedPin();

@@ -1,8 +1,12 @@
 import { ArtifactStore, ArtifactDownloader } from '@railgun-community/wallet';
 import fs from 'fs';
-import { bridgeRegisterCall } from '../../bridge/node-ipc-service';
+import {
+  bridgeRegisterCall,
+  triggerBridgeEvent,
+} from '../../bridge/node-ipc-service';
 import {
   BridgeCallEvent,
+  BridgeEvent,
   DownloadInitialArtifactsParams,
 } from '../../bridge/model';
 import { sendMessage } from '../../bridge/loggers';
@@ -53,9 +57,16 @@ bridgeRegisterCall<DownloadInitialArtifactsParams, void>(
       useNativeArtifacts,
     );
 
-    preloadArtifactVariantStrings.forEach(async artifactVariantString => {
+    triggerBridgeEvent(BridgeEvent.OnArtifactsProgress, 0);
+    for (let i = 0; i < preloadArtifactVariantStrings.length; i += 1) {
+      const artifactVariantString = preloadArtifactVariantStrings[i];
+      // eslint-disable-next-line no-await-in-loop
       await downloader.downloadArtifacts(artifactVariantString);
       sendMessage(`Downloaded artifacts for variant: ${artifactVariantString}`);
-    });
+      triggerBridgeEvent(
+        BridgeEvent.OnArtifactsProgress,
+        (i + 1) / preloadArtifactVariantStrings.length,
+      );
+    }
   },
 );

@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import {
+  artifactsProgressReducer,
   authKeyReducer,
   backGesturesReducer,
   erc20BalanceNetworkReducer,
@@ -32,6 +33,7 @@ import {
 
 export const store = configureStore({
   reducer: {
+    artifactsProgress: artifactsProgressReducer,
     remoteConfig: remoteConfigReducer,
     wallets: walletsReducer,
     network: networkReducer,

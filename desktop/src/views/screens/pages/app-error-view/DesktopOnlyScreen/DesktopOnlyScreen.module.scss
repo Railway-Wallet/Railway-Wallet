@@ -1,13 +1,15 @@
 @import '@scss/styleguide';
 
 .textWrapper {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 24px;
-  top: 30%;
+  top: 0;
   right: 0;
   left: 0;
+  bottom: 0;
   position: absolute;
 }
 
@@ -40,7 +42,8 @@
 }
 
 .buttonStyles {
-  min-width: 300px;
+  min-width: 380px;
+  height: 55px;
 }
 
 .footerText {

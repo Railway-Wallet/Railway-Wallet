@@ -27,6 +27,7 @@ export enum BridgeEvent {
   OnTXIDMerkletreeScanUpdate = 'onTXIDMerkletreeScanCallback',
   OnProofProgress = 'onProofProgress',
   OnPOIProofProgress = 'OnPOIProofProgress',
+  OnArtifactsProgress = 'onArtifactsProgress',
 
   WakuMessage = 'wakuMessage',
   WakuError = 'wakuError',

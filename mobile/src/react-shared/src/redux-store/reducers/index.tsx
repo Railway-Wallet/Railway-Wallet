@@ -1,3 +1,4 @@
+export * from './artifacts-progress-reducer';
 export * from './auth-key-reducer';
 export * from './back-gestures-reducer';
 export * from './erc20-balance-reducer-network';

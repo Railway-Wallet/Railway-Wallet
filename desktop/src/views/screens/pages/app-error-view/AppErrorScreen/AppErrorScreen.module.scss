@@ -1,11 +1,11 @@
 @import '@scss/styleguide';
 
 .textWrapper {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 24px;
-  top: 30%;
   right: 0;
   left: 0;
   position: absolute;
