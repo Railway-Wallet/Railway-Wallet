@@ -27,9 +27,13 @@ type DesktopDownloadButton = {
   downloadUrl: string;
 };
 
-type DesktopOnlyScreenProps = {};
+type DesktopOnlyScreenProps = {
+  continueToWebApp: () => void;
+};
 
-export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = () => {
+export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = ({
+  continueToWebApp,
+}) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [hasWallets, setHasWallets] = useState<boolean>(false);
@@ -269,13 +273,29 @@ export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = () => {
   return (<>
     <div className={styles.textWrapper}>
       <>
-        <Text className={styles.errorText}>
-          {loading
-            ? 'Loading...'
-            : 'Please use the Railway desktop application.'}
-        </Text>
+        {loading && <Text className={styles.errorText}>Loading...</Text>}
         {!loading && (
           <>
+            <Text className={styles.errorText}>
+              Railway Wallet strives for top tier security and data protection
+              for users. All Railway Wallet applications have undergone
+              extensive auditing by Trail of Bits and Zokyo and the source
+              code is now available at{' '}
+              <a href="https://railway.xyz" target="_blank" rel="noreferrer">
+                railway.xyz
+              </a>
+              . No vulnerabilities have been found.
+            </Text>
+            <Text className={styles.errorText}>
+              However, because native applications are inherently more secure,
+              software updates will now focus on the desktop and mobile device
+              applications. We encourage you to download one of these apps to
+              continue using Railway Wallet. The web application will be
+              deprecated soon.
+              {hasWallets
+                ? ' You can view your existing wallets to import to the device of your choice.'
+                : ''}
+            </Text>
             {renderDirectDownloadButtons()}
             <div className={styles.buttonContainer}>
               <Button
@@ -295,6 +315,14 @@ export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = () => {
                 />
               </div>
             )}
+            <div className={styles.buttonContainer}>
+              <Button
+                startIcon={IconType.Privacy}
+                children="Continue to web app"
+                onClick={continueToWebApp}
+                buttonClassName={styles.buttonStyles}
+              />
+            </div>
           </>
         )}
       </>

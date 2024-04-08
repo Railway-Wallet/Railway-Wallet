@@ -25,6 +25,7 @@ export const AppNavigator = () => {
   const [appStatus, setAppStatus] = useState(AppStatus.Loading);
   const [error, setError] = useState<Optional<Error>>();
 
+  const hasSeenDesktopWarning = useRef<boolean>(false);
   const hasStarted = useRef<boolean>(false);
 
   ReactConfig.IS_DEV =
@@ -59,8 +60,14 @@ export const AppNavigator = () => {
 
       const params = new URLSearchParams(window.location.search);
       const desktop = params.get('desktop');
-      if (!ReactConfig.IS_DEV && isDefined(desktop) && !isElectron()) {
+      if (
+        !ReactConfig.IS_DEV &&
+        isDefined(desktop) &&
+        !isElectron() &&
+        !hasSeenDesktopWarning.current
+      ) {
         triggerAppStatus(AppStatus.Download);
+        hasSeenDesktopWarning.current = true;
         return;
       }
 

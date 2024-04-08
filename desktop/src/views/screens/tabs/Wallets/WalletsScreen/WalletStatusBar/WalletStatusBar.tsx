@@ -74,41 +74,43 @@ export const WalletStatusBar = ({
         </div>
       </div>
       <div className={styles.buttonContainer}>
-        <Button
-          buttonClassName={styles.button}
-          alt="toggle discreet mode"
-          onClick={() => dispatch(setDiscreetMode(!discreetMode.enabled))}
-          subText={'Discretion'}
-          spreadIconsEvenly
-        >
-          {discreetMode.enabled ? '***' : '123'}
-        </Button>
         {!hideSwitchButton && (
           <Button
             buttonClassName={styles.button}
             endIcon={isRailgun ? IconType.Shield : IconType.Public}
             alt="switch private or public"
             onClick={() => setIsRailgun?.(!isRailgun)}
-            subText={`Go to ${isRailgun ? 'Public\u2007' : 'Private'}`}
+            subText={`Go to ${isRailgun ? 'Public Mode' : 'Private Mode'}`}
             spreadIconsEvenly
           >
-            {isRailgun ? 'Private' : 'Public'}
+            {isRailgun ? 'Private Mode' : 'Public Mode'}
           </Button>
         )}
         {activeWallet && (
-          <Button
-            buttonClassName={styles.button}
-            textClassName={styles.activeWalletButtonText}
-            endIcon={
-              activeWallet.isViewOnlyWallet ? IconType.Eye : IconType.Wallet
-            }
-            alt="select wallet"
-            onClick={() => setShowWalletSelectorModal(true)}
-            subText="View wallets"
-            spreadIconsEvenly
-          >
-            {activeWallet.name}
-          </Button>
+          <>
+            <Button
+              buttonClassName={styles.button}
+              textClassName={styles.activeWalletButtonText}
+              endIcon={
+                activeWallet.isViewOnlyWallet ? IconType.Eye : IconType.Wallet
+              }
+              alt="select wallet"
+              onClick={() => setShowWalletSelectorModal(true)}
+              subText="View wallets"
+              spreadIconsEvenly
+            >
+              {activeWallet.name}
+            </Button>
+            <Button
+              buttonClassName={styles.button}
+              alt="toggle discreet mode"
+              onClick={() => dispatch(setDiscreetMode(!discreetMode.enabled))}
+              subText={'Discretion'}
+              spreadIconsEvenly
+            >
+              {discreetMode.enabled ? '***' : '123'}
+            </Button>
+          </>
         )}
       </div>
     </div>

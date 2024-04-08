@@ -29,7 +29,7 @@ export const AppView: React.FC<Props> = ({
           <AppErrorScreen retry={runInit} appStatus={appStatus} error={error} />
         );
       case AppStatus.Download:
-        return <DesktopOnlyScreen />;
+        return <DesktopOnlyScreen continueToWebApp={runInit} />;
       case AppStatus.Recovery:
         return null;
       case AppStatus.Ready:

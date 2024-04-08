@@ -11,19 +11,25 @@
   left: 0;
   bottom: 0;
   position: absolute;
+  overflow-y: auto;
 }
 
 .errorText {
   @include paragraph;
   color: text();
   line-height: 24px;
-  text-align: center;
+  text-align: left;
   max-width: 1090px;
   margin: 0 auto;
+  margin-bottom: 30px;
+
+  a {
+    color: white;
+  }
 }
 
 .buttonContainer {
-  margin-top: 32px;
+  margin-top: 15px;
   justify-content: center;
   display: flex;
 }
