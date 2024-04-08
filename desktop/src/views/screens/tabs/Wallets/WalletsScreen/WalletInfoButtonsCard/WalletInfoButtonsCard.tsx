@@ -31,6 +31,7 @@ type Props = {
   showImportWallet: () => void;
   setShowWalletSelectorModal: (show: boolean) => void;
   balanceBucketFilter: RailgunWalletBalanceBucket[];
+  discreet: boolean;
 };
 
 export const WalletInfoButtonsCard = ({
@@ -40,6 +41,7 @@ export const WalletInfoButtonsCard = ({
   showImportWallet,
   setShowWalletSelectorModal,
   balanceBucketFilter,
+  discreet,
 }: Props) => {
   const { poiRequired } = usePOIRequiredForCurrentNetwork();
   const { isRailgun, walletName, walletAddress } = slideItem;
@@ -100,6 +102,9 @@ export const WalletInfoButtonsCard = ({
         2,
       );
     }
+  }
+  if (discreet) {
+    spendableBalancePriceLabel = '***';
   }
 
   return (

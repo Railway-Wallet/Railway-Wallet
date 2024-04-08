@@ -1,7 +1,11 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
+import { isDefined } from '@railgun-community/shared-models';
 import { Button } from '@components/Button/Button';
 import { Text } from '@components/Text/Text';
-import { useReduxSelector } from '@react-shared';
+import {
+  setDiscreetMode,
+  useAppDispatch,
+  useReduxSelector,
+} from '@react-shared';
 import { IconType, renderIcon } from '@services/util/icon-service';
 import { getGradientColor } from '@utils/colors';
 import styles from './WalletStatusBar.module.scss';
@@ -23,6 +27,8 @@ export const WalletStatusBar = ({
 }: Props) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
+  const { discreetMode } = useReduxSelector('discreetMode');
+  const dispatch = useAppDispatch();
 
   const activeWallet = wallets.active;
   const isHorizontalGradient = true;
@@ -68,13 +74,22 @@ export const WalletStatusBar = ({
         </div>
       </div>
       <div className={styles.buttonContainer}>
+        <Button
+          buttonClassName={styles.button}
+          alt="toggle discreet mode"
+          onClick={() => dispatch(setDiscreetMode(!discreetMode.enabled))}
+          subText={'Discretion'}
+          spreadIconsEvenly
+        >
+          {discreetMode.enabled ? '***' : '123'}
+        </Button>
         {!hideSwitchButton && (
           <Button
             buttonClassName={styles.button}
             endIcon={isRailgun ? IconType.Shield : IconType.Public}
             alt="switch private or public"
             onClick={() => setIsRailgun?.(!isRailgun)}
-            subText={`Go to ${isRailgun ? 'Public' : 'Private'}`}
+            subText={`Go to ${isRailgun ? 'Public\u2007' : 'Private'}`}
             spreadIconsEvenly
           >
             {isRailgun ? 'Private' : 'Public'}

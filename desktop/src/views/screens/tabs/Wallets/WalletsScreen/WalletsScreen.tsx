@@ -13,10 +13,13 @@ import { useMainScreenAlertMessage } from '@hooks/useMainScreenAlertMessage';
 import { useWalletCreationModals } from '@hooks/useWalletCreationModals';
 import {
   refreshRailgunBalances,
-SharedConstants, StorageService ,   syncRailgunTransactionsV2,
+  SharedConstants,
+  StorageService,
+  syncRailgunTransactionsV2,
   useBalancePriceRefresh,
   useReduxSelector,
-  WalletCardSlideItem } from '@react-shared';
+  WalletCardSlideItem,
+} from '@react-shared';
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
@@ -59,6 +62,7 @@ export const WalletsScreen = ({
       shouldShowOmittedPrivateTokensModal,
     },
   } = useReduxSelector('omittedPrivateTokens');
+  const { discreetMode } = useReduxSelector('discreetMode');
 
   const { isRailgun } = slideItem;
 
@@ -160,6 +164,7 @@ export const WalletsScreen = ({
             showImportWallet={showImportWallet}
             setShowWalletSelectorModal={setShowWalletSelectorModal}
             balanceBucketFilter={balanceBucketFilter}
+            discreet={discreetMode.enabled}
           />
         </div>
         <MainPagePaddedContainer>

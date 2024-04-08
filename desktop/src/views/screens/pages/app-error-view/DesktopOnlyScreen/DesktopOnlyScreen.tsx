@@ -1,5 +1,5 @@
 import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AlertProps,
   GenericAlert,

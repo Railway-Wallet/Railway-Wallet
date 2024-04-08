@@ -16,6 +16,8 @@ import {
   BiWindowAlt as WindowIcon,
 } from 'react-icons/bi';
 import {
+  Bs123 as NumbersIcon,
+  BsAsterisk as AsteriskIcon,
   BsChevronLeft as ChevronLeftIcon,
   BsChevronRight as ChevronRightIcon,
   BsShieldLock as ShieldIcon,
@@ -79,6 +81,8 @@ export enum IconType {
   Plus = 'Plus',
   PlusCircle = 'PlusCircle',
   Eye = 'Eye',
+  Asterisk = 'Asterisk',
+  Numbers = 'Numbers',
   Help = 'Help',
   Warning = 'Warning',
   Shield = 'Shield',
@@ -168,6 +172,10 @@ export const renderIcon = (
       return <PlusCircleIcon {...props} />;
     case IconType.Eye:
       return <EyeIcon {...props} />;
+    case IconType.Asterisk:
+      return <AsteriskIcon {...props} />;
+    case IconType.Numbers:
+      return <NumbersIcon {...props} />;
     case IconType.Warning:
       return <WarningIcon {...props} />;
     case IconType.CheckCircle:

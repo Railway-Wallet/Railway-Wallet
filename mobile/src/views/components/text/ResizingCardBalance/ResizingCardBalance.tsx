@@ -4,6 +4,7 @@ import { Text } from 'react-native';
 import {
   AppSettingsService,
   formatNumberToLocaleWithMinDecimals,
+  useReduxSelector,
 } from '@react-shared';
 import { styles } from './styles';
 
@@ -16,6 +17,7 @@ export const ResizingCardBalance: React.FC<Props> = ({
   hasWallet,
   totalBalanceCurrency,
 }) => {
+  const { discreetMode } = useReduxSelector('discreetMode');
   let totalBalancePriceLabel = 'N/A';
   if (isDefined(totalBalanceCurrency)) {
     if (totalBalanceCurrency > 0 && totalBalanceCurrency < 0.01) {
@@ -27,6 +29,10 @@ export const ResizingCardBalance: React.FC<Props> = ({
       );
     }
   }
+  if (discreetMode.enabled) {
+    totalBalancePriceLabel = '***';
+  }
+
   return (
     <>
       <Text

@@ -28,6 +28,8 @@ type Props = {
   onAddToken: () => void;
   onRefresh: () => void;
   onSelectToken: (token: ERC20Token) => void;
+  onEnableDiscreetMode: () => void;
+  onDisableDiscreetMode: () => void;
   tokenSearchText?: string;
   balanceBucketFilter: RailgunWalletBalanceBucket[];
 };
@@ -36,6 +38,8 @@ export const ERC20TokenList: React.FC<Props> = ({
   onAddToken,
   onRefresh,
   onSelectToken,
+  onEnableDiscreetMode,
+  onDisableDiscreetMode,
   isRailgun,
   isRefreshing,
   tokenSearchText,
@@ -48,6 +52,7 @@ export const ERC20TokenList: React.FC<Props> = ({
   const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
   const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
   const { txidVersion } = useReduxSelector('txidVersion');
+  const { discreetMode } = useReduxSelector('discreetMode');
 
   const [ERC20TokenBalances, setERC20TokenBalances] = useState<
     ERC20TokenBalance[]
@@ -158,6 +163,9 @@ export const ERC20TokenList: React.FC<Props> = ({
         isRailgun={isRailgun}
         isRefreshing={isRefreshing}
         onRefresh={onRefresh}
+        discreet={discreetMode.enabled}
+        onEnableDiscreetMode={onEnableDiscreetMode}
+        onDisableDiscreetMode={onDisableDiscreetMode}
       />
       {railgunBalancesUpdating && isRailgun && (
         <ERC20TokenListLoading

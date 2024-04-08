@@ -33,6 +33,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
+  const { discreetMode } = useReduxSelector('discreetMode');
 
   const { token, balance, balanceCurrency, priceCurrency } = tokenBalance;
   const appCurrency = AppSettingsService.currency;
@@ -58,6 +59,13 @@ export const ERC20TokenListRow: React.FC<Props> = ({
     );
   };
 
+  const discreetBalanceCurrency = (
+    <>
+      <Text style={styles.titleCurrencyStyle}>{appCurrency.symbol}</Text>
+      {'***'}
+    </>
+  );
+
   const rightBalances = () => {
     const hasBalance = isDefined(balance);
 
@@ -78,6 +86,8 @@ export const ERC20TokenListRow: React.FC<Props> = ({
         : formatNumberToLocaleWithMinDecimals(balanceDecimal, 4)
       : undefined;
 
+    const balanceCurrency = formatBalanceCurrency();
+
     return (
       <View style={styles.rightBalances}>
         <Text
@@ -85,7 +95,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
           numberOfLines={1}
           adjustsFontSizeToFit={adjustsFontSizeToFit}
         >
-          {formatBalanceCurrency()}
+          {discreetMode.enabled ? discreetBalanceCurrency : balanceCurrency}
           {hasPendingBalance ? '*' : ''}
         </Text>
         <Text
@@ -93,7 +103,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
           numberOfLines={1}
           adjustsFontSizeToFit={adjustsFontSizeToFit}
         >
-          {truncateStr(balanceText, 12)}
+          {discreetMode.enabled ? '***' : truncateStr(balanceText, 12)}
         </Text>
       </View>
     );

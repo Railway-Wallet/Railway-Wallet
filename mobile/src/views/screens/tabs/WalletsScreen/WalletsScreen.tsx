@@ -37,6 +37,7 @@ import {
   MINTABLE_TEST_TOKEN_ROPSTEN,
   NetworkService,
   refreshRailgunBalances,
+  setDiscreetMode,
   setTempNotification,
   showImmediateToast,
   syncRailgunTransactionsV2,
@@ -283,6 +284,14 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     navigation.dispatch(CommonActions.navigate('AddTokens'));
   };
 
+  const onEnableDiscreetMode = () => {
+    dispatch(setDiscreetMode(true));
+  };
+
+  const onDisableDiscreetMode = () => {
+    dispatch(setDiscreetMode(false));
+  };
+
   const onSelectToken = (token: ERC20Token) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
@@ -415,6 +424,8 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
             onRefresh={onRefresh}
             onAddToken={onAddToken}
             onSelectToken={onSelectToken}
+            onEnableDiscreetMode={onEnableDiscreetMode}
+            onDisableDiscreetMode={onDisableDiscreetMode}
             isRailgun={isRailgunOverride}
             balanceBucketFilter={balanceBucketFilter}
           />

@@ -13,10 +13,20 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     height: 48,
     width: 48,
+    marginLeft: 12,
+    marginRight: 0,
+  },
+  discreetButtonText: {
+    ...styleguide.typography.label,
+    lineHeight: 26,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   buttonsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 1,
   },
   spinner: {
     alignItems: 'center',

@@ -1,6 +1,7 @@
 export * from './artifacts-progress-reducer';
 export * from './auth-key-reducer';
 export * from './back-gestures-reducer';
+export * from './discreet-mode-reducer';
 export * from './erc20-balance-reducer-network';
 export * from './erc20-balance-reducer-railgun';
 export * from './liquidity-reducer';

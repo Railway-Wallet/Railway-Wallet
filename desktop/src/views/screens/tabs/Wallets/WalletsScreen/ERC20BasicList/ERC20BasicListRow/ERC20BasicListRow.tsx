@@ -30,6 +30,7 @@ export const ERC20BasicListRow: React.FC<Props> = ({
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
+  const { discreetMode } = useReduxSelector('discreetMode');
 
   const { token, balance, balanceCurrency, priceCurrency } = tokenBalance;
   const appCurrency = AppSettingsService.currency;
@@ -58,6 +59,13 @@ export const ERC20BasicListRow: React.FC<Props> = ({
     );
   };
 
+  const discreetBalanceCurrency = (
+    <>
+      <span className={styles.titleCurrencyStyle}>{appCurrency.symbol}</span>
+      {'***'}
+    </>
+  );
+
   const rightBalances = () => {
     const hasBalance = isDefined(balance);
 
@@ -85,12 +93,12 @@ export const ERC20BasicListRow: React.FC<Props> = ({
           <Spinner size={22} />
         ) : (
           <Text className={styles.titleStyle}>
-            {balanceCurrency}
+            {discreetMode.enabled ? discreetBalanceCurrency : balanceCurrency}
             {hasPendingBalance ? '*' : ''}
           </Text>
         )}
         <Text className={styles.descriptionStyle}>
-          {truncateStr(balanceText, 12)}
+          {discreetMode.enabled ? '***' : truncateStr(balanceText, 12)}
         </Text>
       </div>
     );

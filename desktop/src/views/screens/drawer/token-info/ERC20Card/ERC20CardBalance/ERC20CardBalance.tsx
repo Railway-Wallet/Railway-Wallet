@@ -30,6 +30,7 @@ export const ERC20CardBalance: React.FC<Props> = ({
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
+  const { discreetMode } = useReduxSelector('discreetMode');
 
   const { erc20Balance, erc20BalanceCurrency } = useERC20DecimalBalances(
     token,
@@ -47,14 +48,18 @@ export const ERC20CardBalance: React.FC<Props> = ({
         fontSize={64}
       >
         <span className={styles.currencySymbol}>{appCurrency.symbol}</span>
-        {isDefined(erc20BalanceCurrency)
+        {discreetMode.enabled
+          ? '***'
+          : isDefined(erc20BalanceCurrency)
           ? formatNumberToLocaleWithMinDecimals(erc20BalanceCurrency, 2)
           : 'N/A'}
       </Text>
       <div className={styles.balanceContainer}>
         <TokenIcon token={token} className={styles.tokenIcon} />
         <Text className={styles.balanceText}>
-          {formatNumberToLocaleWithMinDecimals(erc20Balance, 20)}{' '}
+          {discreetMode.enabled
+            ? '***'
+            : formatNumberToLocaleWithMinDecimals(erc20Balance, 20)}{' '}
           {getTokenDisplayNameShort(
             token,
             wallets.available,
