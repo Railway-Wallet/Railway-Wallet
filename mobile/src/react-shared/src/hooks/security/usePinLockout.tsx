@@ -15,6 +15,10 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
   useEffect(() => {
     const getFromStorage = async () => {
       const storedPinLockoutTimestamp = await getPinLockoutStart();
+      if (!isDefined(storedPinLockoutTimestamp)) {
+        await storedValuesDeleted();
+        return;
+      }
       setPinLockoutTimestamp(storedPinLockoutTimestamp ?? 0);
 
       const storedNumFailedAttempts = await getFailedPinAttempts();

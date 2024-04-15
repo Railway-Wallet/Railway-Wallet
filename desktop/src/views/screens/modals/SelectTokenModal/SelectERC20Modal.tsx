@@ -1,5 +1,8 @@
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import React from 'react';
+import {
+  isDefined,
+  RailgunWalletBalanceBucket,
+} from '@railgun-community/shared-models';
+import React, { useRef, useState } from 'react';
 import { Button } from '@components/Button/Button';
 import { GenericModal } from '@components/modals/GenericModal/GenericModal';
 import { Text } from '@components/Text/Text';
@@ -50,6 +53,9 @@ export const SelectERC20Modal: React.FC<Props> = ({
   const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
   const { txidVersion } = useReduxSelector('txidVersion');
 
+  const [isLoading, setIsLoading] = useState(false);
+  const loadingTimeout = useRef<Optional<NodeJS.Timeout>>(undefined);
+
   const { forceUpdate } = useForceUpdate();
 
   const activeWallet = wallets.active;
@@ -89,7 +95,21 @@ export const SelectERC20Modal: React.FC<Props> = ({
       title={headerTitle}
       accessoryView={
         showRefreshButton ? (
-          <Button onClick={forceUpdate} endIcon={IconType.Refresh}>
+          <Button
+            onClick={() => {
+              setIsLoading(true);
+              if (isDefined(loadingTimeout.current)) {
+                clearTimeout(loadingTimeout.current);
+              }
+              forceUpdate();
+              loadingTimeout.current = setTimeout(() => {
+                loadingTimeout.current = undefined;
+                setIsLoading(false);
+              }, 500);
+            }}
+            endIcon={IconType.Refresh}
+            loading={isLoading}
+          >
             Refresh
           </Button>
         ) : undefined

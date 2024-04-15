@@ -12,7 +12,7 @@ import {
   WalletStorageService,
 } from '@react-shared';
 import { RecoveryWalletsModal } from '@screens/modals/recovery/RecoveryWalletsModal/RecoveryWalletsModal';
-import { getOSType,OSType } from '@services/core/os-service';
+import { getOSType, OSType } from '@services/core/os-service';
 import {
   DesktopBuild,
   fetchDesktopDownloadBuilds,
@@ -289,9 +289,8 @@ export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = ({
             <Text className={styles.errorText}>
               However, because native applications are inherently more secure,
               software updates will now focus on the desktop and mobile device
-              applications. We encourage you to download one of these apps to
-              continue using Railway Wallet. The web application will be
-              deprecated soon.
+              applications. Please download one of these apps to continue
+              using Railway Wallet.
               {hasWallets
                 ? ' You can view your existing wallets to import to the device of your choice.'
                 : ''}
@@ -315,14 +314,6 @@ export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = ({
                 />
               </div>
             )}
-            <div className={styles.buttonContainer}>
-              <Button
-                startIcon={IconType.Privacy}
-                children="Continue to web app"
-                onClick={continueToWebApp}
-                buttonClassName={styles.buttonStyles}
-              />
-            </div>
           </>
         )}
       </>
