@@ -45,16 +45,17 @@ export const loadSearchableERC20s = (
   case NetworkName.BNBChain:
     coinsArr = BSCCoins;
     break;
+  case NetworkName.PolygonAmoy:
   case NetworkName.Polygon:
     coinsArr = PolygonCoins;
     break;
   case NetworkName.Arbitrum:
     coinsArr = ArbCoins;
     break;
-  case NetworkName.PolygonMumbai:
+  case NetworkName.PolygonMumbai_DEPRECATED:
     coinsArr = [];
     break;
-  case NetworkName.ArbitrumGoerli:
+  case NetworkName.ArbitrumGoerli_DEPRECATED:
     coinsArr = ArbGoerliCoins;
     break;
   case NetworkName.Hardhat:

@@ -81,11 +81,10 @@ const alchemySubdomain = (networkName: NetworkName) => {
       return 'arb-mainnet';
     case NetworkName.EthereumSepolia:
       return 'eth-sepolia';
-    case NetworkName.PolygonMumbai:
-      return 'polygon-mumbai';
-    case NetworkName.ArbitrumGoerli:
-      return 'arb-goerli';
     case NetworkName.BNBChain:
+    case NetworkName.PolygonAmoy:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
+    case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.EthereumRopsten_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.Hardhat:
@@ -100,9 +99,10 @@ const alchemyNetworkSupportsFilters = (networkName: NetworkName) => {
       return true;
     case NetworkName.Arbitrum:
     case NetworkName.EthereumSepolia:
-    case NetworkName.PolygonMumbai:
-    case NetworkName.ArbitrumGoerli:
     case NetworkName.BNBChain:
+    case NetworkName.PolygonAmoy:
+    case NetworkName.PolygonMumbai_DEPRECATED:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.EthereumRopsten_DEPRECATED:
     case NetworkName.Hardhat:
@@ -283,8 +283,9 @@ const manuallyApprovedLowercaseNFTCollectionAddresses = (
     case NetworkName.Arbitrum:
     case NetworkName.Hardhat:
     case NetworkName.EthereumSepolia:
-    case NetworkName.PolygonMumbai:
-    case NetworkName.ArbitrumGoerli:
+    case NetworkName.PolygonAmoy:
+    case NetworkName.PolygonMumbai_DEPRECATED:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.EthereumRopsten_DEPRECATED:
       return [];

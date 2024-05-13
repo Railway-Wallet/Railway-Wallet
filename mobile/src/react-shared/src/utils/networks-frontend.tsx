@@ -45,11 +45,12 @@ export const getNetworkFrontendConfig = (
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         icon: ImageChainArbitrum(),
       };
+    case NetworkName.EthereumSepolia:
+    case NetworkName.PolygonAmoy:
     case NetworkName.EthereumRopsten_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
-    case NetworkName.EthereumSepolia:
-    case NetworkName.PolygonMumbai:
-    case NetworkName.ArbitrumGoerli:
+    case NetworkName.PolygonMumbai_DEPRECATED:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.Hardhat:
       return {
         backgroundColor: styleguide.colors.tokenBackgrounds.testnet(),

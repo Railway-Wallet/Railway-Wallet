@@ -156,11 +156,12 @@ export const shouldEnableKoinlyTaxExport = (
   case NetworkName.Polygon:
   case NetworkName.Arbitrum:
     return true;
+  case NetworkName.EthereumSepolia:
+  case NetworkName.PolygonAmoy:
   case NetworkName.EthereumRopsten_DEPRECATED:
   case NetworkName.EthereumGoerli_DEPRECATED:
-  case NetworkName.EthereumSepolia:
-  case NetworkName.PolygonMumbai:
-  case NetworkName.ArbitrumGoerli:
+  case NetworkName.PolygonMumbai_DEPRECATED:
+  case NetworkName.ArbitrumGoerli_DEPRECATED:
   case NetworkName.Hardhat:
     return false;
   }

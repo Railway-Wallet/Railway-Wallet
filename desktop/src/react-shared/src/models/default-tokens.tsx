@@ -149,7 +149,6 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       decimals: 6
     },
   ],
-
   [NetworkName.Arbitrum]: [
     {
       name: 'Ether',
@@ -197,7 +196,17 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       decimals: 6,
     },
   ],
-
+  [NetworkName.PolygonAmoy]: [
+    {
+      name: 'Polygon',
+      symbol: 'MATIC',
+      address: NETWORK_CONFIG[NetworkName.PolygonAmoy].baseToken.wrappedAddress,
+      icon: TokenIconKey.ImageTokenMaticKey,
+      decimals: 18,
+      isBaseToken: true,
+      disableWalletRemoval: true,
+    },
+  ],
   [NetworkName.EthereumRopsten_DEPRECATED]: [
     {
       name: 'Ether',
@@ -315,12 +324,13 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       decimals: 18,
     },
   ],
-  [NetworkName.PolygonMumbai]: [
+  [NetworkName.PolygonMumbai_DEPRECATED]: [
     {
       name: 'Polygon',
       symbol: 'MATIC',
       address:
-        NETWORK_CONFIG[NetworkName.PolygonMumbai].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.PolygonMumbai_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenMaticKey,
       decimals: 18,
       isBaseToken: true,
@@ -330,7 +340,8 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       name: 'Wrapped Matic',
       symbol: 'WMATIC',
       address:
-        NETWORK_CONFIG[NetworkName.PolygonMumbai].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.PolygonMumbai_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenWmaticKey,
       decimals: 18,
       disableWalletRemoval: true,
@@ -356,12 +367,13 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       decimals: 18,
     },
   ],
-  [NetworkName.ArbitrumGoerli]: [
+  [NetworkName.ArbitrumGoerli_DEPRECATED]: [
     {
       name: 'Ether',
       symbol: 'ETH',
       address:
-        NETWORK_CONFIG[NetworkName.ArbitrumGoerli].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.ArbitrumGoerli_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenEthKey,
       decimals: 18,
       isBaseToken: true,
@@ -371,7 +383,8 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       name: 'Wrapped Ether',
       symbol: 'WETH',
       address:
-        NETWORK_CONFIG[NetworkName.ArbitrumGoerli].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.ArbitrumGoerli_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenWethKey,
       decimals: 18,
       disableWalletRemoval: true,

@@ -22,6 +22,7 @@ export class Constants {
     'https://github.com/Railway-Wallet/Railway-Wallet/releases';
 
   static readonly RAILWAY_USER_GUIDE = 'https://help.railway.xyz';
+  static readonly RAILWAY_DOWNLOADS_PAGE = 'https://railway.xyz/download';
   static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/railwaywallet';
   static readonly ABOUT_RAILGUN_URL = 'https://railgun.org';
   static readonly DESKTOP_DOWNLOADS_URL =

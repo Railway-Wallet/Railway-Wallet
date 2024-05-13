@@ -450,13 +450,14 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       decimals: 18,
     },
   ],
-  [NetworkName.PolygonMumbai]: [
+  [NetworkName.PolygonMumbai_DEPRECATED]: [
     {
       searchStr: 'polygon|matic',
       name: 'Polygon',
       symbol: 'MATIC',
       address:
-        NETWORK_CONFIG[NetworkName.PolygonMumbai].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.PolygonMumbai_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenMaticKey,
       decimals: 18,
       isBaseToken: true,
@@ -487,7 +488,7 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       decimals: 6,
     },
   ],
-  [NetworkName.ArbitrumGoerli]: [
+  [NetworkName.ArbitrumGoerli_DEPRECATED]: [
     {
       searchStr: 'usd coin|usdc',
       name: 'USD Coin',
@@ -522,6 +523,17 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       symbol: 'ETH',
       address: NETWORK_CONFIG[NetworkName.Hardhat].baseToken.wrappedAddress,
       icon: TokenIconKey.ImageTokenEthKey,
+      decimals: 18,
+      isBaseToken: true,
+    },
+  ],
+  [NetworkName.PolygonAmoy]: [
+    {
+      searchStr: 'polygon|matic',
+      name: 'Polygon',
+      symbol: 'MATIC',
+      address: NETWORK_CONFIG[NetworkName.PolygonAmoy].baseToken.wrappedAddress,
+      icon: TokenIconKey.ImageTokenMaticKey,
       decimals: 18,
       isBaseToken: true,
     },

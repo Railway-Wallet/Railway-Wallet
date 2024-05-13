@@ -242,11 +242,7 @@ export const DesktopOnlyScreen: React.FC<DesktopOnlyScreenProps> = ({
   };
 
   const handleDesktopDownloadLink = () => {
-    createExternalSiteAlert(
-      Constants.ELECTRON_DOWNLOAD_URL,
-      setAlert,
-      dispatch,
-    );
+    window.open(Constants.RAILWAY_DOWNLOADS_PAGE, '_self');
   };
 
   const handleDesktopDownload = async (downloadUrl: string) => {

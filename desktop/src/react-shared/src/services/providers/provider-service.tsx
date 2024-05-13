@@ -41,12 +41,13 @@ export class ProviderService {
     switch (networkName) {
       case NetworkName.Ethereum:
       case NetworkName.Polygon:
+      case NetworkName.PolygonAmoy:
       case NetworkName.BNBChain:
       case NetworkName.Arbitrum:
-      case NetworkName.ArbitrumGoerli:
       case NetworkName.EthereumSepolia:
-      case NetworkName.PolygonMumbai:
         return ProviderNodeType.FullNode;
+      case NetworkName.ArbitrumGoerli_DEPRECATED:
+      case NetworkName.PolygonMumbai_DEPRECATED:
       case NetworkName.EthereumGoerli_DEPRECATED:
       case NetworkName.EthereumRopsten_DEPRECATED:
       case NetworkName.Hardhat:

@@ -99,10 +99,11 @@ const getSettingsByPriorityLevel = (networkName: NetworkName) => {
       return BSC_SETTINGS_BY_PRIORITY_LEVEL;
     case NetworkName.Ethereum:
     case NetworkName.Polygon:
-    case NetworkName.PolygonMumbai:
     case NetworkName.Arbitrum:
-    case NetworkName.ArbitrumGoerli:
+    case NetworkName.PolygonAmoy:
     case NetworkName.EthereumSepolia:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
+    case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.EthereumRopsten_DEPRECATED:
     case NetworkName.Hardhat:
@@ -118,16 +119,17 @@ export const relayerGasHistoryPercentileForChain = (
     case NetworkName.Ethereum:
       return GasHistoryPercentile.Low;
     case NetworkName.Hardhat:
-    case NetworkName.ArbitrumGoerli:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.Arbitrum:
       return GasHistoryPercentile.Medium;
     case NetworkName.BNBChain:
     case NetworkName.Polygon:
+    case NetworkName.PolygonAmoy:
     case NetworkName.EthereumRopsten_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.EthereumSepolia:
       return GasHistoryPercentile.High;
-    case NetworkName.PolygonMumbai:
+    case NetworkName.PolygonMumbai_DEPRECATED:
       return GasHistoryPercentile.VeryHigh;
     default:
       return GasHistoryPercentile.Medium;
@@ -222,7 +224,7 @@ const estimateGasMaxFeesBySpeedUsingHeuristic = async (
   evmGasType: EVMGasType.Type2,
   networkName: NetworkName,
 ): Promise<GasDetailsBySpeed> => {
-  if (networkName === NetworkName.PolygonMumbai) {
+  if (networkName === NetworkName.PolygonMumbai_DEPRECATED) {
     return standardizedGasMaxFeesForMumbai(evmGasType);
   }
 

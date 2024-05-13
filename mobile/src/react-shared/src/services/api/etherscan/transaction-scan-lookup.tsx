@@ -12,6 +12,7 @@ enum SCAN_BASE_URL {
   Sepoliascan = 'https://sepolia.etherscan.io',
   Mumbaiscan = 'https://mumbai.polygonscan.com',
   ArbiscanGoerli = 'https://goerli.arbiscan.io',
+  PolygonscanAmoy = 'https://amoy.polygonscan.com',
 }
 
 export const baseUrlExternalScanSite = (
@@ -26,15 +27,17 @@ export const baseUrlExternalScanSite = (
       return SCAN_BASE_URL.Polygonscan;
     case NetworkName.Arbitrum:
       return SCAN_BASE_URL.Arbiscan;
+    case NetworkName.EthereumSepolia:
+      return SCAN_BASE_URL.Sepoliascan;
+    case NetworkName.PolygonAmoy:
+      return SCAN_BASE_URL.PolygonscanAmoy;
     case NetworkName.EthereumRopsten_DEPRECATED:
       return SCAN_BASE_URL.Ropstenscan;
     case NetworkName.EthereumGoerli_DEPRECATED:
       return SCAN_BASE_URL.Goerliscan;
-    case NetworkName.EthereumSepolia:
-      return SCAN_BASE_URL.Sepoliascan;
-    case NetworkName.PolygonMumbai:
+    case NetworkName.PolygonMumbai_DEPRECATED:
       return SCAN_BASE_URL.Mumbaiscan;
-    case NetworkName.ArbitrumGoerli:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
       return SCAN_BASE_URL.ArbiscanGoerli;
     case NetworkName.Hardhat:
       return;
@@ -69,15 +72,17 @@ export const getExternalScanSiteName = (networkName: NetworkName): string => {
       return 'Polygonscan';
     case NetworkName.Arbitrum:
       return 'Arbiscan';
+    case NetworkName.EthereumSepolia:
+      return 'Etherscan (Sepolia)';
+    case NetworkName.PolygonAmoy:
+      return 'Polygonscan (Amoy)';
     case NetworkName.EthereumRopsten_DEPRECATED:
       return 'Etherscan (Ropsten)';
     case NetworkName.EthereumGoerli_DEPRECATED:
       return 'Etherscan (Görli)';
-    case NetworkName.EthereumSepolia:
-      return 'Etherscan (Sepolia)';
-    case NetworkName.PolygonMumbai:
+    case NetworkName.PolygonMumbai_DEPRECATED:
       return 'Polygonscan (Mumbai)';
-    case NetworkName.ArbitrumGoerli:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
       return 'Arbiscan (Görli)';
     case NetworkName.Hardhat:
       return SCAN_SITE_NOT_FOUND_TEXT;
