@@ -385,13 +385,14 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       searchStr: 'food token|food',
     },
   ],
-  [NetworkName.EthereumGoerli]: [
+  [NetworkName.EthereumGoerli_DEPRECATED]: [
     {
       searchStr: 'ethereum|eth',
       name: 'Ether',
       symbol: 'ETH',
       address:
-        NETWORK_CONFIG[NetworkName.EthereumGoerli].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.EthereumGoerli_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenEthKey,
       decimals: 18,
       isBaseToken: true,

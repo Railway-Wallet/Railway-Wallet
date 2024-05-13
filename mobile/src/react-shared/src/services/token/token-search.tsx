@@ -36,7 +36,7 @@ export const loadSearchableERC20s = (
   case NetworkName.EthereumRopsten_DEPRECATED:
     coinsArr = RopstenCoins;
     break;
-  case NetworkName.EthereumGoerli:
+  case NetworkName.EthereumGoerli_DEPRECATED:
     coinsArr = GoerliCoins;
     break;
   case NetworkName.EthereumSepolia:

@@ -2456,10 +2456,10 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@railgun-community/cookbook@2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@railgun-community/cookbook/-/cookbook-2.6.1.tgz#fc22d6146eb065ad5cf745ac38d546558796c00f"
-  integrity sha512-YMGFoHN1J+EpQyHbNui6oGmxspwy4YxN9W/uludDlte5Pi3qRJPdHer4LaY/Fwxg5uWRqoXVdR1zLmX/h92CSA==
+"@railgun-community/cookbook@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@railgun-community/cookbook/-/cookbook-2.6.2.tgz#c75bf7a94b61e5ba7b5d844a9ca516075fbe96bc"
+  integrity sha512-Z4bNSFltoGil6MFsNss5QVgIISWC339ikC3yAFMbmXmt0/JsHTKiBf6Z9AM/BjXppkXZZlgsu/tL63YyvvzJxg==
   dependencies:
     "@0x/contract-addresses" "^8.5.0"
     "@graphql-mesh/cache-localforage" "^0.7.20"
@@ -2471,21 +2471,16 @@
     "@graphql-mesh/store" "^0.9.20"
     "@graphql-mesh/types" "^0.91.14"
     "@graphql-mesh/utils" "^0.43.22"
-    "@railgun-community/shared-models" "6.3.x"
+    "@railgun-community/shared-models" "6.4.1"
     axios "^1.4.0"
     custom-uniswap-v2-sdk "^3.2.0"
     ethers "github:Railgun-Community/ethers.js#v6.7.10"
     graphql "^16.6.0"
 
-"@railgun-community/shared-models@6.3.x":
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-6.3.0.tgz#c3d87091b9afc880f369b30f63c7df6f0f47829b"
-  integrity sha512-ZesDE7DnLUmjn+2M6UisXPUumImmqWHi854+7q3EkYV5R/Gjsth4yeca1OBNSjCmANpg7nZvDjctkodWFi0xBw==
-
-"@railgun-community/shared-models@6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-6.4.0.tgz#ac7643b6c2f94d802cadf510587de8bfd8358dce"
-  integrity sha512-0BY4J7//m6VoUyQ5pnITKuPXLFriNAmNbfFMRW8lBbez9q/1lKctXByq5sBKKVO2s1Q5HWMzIc04ytrH93ZEwg==
+"@railgun-community/shared-models@6.4.1":
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-6.4.1.tgz#b77bea248634b2f321517b9575bff59f1ac904dd"
+  integrity sha512-hID49qn3/t4O/BlA/HawRstfS/n7FWTpZiLkBAub/80ZLDbqJhP++TYPYwQe+DhY+L0KN1t+evLJULNp+PHXPg==
 
 "@rauschma/stringio@1.4.0":
   version "1.4.0"

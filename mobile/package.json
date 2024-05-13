@@ -1,6 +1,6 @@
 {
   "name": "railway-react-native",
-  "version": "5.4.24",
+  "version": "5.4.25",
   "private": true,
   "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
   "license": "GPL-3.0-only",
@@ -23,8 +23,8 @@
     "@0x/contract-addresses": "8.7.0",
     "@ethersproject/shims": "^5.7.0",
     "@expo/react-native-action-sheet": "4.0.1",
-    "@railgun-community/cookbook": "2.6.1",
-    "@railgun-community/shared-models": "6.4.0",
+    "@railgun-community/cookbook": "2.6.2",
+    "@railgun-community/shared-models": "6.4.1",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-clipboard/clipboard": "^1.11.0",
     "@react-native-community/blur": "4.3.2",

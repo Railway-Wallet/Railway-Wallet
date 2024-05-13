@@ -28,7 +28,7 @@ export const baseUrlExternalScanSite = (
       return SCAN_BASE_URL.Arbiscan;
     case NetworkName.EthereumRopsten_DEPRECATED:
       return SCAN_BASE_URL.Ropstenscan;
-    case NetworkName.EthereumGoerli:
+    case NetworkName.EthereumGoerli_DEPRECATED:
       return SCAN_BASE_URL.Goerliscan;
     case NetworkName.EthereumSepolia:
       return SCAN_BASE_URL.Sepoliascan;
@@ -71,7 +71,7 @@ export const getExternalScanSiteName = (networkName: NetworkName): string => {
       return 'Arbiscan';
     case NetworkName.EthereumRopsten_DEPRECATED:
       return 'Etherscan (Ropsten)';
-    case NetworkName.EthereumGoerli:
+    case NetworkName.EthereumGoerli_DEPRECATED:
       return 'Etherscan (Görli)';
     case NetworkName.EthereumSepolia:
       return 'Etherscan (Sepolia)';

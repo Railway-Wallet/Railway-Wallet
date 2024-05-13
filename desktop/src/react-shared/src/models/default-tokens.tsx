@@ -236,12 +236,13 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
     },
     MINTABLE_TEST_TOKEN_ROPSTEN,
   ],
-  [NetworkName.EthereumGoerli]: [
+  [NetworkName.EthereumGoerli_DEPRECATED]: [
     {
       name: 'Ether',
       symbol: 'ETH',
       address:
-        NETWORK_CONFIG[NetworkName.EthereumGoerli].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.EthereumGoerli_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenEthKey,
       decimals: 18,
       isBaseToken: true,
@@ -251,7 +252,8 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       name: 'Wrapped Ether',
       symbol: 'WETH',
       address:
-        NETWORK_CONFIG[NetworkName.EthereumGoerli].baseToken.wrappedAddress,
+        NETWORK_CONFIG[NetworkName.EthereumGoerli_DEPRECATED].baseToken
+          .wrappedAddress,
       icon: TokenIconKey.ImageTokenWethKey,
       decimals: 18,
       disableWalletRemoval: true,

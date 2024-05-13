@@ -1,11 +1,11 @@
 import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
 import { useEffect, useState } from 'react';
+import { findAllRelayersForChain } from '../../bridge';
 import { DEFAULT_WALLET_TOKENS_FOR_NETWORK } from '../../models/default-tokens';
 import { ERC20Amount, ERC20Token } from '../../models/token';
 import { AppSettingsService } from '../../services';
 import { getTopTokenForWallet } from '../../services/wallet/wallet-balance-service';
 import { useReduxSelector } from '../hooks-redux';
-import { findAllRelayersForChain } from '../../bridge';
 
 export const useRelayerFeeERC20 = (
   tokenAmounts: ERC20Amount[],

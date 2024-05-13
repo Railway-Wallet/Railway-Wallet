@@ -18,7 +18,7 @@ export const getUnstoppableRecordPathForNetwork = (
       return UnstoppableDataRecordPath.Polygon;
     case NetworkName.Arbitrum:
     case NetworkName.EthereumRopsten_DEPRECATED:
-    case NetworkName.EthereumGoerli:
+    case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.EthereumSepolia:
     case NetworkName.PolygonMumbai:
     case NetworkName.ArbitrumGoerli:

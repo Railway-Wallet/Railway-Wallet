@@ -40,7 +40,6 @@ export class ProviderService {
   ): ProviderNodeType {
     switch (networkName) {
       case NetworkName.Ethereum:
-      case NetworkName.EthereumGoerli:
       case NetworkName.Polygon:
       case NetworkName.BNBChain:
       case NetworkName.Arbitrum:
@@ -48,6 +47,7 @@ export class ProviderService {
       case NetworkName.EthereumSepolia:
       case NetworkName.PolygonMumbai:
         return ProviderNodeType.FullNode;
+      case NetworkName.EthereumGoerli_DEPRECATED:
       case NetworkName.EthereumRopsten_DEPRECATED:
       case NetworkName.Hardhat:
         throw new Error('No Archive Nodes available for this network.');
