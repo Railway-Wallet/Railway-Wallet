@@ -14,7 +14,7 @@ import {
   truncateStr,
   useReduxSelector,
 } from '@react-shared';
-import { SelectRelayerFeeTokenListRow } from './SelectRelayerFeeTokenListRow';
+import { SelectBroadcasterFeeTokenListRow } from './SelectBroadcasterFeeTokenListRow';
 import { styles } from './styles';
 
 type Props = {
@@ -24,8 +24,8 @@ type Props = {
   wallet: Optional<FrontendWallet>;
   onSelect: (token: ERC20Token) => void;
   purpose: SelectTokenPurpose;
-  useRelayAdaptForRelayerFee: boolean;
-  relayerFeeRefreshButtonCount: number;
+  useRelayAdaptForBroadcasterFee: boolean;
+  broadcasterFeeRefreshButtonCount: number;
 };
 
 export const SelectERC20List: React.FC<Props> = ({
@@ -35,8 +35,8 @@ export const SelectERC20List: React.FC<Props> = ({
   isRailgun,
   onSelect,
   purpose,
-  useRelayAdaptForRelayerFee,
-  relayerFeeRefreshButtonCount,
+  useRelayAdaptForBroadcasterFee,
+  broadcasterFeeRefreshButtonCount,
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
@@ -75,15 +75,15 @@ export const SelectERC20List: React.FC<Props> = ({
       network.current.name,
     );
 
-    if (purpose === SelectTokenPurpose.RelayerFee) {
+    if (purpose === SelectTokenPurpose.BroadcasterFee) {
       return (
-        <SelectRelayerFeeTokenListRow
+        <SelectBroadcasterFeeTokenListRow
           token={token}
           description={description}
           onSelect={() => onSelect(token)}
           renderRightBalance={() => renderRightBalance(token)}
-          useRelayAdaptForRelayerFee={useRelayAdaptForRelayerFee}
-          relayerFeeRefreshButtonCount={relayerFeeRefreshButtonCount}
+          useRelayAdaptForBroadcasterFee={useRelayAdaptForBroadcasterFee}
+          broadcasterFeeRefreshButtonCount={broadcasterFeeRefreshButtonCount}
         />
       );
     }

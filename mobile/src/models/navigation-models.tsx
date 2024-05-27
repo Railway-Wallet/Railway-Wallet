@@ -8,7 +8,7 @@ import {
   Network,
   NFTAmountRecipient,
   RailgunWalletBalanceBucket,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
   TransactionGasDetailsType0,
   TransactionGasDetailsType1,
@@ -216,7 +216,7 @@ export type SettingsStackParamList = {
   SettingsAddRPC: {
     network: Network;
   };
-  SettingsRelayers: undefined;
+  SettingsBroadcasters: undefined;
 };
 
 export type RecoveryStackParamList = {
@@ -245,9 +245,9 @@ export type SelectNetworkFeeStackParamList = {
     currentOption: NetworkFeeSelection;
     gasDetailsMap: Optional<Record<NetworkFeeSelection, TransactionGasDetails>>;
     defaultCustomGasTransactionDetails: CustomGasTransactionDetails;
-    selectedRelayer: Optional<SelectedRelayer>;
+    selectedBroadcaster: Optional<SelectedBroadcaster>;
     selectedFeeToken: ERC20Token;
-    isRelayerTransaction: boolean;
+    isBroadcasterTransaction: boolean;
   };
   CustomNetworkFeeTypes01Screen: {
     onDismiss: (customGasPrice?: bigint) => void;

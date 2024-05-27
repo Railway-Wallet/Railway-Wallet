@@ -17,7 +17,8 @@ import {
   EVENT_OPEN_DRAWER_WITH_DATA,
 } from '@models/drawer-types';
 import {
-  BlockedRelayerService,
+  BlockedBroadcasterService,
+  broadcasterFeeTransactionText,
   canCancelTransaction,
   canMarkAsFailedTransaction,
   compareTokens,
@@ -28,7 +29,6 @@ import {
   isNonSpendableBucket,
   ProviderService,
   railgunFeeTransactionText,
-  relayerFeeTransactionText,
   SavedTransaction,
   SavedTransactionStore,
   shortenTokenAddress,
@@ -78,7 +78,7 @@ export const TransactionItem: React.FC<Props> = ({
   const [showPendingBalancesModal, setShowPendingBalancesModal] =
     useState(false);
 
-  const { relayerBlocklist } = useReduxSelector('relayerBlocklist');
+  const { broadcasterBlocklist } = useReduxSelector('broadcasterBlocklist');
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
   const { tokens } = useAddedTokenSearch();
@@ -167,16 +167,16 @@ export const TransactionItem: React.FC<Props> = ({
     });
   };
 
-  const blockRelayer = async (pubKey?: string) => {
+  const blockBroadcaster = async (pubKey?: string) => {
     if (isDefined(pubKey)) {
-      const blockedRelayerService = new BlockedRelayerService(dispatch);
-      await blockedRelayerService.addBlockedRelayer(
+      const blockedBroadcasterService = new BlockedBroadcasterService(dispatch);
+      await blockedBroadcasterService.addBlockedBroadcaster(
         pubKey,
         undefined,
       );
 
       setAlert({
-        title: 'Public relayer added to block list.',
+        title: 'Public broadcaster added to block list.',
         onClose: () => setAlert(undefined),
       });
     }
@@ -274,15 +274,15 @@ export const TransactionItem: React.FC<Props> = ({
 
     if (
       transaction.status === TransactionStatus.failed &&
-      isDefined(transaction.relayerRailgunAddress) &&
-      !BlockedRelayerService.isRelayerBlocked(
-        transaction.relayerRailgunAddress,
-        relayerBlocklist.relayers,
+      isDefined(transaction.broadcasterRailgunAddress) &&
+      !BlockedBroadcasterService.isBroadcasterBlocked(
+        transaction.broadcasterRailgunAddress,
+        broadcasterBlocklist.broadcasters,
       )
     ) {
       buttons.push({
-        text: 'Block this public relayer',
-        action: () => blockRelayer(transaction.relayerRailgunAddress),
+        text: 'Block this public broadcaster',
+        action: () => blockBroadcaster(transaction.broadcasterRailgunAddress),
       });
     }
 
@@ -334,7 +334,7 @@ export const TransactionItem: React.FC<Props> = ({
       wallets.available,
       filteredToken,
     );
-    const relayerFee = relayerFeeTransactionText(
+    const broadcasterFee = broadcasterFeeTransactionText(
       transaction,
       wallets.active,
       wallets.available,
@@ -378,9 +378,9 @@ export const TransactionItem: React.FC<Props> = ({
             {railgunFee}
           </Text>
         )}
-        {isDefined(relayerFee) && (
+        {isDefined(broadcasterFee) && (
           <Text className={cn(styles.feeText, 'selectable-text')}>
-            {relayerFee}
+            {broadcasterFee}
           </Text>
         )}
         {isDefined(transaction.memoText) && (
@@ -415,14 +415,14 @@ export const TransactionItem: React.FC<Props> = ({
             {isDefined(transaction.nonce)
               ? ` • Nonce ${transaction.nonce}`
               : null}
-            {transaction.sentViaRelayer &&
+            {transaction.sentViaBroadcaster &&
             !(transaction.syncedFromRailgun ?? false)
-              ? ` • Sent via public relayer`
+              ? ` • Sent via public broadcaster`
               : null}
             {transaction.syncedFromRailgun ?? false
               ? ` • Synced from encrypted on-chain history`
               : null}
-            {transaction.sentViaRelayer &&
+            {transaction.sentViaBroadcaster &&
             !(transaction.syncedFromRailgun ?? false) &&
             !(transaction.foundBySync ?? false)
               ? ` • Not yet synced to RAILGUN balance`

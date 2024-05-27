@@ -7,14 +7,14 @@ import { useEffect, useMemo, useState } from 'react';
 
 export const useGasFeeWatcher = (
   gasDetails: Optional<TransactionGasDetails>,
-  selectedRelayerLocked: boolean,
+  selectedBroadcasterLocked: boolean,
   changeThresholdBasisPoints: number,
 ) => {
   const [savedMaximumGasThreshold, setSavedMaximumGasThreshold] =
     useState<Optional<bigint>>();
 
   useEffect(() => {
-    if (selectedRelayerLocked && gasDetails) {
+    if (selectedBroadcasterLocked && gasDetails) {
       const maximumGas = calculateMaximumGas(gasDetails);
       const threshold =
         maximumGas * 10000n + BigInt(changeThresholdBasisPoints) / 10000n;
@@ -23,7 +23,7 @@ export const useGasFeeWatcher = (
     }
     setSavedMaximumGasThreshold(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRelayerLocked]);
+  }, [selectedBroadcasterLocked]);
 
   const gasPriceChangedByThreshold: boolean = useMemo(() => {
     if (!isDefined(savedMaximumGasThreshold) || !gasDetails) {

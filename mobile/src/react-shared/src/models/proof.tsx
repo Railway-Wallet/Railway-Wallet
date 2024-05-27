@@ -2,7 +2,7 @@ import {
   NetworkName,
   NFTAmountRecipient,
   ProofType,
-  SelectedRelayer,
+  SelectedBroadcaster,
 } from '@railgun-community/shared-models';
 import { ERC20Amount, ERC20AmountRecipient } from './token';
 import { AvailableWallet } from './wallet';
@@ -10,8 +10,8 @@ import { AvailableWallet } from './wallet';
 export type PerformGenerateProofType = (
   finalERC20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
-  selectedRelayer: Optional<SelectedRelayer>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   publicWalletOverride: Optional<AvailableWallet>,
   showSenderAddressToRecipient: boolean,
   memoText: Optional<string>,
@@ -28,7 +28,7 @@ export type ValidateProvedTransactionType = (
   memoText: Optional<string>,
   finalERC20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
-  relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+  broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
 ) => Promise<void>;

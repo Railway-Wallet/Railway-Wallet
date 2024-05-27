@@ -59,8 +59,8 @@ export const FarmVaultConfirm = ({
   const relayAdaptShieldNFTRecipientsRef = useRef<NFTAmountRecipient[]>([]);
 
   const {
-    currentERC20Amount: currentRelayerFeeTokenAmount,
-    onERC20AmountUpdate: onRelayerFeeUpdate,
+    currentERC20Amount: currentBroadcasterFeeTokenAmount,
+    onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
   const isFarmDeposit =
@@ -81,7 +81,7 @@ export const FarmVaultConfirm = ({
 
   const { unshieldERC20AmountAdjusted } = useAdjustedRecipeUnshieldERC20Amount(
     selectedTokenAmountRecipient,
-    currentRelayerFeeTokenAmount,
+    currentBroadcasterFeeTokenAmount,
   );
 
   const { recipeError, recipeOutput, isLoadingRecipeOutput } = useVaultRecipe(
@@ -187,8 +187,8 @@ export const FarmVaultConfirm = ({
     txHash: string,
     sendWithPublicWallet: boolean,
     publicExecutionWalletAddress: Optional<string>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ) => {
     const transactionService = new SavedTransactionService(dispatch);
@@ -203,8 +203,8 @@ export const FarmVaultConfirm = ({
       receivedERC20AmountRecipient,
       network.current,
       !sendWithPublicWallet, true, true, feeERC20Amounts,
-      relayerFeeERC20Amount,
-      relayerRailgunAddress,
+      broadcasterFeeERC20Amount,
+      broadcasterRailgunAddress,
       nonce,
     );
   };
@@ -238,7 +238,7 @@ export const FarmVaultConfirm = ({
       relayAdaptUnshieldNFTAmounts={relayAdaptUnshieldNFTAmountsRef.current}
       relayAdaptShieldERC20Recipients={relayAdaptShieldERC20Recipients}
       relayAdaptShieldNFTRecipients={relayAdaptShieldNFTRecipientsRef.current}
-      onRelayerFeeUpdate={onRelayerFeeUpdate}
+      onBroadcasterFeeUpdate={onBroadcasterFeeUpdate}
     />
   );
 };

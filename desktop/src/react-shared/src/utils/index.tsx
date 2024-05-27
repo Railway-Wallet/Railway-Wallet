@@ -1,6 +1,7 @@
 export * from './address';
 export * from './big-numbers';
 export * from './blocked-address';
+export * from './broadcaster';
 export * from './contract';
 export * from './currencies';
 export * from './domain-resolution';
@@ -14,7 +15,6 @@ export * from './nft';
 export * from './overall-batch-min-gas-price';
 export * from './poi';
 export * from './promises';
-export * from './relayer';
 export * from './remote-config';
 export * from './saved-transactions';
 export * from './time';

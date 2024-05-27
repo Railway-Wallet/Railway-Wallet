@@ -239,7 +239,7 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
         purpose={SelectTokenPurpose.Transfer}
         transactionType={transactionType}
         hasExistingTokenAmounts={false}
-        useRelayAdaptForRelayerFee={false}
+        useRelayAdaptForBroadcasterFee={false}
         balanceBucketFilter={balanceBucketFilter}
       />
       {showAmountEntry && (

@@ -5,7 +5,7 @@ import {
   getEVMGasTypeForTransaction,
   isDefined,
   NFTAmountRecipient,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -20,10 +20,10 @@ import { ERC20AmountRecipient } from '../../models/token';
 import { ProgressService } from '../../services';
 import { promiseTimeout } from '../../utils';
 import {
+  broadcasterGasHistoryPercentileForChain,
   convertNetworkFeeSelectionToGasSpeed,
   extractGasValue,
   getGasDetailsBySpeed,
-  relayerGasHistoryPercentileForChain,
 } from '../../utils/gas-by-speed';
 import { logDev, logDevError } from '../../utils/logging';
 import { networkGasText } from '../../utils/transactions';
@@ -47,8 +47,8 @@ export const useNetworkFeeGasEstimator = (
   erc20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
   customGasTransactionDetails: CustomGasTransactionDetails,
-  selectedRelayerLocked: Optional<boolean>,
-  selectedRelayer: Optional<SelectedRelayer>,
+  selectedBroadcasterLocked: Optional<boolean>,
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
   sendWithPublicWallet: boolean,
   isMounted: () => boolean,
   gasEstimateProgressCallback: (progress: number) => void,
@@ -79,8 +79,8 @@ export const useNetworkFeeGasEstimator = (
   const [gasEstimateError, setGasEstimateError] = useState<Optional<Error>>();
 
   const latestGasEstimateID = useRef<Optional<string>>();
-  const latestSelectedRelayerLocked = useRef<Optional<boolean>>(
-    selectedRelayerLocked,
+  const latestSelectedBroadcasterLocked = useRef<Optional<boolean>>(
+    selectedBroadcasterLocked,
   );
 
   const validGasDetailsForNetworkFeeSelection = useCallback(
@@ -223,16 +223,15 @@ export const useNetworkFeeGasEstimator = (
     standardGasDetails,
   ]);
 
-  const relayerTransactionGasDetailsWithZeroEstimate = useMemo(() => {
+  const broadcasterTransactionGasDetailsWithZeroEstimate = useMemo(() => {
     if (!gasDetailsBySpeed) {
       return undefined;
     }
-    const relayerGasHistoryPercentile = relayerGasHistoryPercentileForChain(
-      network.current.name,
-    );
+    const broadcasterGasHistoryPercentile =
+      broadcasterGasHistoryPercentileForChain(network.current.name);
     return {
       gasEstimate: 0n,
-      ...gasDetailsBySpeed[relayerGasHistoryPercentile],
+      ...gasDetailsBySpeed[broadcasterGasHistoryPercentile],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gasDetailsBySpeed, network.current.name]);
@@ -269,7 +268,7 @@ export const useNetworkFeeGasEstimator = (
       );
       return;
     }
-    if (latestSelectedRelayerLocked.current ?? false) {
+    if (latestSelectedBroadcasterLocked.current ?? false) {
       return;
     }
     logDev('refreshGasEstimate');
@@ -296,17 +295,17 @@ export const useNetworkFeeGasEstimator = (
         if (!isDefined(railWalletID)) {
           return;
         }
-        if (!selectedRelayer && !sendWithPublicWallet) {
+        if (!selectedBroadcaster && !sendWithPublicWallet) {
           return;
         }
-        if (!relayerTransactionGasDetailsWithZeroEstimate) {
+        if (!isDefined(broadcasterTransactionGasDetailsWithZeroEstimate)) {
           return;
         }
         let feeTokenDetails: Optional<FeeTokenDetails>;
-        if (selectedRelayer) {
+        if (selectedBroadcaster) {
           feeTokenDetails = {
-            tokenAddress: selectedRelayer.tokenAddress,
-            feePerUnitGas: BigInt(selectedRelayer.tokenFee.feePerUnitGas),
+            tokenAddress: selectedBroadcaster.tokenAddress,
+            feePerUnitGas: BigInt(selectedBroadcaster.tokenFee.feePerUnitGas),
           };
         }
 
@@ -318,7 +317,7 @@ export const useNetworkFeeGasEstimator = (
             memoText,
             erc20AmountRecipients,
             nftAmountRecipients,
-            relayerTransactionGasDetailsWithZeroEstimate,
+            broadcasterTransactionGasDetailsWithZeroEstimate,
             feeTokenDetails,
             sendWithPublicWallet,
           ),
@@ -362,7 +361,7 @@ export const useNetworkFeeGasEstimator = (
       const gasEstimate = await gasEstimatePromise;
 
       if (
-        !(latestSelectedRelayerLocked.current ?? false) &&
+        !(latestSelectedBroadcasterLocked.current ?? false) &&
         currentGasEstimateID === latestGasEstimateID.current
       ) {
         progressServiceGasEstimate.current.stop();
@@ -384,11 +383,11 @@ export const useNetworkFeeGasEstimator = (
     isShieldedFromAddress,
     requiresProofGeneration,
     railWalletID,
-    selectedRelayer?.railgunAddress,
-    selectedRelayer?.tokenAddress,
-    selectedRelayer?.tokenFee.feePerUnitGas,
+    selectedBroadcaster?.railgunAddress,
+    selectedBroadcaster?.tokenAddress,
+    selectedBroadcaster?.tokenFee.feePerUnitGas,
     sendWithPublicWallet,
-    relayerTransactionGasDetailsWithZeroEstimate,
+    broadcasterTransactionGasDetailsWithZeroEstimate,
     memoText,
     erc20AmountRecipients,
     nftAmountRecipients,
@@ -397,7 +396,7 @@ export const useNetworkFeeGasEstimator = (
 
   const refreshGasFeeData = useCallback(
     async (forceUseNewData = false) => {
-      if (latestSelectedRelayerLocked.current ?? false) {
+      if (latestSelectedBroadcasterLocked.current ?? false) {
         return;
       }
       try {
@@ -449,10 +448,10 @@ export const useNetworkFeeGasEstimator = (
         }
 
         if (
-          (latestSelectedRelayerLocked.current ?? false) &&
+          (latestSelectedBroadcasterLocked.current ?? false) &&
           !sendWithPublicWallet
         ) {
-          logDev('Skip updating gas price - relayer locked');
+          logDev('Skip updating gas price - broadcaster locked');
           return;
         }
 
@@ -479,8 +478,8 @@ export const useNetworkFeeGasEstimator = (
   };
 
   useEffect(() => {
-    latestSelectedRelayerLocked.current = selectedRelayerLocked;
-  }, [selectedRelayerLocked]);
+    latestSelectedBroadcasterLocked.current = selectedBroadcasterLocked;
+  }, [selectedBroadcasterLocked]);
 
   useEffect(() => {
     logDev('clear gas estimate');
@@ -490,7 +489,7 @@ export const useNetworkFeeGasEstimator = (
     railWalletID,
     sendWithPublicWallet,
     memoText,
-    selectedRelayer?.tokenAddress,
+    selectedBroadcaster?.tokenAddress,
   ]);
 
   useEffect(() => {
@@ -504,11 +503,11 @@ export const useNetworkFeeGasEstimator = (
     network.current.name,
     nftAmountRecipients,
     railWalletID,
-    relayerTransactionGasDetailsWithZeroEstimate,
+    broadcasterTransactionGasDetailsWithZeroEstimate,
     requiresProofGeneration,
-    selectedRelayer?.railgunAddress,
-    selectedRelayer?.tokenAddress,
-    selectedRelayer?.tokenFee.feePerUnitGas,
+    selectedBroadcaster?.railgunAddress,
+    selectedBroadcaster?.tokenAddress,
+    selectedBroadcaster?.tokenFee.feePerUnitGas,
     sendWithPublicWallet,
   ]);
 
@@ -517,11 +516,11 @@ export const useNetworkFeeGasEstimator = (
   }, [refreshGasFeeData]);
 
   useEffect(() => {
-    latestSelectedRelayerLocked.current = selectedRelayerLocked;
+    latestSelectedBroadcasterLocked.current = selectedBroadcasterLocked;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     refreshGasFeeData();
     const interval = setInterval(() => {
-      latestSelectedRelayerLocked.current = selectedRelayerLocked;
+      latestSelectedBroadcasterLocked.current = selectedBroadcasterLocked;
       if (pollGasFeeData.current) {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         pollGasFeeData.current();
@@ -532,7 +531,7 @@ export const useNetworkFeeGasEstimator = (
   }, [
     network.current.name,
     remoteConfig,
-    selectedRelayerLocked,
+    selectedBroadcasterLocked,
     networkFeeSelection,
     sendWithPublicWallet,
   ]);

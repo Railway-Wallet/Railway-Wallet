@@ -1,11 +1,12 @@
 import {
+  BroadcasterConnectionStatus,
   isDefined,
-  RelayerConnectionStatus,
 } from '@railgun-community/shared-models';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text } from '@components/Text/Text';
 import { ERC20ListRow } from '@components/TokenListRow/ERC20ListRow/ERC20ListRow';
 import {
+  broadcasterSupportsERC20Token,
   calculateTokenBalance,
   ERC20BalancesSerialized,
   ERC20Token,
@@ -13,11 +14,10 @@ import {
   FrontendWallet,
   getDecimalBalance,
   getTokenDisplayName,
-  relayerSupportsERC20Token,
   SelectTokenPurpose,
   truncateStr,
+  useBroadcasterConnectionStatus,
   useReduxSelector,
-  useRelayerConnectionStatus,
 } from '@react-shared';
 import styles from './SelectTokenList.module.scss';
 
@@ -28,7 +28,7 @@ type Props = {
   wallet: Optional<FrontendWallet>;
   onSelect: (token: ERC20Token) => void;
   purpose: SelectTokenPurpose;
-  useRelayAdaptForRelayerFee: boolean;
+  useRelayAdaptForBroadcasterFee: boolean;
 };
 
 export const SelectERC20List: React.FC<Props> = ({
@@ -38,37 +38,37 @@ export const SelectERC20List: React.FC<Props> = ({
   isRailgun,
   onSelect,
   purpose,
-  useRelayAdaptForRelayerFee,
+  useRelayAdaptForBroadcasterFee,
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
 
-  const { relayerConnectionStatus } = useRelayerConnectionStatus();
+  const { broadcasterConnectionStatus } = useBroadcasterConnectionStatus();
   const [disabledRecord, setDisabledRecord] = useState<Record<string, boolean>>(
     {},
   );
 
-  const isSupportedForRelayerFees = useCallback(
+  const isSupportedForBroadcasterFees = useCallback(
     async (token: ERC20Token) => {
-      return relayerSupportsERC20Token(
+      return broadcasterSupportsERC20Token(
         network.current.chain,
         token.address,
-        useRelayAdaptForRelayerFee,
+        useRelayAdaptForBroadcasterFee,
       );
     },
-    [network, useRelayAdaptForRelayerFee],
+    [network, useRelayAdaptForBroadcasterFee],
   );
 
   useEffect(() => {
     const checkIsSupported = async () => {
-      if (purpose !== SelectTokenPurpose.RelayerFee) {
+      if (purpose !== SelectTokenPurpose.BroadcasterFee) {
         setDisabledRecord({});
         return;
       }
       const record: Record<string, boolean> = {};
       const results = await Promise.all(
         addedTokens.map(async token => {
-          const isSupported = await isSupportedForRelayerFees(token);
+          const isSupported = await isSupportedForBroadcasterFees(token);
           return [token.address, isSupported] as const;
         }),
       );
@@ -80,7 +80,7 @@ export const SelectERC20List: React.FC<Props> = ({
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     checkIsSupported();
-  }, [addedTokens, purpose, setDisabledRecord, isSupportedForRelayerFees]);
+  }, [addedTokens, purpose, setDisabledRecord, isSupportedForBroadcasterFees]);
 
   const isDisabled = (token: ERC20Token) => {
     return disabledRecord[token.address] ?? false;
@@ -117,11 +117,11 @@ export const SelectERC20List: React.FC<Props> = ({
 
   const renderRightView = (token: ERC20Token) => {
     if (isDisabled(token)) {
-      const noRelayersFound =
-        !isDefined(relayerConnectionStatus) ||
-        relayerConnectionStatus === RelayerConnectionStatus.Searching;
-      const disabledText = noRelayersFound
-        ? 'No public relayer available'
+      const noBroadcastersFound =
+        !isDefined(broadcasterConnectionStatus) ||
+        broadcasterConnectionStatus === BroadcasterConnectionStatus.Searching;
+      const disabledText = noBroadcastersFound
+        ? 'No public broadcaster available'
         : 'Not accepted';
 
       return (

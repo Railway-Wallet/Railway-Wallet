@@ -54,8 +54,8 @@ export const SwapPrivateConfirm: React.FC<Props> = ({ navigation, route }) => {
   );
 
   const {
-    currentERC20Amount: currentRelayerFeeTokenAmount,
-    onERC20AmountUpdate: onRelayerFeeUpdate,
+    currentERC20Amount: currentBroadcasterFeeTokenAmount,
+    onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
   const [swapDestinationAddress, setSwapDestinationAddress] =
@@ -77,7 +77,7 @@ export const SwapPrivateConfirm: React.FC<Props> = ({ navigation, route }) => {
 
   const { unshieldERC20AmountAdjusted } = useAdjustedRecipeUnshieldERC20Amount(
     sellERC20AmountRecipient,
-    currentRelayerFeeTokenAmount,
+    currentBroadcasterFeeTokenAmount,
   );
 
   const {
@@ -155,8 +155,8 @@ export const SwapPrivateConfirm: React.FC<Props> = ({ navigation, route }) => {
     txHash: string,
     sendWithPublicWallet: boolean,
     publicExecutionWalletAddress: Optional<string>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ) => {
     const transactionService = new SavedTransactionService(dispatch);
@@ -170,8 +170,8 @@ export const SwapPrivateConfirm: React.FC<Props> = ({ navigation, route }) => {
       swapDestinationAddress,
       network.current,
       !sendWithPublicWallet, true, true, [sellERC20Fee, buyERC20Fee],
-      relayerFeeERC20Amount,
-      relayerRailgunAddress,
+      broadcasterFeeERC20Amount,
+      broadcasterRailgunAddress,
       nonce,
     );
   };
@@ -209,7 +209,7 @@ export const SwapPrivateConfirm: React.FC<Props> = ({ navigation, route }) => {
       relayAdaptUnshieldNFTAmounts={relayAdaptUnshieldNFTAmountsRef.current}
       relayAdaptShieldERC20Recipients={relayAdaptShieldERC20Recipients}
       relayAdaptShieldNFTRecipients={relayAdaptShieldNFTRecipientsRef.current}
-      onRelayerFeeUpdate={onRelayerFeeUpdate}
+      onBroadcasterFeeUpdate={onBroadcasterFeeUpdate}
     />
   );
 };

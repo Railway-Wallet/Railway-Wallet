@@ -33,8 +33,8 @@ export const useFilteredTokenTransactions = (
               compareTokens(ta.token, token),
             ),
           )) ||
-        (isDefined(tx.relayerFeeTokenAmount) &&
-          compareTokens(tx.relayerFeeTokenAmount.token, token));
+        (isDefined(tx.broadcasterFeeTokenAmount) &&
+          compareTokens(tx.broadcasterFeeTokenAmount.token, token));
 
       const showBaseTokenShield =
         (token.isBaseToken ?? false) &&

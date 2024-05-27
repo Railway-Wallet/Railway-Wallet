@@ -128,7 +128,7 @@ export const createPOIDisclaimerAlert = (
   });
 };
 
-export const createSelfRelayDisclaimerAlert = (
+export const createSelfBroadcastDisclaimerAlert = (
   setAlert: React.Dispatch<React.SetStateAction<AlertProps | undefined>>,
   setExternalLinkAlert: React.Dispatch<
     React.SetStateAction<AlertProps | undefined>
@@ -140,9 +140,9 @@ export const createSelfRelayDisclaimerAlert = (
   };
 
   setAlert({
-    title: 'Self Relay',
+    title: 'Self Broadcast',
     message:
-      'Use a wallet you control to sign a private transaction and and broadcast to the blockchain nodes. This wallet will pay gas fees from its public balance. Be sure to follow best practices when self relaying to maintain anonymity.',
+      'Use a wallet you control to sign a private transaction and and broadcast to the blockchain nodes. This wallet will pay gas fees from its public balance. Be sure to follow best practices when self broadcasting to maintain anonymity.',
     submitTitle: 'Okay',
     submitButtonClassName: styles.singleLineButtonStyle,
     footerView: (
@@ -163,7 +163,7 @@ export const createSelfRelayDisclaimerAlert = (
   });
 };
 
-export const createPublicRelayerDisclaimerAlert = (
+export const createPublicBroadcasterDisclaimerAlert = (
   setAlert: React.Dispatch<React.SetStateAction<AlertProps | undefined>>,
   setExternalLinkAlert: React.Dispatch<
     React.SetStateAction<AlertProps | undefined>
@@ -175,9 +175,9 @@ export const createPublicRelayerDisclaimerAlert = (
   };
 
   setAlert({
-    title: 'Public Relayer',
+    title: 'Public Broadcaster',
     message:
-      'Use a third-party public relayer to sign a private transaction and broadcast to the blockchain nodes. This provides more anonymity. Public relayers do not ever gain control or custody of your funds and cannot see any details of the sender or the contents of the private transaction. Railway does not control or maintain any relayers in the decentralized public relayer network.',
+      'Use a third-party public broadcaster to sign a private transaction and broadcast to the blockchain nodes. This provides more anonymity. Public broadcasters do not ever gain control or custody of your funds and cannot see any details of the sender or the contents of the private transaction. Railway does not control or maintain any broadcasters in the decentralized public broadcaster network.',
     submitTitle: 'Okay',
     submitButtonClassName: styles.singleLineButtonStyle,
     footerView: (
@@ -186,7 +186,7 @@ export const createPublicRelayerDisclaimerAlert = (
           children="Learn more"
           buttonClassName={cn(styles.fullLengthButtonStyle, styles.docButton)}
           onClick={handleRedirect(
-            'https://docs.railgun.org/wiki/learn/privacy-system/community-relayers',
+            'https://docs.railgun.org/wiki/learn/privacy-system/community-broadcasters',
           )}
         />
       </div>

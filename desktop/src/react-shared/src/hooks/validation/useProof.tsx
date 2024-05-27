@@ -1,7 +1,7 @@
 import {
   isDefined,
   NFTAmountRecipient,
-  SelectedRelayer,
+  SelectedBroadcaster,
 } from '@railgun-community/shared-models';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactConfig } from '../../config/react-config';
@@ -10,7 +10,7 @@ import { ValidateProvedTransactionType } from '../../models/proof';
 import { ERC20Amount, ERC20AmountRecipient } from '../../models/token';
 import { TransactionType } from '../../models/transaction';
 import { logDev } from '../../utils/logging';
-import { createRelayerFeeERC20AmountRecipient } from '../../utils/tokens';
+import { createBroadcasterFeeERC20AmountRecipient } from '../../utils/tokens';
 import { getProofTypeFromTransactionType } from '../../utils/transactions';
 import { useReduxSelector } from '../hooks-redux';
 
@@ -22,12 +22,12 @@ export const useProof = (
   erc20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
   isBaseTokenWithdraw: boolean,
-  selectedRelayer: Optional<SelectedRelayer>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   setError: (err: Error) => void,
-  lockRelayer: (shouldLock: boolean) => void,
+  lockBroadcaster: (shouldLock: boolean) => void,
   proofTimerExpired: () => void,
   validateProvedTransaction: ValidateProvedTransactionType,
 ) => {
@@ -46,10 +46,10 @@ export const useProof = (
   const invalidateProof = useCallback(() => {
     logDev('Invalidate proof.');
     setShowGenerateProofModal(false);
-    lockRelayer(false);
+    lockBroadcaster(false);
     setHasValidProof(false);
     clearProofTimer();
-  }, [lockRelayer]);
+  }, [lockBroadcaster]);
 
   useEffect(() => {
     const validateProof = async () => {
@@ -76,9 +76,9 @@ export const useProof = (
           nftAmountRecipients,
           sendWithPublicWallet
             ? undefined
-            : createRelayerFeeERC20AmountRecipient(
-                selectedRelayer,
-                relayerFeeERC20Amount,
+            : createBroadcasterFeeERC20AmountRecipient(
+                selectedBroadcaster,
+                broadcasterFeeERC20Amount,
               ),
           sendWithPublicWallet,
           overallBatchMinGasPrice,
@@ -99,8 +99,8 @@ export const useProof = (
     wallets.active,
     isBaseTokenWithdraw,
     requiresProofGeneration,
-    selectedRelayer,
-    relayerFeeERC20Amount,
+    selectedBroadcaster,
+    broadcasterFeeERC20Amount,
     validateProvedTransaction,
     invalidateProof,
     network,
@@ -132,7 +132,7 @@ export const useProof = (
       clearProofTimer();
       return;
     }
-    if (!selectedRelayer) {
+    if (!selectedBroadcaster) {
       invalidateProof();
       return;
     }
@@ -147,7 +147,7 @@ export const useProof = (
     if (sendWithPublicWallet || !isDefined(expirationTime.current)) {
       return;
     }
-    if (!selectedRelayer) {
+    if (!selectedBroadcaster) {
       invalidateProof();
       return;
     }
@@ -171,7 +171,7 @@ export const useProof = (
   };
 
   const onGenerateProofFail = (err: Error) => {
-    lockRelayer(false);
+    lockBroadcaster(false);
     setShowGenerateProofModal(false);
     setError(err);
   };
@@ -180,7 +180,7 @@ export const useProof = (
     if (!requiresProofGeneration) {
       return;
     }
-    lockRelayer(true);
+    lockBroadcaster(true);
     if (ReactConfig.IS_DEV && SharedConstants.USE_FAKE_PROOF_IN_DEV) {
       onGenerateProofSuccess();
       return;
@@ -194,7 +194,7 @@ export const useProof = (
     clearProofTimer,
     proofExpirationSeconds,
     showGenerateProofModal,
-    selectedRelayer,
+    selectedBroadcaster,
     onGenerateProofSuccess,
     onGenerateProofFail,
     tryGenerateProof,

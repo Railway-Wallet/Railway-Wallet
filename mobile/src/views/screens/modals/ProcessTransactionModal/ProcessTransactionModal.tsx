@@ -1,6 +1,6 @@
 import {
   NFTAmountRecipient,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
 import React, { useEffect, useState } from 'react';
@@ -22,13 +22,13 @@ interface ProcessTransactionModalProps {
   finalAdjustedERC20AmountRecipientGroup: AdjustedERC20AmountRecipientGroup;
   nftAmountRecipients: NFTAmountRecipient[];
   performTransaction: PerformTransactionType;
-  selectedRelayer: Optional<SelectedRelayer>;
-  relayerFeeERC20Amount: Optional<ERC20Amount>;
+  selectedBroadcaster: Optional<SelectedBroadcaster>;
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>;
   transactionGasDetails: Optional<TransactionGasDetails>;
   showSenderAddressToRecipient: boolean;
   memoText: Optional<string>;
   onSuccessClose: () => void;
-  onFailClose: (err: Error, isRelayerError?: boolean) => void;
+  onFailClose: (err: Error, isBroadcasterError?: boolean) => void;
   processingText: string;
   successText: string;
   showKeepAppOpenText?: boolean;
@@ -43,8 +43,8 @@ export const ProcessTransactionModal: React.FC<
   finalAdjustedERC20AmountRecipientGroup,
   nftAmountRecipients,
   performTransaction,
-  selectedRelayer,
-  relayerFeeERC20Amount,
+  selectedBroadcaster,
+  broadcasterFeeERC20Amount,
   transactionGasDetails,
   onSuccessClose,
   onFailClose,
@@ -72,12 +72,12 @@ export const ProcessTransactionModal: React.FC<
           Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT,
         );
       };
-      const error = (cause: Error, isRelayerError?: boolean) => {
+      const error = (cause: Error, isBroadcasterError?: boolean) => {
         triggerHaptic(HapticSurface.NotifyError);
         setFailure(new Error('Failed to process transaction.', { cause }));
         setProcessingState(ProcessingState.Fail);
         setTimeout(
-          () => onFailClose(cause, isRelayerError),
+          () => onFailClose(cause, isBroadcasterError),
           Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT,
         );
       };
@@ -91,8 +91,8 @@ export const ProcessTransactionModal: React.FC<
       performTransaction(
         finalAdjustedERC20AmountRecipientGroup,
         nftAmountRecipients,
-        publicWalletOverride ? undefined : selectedRelayer,
-        publicWalletOverride ? undefined : relayerFeeERC20Amount,
+        publicWalletOverride ? undefined : selectedBroadcaster,
+        publicWalletOverride ? undefined : broadcasterFeeERC20Amount,
         transactionGasDetails,
         customNonce,
         publicWalletOverride,

@@ -15,11 +15,11 @@ import {
   StackActions,
 } from '@react-navigation/native';
 import {
+  broadcasterFeeInfoText,
   CustomGasTransactionDetails,
   logDev,
   NetworkFeeSelection,
   networkGasText,
-  relayerFeeInfoText,
   styleguide,
   useReduxSelector,
 } from '@react-shared';
@@ -51,9 +51,9 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
     currentOption,
     gasDetailsMap,
     defaultCustomGasTransactionDetails,
-    selectedRelayer,
+    selectedBroadcaster,
     selectedFeeToken,
-    isRelayerTransaction,
+    isBroadcasterTransaction,
   } = route.params;
 
   const [selectedOption, setSelectedOption] = useState(currentOption);
@@ -89,24 +89,25 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
       networkFeePriceText: string;
     };
 
-    if (isRelayerTransaction) {
-      if (!selectedRelayer) {
-        logDev('Requires selected relayer to choose network fee.');
+    if (isBroadcasterTransaction) {
+      if (!selectedBroadcaster) {
+        logDev('Requires selected broadcaster to choose network fee.');
         return null;
       }
-      const relayerFeeInfo = relayerFeeInfoText(
+      const broadcasterFeeInfo = broadcasterFeeInfoText(
         wallets.available,
         network.current,
         networkPrices,
-        selectedRelayer,
+        selectedBroadcaster,
         selectedFeeToken,
         gasDetails,
         showExactCurrencyGasPrice,
       );
       gasTextFormatted = {
-        networkFeeText: relayerFeeInfo?.relayerFeeText ?? 'Updating gas fee',
+        networkFeeText:
+          broadcasterFeeInfo?.broadcasterFeeText ?? 'Updating gas fee',
         networkFeePriceText:
-          relayerFeeInfo?.relayerFeeSubtext ?? 'Please wait...',
+          broadcasterFeeInfo?.broadcasterFeeSubtext ?? 'Please wait...',
       };
     } else {
       gasTextFormatted = networkGasText(

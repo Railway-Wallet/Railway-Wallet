@@ -31,9 +31,9 @@ import {
 } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
 import { PendingBalancesModal } from '@screens/modals/POI/PendingBalancesModal/PendingBalancesModal';
 import { POIListsModal } from '@screens/modals/settings/POIListsModal/POIListsModal';
+import { SettingsBroadcastersModal } from '@screens/modals/settings/SettingsBroadcastersModal/SettingsBroadcastersModal';
 import { SettingsDefaultsModal } from '@screens/modals/settings/SettingsDefaultsModal/SettingsDefaultsModal';
 import { SettingsNetworksModal } from '@screens/modals/settings/SettingsNetworksModal/SettingsNetworksModal';
-import { SettingsRelayersModal } from '@screens/modals/settings/SettingsRelayersModal/SettingsRelayersModal';
 import { SettingsSavedAddressesModal } from '@screens/modals/settings/SettingsSavedAddressesModal/SettingsSavedAddressesModal';
 import { SettingsWalletsModal } from '@screens/modals/settings/SettingsWalletsModal/SettingsWalletsModal';
 import { wipeDevice_DESTRUCTIVE } from '@services/security/wipe-device-service';
@@ -56,7 +56,8 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
   const [pendingBalancesOpen, setPendingBalancesOpen] = useState(false);
   const [networkSettingsOpen, setNetworkSettingsOpen] = useState(false);
   const [savedAddressesOpen, setSavedAddressesOpen] = useState(false);
-  const [relayersSettingsOpen, setRelayersSettingsOpen] = useState(false);
+  const [broadcastersSettingsOpen, setBroadcastersSettingsOpen] =
+    useState(false);
   const [poiListSettingsOpen, setPoiListSettingsOpen] = useState(false);
   const [changePasswordSettingsOpen, setChangePasswordSettingsOpen] =
     useState(false);
@@ -360,12 +361,12 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
             )}
           />
           <ListItem
-            title="Public Relayers"
-            description="Customize public relayers"
+            title="Public Broadcasters"
+            description="Customize public broadcasters"
             className={styles.listItem}
             titleClassName={styles.itemTitle}
             descriptionClassName={styles.itemDescription}
-            onPress={() => setRelayersSettingsOpen(true)}
+            onPress={() => setBroadcastersSettingsOpen(true)}
             right={() => (
               <div className={styles.rightContainer}>
                 {renderIcon(IconType.ChevronRight, 18)}
@@ -667,10 +668,10 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
           }}
         />
       )}
-      {relayersSettingsOpen && (
-        <SettingsRelayersModal
+      {broadcastersSettingsOpen && (
+        <SettingsBroadcastersModal
           onClose={closeAllModals => {
-            setRelayersSettingsOpen(false);
+            setBroadcastersSettingsOpen(false);
             if (closeAllModals && onClose) {
               onClose();
             }

@@ -38,8 +38,8 @@ android {
         applicationId "com.railway.rtp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 109
-        versionName "5.4.25"
+        versionCode 114
+        versionName "5.4.30"
 
         missingDimensionStrategy 'react-native-camera', 'general'
 

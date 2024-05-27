@@ -203,7 +203,7 @@ export const SwapSellTokenAmount: React.FC<Props> = ({
           transactionType={transactionType}
           hasExistingTokenAmounts={false}
           showAddTokensButton={true}
-          useRelayAdaptForRelayerFee={false}
+          useRelayAdaptForBroadcasterFee={false}
         />
       )}
       <div className={buyStyles.sectionHeader}>

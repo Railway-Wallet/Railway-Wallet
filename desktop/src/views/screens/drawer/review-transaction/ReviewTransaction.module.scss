@@ -56,7 +56,7 @@
   text-align: center;
 }
 
-.bottomRelayerName {
+.bottomBroadcasterName {
   @include label;
   color: text();
   align-self: center;
@@ -75,11 +75,11 @@
   margin: 12px 24px 4px 24px;
 }
 
-.relayerFeeWarningContainer {
+.broadcasterFeeWarningContainer {
   display: flex;
 }
 
-.relayerFeeWarning {
+.broadcasterFeeWarning {
   color: error();
   padding: 6px 0 0 6px;
   font-size: 15px;
@@ -96,7 +96,7 @@
   justify-content: center;
 }
 
-.relayerOverrideContainer {
+.broadcasterOverrideContainer {
   margin-bottom: 12px;
 }
 

@@ -7,7 +7,7 @@ import {
   useReduxSelector,
   useVaultFetch,
   useVaultRedeemTokenPriceUpdater,
-  useWakuRelayerChainUpdater,
+  useWakuBroadcasterChainUpdater,
 } from '@react-shared';
 import {
   ErrorDetailsModal,
@@ -35,7 +35,7 @@ export const AppReadyView: React.FC<Props> = ({ needsLockScreenOnLaunch }) => {
     }),
   );
 
-  useWakuRelayerChainUpdater();
+  useWakuBroadcasterChainUpdater();
   useInactiveProviderPauser();
 
   useVaultFetch();

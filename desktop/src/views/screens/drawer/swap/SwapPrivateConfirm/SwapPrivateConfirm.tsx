@@ -54,8 +54,8 @@ export const SwapPrivateConfirm = ({
   const dispatch = useAppDispatch();
 
   const {
-    currentERC20Amount: currentRelayerFeeTokenAmount,
-    onERC20AmountUpdate: onRelayerFeeUpdate,
+    currentERC20Amount: currentBroadcasterFeeTokenAmount,
+    onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
   const [swapDestinationAddress, setSwapDestinationAddress] =
@@ -110,7 +110,7 @@ export const SwapPrivateConfirm = ({
 
   const { unshieldERC20AmountAdjusted } = useAdjustedRecipeUnshieldERC20Amount(
     sellERC20AmountRecipient,
-    currentRelayerFeeTokenAmount,
+    currentBroadcasterFeeTokenAmount,
   );
 
   const {
@@ -191,8 +191,8 @@ export const SwapPrivateConfirm = ({
     txHash: string,
     sendWithPublicWallet: boolean,
     publicExecutionWalletAddress: Optional<string>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ) => {
     const transactionService = new SavedTransactionService(dispatch);
@@ -206,8 +206,8 @@ export const SwapPrivateConfirm = ({
       swapDestinationAddress,
       network.current,
       !sendWithPublicWallet, true, true, [sellERC20Fee, buyERC20Fee],
-      relayerFeeERC20Amount,
-      relayerRailgunAddress,
+      broadcasterFeeERC20Amount,
+      broadcasterRailgunAddress,
       nonce,
     );
   };
@@ -252,7 +252,7 @@ export const SwapPrivateConfirm = ({
         relayAdaptUnshieldNFTAmounts={relayAdaptUnshieldNFTAmountsRef.current}
         relayAdaptShieldERC20Recipients={relayAdaptShieldERC20Recipients}
         relayAdaptShieldNFTRecipients={relayAdaptShieldNFTRecipientsRef.current}
-        onRelayerFeeUpdate={onRelayerFeeUpdate}
+        onBroadcasterFeeUpdate={onBroadcasterFeeUpdate}
       />
       {showSwapTransferBaseTokenSelectorModal && (
         <SwapTransferBaseTokenSelectorModal

@@ -15,7 +15,7 @@ import {
   RailgunNFTAmountRecipient,
   RailgunWalletBalanceBucket,
   removeUndefineds,
-  SelectedRelayer,
+  SelectedBroadcaster,
 } from '@railgun-community/shared-models';
 import { parseUnits } from 'ethers';
 import {
@@ -544,15 +544,15 @@ export const createRailgunERC20AmountRecipient = (
   };
 };
 
-export const createRelayerFeeERC20AmountRecipient = (
-  selectedRelayer: Optional<SelectedRelayer>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+export const createBroadcasterFeeERC20AmountRecipient = (
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
 ): Optional<ERC20AmountRecipient> => {
-  return selectedRelayer && relayerFeeERC20Amount
+  return selectedBroadcaster && broadcasterFeeERC20Amount
     ? {
-        token: relayerFeeERC20Amount.token,
-        amountString: relayerFeeERC20Amount.amountString,
-        recipientAddress: selectedRelayer.railgunAddress,
+        token: broadcasterFeeERC20Amount.token,
+        amountString: broadcasterFeeERC20Amount.amountString,
+        recipientAddress: selectedBroadcaster.railgunAddress,
         externalUnresolvedToWalletAddress: undefined,
       }
     : undefined;

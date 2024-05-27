@@ -1,7 +1,7 @@
 import { EncryptDataWithSharedKeySerialized } from '@railgun-community/shared-models';
 import {
   getRandomBytes,
-  verifyRelayerSignature,
+  verifyBroadcasterSignature,
   encryptDataWithSharedKey,
   decryptAESGCM256,
   sendMessage,
@@ -13,7 +13,7 @@ import {
   DecryptAESGCM256Params,
   EncryptDataWithSharedKeyParams,
   GetRandomBytesParams,
-  VerifyRelayerSignatureParams,
+  VerifyBroadcasterSignatureParams,
 } from '../../bridge/model';
 
 const hexStringToUint8Array = (str: string): Uint8Array => {
@@ -31,20 +31,20 @@ bridgeRegisterCall<GetRandomBytesParams, string>(
   },
 );
 
-bridgeRegisterCall<VerifyRelayerSignatureParams, boolean>(
-  BridgeCallEvent.VerifyRelayerSignature,
+bridgeRegisterCall<VerifyBroadcasterSignatureParams, boolean>(
+  BridgeCallEvent.VerifyBroadcasterSignature,
   async ({ signature, data, signingKey }) => {
     try {
       const signatureUint8Array = hexStringToUint8Array(signature);
       const dataUint8Array = hexStringToUint8Array(data);
       const signingKeyUint8Array = hexStringToUint8Array(signingKey);
-      return verifyRelayerSignature(
+      return verifyBroadcasterSignature(
         signatureUint8Array,
         dataUint8Array,
         signingKeyUint8Array,
       );
     } catch (err) {
-      sendMessage('Error in VerifyRelayerSignature:');
+      sendMessage('Error in VerifyBroadcasterSignature:');
       sendError(err);
       throw err;
     }

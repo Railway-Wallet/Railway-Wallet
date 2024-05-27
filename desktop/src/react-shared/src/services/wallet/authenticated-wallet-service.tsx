@@ -198,7 +198,7 @@ export class AuthenticatedWalletService {
     relayAdaptShieldERC20Recipients: RailgunERC20Recipient[],
     relayAdaptShieldNFTRecipients: NFTAmountRecipient[],
     crossContractCalls: ContractTransaction[],
-    relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+    broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
     overallBatchMinGasPrice: Optional<bigint>,
     minGasLimit: bigint,
@@ -214,7 +214,7 @@ export class AuthenticatedWalletService {
       relayAdaptShieldERC20Recipients,
       relayAdaptShieldNFTRecipients,
       crossContractCalls,
-      relayerFeeERC20AmountRecipient,
+      broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
       minGasLimit,
@@ -229,7 +229,7 @@ export class AuthenticatedWalletService {
     showSenderAddressToRecipient: boolean,
     erc20AmountRecipients: ERC20AmountRecipient[],
     nftAmountRecipients: NFTAmountRecipient[],
-    relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+    broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
     overallBatchMinGasPrice: Optional<bigint>,
   ): Promise<void> => {
@@ -243,7 +243,7 @@ export class AuthenticatedWalletService {
       memoText,
       erc20AmountRecipients,
       nftAmountRecipients,
-      relayerFeeERC20AmountRecipient,
+      broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
     );
@@ -255,7 +255,7 @@ export class AuthenticatedWalletService {
     railWalletID: string,
     erc20AmountRecipients: ERC20AmountRecipient[],
     nftAmountRecipients: NFTAmountRecipient[],
-    relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+    broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
     overallBatchMinGasPrice: Optional<bigint>,
   ): Promise<void> => {
@@ -267,7 +267,7 @@ export class AuthenticatedWalletService {
       dbEncryptionKey,
       erc20AmountRecipients,
       nftAmountRecipients,
-      relayerFeeERC20AmountRecipient,
+      broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
     );
@@ -279,7 +279,7 @@ export class AuthenticatedWalletService {
     publicWalletAddress: string,
     railWalletID: string,
     wrappedTokenAmount: ERC20Amount,
-    relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+    broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
     overallBatchMinGasPrice: Optional<bigint>,
   ): Promise<void> => {
@@ -292,7 +292,7 @@ export class AuthenticatedWalletService {
       dbEncryptionKey,
       wrappedTokenAmount,
       [],
-      relayerFeeERC20AmountRecipient,
+      broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
     );

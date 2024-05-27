@@ -6,7 +6,7 @@ import {
   RailgunPopulateTransactionResponse,
   RailgunWalletBalanceBucket,
   sanitizeError,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
 } from '@railgun-community/shared-models';
@@ -24,7 +24,7 @@ import {
   delay,
   ERC20Amount,
   ERC20AmountRecipient,
-  executeWithoutRelayer,
+  executeWithoutBroadcaster,
   GetGasEstimateSelfSigned,
   getShieldPrivateKeySignatureMessage,
   hasOnlyBaseToken,
@@ -122,8 +122,8 @@ export const ShieldConfirm = ({
   const performTransaction = async (
     finalAdjustedERC20AmountRecipientGroup: AdjustedERC20AmountRecipientGroup,
     nftAmountRecipients: NFTAmountRecipient[],
-    _selectedRelayer: Optional<SelectedRelayer>,
-    _relayerFeeERC20Amount: Optional<ERC20Amount>,
+    _selectedBroadcaster: Optional<SelectedBroadcaster>,
+    _broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     transactionGasDetails: TransactionGasDetails,
     customNonce: Optional<number>,
     _publicWalletOverride: Optional<AvailableWallet>,
@@ -162,7 +162,7 @@ export const ShieldConfirm = ({
         network.current.name,
         fromWalletAddress,
       );
-      const txResponse = await executeWithoutRelayer(
+      const txResponse = await executeWithoutBroadcaster(
         fromWalletAddress,
         pKey,
         populateResponse.transaction,

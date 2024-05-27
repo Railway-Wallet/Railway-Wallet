@@ -60,8 +60,8 @@ export const AddLiquidityConfirm: React.FC<Props> = ({ navigation, route }) => {
   );
 
   const {
-    currentERC20Amount: currentRelayerFeeTokenAmount,
-    onERC20AmountUpdate: onRelayerFeeUpdate,
+    currentERC20Amount: currentBroadcasterFeeTokenAmount,
+    onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
   const {
@@ -92,12 +92,12 @@ export const AddLiquidityConfirm: React.FC<Props> = ({ navigation, route }) => {
   const { unshieldERC20AmountAdjusted: unshieldAdjustedTokenAmountA } =
     useAdjustedRecipeUnshieldERC20Amount(
       amountRecipientTokenA,
-      currentRelayerFeeTokenAmount,
+      currentBroadcasterFeeTokenAmount,
     );
   const { unshieldERC20AmountAdjusted: unshieldAdjustedTokenAmountB } =
     useAdjustedRecipeUnshieldERC20Amount(
       amountRecipientTokenB,
-      currentRelayerFeeTokenAmount,
+      currentBroadcasterFeeTokenAmount,
     );
 
   const unshieldERC20AmountRecipientA =
@@ -198,8 +198,8 @@ export const AddLiquidityConfirm: React.FC<Props> = ({ navigation, route }) => {
     txHash: string,
     sendWithPublicWallet: boolean,
     publicExecutionWalletAddress: Optional<string>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ) => {
     const transactionService = new SavedTransactionService(dispatch);
@@ -214,8 +214,8 @@ export const AddLiquidityConfirm: React.FC<Props> = ({ navigation, route }) => {
       [receivedERC20AmountRecipient],
       network.current,
       !sendWithPublicWallet, true, true, feeERC20Amounts,
-      relayerFeeERC20Amount,
-      relayerRailgunAddress,
+      broadcasterFeeERC20Amount,
+      broadcasterRailgunAddress,
       nonce,
     );
   };
@@ -239,7 +239,7 @@ export const AddLiquidityConfirm: React.FC<Props> = ({ navigation, route }) => {
       saveTransaction={saveTransaction}
       slippagePercent={slippagePercent}
       confirmButtonText={confirmButtonText}
-      onRelayerFeeUpdate={onRelayerFeeUpdate}
+      onBroadcasterFeeUpdate={onBroadcasterFeeUpdate}
       setSlippagePercent={handleSlippagePercent}
       receivedMinimumAmounts={receivedMinimumAmounts}
       transactionType={TransactionType.AddLiquidity}

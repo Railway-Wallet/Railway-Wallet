@@ -15,7 +15,7 @@ export const useAdjustERC20AmountRecipientsForTransaction = (
   transactionType: TransactionType,
   isFullyPrivateTransaction: boolean,
   gasDetails: Optional<TransactionGasDetails>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
 ) => {
   const { shieldFee, unshieldFee } = useRailgunFees(
@@ -45,7 +45,7 @@ export const useAdjustERC20AmountRecipientsForTransaction = (
         transactionType,
         isFullyPrivateTransaction,
         gasDetails,
-        relayerFeeERC20Amount,
+        broadcasterFeeERC20Amount,
         shieldFee,
         unshieldFee,
         tokenBalanceSerialized,
@@ -58,7 +58,7 @@ export const useAdjustERC20AmountRecipientsForTransaction = (
     transactionType,
     isFullyPrivateTransaction,
     gasDetails,
-    relayerFeeERC20Amount,
+    broadcasterFeeERC20Amount,
     shieldFee,
     unshieldFee,
     sendWithPublicWallet,

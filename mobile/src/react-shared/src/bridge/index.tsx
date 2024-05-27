@@ -9,6 +9,6 @@ export * from './bridge-providers';
 export * from './bridge-shield';
 export * from './bridge-unshield-transfer';
 export * from './bridge-util';
-export * from './bridge-waku-relayer-client';
+export * from './bridge-waku-broadcaster-client';
 export * from './bridge-wallets';
 export * from './ipc';

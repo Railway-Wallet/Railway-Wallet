@@ -33,13 +33,13 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 16,
   },
-  bottomRelayerName: {
+  bottomBroadcasterName: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
     alignSelf: 'center',
     textAlign: 'center',
   },
-  relayerOverrideContainer: {
+  broadcasterOverrideContainer: {
     marginBottom: 12,
   },
   errorText: {
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
     textAlign: 'center',
   },
-  relayerFeeWarning: {
+  broadcasterFeeWarning: {
     ...styleguide.typography.caption,
     color: styleguide.colors.error(),
     paddingLeft: 6,

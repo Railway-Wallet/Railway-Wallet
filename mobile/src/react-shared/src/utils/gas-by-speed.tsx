@@ -112,7 +112,7 @@ const getSettingsByPriorityLevel = (networkName: NetworkName) => {
   }
 };
 
-export const relayerGasHistoryPercentileForChain = (
+export const broadcasterGasHistoryPercentileForChain = (
   networkName: NetworkName,
 ): GasHistoryPercentile => {
   switch (networkName) {

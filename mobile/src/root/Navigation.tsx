@@ -36,10 +36,10 @@ import { ReceiveTokenScreen } from '@screens/pages/receive/ReceiveTokenScreen/Re
 import { RecoveryWalletsScreen } from '@screens/pages/recovery/RecoveryWalletsScreen';
 import { SendERC20s } from '@screens/pages/send/SendERC20s/SendERC20s';
 import { SendERC20sConfirm } from '@screens/pages/send/SendERC20sConfirm/SendERC20sConfirm';
+import { SettingsBroadcastersScreen } from '@screens/pages/settings/SettingsBroadcastersScreen/SettingsBroadcastersScreen';
 import { SettingsDefaultsScreen } from '@screens/pages/settings/SettingsDefaultsScreen/SettingsDefaultsScreen';
 import { SettingsNetworkInfoScreen } from '@screens/pages/settings/SettingsNetworkInfoScreen/SettingsNetworkInfoScreen';
 import { SettingsNetworksScreen } from '@screens/pages/settings/SettingsNetworksScreen/SettingsNetworksScreen';
-import { SettingsRelayersScreen } from '@screens/pages/settings/SettingsRelayersScreen/SettingsRelayersScreen';
 import { SettingsWalletInfoScreen } from '@screens/pages/settings/SettingsWalletInfoScreen/SettingsWalletInfoScreen';
 import { SettingsWalletsScreen } from '@screens/pages/settings/SettingsWalletsScreen/SettingsWalletsScreen';
 import { ShowSeedPhraseScreen } from '@screens/pages/settings/ShowSeedPhraseScreen/ShowSeedPhraseScreen';
@@ -432,8 +432,8 @@ const SettingsNavigator = () => (
       component={SettingsAddCustomRPCScreen as ScreenComponent}
     />
     <SettingsStack.Screen
-      name="SettingsRelayers"
-      component={SettingsRelayersScreen}
+      name="SettingsBroadcasters"
+      component={SettingsBroadcastersScreen}
     />
     <SettingsStack.Screen
       name="ShowSeedPhrase"

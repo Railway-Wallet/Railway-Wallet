@@ -30,7 +30,7 @@ Clicking "Shield" also initiates a Private Proof of Innocence (Private POI). Pri
 
 This is the process:
 
-1. ${validationTimeText} before your shielded funds can be used for purposes other than returning to your public address, known as the Unshield-only Standby Period. During this standby period, like any other time with your 0zk address, no person other than yourself can see or control your tokens. If something urgent comes up, you will still be able to unshield them to origin without waiting. 
+1. ${validationTimeText} before your shielded funds can be used for purposes other than returning to your public address, known as the Unshield-only Standby Period. During this standby period, like any other time with your 0zk address, no person other than yourself can see or control your tokens. If something urgent comes up, you will still be able to unshield them to origin without waiting.
 
 2. The Private POI system creates a zero-knowledge proof (a small piece of data) confirming that your shield is not associated with a list of dangerous addresses. Initially, there is only the free and public OFAC designated list updated by Chainalysis at https://public.chainalysis.com/api/v1/. (To be clear, no data is shared with Chainalysis — they are only giving away a free list.) In the future, knowledgeable community organizations will likely publish and update additional lists to help wallet users avoid bad actors, giving Railway Wallet users the choice of which lists to use. Railway Wallet itself does not create or update these lists. Shields that are associated with any designated lists cannot successfully create a Private POI and will not be able to use Railway Wallet, only having the option to unshield to origin - those tokens will be otherwise unspendable.
 
@@ -209,7 +209,7 @@ export const getTransactionPOIStatusInfoText = (
     case RailgunWalletBalanceBucket.MissingInternalPOI:
       return 'This transaction includes a change output. Please wait. Your wallet will make these funds spendable within a few minutes.';
     case RailgunWalletBalanceBucket.ShieldBlocked:
-      return 'This shield transaction was blocked for use in RAILGUN. You can safely unshield the tokens to the origin address. Public relayer functionality will be disabled.';
+      return 'This shield transaction was blocked for use in RAILGUN. You can safely unshield the tokens to the origin address. Public broadcaster functionality will be disabled.';
     case RailgunWalletBalanceBucket.Spendable:
     case RailgunWalletBalanceBucket.Spent:
       return undefined;

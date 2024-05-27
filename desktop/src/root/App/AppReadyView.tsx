@@ -11,7 +11,7 @@ import {
   SharedConstants,
   StorageService,
   useReduxSelector,
-  useWakuRelayerChainUpdater,
+  useWakuBroadcasterChainUpdater,
 } from '@react-shared';
 import { AppPasswordView } from '@screens/pages/app-password-view/AppPasswordView/AppPasswordView';
 import { WalletProviderLoadingView } from '@screens/pages/wallets-provider-loading-view/WalletProviderLoadingView/WalletProviderLoadingView';
@@ -37,7 +37,7 @@ export const AppReadyView: React.FC<Props> = ({ triggerAppStatus }) => {
   const [walletProviderNeedsLoad, setWalletProviderNeedsLoad] = useState(false);
   const [showAppIntro, setShowAppIntro] = useState(false);
 
-  useWakuRelayerChainUpdater();
+  useWakuBroadcasterChainUpdater();
   useInactiveProviderPauser();
   const { VersionManagerAlert } = useVersionManager(triggerAppStatus);
 

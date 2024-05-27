@@ -50,7 +50,7 @@ export const populateCrossContractCalls = (
   relayAdaptShieldERC20Recipients: RailgunERC20Recipient[],
   relayAdaptShieldNFTRecipients: NFTAmountRecipient[],
   crossContractCalls: ContractTransaction[],
-  relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+  broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   transactionGasDetails: TransactionGasDetails,
@@ -58,8 +58,8 @@ export const populateCrossContractCalls = (
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
     relayAdaptUnshieldERC20Amounts,
   );
-  const relayerFeeERC20AmountRecipientRailgun =
-    createRailgunERC20AmountRecipient(relayerFeeERC20AmountRecipient);
+  const broadcasterFeeERC20AmountRecipientRailgun =
+    createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
   const relayAdaptUnshieldNFTAmountsRailgun = createRailgunNFTAmounts(
     relayAdaptUnshieldNFTAmounts,
   );
@@ -79,7 +79,8 @@ export const populateCrossContractCalls = (
     relayAdaptShieldERC20Recipients,
     relayAdaptShieldNFTRecipients: relayAdaptShieldNFTRecipientsRailgun,
     crossContractCalls,
-    relayerFeeERC20AmountRecipient: relayerFeeERC20AmountRecipientRailgun,
+    broadcasterFeeERC20AmountRecipient:
+      broadcasterFeeERC20AmountRecipientRailgun,
     sendWithPublicWallet,
     overallBatchMinGasPrice,
     transactionGasDetails,
@@ -96,7 +97,7 @@ export const generateCrossContractCallsProof = (
   relayAdaptShieldERC20Recipients: RailgunERC20Recipient[],
   relayAdaptShieldNFTRecipients: NFTAmountRecipient[],
   crossContractCalls: ContractTransaction[],
-  relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+  broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   minGasLimit: Optional<bigint>,
@@ -104,8 +105,8 @@ export const generateCrossContractCallsProof = (
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
     relayAdaptUnshieldERC20Amounts,
   );
-  const relayerFeeERC20AmountRecipientRailgun =
-    createRailgunERC20AmountRecipient(relayerFeeERC20AmountRecipient);
+  const broadcasterFeeERC20AmountRecipientRailgun =
+    createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
   const relayAdaptUnshieldNFTAmountsRailgun = createRailgunNFTAmounts(
     relayAdaptUnshieldNFTAmounts,
   );
@@ -129,7 +130,8 @@ export const generateCrossContractCallsProof = (
       relayAdaptShieldERC20Recipients,
       relayAdaptShieldNFTRecipients: relayAdaptShieldNFTRecipientsRailgun,
       crossContractCalls,
-      relayerFeeERC20AmountRecipient: relayerFeeERC20AmountRecipientRailgun,
+      broadcasterFeeERC20AmountRecipient:
+        broadcasterFeeERC20AmountRecipientRailgun,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
       minGasLimit,

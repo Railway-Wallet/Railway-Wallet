@@ -1,4 +1,5 @@
 import {
+  BroadcasterConnectionStatus,
   Chain,
   FallbackProviderJsonConfig,
   FeeTokenDetails,
@@ -10,7 +11,6 @@ import {
   RailgunERC20Recipient,
   RailgunNFTAmount,
   RailgunNFTAmountRecipient,
-  RelayerConnectionStatus,
   TransactionGasDetails,
   TransactionReceiptLog,
   TXIDVersion,
@@ -31,7 +31,7 @@ export enum BridgeEvent {
 
   WakuMessage = 'wakuMessage',
   WakuError = 'wakuError',
-  OnRelayerStatusCallback = 'OnRelayerStatusCallback',
+  OnBroadcasterStatusCallback = 'OnBroadcasterStatusCallback',
 }
 
 export enum BridgeCallEvent {
@@ -70,7 +70,7 @@ export enum BridgeCallEvent {
   GetShieldPrivateKeySignatureMessage = 'GetShieldPrivateKeySignatureMessage',
   ValidateRailgunAddress = 'validateRailgunAddress',
   ValidateEthAddress = 'validateEthAddress',
-  VerifyRelayerSignature = 'verifyRelayerSignature',
+  VerifyBroadcasterSignature = 'verifyBroadcasterSignature',
   EncryptDataWithSharedKey = 'encryptDataWithSharedKey',
   EncryptAESGCM256 = 'encryptAESGCM256',
   DecryptAESGCM256 = 'decryptAESGCM256',
@@ -84,20 +84,20 @@ export enum BridgeCallEvent {
   GasEstimateForUnprovenCrossContractCalls = 'GasEstimateForUnprovenCrossContractCalls',
   GenerateCrossContractCallsProof = 'GenerateCrossContractCallsProof',
   GetRelayAdaptTransactionError = 'GetRelayAdaptTransactionError',
-  RelayerStart = 'Relayer.Start',
-  RelayerTryReconnect = 'Relayer.TryReconnect',
-  RelayerSetAddressFilters = 'Relayer.SetAddressFilters',
-  RelayerSetChain = 'Relayer.SetChain',
-  RelayerFindBestRelayer = 'Relayer.FindBestRelayer',
-  RelayerFindRandomRelayerForToken = 'Relayer.FindRandomRelayerForToken',
-  RelayerFindAllRelayersForToken = 'Relayer.FindAllRelayersForToken',
-  RelayerFindAllRelayersForChain = 'Relayer.FindAllRelayersForChain',
-  RelayerGetMeshPeerCount = 'Relayer.GetMeshPeerCount',
-  RelayerGetPubSubPeerCount = 'Relayer.GetPubSubPeerCount',
-  RelayerGetLightPushPeerCount = 'Relayer.GetLightPushPeerCount',
-  RelayerGetFilterPeerCount = 'Relayer.GetFilterPeerCount',
-  RelayerRelayTransaction = 'Relayer.RelayTransaction',
-  RelayerSupportsERC20Token = 'Relayer.SupportsERC20Token',
+  BroadcasterStart = 'Broadcaster.Start',
+  BroadcasterTryReconnect = 'Broadcaster.TryReconnect',
+  BroadcasterSetAddressFilters = 'Broadcaster.SetAddressFilters',
+  BroadcasterSetChain = 'Broadcaster.SetChain',
+  BroadcasterFindBestBroadcaster = 'Broadcaster.FindBestBroadcaster',
+  BroadcasterFindRandomBroadcasterForToken = 'Broadcaster.FindRandomBroadcasterForToken',
+  BroadcasterFindAllBroadcastersForToken = 'Broadcaster.FindAllBroadcastersForToken',
+  BroadcasterFindAllBroadcastersForChain = 'Broadcaster.FindAllBroadcastersForChain',
+  BroadcasterGetMeshPeerCount = 'Broadcaster.GetMeshPeerCount',
+  BroadcasterGetPubSubPeerCount = 'Broadcaster.GetPubSubPeerCount',
+  BroadcasterGetLightPushPeerCount = 'Broadcaster.GetLightPushPeerCount',
+  BroadcasterGetFilterPeerCount = 'Broadcaster.GetFilterPeerCount',
+  BroadcasterBroadcastTransaction = 'Broadcaster.BroadcastTransaction',
+  BroadcasterSupportsERC20Token = 'Broadcaster.SupportsERC20Token',
   PauseAllPollingProviders = 'PauseAllPollingProviders',
   ResumeIsolatedPollingProviderForNetwork = 'ResumeIsolatedPollingProviderForNetwork',
   GetTXOsReceivedPOIStatusInfoForWallet = 'GetTXOsReceivedPOIStatusInfoForWallet',
@@ -246,7 +246,7 @@ export type PopulateProvedTransferParams = {
   memoText: Optional<string>;
   erc20AmountRecipients: RailgunERC20AmountRecipient[];
   nftAmountRecipients: RailgunNFTAmountRecipient[];
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
   transactionGasDetails: TransactionGasDetails;
@@ -258,7 +258,7 @@ export type PopulateProvedUnshieldParams = {
   railWalletID: string;
   erc20AmountRecipients: RailgunERC20AmountRecipient[];
   nftAmountRecipients: RailgunNFTAmountRecipient[];
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   transactionGasDetails: TransactionGasDetails;
   overallBatchMinGasPrice: Optional<bigint>;
   sendWithPublicWallet: boolean;
@@ -270,7 +270,7 @@ export type PopulateProvedUnshieldBaseTokenParams = {
   publicWalletAddress: string;
   railWalletID: string;
   wrappedTokenAmount: RailgunERC20Amount;
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   transactionGasDetails: TransactionGasDetails;
   overallBatchMinGasPrice: Optional<bigint>;
   sendWithPublicWallet: boolean;
@@ -321,7 +321,7 @@ export type GenerateTransferProofParams = {
   encryptionKey: string;
   erc20AmountRecipients: RailgunERC20AmountRecipient[];
   nftAmountRecipients: RailgunNFTAmountRecipient[];
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
 };
@@ -333,7 +333,7 @@ export type GenerateUnshieldProofParams = {
   encryptionKey: string;
   erc20AmountRecipients: RailgunERC20AmountRecipient[];
   nftAmountRecipients: RailgunNFTAmountRecipient[];
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
 };
@@ -345,7 +345,7 @@ export type GenerateUnshieldBaseTokenProofParams = {
   railWalletID: string;
   encryptionKey: string;
   wrappedTokenAmount: RailgunERC20Amount;
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
 };
@@ -374,7 +374,7 @@ export type ValidateCachedProvedTransactionParams = {
   relayAdaptShieldERC20Recipients: Optional<RailgunERC20Recipient[]>;
   relayAdaptShieldNFTRecipients: Optional<RailgunNFTAmount[]>;
   crossContractCalls: Optional<ContractTransaction[]>;
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
 };
@@ -458,7 +458,7 @@ export type PopulateCrossContractCallsParams = {
   relayAdaptShieldERC20Recipients: RailgunERC20Recipient[];
   relayAdaptShieldNFTRecipients: RailgunNFTAmountRecipient[];
   crossContractCalls: ContractTransaction[];
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
   transactionGasDetails: TransactionGasDetails;
@@ -474,7 +474,7 @@ export type GenerateCrossContractCallsProofParams = {
   relayAdaptShieldERC20Recipients: RailgunERC20Recipient[];
   relayAdaptShieldNFTRecipients: RailgunNFTAmountRecipient[];
   crossContractCalls: ContractTransaction[];
-  relayerFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
+  broadcasterFeeERC20AmountRecipient?: RailgunERC20AmountRecipient;
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
   minGasLimit: bigint;
@@ -505,27 +505,27 @@ export type UnloadProviderParams = {
   networkName: NetworkName;
 };
 
-export type RelayerStatusCallbackData = {
+export type BroadcasterStatusCallbackData = {
   chain: Chain;
-  status: RelayerConnectionStatus;
+  status: BroadcasterConnectionStatus;
 };
 
-export type VerifyRelayerSignatureParams = {
+export type VerifyBroadcasterSignatureParams = {
   signature: string;
   data: string;
   signingKey: string;
 };
 
-export type RelayerActionData = {
+export type BroadcasterActionData = {
   error?: string;
 };
 
-export type RelayerSendActionData = {
+export type BroadcasterSendActionData = {
   txHash?: string;
   error?: Error;
 };
 
-export type RelayerStartParams = {
+export type BroadcasterStartParams = {
   chain: Chain;
   pubSubTopic: string;
   additionalDirectPeers: Optional<string[]>;
@@ -533,39 +533,40 @@ export type RelayerStartParams = {
   poiActiveListKeys: string[];
 };
 
-export type RelayerSetAddressFiltersParams = {
+export type BroadcasterSetAddressFiltersParams = {
   allowlist: Optional<string[]>;
   blocklist: Optional<string[]>;
 };
 
-export type RelayerSetChainParams = {
+export type BroadcasterSetChainParams = {
   chain: Chain;
 };
 
-export type RelayerFindBestRelayerParams = {
+export type BroadcasterFindBestBroadcasterParams = {
   chain: Chain;
   tokenAddress: string;
   useRelayAdapt: boolean;
 };
 
-export type RelayerFindRandomRelayerForTokenParams =
-  RelayerFindBestRelayerParams & {
+export type BroadcasterFindRandomBroadcasterForTokenParams =
+  BroadcasterFindBestBroadcasterParams & {
     percentage: number;
   };
 
-export type RelayerFindAllRelayersForTokenParams = RelayerFindBestRelayerParams;
+export type BroadcasterFindAllBroadcastersForTokenParams =
+  BroadcasterFindBestBroadcasterParams;
 
-export type RelayerFindAllRelayersForChainParams = {
+export type BroadcasterFindAllBroadcastersForChainParams = {
   chain: Chain;
   useRelayAdapt: boolean;
 };
 
-export type RelayerRelayTransactionParams = {
+export type BroadcasterBroadcastTransactionParams = {
   txidVersionForInputs: TXIDVersion;
   to: string;
   data: string;
-  relayerRailgunAddress: string;
-  relayerFeesID: string;
+  broadcasterRailgunAddress: string;
+  broadcasterFeesID: string;
   chain: Chain;
   nullifiers: string[];
   overallBatchMinGasPrice: bigint;
@@ -573,7 +574,7 @@ export type RelayerRelayTransactionParams = {
   preTransactionPOIsPerTxidLeafPerList: PreTransactionPOIsPerTxidLeafPerList;
 };
 
-export type RelayerSupportsERC20TokenParams = {
+export type BroadcasterSupportsERC20TokenParams = {
   chain: Chain;
   tokenAddress: string;
   useRelayAdapt: boolean;

@@ -43,8 +43,8 @@ export const humanReadableFields: DownloadField<ExportedSavedTransaction>[] = [
     name: 'toWalletAddresses',
   },
   {
-    label: 'Gas fee (via relayer)',
-    name: 'readableRelayerFeeText',
+    label: 'Gas fee (via broadcaster)',
+    name: 'readableBroadcasterFeeText',
   },
   {
     label: 'RAILGUN fees',

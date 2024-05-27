@@ -171,16 +171,16 @@ const getFeeERC20InfoForKoinly = async (
   wallet: Optional<FrontendWallet>,
   network: Network,
   shouldAddTokenFee: boolean,
-  relayerFeeERC20Amount: Optional<RailgunERC20Amount>,
+  broadcasterFeeERC20Amount: Optional<RailgunERC20Amount>,
   gasFeeString: Optional<string>,
 ): Promise<KoinlyExportERC20Info> => {
   if (shouldAddTokenFee) {
-    if (relayerFeeERC20Amount) {
+    if (broadcasterFeeERC20Amount) {
       const feeERC20Info = await getERC20InfoForKoinly(
         wallet,
         network,
-        relayerFeeERC20Amount.tokenAddress,
-        relayerFeeERC20Amount.amount,
+        broadcasterFeeERC20Amount.tokenAddress,
+        broadcasterFeeERC20Amount.amount,
       );
 
       return feeERC20Info;
@@ -220,7 +220,8 @@ const createKoinlyTransactionSent = async (
   isFirstRowForToken: boolean,
   shouldAddTokenFee: boolean,
 ) => {
-  const { timestamp, txid, relayerFeeERC20Amount, gasFeeString } = transaction;
+  const { timestamp, txid, broadcasterFeeERC20Amount, gasFeeString } =
+    transaction;
   const { amount, tokenAddress, memoText } = sentERC20;
 
   const description = createDescriptionText(
@@ -240,7 +241,7 @@ const createKoinlyTransactionSent = async (
     wallet,
     network,
     shouldAddTokenFee,
-    relayerFeeERC20Amount,
+    broadcasterFeeERC20Amount,
     gasFeeString,
   );
 
@@ -270,7 +271,8 @@ const createKoinlyTransactionReceived = async (
   isFirstRowForToken: boolean,
   shouldAddTokenFee: boolean,
 ) => {
-  const { timestamp, txid, relayerFeeERC20Amount, gasFeeString } = transaction;
+  const { timestamp, txid, broadcasterFeeERC20Amount, gasFeeString } =
+    transaction;
   const { amount, tokenAddress, memoText } = sentERC20;
 
   const description = createDescriptionText(
@@ -290,7 +292,7 @@ const createKoinlyTransactionReceived = async (
     wallet,
     network,
     shouldAddTokenFee,
-    relayerFeeERC20Amount,
+    broadcasterFeeERC20Amount,
     gasFeeString,
   );
 
@@ -321,7 +323,8 @@ const createKoinlyTransactionNFT = async (
   isFirstRowForTransaction: boolean,
   shouldAddTokenFee: boolean,
 ): Promise<KoinlyTransaction> => {
-  const { timestamp, txid, relayerFeeERC20Amount, gasFeeString } = transaction;
+  const { timestamp, txid, broadcasterFeeERC20Amount, gasFeeString } =
+    transaction;
   const { amountString, memoText } = nftAmountWithMemoText;
 
   const description = createDescriptionText(
@@ -334,7 +337,7 @@ const createKoinlyTransactionNFT = async (
     wallet,
     network,
     shouldAddTokenFee,
-    relayerFeeERC20Amount,
+    broadcasterFeeERC20Amount,
     gasFeeString,
   );
 

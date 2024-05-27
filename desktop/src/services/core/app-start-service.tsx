@@ -1,11 +1,10 @@
 import {
-  isDefined,
   POI_REQUIRED_LISTS,
 } from '@railgun-community/shared-models';
 import {
   AppDispatch,
   AppSettingsService,
-  BlockedRelayerService,
+  BlockedBroadcasterService,
   getRelayAdaptTransactionError,
   loadBalancesFromCache,
   NetworkService,
@@ -16,7 +15,7 @@ import {
   SavedAddressService,
 } from '@react-shared';
 import { startEngine } from '../engine/engine';
-import { WakuRelayer } from '../networking/waku-relayer';
+import { WakuBroadcaster } from '../networking/waku-broadcaster';
 import { ArtifactServiceWeb } from './artifact-service-web';
 
 export class AppStartService {
@@ -41,7 +40,7 @@ export class AppStartService {
     const poiActiveListKeys = POI_REQUIRED_LISTS.map(list => list.key);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    WakuRelayer.start(
+    WakuBroadcaster.start(
       this.dispatch,
       network,
       wakuPubSubTopic,
@@ -50,8 +49,8 @@ export class AppStartService {
       poiActiveListKeys,
     );
 
-    const blockedRelayerService = new BlockedRelayerService(this.dispatch);
-    await blockedRelayerService.loadBlockedRelayersFromStorage();
+    const blockedBroadcasterService = new BlockedBroadcasterService(this.dispatch);
+    await blockedBroadcasterService.loadBlockedBroadcastersFromStorage();
 
     await startEngine(this.dispatch, remoteConfig);
 

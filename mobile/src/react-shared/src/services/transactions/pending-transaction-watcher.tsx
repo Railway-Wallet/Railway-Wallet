@@ -428,8 +428,8 @@ export class PendingTransactionWatcher {
     }
     this.dispatch(
       enqueueAsyncToast({
-        message: tx.sentViaRelayer
-          ? `Success: ${capitalize(tx.action)} through Relayer.`
+        message: tx.sentViaBroadcaster
+          ? `Success: ${capitalize(tx.action)} through Broadcaster.`
           : `Success: ${capitalize(tx.action)} transaction${
               isDefined(nonce) ? `: ${nonce}` : ''
             }.`,

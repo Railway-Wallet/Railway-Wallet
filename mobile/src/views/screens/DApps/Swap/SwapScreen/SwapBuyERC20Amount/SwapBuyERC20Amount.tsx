@@ -157,7 +157,7 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
         transactionType={TransactionType.Swap}
         hasExistingTokenAmounts={false}
         showAddTokensButton={true}
-        useRelayAdaptForRelayerFee={false}
+        useRelayAdaptForBroadcasterFee={false}
         balanceBucketFilter={[RailgunWalletBalanceBucket.Spendable]}
       />
       <View style={styles.wrapper}>

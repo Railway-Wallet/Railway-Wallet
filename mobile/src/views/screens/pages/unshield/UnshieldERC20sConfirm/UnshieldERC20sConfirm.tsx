@@ -4,7 +4,7 @@ import {
   NetworkName,
   NFTAmountRecipient,
   RailgunPopulateTransactionResponse,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
 } from '@railgun-community/shared-models';
@@ -20,11 +20,12 @@ import {
   AdjustedERC20AmountRecipientGroup,
   AuthenticatedWalletService,
   AvailableWallet,
-  createRelayerFeeERC20AmountRecipient,
+  broadcastTransaction,
+  createBroadcasterFeeERC20AmountRecipient,
   delay,
   ERC20Amount,
   ERC20AmountRecipient,
-  executeWithoutRelayer,
+  executeWithoutBroadcaster,
   getOverallBatchMinGasPrice,
   getPOIRequiredForNetwork,
   hasBlockedAddress,
@@ -33,7 +34,6 @@ import {
   populateProvedUnshieldBaseToken,
   populateProvedUnshieldToOrigin,
   refreshNFTsMetadataAfterShieldUnshield,
-  relayTransaction,
   SavedTransactionService,
   TransactionType,
   updatePOIProofProgressStatus,
@@ -99,8 +99,8 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
   const generateProof = async (
     finalERC20AmountRecipients: ERC20AmountRecipient[],
     nftAmountRecipients: NFTAmountRecipient[],
-    selectedRelayer: Optional<SelectedRelayer>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
+    selectedBroadcaster: Optional<SelectedBroadcaster>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     publicWalletOverride: Optional<AvailableWallet>,
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
@@ -110,20 +110,20 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
   ) => {
     try {
       if (!isDefined(unshieldToOriginShieldTxid)) {
-        if (!selectedRelayer && !publicWalletOverride) {
-          throw new Error('No public relayer selected.');
+        if (!selectedBroadcaster && !publicWalletOverride) {
+          throw new Error('No public broadcaster selected.');
         }
-        if (!relayerFeeERC20Amount && !publicWalletOverride) {
+        if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
           throw new Error('No fee amount selected.');
         }
       }
 
       const sendWithPublicWallet = isDefined(publicWalletOverride);
 
-      const relayerFeeERC20AmountRecipient =
-        createRelayerFeeERC20AmountRecipient(
-          selectedRelayer,
-          relayerFeeERC20Amount,
+      const broadcasterFeeERC20AmountRecipient =
+        createBroadcasterFeeERC20AmountRecipient(
+          selectedBroadcaster,
+          broadcasterFeeERC20Amount,
         );
 
       let proofCall;
@@ -135,7 +135,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
           finalERC20AmountRecipients[0].recipientAddress,
           railWalletID,
           finalERC20AmountRecipients[0],
-          relayerFeeERC20AmountRecipient,
+          broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
           overallBatchMinGasPrice,
         );
@@ -155,7 +155,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
           railWalletID,
           finalERC20AmountRecipients,
           nftAmountRecipients,
-          relayerFeeERC20AmountRecipient,
+          broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
           overallBatchMinGasPrice,
         );
@@ -174,22 +174,24 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
   const performTransaction = async (
     finalAdjustedERC20AmountRecipientGroup: AdjustedERC20AmountRecipientGroup,
     nftAmountRecipients: NFTAmountRecipient[],
-    selectedRelayer: Optional<SelectedRelayer>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
+    selectedBroadcaster: Optional<SelectedBroadcaster>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     transactionGasDetails: TransactionGasDetails,
     customNonce: Optional<number>,
     publicWalletOverride: Optional<AvailableWallet>,
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error, isRelayerError?: boolean) => void,
+    error: (err: Error, isBroadcasterError?: boolean) => void,
   ): Promise<Optional<string>> => {
     if (!isDefined(unshieldToOriginShieldTxid)) {
-      if (!selectedRelayer && !publicWalletOverride) {
-        error(new Error('No public relayer or self relay wallet selected.'));
+      if (!selectedBroadcaster && !publicWalletOverride) {
+        error(
+          new Error('No public broadcaster or self broadcast wallet selected.'),
+        );
         return;
       }
-      if (!relayerFeeERC20Amount && !publicWalletOverride) {
+      if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
         error(new Error('No gas fee amount found.'));
         return;
       }
@@ -198,7 +200,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
     const sendWithPublicWallet = publicWalletOverride != null;
 
     const overallBatchMinGasPrice = getOverallBatchMinGasPrice(
-      isDefined(selectedRelayer),
+      isDefined(selectedBroadcaster),
       transactionGasDetails,
     );
 
@@ -235,8 +237,8 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
             railWalletID,
             finalAdjustedERC20AmountRecipientGroup.inputs,
             nftAmountRecipients,
-            selectedRelayer,
-            relayerFeeERC20Amount,
+            selectedBroadcaster,
+            broadcasterFeeERC20Amount,
             sendWithPublicWallet,
             overallBatchMinGasPrice,
             transactionGasDetails,
@@ -265,7 +267,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
         const pKey = await walletSecureService.getWallet0xPKey(
           publicWalletOverride,
         );
-        const txResponse = await executeWithoutRelayer(
+        const txResponse = await executeWithoutBroadcaster(
           publicWalletOverride.ethAddress,
           pKey,
           populateTransactionResponse.transaction,
@@ -274,31 +276,33 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
         );
         txHash = txResponse.hash;
         nonce = txResponse.nonce;
-      } else if (selectedRelayer) {
+      } else if (selectedBroadcaster) {
         if (!isDefined(overallBatchMinGasPrice)) {
           throw new Error(
-            'Relayer transaction requires overallBatchMinGasPrice.',
+            'Broadcaster transaction requires overallBatchMinGasPrice.',
           );
         }
         const nullifiers = populateTransactionResponse.nullifiers ?? [];
-        txHash = await relayTransaction(
+        txHash = await broadcastTransaction(
           txidVersion.current,
           populateTransactionResponse.transaction.to,
           populateTransactionResponse.transaction.data,
-          selectedRelayer.railgunAddress,
-          selectedRelayer.tokenFee.feesID,
+          selectedBroadcaster.railgunAddress,
+          selectedBroadcaster.tokenFee.feesID,
           network.current.chain,
           nullifiers,
           overallBatchMinGasPrice,
           isBaseTokenUnshield, populateTransactionResponse.preTransactionPOIsPerTxidLeafPerList,
         );
       } else {
-        throw new Error('Must send with public relayer or self relay wallet');
+        throw new Error(
+          'Must send with public broadcaster or self broadcast wallet',
+        );
       }
 
       const transactionService = new SavedTransactionService(dispatch);
-      const relayerRailgunAddress = !sendWithPublicWallet
-        ? selectedRelayer?.railgunAddress
+      const broadcasterRailgunAddress = !sendWithPublicWallet
+        ? selectedBroadcaster?.railgunAddress
         : undefined;
       await transactionService.saveUnshieldTransactions(
         txidVersion.current,
@@ -311,8 +315,8 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
         nftAmountRecipients,
         network.current,
         !sendWithPublicWallet && !isDefined(unshieldToOriginShieldTxid), isBaseTokenUnshield,
-        relayerFeeERC20Amount,
-        relayerRailgunAddress,
+        broadcasterFeeERC20Amount,
+        broadcasterRailgunAddress,
         nonce,
       );
       await refreshNFTsMetadataAfterShieldUnshield(
@@ -336,10 +340,10 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
       success();
       return txHash;
     } catch (cause) {
-      const isRelayerError = true;
+      const isBroadcasterError = true;
       error(
         new Error('Transaction could not be executed', { cause }),
-        isRelayerError,
+        isBroadcasterError,
       );
       return undefined;
     }

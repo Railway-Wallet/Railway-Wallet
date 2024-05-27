@@ -1,6 +1,7 @@
 export * from './address-resolution';
 export * from './app-status';
 export * from './bridge';
+export * from './broadcaster';
 export * from './callbacks';
 export * from './callout';
 export * from './cookbook';
@@ -13,7 +14,6 @@ export * from './nft';
 export * from './poi';
 export * from './proof';
 export * from './providers';
-export * from './relayer';
 export * from './security';
 export * from './toast';
 export * from './token';

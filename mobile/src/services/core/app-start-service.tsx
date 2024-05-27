@@ -5,7 +5,7 @@ import {
 import {
   AppDispatch,
   AppSettingsService,
-  BlockedRelayerService,
+  BlockedBroadcasterService,
   BridgeEvent,
   bridgeListen,
   getRelayAdaptTransactionError,
@@ -21,7 +21,7 @@ import {
   setAuthKey,
 } from '@react-shared';
 import { startEngine } from '@services/engine/engine';
-import { WakuRelayer } from '@services/networking/waku-relayer';
+import { WakuBroadcaster } from '@services/networking/waku-broadcaster';
 import { Constants } from '@utils/constants';
 import { getCurrentLocaleMobile } from '@utils/locale';
 import { getEncryptedPin } from '../security/secure-app-service';
@@ -51,8 +51,10 @@ export class AppStartService {
 
       await networkService.loadProviderForNetwork(network);
 
-      const blockedRelayerService = new BlockedRelayerService(this.dispatch);
-      await blockedRelayerService.loadBlockedRelayersFromStorage();
+      const blockedBroadcasterService = new BlockedBroadcasterService(
+        this.dispatch,
+      );
+      await blockedBroadcasterService.loadBlockedBroadcastersFromStorage();
 
       await startEngine(this.dispatch, remoteConfig);
 
@@ -85,7 +87,7 @@ export class AppStartService {
 
           const poiActiveListKeys = POI_REQUIRED_LISTS.map(list => list.key);
 
-          await WakuRelayer.start(
+          await WakuBroadcaster.start(
             this.dispatch,
             network,
             wakuPubSubTopic,

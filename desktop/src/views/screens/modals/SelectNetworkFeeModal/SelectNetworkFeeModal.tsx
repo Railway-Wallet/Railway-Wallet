@@ -1,7 +1,7 @@
 import {
   EVMGasType,
   isDefined,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
 import React, { useState } from 'react';
@@ -9,12 +9,12 @@ import { Button } from '@components/Button/Button';
 import { GenericModal } from '@components/modals/GenericModal/GenericModal';
 import { Text } from '@components/Text/Text';
 import {
+  broadcasterFeeInfoText,
   CustomGasTransactionDetails,
   ERC20Token,
   logDev,
   NetworkFeeSelection,
   networkGasText,
-  relayerFeeInfoText,
   useReduxSelector,
 } from '@react-shared';
 import { CustomNetworkFeeType2Modal } from '@screens/modals/CustomNetworkFeeModal/CustomNetworkFeeType2Modal';
@@ -30,9 +30,9 @@ type Props = {
   currentOption: NetworkFeeSelection;
   gasDetailsMap: Record<NetworkFeeSelection, TransactionGasDetails>;
   defaultCustomGasTransactionDetails: CustomGasTransactionDetails;
-  selectedRelayer: Optional<SelectedRelayer>;
+  selectedBroadcaster: Optional<SelectedBroadcaster>;
   selectedFeeToken: ERC20Token;
-  isRelayerTransaction: boolean;
+  isBroadcasterTransaction: boolean;
 };
 
 export const SelectNetworkFeeModal: React.FC<Props> = ({
@@ -40,9 +40,9 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
   currentOption,
   gasDetailsMap,
   defaultCustomGasTransactionDetails,
-  selectedRelayer,
+  selectedBroadcaster,
   selectedFeeToken,
-  isRelayerTransaction,
+  isBroadcasterTransaction,
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
@@ -78,26 +78,26 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
       networkFeePriceText: string;
     };
 
-    if (isRelayerTransaction) {
-      if (!selectedRelayer) {
+    if (isBroadcasterTransaction) {
+      if (!selectedBroadcaster) {
         logDev(
-          'Requires selected relayer and fee token to choose network fee.',
+          'Requires selected broadcaster and fee token to choose network fee.',
         );
         return null;
       }
-      const relayerFeeInfo = relayerFeeInfoText(
+      const broadcasterFeeInfo = broadcasterFeeInfoText(
         wallets.available,
         network.current,
         networkPrices,
-        selectedRelayer,
+        selectedBroadcaster,
         selectedFeeToken,
         gasDetails,
         showExactCurrencyGasPrice,
       );
       gasTextFormatted = {
-        networkFeeText: relayerFeeInfo?.relayerFeeText ?? 'Updating gas fee',
+        networkFeeText: broadcasterFeeInfo?.broadcasterFeeText ?? 'Updating gas fee',
         networkFeePriceText:
-          relayerFeeInfo?.relayerFeeSubtext ?? 'Please wait...',
+          broadcasterFeeInfo?.broadcasterFeeSubtext ?? 'Please wait...',
       };
     } else {
       gasTextFormatted = networkGasText(

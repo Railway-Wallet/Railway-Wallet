@@ -679,9 +679,9 @@ export const transactionSyncedHistoryDescription = (
     case 0:
       return undefined;
     case 1:
-      return `Synced RAILGUN transaction history v1: June - July 2022.\n\n• All transactions are synced from encrypted on-chain data.\n• Transactions submitted between this period have no associated metadata, but gas fees (via relayer) are typically the first output of any private transaction.\n• All outgoing transfers will appear as Sent transactions, including gas fees.\n• Unshield transactions (including tokens sent to be swapped) and Shield/Unshield fees are not shown in synced v1 history, but details can be found by viewing a blockchain scanning site.`;
+      return `Synced RAILGUN transaction history v1: June - July 2022.\n\n• All transactions are synced from encrypted on-chain data.\n• Transactions submitted between this period have no associated metadata, but gas fees (via broadcaster) are typically the first output of any private transaction.\n• All outgoing transfers will appear as Sent transactions, including gas fees.\n• Unshield transactions (including tokens sent to be swapped) and Shield/Unshield fees are not shown in synced v1 history, but details can be found by viewing a blockchain scanning site.`;
     case 2:
-      return `Synced RAILGUN transaction history v2: Aug - Nov 2022.\n\n• All transactions are synced from encrypted on-chain data.\n• Transactions include associated metadata that designates gas fees (via relayer) and Change Outputs.\n• Unshield transactions (including tokens sent to be swapped) and Shield/Unshield fees are not shown in synced v2 history, but details can be found by viewing a blockchain scanning site.`;
+      return `Synced RAILGUN transaction history v2: Aug - Nov 2022.\n\n• All transactions are synced from encrypted on-chain data.\n• Transactions include associated metadata that designates gas fees (via broadcaster) and Change Outputs.\n• Unshield transactions (including tokens sent to be swapped) and Shield/Unshield fees are not shown in synced v2 history, but details can be found by viewing a blockchain scanning site.`;
     case 3:
       return `Synced RAILGUN transaction history v3: Nov 2022 - present.\n\n• All transactions are synced from encrypted on-chain data.\n• Every transaction type (shields, unshields, and transfers) from your private balance are now included in synced history.`;
   }
@@ -877,12 +877,12 @@ export const getGasFeeText = (
   network: Network,
   transaction: SavedTransaction,
   gasFeeString?: string,
-  relayerFee?: string,
+  broadcasterFee?: string,
 ) => {
   if (
     !isDefined(gasFeeString) ||
-    isDefined(relayerFee) ||
-    transaction.sentViaRelayer ||
+    isDefined(broadcasterFee) ||
+    transaction.sentViaBroadcaster ||
     isReceiveOnlyTransaction(transaction)
   ) {
     return undefined;
@@ -895,7 +895,7 @@ export const getGasFeeText = (
   return `${fee} ${network.baseToken.symbol}`;
 };
 
-export const relayerFeeTransactionText = (
+export const broadcasterFeeTransactionText = (
   transaction: SavedTransaction,
   activeWallet: FrontendWallet,
   availableWallets: AvailableWallet[],
@@ -903,11 +903,11 @@ export const relayerFeeTransactionText = (
   if (transaction.walletAddress !== activeWallet.railAddress) {
     return undefined;
   }
-  if (!transaction.relayerFeeTokenAmount) {
+  if (!transaction.broadcasterFeeTokenAmount) {
     return undefined;
   }
-  return relayerFeeText(
-    transaction.relayerFeeTokenAmount,
+  return broadcasterFeeText(
+    transaction.broadcasterFeeTokenAmount,
     availableWallets,
     transaction.network,
   );
@@ -1024,13 +1024,13 @@ export const transactionStatusIconColor = (
   }
 };
 
-export const relayerFeeText = (
+export const broadcasterFeeText = (
   tokenAmount: ERC20Amount,
   availableWallets: Optional<AvailableWallet[]>,
   networkName: NetworkName,
 ): Optional<string> => {
   const amount = getAmountStringSerialized(tokenAmount);
-  return `Gas fee (via relayer): ${amount} ${getTokenDisplayName(
+  return `Gas fee (via broadcaster): ${amount} ${getTokenDisplayName(
     tokenAmount.token,
     availableWallets,
     networkName,
@@ -1052,7 +1052,7 @@ export const hasPendingPublicTransaction = (
 };
 
 export const isPrivateTx = (tx: SavedTransaction): boolean => {
-  return tx.isPrivate ?? tx.sentViaRelayer;
+  return tx.isPrivate ?? tx.sentViaBroadcaster;
 };
 
 export const canCancelTransaction = (

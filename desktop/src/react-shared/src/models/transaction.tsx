@@ -89,7 +89,7 @@ export type SavedTransaction = {
   status: TransactionStatus;
   action: TransactionAction;
   network: NetworkName;
-  sentViaRelayer: boolean
+  sentViaBroadcaster: boolean
   isPrivate: boolean;
   vault?: Vault;
   pool?: LiquidityV2PoolSerialized;
@@ -101,7 +101,7 @@ export type SavedTransaction = {
   publicExecutionGasFeeString?: string;
   timestamp: number
   railFeeTokenAmounts?: ERC20Amount[]
-  relayerFeeTokenAmount?: ERC20Amount;
+  broadcasterFeeTokenAmount?: ERC20Amount;
   gasDetails?: TransactionGasDetails;
   spender?: string;
   spenderName?: string;
@@ -122,7 +122,7 @@ export type SavedTransaction = {
   memoText?: string;
   failedErrorMessage?: string;
   externalUnresolvedToWalletAddress?: string
-  relayerRailgunAddress?: string;
+  broadcasterRailgunAddress?: string;
   balanceBucket?: RailgunWalletBalanceBucket;
   pendingSpentPOI?: boolean;
   txidVersion: Optional<TXIDVersion>
@@ -146,7 +146,7 @@ export type ExportedSavedTransaction = {
   readableTransactionText: string;
   readableFeeText: Optional<string>;
   readableGasFee: Optional<string>;
-  readableRelayerFeeText: Optional<string>;
+  readableBroadcasterFeeText: Optional<string>;
   memoText: Optional<string>;
   spender: Optional<string>;
   spenderName: Optional<string>;

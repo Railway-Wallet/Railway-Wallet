@@ -13,7 +13,7 @@ import './transactions/shield-erc20';
 import './transactions/transfer';
 import './transactions/unshield';
 import './util';
-import './waku-relayer-client';
+import './waku-broadcaster-client';
 import './poi';
 import './wallets';
 

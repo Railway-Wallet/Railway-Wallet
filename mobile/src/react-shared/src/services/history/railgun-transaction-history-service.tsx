@@ -425,12 +425,12 @@ export class RailgunTransactionHistoryService {
         this.createTransferNFTAmountRecipient(nftSendAmount),
       );
 
-      const relayerFeeERC20Amount: Optional<ERC20Amount> =
-        railgunTransaction.relayerFeeERC20Amount
+      const broadcasterFeeERC20Amount: Optional<ERC20Amount> =
+        railgunTransaction.broadcasterFeeERC20Amount
           ? await this.createERC20Amount(
               networkName,
               availableWallets,
-              railgunTransaction.relayerFeeERC20Amount,
+              railgunTransaction.broadcasterFeeERC20Amount,
             )
           : undefined;
 
@@ -456,7 +456,7 @@ export class RailgunTransactionHistoryService {
         nftAmountRecipients: transferNFTAmountRecipients,
         syncedReceiveTokenAmounts: receiveERC20Amounts,
         syncedReceiveNFTAmountRecipients: receiveNFTAmountRecipients,
-        relayerFeeTokenAmount: relayerFeeERC20Amount,
+        broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
         railFeeTokenAmounts: railgunFeeTokenAmounts,
         network: networkName,
         timestamp: railgunTransaction.timestamp ??
@@ -464,7 +464,7 @@ export class RailgunTransactionHistoryService {
         id: railgunTransaction.txid,
         action: TransactionAction.synced,
         status: TransactionStatus.completed,
-        sentViaRelayer: isDefined(relayerFeeERC20Amount),
+        sentViaBroadcaster: isDefined(broadcasterFeeERC20Amount),
         isPrivate: true,
         syncedFromRailgun: true,
         foundBySync: true,
@@ -548,7 +548,7 @@ export class RailgunTransactionHistoryService {
     if (tx.foundBySync ?? false) {
       return;
     }
-    if (!tx.sentViaRelayer) {
+    if (!tx.sentViaBroadcaster) {
       return;
     }
 

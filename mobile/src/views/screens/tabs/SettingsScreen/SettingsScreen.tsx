@@ -1,6 +1,6 @@
 import {
+  BroadcasterConnectionStatus,
   isDefined,
-  RelayerConnectionStatus,
 } from '@railgun-community/shared-models';
 import React, { useEffect, useState } from 'react';
 import {
@@ -41,11 +41,11 @@ import {
   showImmediateToast,
   styleguide,
   ToastType,
-  tryReconnectWakuRelayerClient,
+  tryReconnectWakuBroadcasterClient,
   useAppDispatch,
+  useBroadcasterConnectionStatus,
   usePOIRequiredForCurrentNetwork,
   useReduxSelector,
-  useRelayerConnectionStatus,
 } from '@react-shared';
 import { CreatePinModal } from '@screens/modals/CreatePinModal/CreatePinModal';
 import {
@@ -83,10 +83,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
   const { poiRequired } = usePOIRequiredForCurrentNetwork();
   const {
-    relayerConnectionStatus,
-    statusText: relayerStatusText,
-    indicatorColor: relayerIndicatorColor,
-  } = useRelayerConnectionStatus();
+    broadcasterConnectionStatus,
+    statusText: broadcasterStatusText,
+    indicatorColor: broadcasterIndicatorColor,
+  } = useBroadcasterConnectionStatus();
 
   const [headerOpacity, setHeaderOpacity] = useState(0);
   const [loadingText, setLoadingText] = useState<Optional<string>>(undefined);
@@ -122,8 +122,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     setHeaderOpacity(opacity);
   };
 
-  const onSelectRelayerStatus = async () => {
-    await tryReconnectWakuRelayerClient();
+  const onSelectBroadcasterStatus = async () => {
+    await tryReconnectWakuBroadcasterClient();
   };
 
   const onSelectWallets = () => {
@@ -136,9 +136,9 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     navigation.navigate('SettingsNetworks', {});
   };
 
-  const onSelectRelayers = () => {
+  const onSelectBroadcasters = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('SettingsRelayers');
+    navigation.navigate('SettingsBroadcasters');
   };
 
   const onSelectDefaultSettings = () => {
@@ -462,14 +462,14 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <SettingsListHeader title="Status" />
             <View style={styles.items}>
               <SettingsListItem
-                title="Relayers"
-                description={relayerStatusText}
+                title="Broadcasters"
+                description={broadcasterStatusText}
                 icon="circle-medium"
-                iconColor={relayerIndicatorColor}
+                iconColor={broadcasterIndicatorColor}
                 onTap={
-                  relayerConnectionStatus ===
-                  RelayerConnectionStatus.Disconnected
-                    ? onSelectRelayerStatus
+                  broadcasterConnectionStatus ===
+                  BroadcasterConnectionStatus.Disconnected
+                    ? onSelectBroadcasterStatus
                     : undefined
                 }
               />
@@ -506,10 +506,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               {ReactConfig.IS_DEV && (
                 <>
                   <SettingsListItem
-                    title="Public Relayers"
-                    description="Customize public relayers"
+                    title="Public Broadcasters"
+                    description="Customize public broadcasters"
                     icon="chevron-right"
-                    onTap={onSelectRelayers}
+                    onTap={onSelectBroadcasters}
                   />
                   <View style={styles.hr} />
                 </>

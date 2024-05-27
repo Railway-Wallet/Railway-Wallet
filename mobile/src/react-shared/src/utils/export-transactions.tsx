@@ -14,9 +14,9 @@ import { AvailableWallet, FrontendWallet } from '../models/wallet';
 import { transactionLinkOnExternalScanSite } from '../services/api/etherscan/transaction-scan-lookup';
 import { TransactionReceiptDetailsService } from '../services/history/transaction-receipt-details-service';
 import {
+  broadcasterFeeTransactionText,
   getGasFeeText,
   railgunFeeTransactionText,
-  relayerFeeTransactionText,
   transactionText,
 } from './saved-transactions';
 
@@ -96,7 +96,7 @@ export const convertToExportedTransaction = async (
       network.name,
       tx.id,
     );
-  const relayerFee = relayerFeeTransactionText(
+  const broadcasterFee = broadcasterFeeTransactionText(
     tx,
     activeWallet,
     availableWallets,
@@ -118,13 +118,13 @@ export const convertToExportedTransaction = async (
       activeWallet,
       availableWallets,
     ),
-    readableRelayerFeeText: relayerFee,
+    readableBroadcasterFeeText: broadcasterFee,
     readableFeeText: railgunFeeTransactionText(tx, availableWallets),
     readableGasFee: getGasFeeText(
       network,
       tx,
       receiptDetails?.gasFeeString,
-      relayerFee,
+      broadcasterFee,
     ),
     memoText: tx.memoText,
     toWalletAddresses: toWalletAddresses(tx)?.join(', '),

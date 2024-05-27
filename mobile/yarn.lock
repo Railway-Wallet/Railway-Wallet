@@ -2456,10 +2456,10 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@railgun-community/cookbook@2.6.4":
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/@railgun-community/cookbook/-/cookbook-2.6.4.tgz#45ee6b3d5d18bcd752b6a99432dd108be229d605"
-  integrity sha512-h5OTWWN9GppulYpNnJaYuk4od7xDnLLtsxqwMRg3Vk850r4Svkc40TyKLPTmu+UOuvswGV0a/aFyp0scl0q+Rg==
+"@railgun-community/cookbook@2.6.7":
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/@railgun-community/cookbook/-/cookbook-2.6.7.tgz#962fe3bef770239a1ba7c4e8f4c9b1d71412feac"
+  integrity sha512-d/apsR78bfgT80HXyQwFJbO4FhFVbSuPVH9zqvDTdN4Wq7+m4OT8sZmK+9IKLVoZDZUI6BX+VS0vB1vHC9roeg==
   dependencies:
     "@0x/contract-addresses" "^8.5.0"
     "@graphql-mesh/cache-localforage" "^0.7.20"
@@ -2471,16 +2471,16 @@
     "@graphql-mesh/store" "^0.9.20"
     "@graphql-mesh/types" "^0.91.14"
     "@graphql-mesh/utils" "^0.43.22"
-    "@railgun-community/shared-models" "~6.4.3"
+    "@railgun-community/shared-models" "~7.0.2"
     axios "^1.4.0"
     custom-uniswap-v2-sdk "^3.2.0"
     ethers "github:Railgun-Community/ethers.js#v6.7.10"
     graphql "^16.6.0"
 
-"@railgun-community/shared-models@6.4.5", "@railgun-community/shared-models@~6.4.3":
-  version "6.4.5"
-  resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-6.4.5.tgz#55e5011dccd04e9a01d01031ae1778d3ba0b62c1"
-  integrity sha512-Vx9O3IgvJmPrO1exJNYOB5Psi+VO1DmUDApKtfYFHoqijcc+gLPeqbesTMYWVvXF1BdRVbVyyWCJV9u5a0e1Fg==
+"@railgun-community/shared-models@7.0.2", "@railgun-community/shared-models@~7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-7.0.2.tgz#ae95be26cdbd9c20c701c8e2f92398bef183a89f"
+  integrity sha512-kDTmhfIRl7cSLlVA6Fa1XObG8WJRQ3jx/+4elscCwJIi6KBnCMFDFKiI+EsP9XNRkvnqIv6mv4+eLQYn3kCqXw==
 
 "@rauschma/stringio@1.4.0":
   version "1.4.0"

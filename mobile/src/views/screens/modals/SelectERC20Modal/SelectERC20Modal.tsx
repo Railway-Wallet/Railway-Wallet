@@ -28,7 +28,7 @@ type Props = {
   transactionType: TransactionType | null;
   hasExistingTokenAmounts?: boolean;
   showAddTokensButton?: boolean;
-  useRelayAdaptForRelayerFee: boolean;
+  useRelayAdaptForBroadcasterFee: boolean;
   balanceBucketFilter: RailgunWalletBalanceBucket[];
 };
 
@@ -42,7 +42,7 @@ export const SelectERC20Modal: React.FC<Props> = ({
   transactionType,
   hasExistingTokenAmounts = false,
   showAddTokensButton = false,
-  useRelayAdaptForRelayerFee,
+  useRelayAdaptForBroadcasterFee,
   balanceBucketFilter,
 }) => {
   const { network } = useReduxSelector('network');
@@ -53,8 +53,10 @@ export const SelectERC20Modal: React.FC<Props> = ({
 
   const currentTxidVersion = txidVersion.current;
 
-  const [relayerFeeRefreshButtonCount, setRelayerFeeRefreshButtonCount] =
-    useState(0);
+  const [
+    broadcasterFeeRefreshButtonCount,
+    setBroadcasterFeeRefreshButtonCount,
+  ] = useState(0);
 
   const activeWallet = wallets.active;
 
@@ -84,8 +86,8 @@ export const SelectERC20Modal: React.FC<Props> = ({
     onDismiss(undefined, shouldOpenAddTokens);
   };
 
-  const refreshRelayerFeeTokens = () => {
-    setRelayerFeeRefreshButtonCount(relayerFeeRefreshButtonCount + 1);
+  const refreshBroadcasterFeeTokens = () => {
+    setBroadcasterFeeRefreshButtonCount(broadcasterFeeRefreshButtonCount + 1);
   };
 
   return (
@@ -111,10 +113,10 @@ export const SelectERC20Modal: React.FC<Props> = ({
           />
         }
         headerRight={
-          purpose === SelectTokenPurpose.RelayerFee ? (
+          purpose === SelectTokenPurpose.BroadcasterFee ? (
             <HeaderIconButton
               icon="refresh"
-              onPress={refreshRelayerFeeTokens}
+              onPress={refreshBroadcasterFeeTokens}
             />
           ) : undefined
         }
@@ -127,8 +129,8 @@ export const SelectERC20Modal: React.FC<Props> = ({
           wallet={activeWallet}
           onSelect={(token: ERC20Token) => onDismiss(token)}
           purpose={purpose}
-          useRelayAdaptForRelayerFee={useRelayAdaptForRelayerFee}
-          relayerFeeRefreshButtonCount={relayerFeeRefreshButtonCount}
+          useRelayAdaptForBroadcasterFee={useRelayAdaptForBroadcasterFee}
+          broadcasterFeeRefreshButtonCount={broadcasterFeeRefreshButtonCount}
         />
         <SafeGrayFooter>
           <View style={styles.footerContent}>

@@ -1,7 +1,7 @@
 import {
   isDefined,
   NFTAmountRecipient,
-  SelectedRelayer,
+  SelectedBroadcaster,
 } from '@railgun-community/shared-models';
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-native';
@@ -25,8 +25,8 @@ interface GenerateProofModalProps {
   show: boolean;
   finalERC20AmountRecipients: ERC20AmountRecipient[];
   nftAmountRecipients: NFTAmountRecipient[];
-  selectedRelayer: Optional<SelectedRelayer>;
-  relayerFeeERC20Amount: Optional<ERC20Amount>;
+  selectedBroadcaster: Optional<SelectedBroadcaster>;
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>;
   publicWalletOverride: Optional<AvailableWallet>;
   showSenderAddressToRecipient: boolean;
   memoText: Optional<string>;
@@ -40,8 +40,8 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
   show,
   finalERC20AmountRecipients,
   nftAmountRecipients,
-  selectedRelayer,
-  relayerFeeERC20Amount,
+  selectedBroadcaster,
+  broadcasterFeeERC20Amount,
   publicWalletOverride,
   showSenderAddressToRecipient,
   memoText,
@@ -93,8 +93,8 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
       performGenerateProof(
         finalERC20AmountRecipients,
         nftAmountRecipients,
-        publicWalletOverride ? undefined : selectedRelayer,
-        publicWalletOverride ? undefined : relayerFeeERC20Amount,
+        publicWalletOverride ? undefined : selectedBroadcaster,
+        publicWalletOverride ? undefined : broadcasterFeeERC20Amount,
         publicWalletOverride,
         showSenderAddressToRecipient,
         memoText,
@@ -125,7 +125,9 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
         processingState={processingState}
         processingText={processingText}
         successText={`Proof generated successfully.\n\nNext, submit through ${
-          publicWalletOverride ? 'the selected wallet' : 'the selected Relayer'
+          publicWalletOverride
+            ? 'the selected wallet'
+            : 'the selected broadcaster'
         }.`}
         failure={failure}
         processingWarning="Please keep Railway open. This may take 10-15 seconds per token."

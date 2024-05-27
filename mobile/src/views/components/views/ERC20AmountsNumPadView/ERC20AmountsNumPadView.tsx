@@ -230,7 +230,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
         purpose={SelectTokenPurpose.Transfer}
         transactionType={transactionType}
         hasExistingTokenAmounts={erc20Amounts.length > 0}
-        useRelayAdaptForRelayerFee={false}
+        useRelayAdaptForBroadcasterFee={false}
         balanceBucketFilter={balanceBucketFilter}
       />
       <View onTouchEnd={onTouchEnd}>

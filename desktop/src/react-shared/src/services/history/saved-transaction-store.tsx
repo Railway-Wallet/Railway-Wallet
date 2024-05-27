@@ -167,6 +167,19 @@ export class SavedTransactionStore {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private migrateTransactions(transactions: any[]): SavedTransaction[] {
+    for (const tx of transactions) {
+      tx.sentViaBroadcaster ??= tx.sentViaRelayer;
+      tx.broadcasterFeeTokenAmount ??= tx.relayerFeeTokenAmount;
+      tx.broadcasterRailgunAddress ??= tx.relayerRailgunAddress;
+      delete tx.sentViaRelayer;
+      delete tx.relayerFeeTokenAmount;
+      delete tx.relayerRailgunAddress;
+    }
+    return transactions as SavedTransaction[];
+  }
+
   async fetchTransactions(
     networkName: NetworkName,
   ): Promise<SavedTransaction[]> {
@@ -175,7 +188,7 @@ export class SavedTransactionStore {
       const value = await StorageService.getItem(storageKey);
       let transactions: SavedTransaction[] = [];
       if (isDefined(value)) {
-        const savedTransactions = JSON.parse(value) as SavedTransaction[];
+        const savedTransactions = this.migrateTransactions(JSON.parse(value));
         transactions = this.sortTransactionsByAge(savedTransactions);
       }
       return transactions;

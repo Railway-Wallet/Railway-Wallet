@@ -10,7 +10,7 @@ import { useRailgunFees } from '../formatting/useRailgunFees';
 
 export const useAdjustedRecipeUnshieldERC20Amount = (
   inputERC20AmountRecipient: Optional<ERC20AmountRecipient>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
 ) => {
   const isRailgun = true;
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
@@ -46,7 +46,7 @@ export const useAdjustedRecipeUnshieldERC20Amount = (
 
     const adjustedAmounts = adjustERC20AmountRecipientForTransaction(
       inputERC20AmountRecipient,
-      TransactionType.Unshield, isRailgun, undefined, relayerFeeERC20Amount,
+      TransactionType.Unshield, isRailgun, undefined, broadcasterFeeERC20Amount,
       shieldFee,
       unshieldFee,
       tokenBalanceSerialized,
@@ -75,7 +75,7 @@ export const useAdjustedRecipeUnshieldERC20Amount = (
     inputERC20AmountRecipientTokenAddress,
     inputERC20AmountRecipientAmount,
     tokenBalancesSerialized,
-    relayerFeeERC20Amount,
+    broadcasterFeeERC20Amount,
   ]);
 
   const unshieldERC20AmountAdjustedText: Optional<string> = useMemo(() => {

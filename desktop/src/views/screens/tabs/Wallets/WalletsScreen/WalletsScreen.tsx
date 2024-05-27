@@ -6,9 +6,9 @@ import {
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { GenericAlert } from '@components/alerts/GenericAlert/GenericAlert';
+import { BroadcasterStatusPanelIndicator } from '@components/BroadcasterStatusPanelIndicator/BroadcasterStatusPanelIndicator';
 import { WalletInfoCallout } from '@components/InfoCallout/WalletInfoCallout/WalletInfoCallout';
 import { MainPagePaddedContainer } from '@components/MainPagePaddedContainer/MainPagePaddedContainer';
-import { RelayerStatusPanelIndicator } from '@components/RelayerStatusPanelIndicator/RelayerStatusPanelIndicator';
 import { useMainScreenAlertMessage } from '@hooks/useMainScreenAlertMessage';
 import { useWalletCreationModals } from '@hooks/useWalletCreationModals';
 import {
@@ -142,7 +142,7 @@ export const WalletsScreen = ({
     }
   };
 
-  const hideRelayerStatus =
+  const hideBroadcasterStatus =
     isDefined(wallets.active) && wallets.active.isViewOnlyWallet;
 
   return (
@@ -154,7 +154,7 @@ export const WalletsScreen = ({
         setShowWalletSelectorModal={setShowWalletSelectorModal}
       />
       <div className={cn(styles.container, 'hide-scroll')}>
-        {!hideRelayerStatus && <RelayerStatusPanelIndicator />}
+        {!hideBroadcasterStatus && <BroadcasterStatusPanelIndicator />}
         <div className={styles.innerContainer}>
           <WalletInfoCallout balanceBucketFilter={balanceBucketFilter} />
           <WalletInfoButtonsCard

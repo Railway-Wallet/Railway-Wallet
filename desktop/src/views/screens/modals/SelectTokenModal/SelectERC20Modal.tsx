@@ -31,7 +31,7 @@ type Props = {
   transactionType: TransactionType | null;
   hasExistingTokenAmounts?: boolean;
   showAddTokensButton?: boolean;
-  useRelayAdaptForRelayerFee: boolean;
+  useRelayAdaptForBroadcasterFee: boolean;
   balanceBucketFilter: RailgunWalletBalanceBucket[];
 };
 
@@ -44,7 +44,7 @@ export const SelectERC20Modal: React.FC<Props> = ({
   transactionType,
   hasExistingTokenAmounts,
   showAddTokensButton = false,
-  useRelayAdaptForRelayerFee,
+  useRelayAdaptForBroadcasterFee,
   balanceBucketFilter,
 }) => {
   const { network } = useReduxSelector('network');
@@ -87,7 +87,7 @@ export const SelectERC20Modal: React.FC<Props> = ({
     });
   };
 
-  const showRefreshButton = purpose === SelectTokenPurpose.RelayerFee;
+  const showRefreshButton = purpose === SelectTokenPurpose.BroadcasterFee;
 
   return (
     <GenericModal
@@ -123,7 +123,7 @@ export const SelectERC20Modal: React.FC<Props> = ({
           wallet={activeWallet}
           onSelect={(token: ERC20Token) => onDismiss(token)}
           purpose={purpose}
-          useRelayAdaptForRelayerFee={useRelayAdaptForRelayerFee}
+          useRelayAdaptForBroadcasterFee={useRelayAdaptForBroadcasterFee}
         />
         <div className={styles.footer}>
           <div className={styles.footerContent}>

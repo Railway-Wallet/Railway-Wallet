@@ -8,7 +8,7 @@ export type ERC20Balance = {
 
 export enum SelectTokenPurpose {
   Transfer = 'Transfer',
-  RelayerFee = 'RelayerFee',
+  BroadcasterFee = 'BroadcasterFee',
 }
 
 export type ERC20Token = ERC20TokenFullInfo | ERC20TokenAddressOnly;

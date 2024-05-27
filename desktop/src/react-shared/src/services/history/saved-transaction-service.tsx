@@ -43,15 +43,15 @@ export class SavedTransactionService {
     erc20AmountRecipients: ERC20AmountRecipient[],
     nftAmountRecipients: NFTAmountRecipient[],
     network: Network,
-    sentViaRelayer: boolean,
+    sentViaBroadcaster: boolean,
     isPrivate: boolean,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
     memoText: Optional<string>,
   ): Promise<SavedTransaction> {
-    if (sentViaRelayer && !relayerFeeERC20Amount) {
-      throw new Error('Expected to save gas fee (via relayer).');
+    if (sentViaBroadcaster && !broadcasterFeeERC20Amount) {
+      throw new Error('Expected to save gas fee (via broadcaster).');
     }
 
     const action = TransactionAction.send;
@@ -69,12 +69,12 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer,
+      sentViaBroadcaster: sentViaBroadcaster,
       isPrivate,
-      relayerFeeTokenAmount: relayerFeeERC20Amount,
+      broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
       nonce,
       memoText,
-      relayerRailgunAddress,
+      broadcasterRailgunAddress: broadcasterRailgunAddress,
     };
 
     await this.storeNewTransaction(tx, network);
@@ -104,9 +104,9 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer: false,
+      sentViaBroadcaster: false,
       isPrivate: false,
-      relayerFeeTokenAmount: undefined,
+      broadcasterFeeTokenAmount: undefined,
       nonce,
       memoText: undefined,
     };
@@ -140,7 +140,7 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer: false,
+      sentViaBroadcaster: false,
       isPrivate: false,
       spender,
       spenderName,
@@ -173,7 +173,7 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer: false,
+      sentViaBroadcaster: false,
       isPrivate: false,
       nonce,
     };
@@ -205,7 +205,7 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer: false,
+      sentViaBroadcaster: false,
       isPrivate: false,
       cancelTransactionID,
       nonce,
@@ -231,12 +231,12 @@ export class SavedTransactionService {
     buyTokenAmount: ERC20Amount,
     swapDestinationAddress: Optional<string>,
     network: Network,
-    sentViaRelayer: boolean,
+    sentViaBroadcaster: boolean,
     isPrivate: boolean,
     needsRelayAdaptSuccessCheck: boolean,
     railgunFeeERC20Amounts: Optional<ERC20Amount[]>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ): Promise<SavedTransaction> {
     const action = TransactionAction.swap;
@@ -259,12 +259,12 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer,
+      sentViaBroadcaster: sentViaBroadcaster,
       isPrivate,
-      relayerFeeTokenAmount: relayerFeeERC20Amount,
+      broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
       nonce,
       needsRelayAdaptSuccessCheck,
-      relayerRailgunAddress,
+      broadcasterRailgunAddress: broadcasterRailgunAddress,
     };
 
     await this.storeNewTransaction(tx, network);
@@ -281,12 +281,12 @@ export class SavedTransactionService {
     depositTokenAmount: ERC20Amount,
     redeemERC20Amount: ERC20Amount,
     network: Network,
-    sentViaRelayer: boolean,
+    sentViaBroadcaster: boolean,
     isPrivate: boolean,
     needsRelayAdaptSuccessCheck: boolean,
     railgunFeeERC20Amounts: Optional<ERC20Amount[]>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ): Promise<SavedTransaction> {
     const action =
@@ -309,12 +309,12 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer,
+      sentViaBroadcaster: sentViaBroadcaster,
       isPrivate,
-      relayerFeeTokenAmount: relayerFeeERC20Amount,
+      broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
       nonce,
       needsRelayAdaptSuccessCheck,
-      relayerRailgunAddress,
+      broadcasterRailgunAddress: broadcasterRailgunAddress,
     };
 
     await this.storeNewTransaction(tx, network);
@@ -331,12 +331,12 @@ export class SavedTransactionService {
     depositTokensAmount: ERC20Amount[],
     redeemERC20Amount: ERC20Amount[],
     network: Network,
-    sentViaRelayer: boolean,
+    sentViaBroadcaster: boolean,
     isPrivate: boolean,
     needsRelayAdaptSuccessCheck: boolean,
     railgunFeeERC20Amounts: Optional<ERC20Amount[]>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ): Promise<SavedTransaction> {
     const action =
@@ -360,12 +360,12 @@ export class SavedTransactionService {
       id,
       action,
       status,
-      sentViaRelayer,
+      sentViaBroadcaster: sentViaBroadcaster,
       isPrivate,
-      relayerFeeTokenAmount: relayerFeeERC20Amount,
+      broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
       nonce,
       needsRelayAdaptSuccessCheck,
-      relayerRailgunAddress,
+      broadcasterRailgunAddress: broadcasterRailgunAddress,
     };
 
     await this.storeNewTransaction(tx, network);
@@ -457,7 +457,7 @@ export class SavedTransactionService {
       timestamp,
       action: TransactionAction.shield,
       status: TransactionStatus.pending,
-      sentViaRelayer: false,
+      sentViaBroadcaster: false,
       isPrivate: false,
       nonce,
       isBaseTokenDepositWithdraw: isBaseTokenDeposit,
@@ -477,10 +477,10 @@ export class SavedTransactionService {
     outputERC20AmountRecipients: ERC20AmountRecipient[],
     nftAmountRecipients: NFTAmountRecipient[],
     network: Network,
-    sentViaRelayer: boolean,
+    sentViaBroadcaster: boolean,
     isBaseTokenWithdraw: boolean,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ): Promise<SavedTransaction> {
     const networkName = network.name;
@@ -507,12 +507,12 @@ export class SavedTransactionService {
       timestamp,
       action: TransactionAction.unshield,
       status: TransactionStatus.pending,
-      sentViaRelayer,
+      sentViaBroadcaster,
       isPrivate: true,
-      relayerFeeTokenAmount: relayerFeeERC20Amount,
+      broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
       isBaseTokenDepositWithdraw: isBaseTokenWithdraw,
       nonce,
-      relayerRailgunAddress,
+      broadcasterRailgunAddress,
     };
 
     await this.storeNewTransaction(tx, network);

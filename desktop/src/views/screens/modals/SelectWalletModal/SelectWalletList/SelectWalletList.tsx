@@ -24,7 +24,7 @@ type Props = {
     address?: string,
     removeSelectedWallet?: boolean,
   ) => void;
-  showRelayerOption?: boolean;
+  showBroadcasterOption?: boolean;
   showNoDestinationWalletOption?: boolean;
   showCustomAddressDestinationOption?: boolean;
   availableWalletsOnly?: boolean;
@@ -36,7 +36,7 @@ export const SelectWalletList: React.FC<Props> = ({
   selectedWallet,
   selectedAddress,
   onSelect,
-  showRelayerOption = false,
+  showBroadcasterOption = false,
   showNoDestinationWalletOption = false,
   showCustomAddressDestinationOption = false,
   availableWalletsOnly = false,
@@ -195,11 +195,11 @@ export const SelectWalletList: React.FC<Props> = ({
     );
   };
 
-  const renderRelayerRow = () => {
+  const renderBroadcasterRow = () => {
     return renderRow(
       -1,
-      'Relayer',
-      'Auto-select best Relayer',
+      'Broadcaster',
+      'Auto-select best broadcaster',
       renderIcon(IconType.Send, 22, styleguide.colors.lighterLabelSecondary),
       'External',
       selectedWallet == null,
@@ -253,7 +253,7 @@ export const SelectWalletList: React.FC<Props> = ({
         />
       )}
       <div className={cn(styles.container, 'hide-scroll')}>
-        {!wallets.available.length && !showRelayerOption && (
+        {!wallets.available.length && !showBroadcasterOption && (
           <Text className={styles.placeholder}>No wallets available.</Text>
         )}
         {showNoDestinationWalletOption &&
@@ -261,7 +261,7 @@ export const SelectWalletList: React.FC<Props> = ({
           renderNoWalletPrivateDestinationRow()}
         {showCustomAddressDestinationOption &&
           renderCustomAddressDestinationRow()}
-        {showRelayerOption && renderRelayerRow()}
+        {showBroadcasterOption && renderBroadcasterRow()}
         {wallets.available.map(renderWallet)}
         {!availableWalletsOnly && wallets.viewOnly.map(renderWallet)}
         {showSavedAddresses && savedAddressOptions.map(renderSavedAddressRow)}

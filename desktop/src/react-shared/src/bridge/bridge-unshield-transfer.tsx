@@ -7,7 +7,7 @@ import {
   RailgunNFTAmountRecipient,
   RailgunPopulateTransactionResponse,
   RailgunTransactionGasEstimateResponse,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
 } from '@railgun-community/shared-models';
@@ -26,11 +26,11 @@ import {
 import { ERC20Amount, ERC20AmountRecipient } from '../models/token';
 import { logDev } from '../utils/logging';
 import {
+  createBroadcasterFeeERC20AmountRecipient,
   createRailgunERC20Amount,
   createRailgunERC20AmountRecipient,
   createRailgunERC20AmountRecipients,
   createRailgunNFTAmountRecipients,
-  createRelayerFeeERC20AmountRecipient,
 } from '../utils/tokens';
 import { bridgeCall } from './ipc';
 
@@ -42,8 +42,8 @@ export const populateProvedTransfer = (
   memoText: Optional<string>,
   erc20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
-  selectedRelayer: Optional<SelectedRelayer>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   transactionGasDetails: TransactionGasDetails,
@@ -51,12 +51,13 @@ export const populateProvedTransfer = (
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
     erc20AmountRecipients,
   );
-  const relayerFeeERC20AmountRecipient = createRelayerFeeERC20AmountRecipient(
-    selectedRelayer,
-    relayerFeeERC20Amount,
-  );
-  const relayerFeeERC20AmountRecipientRailgun =
-    createRailgunERC20AmountRecipient(relayerFeeERC20AmountRecipient);
+  const broadcasterFeeERC20AmountRecipient =
+    createBroadcasterFeeERC20AmountRecipient(
+      selectedBroadcaster,
+      broadcasterFeeERC20Amount,
+    );
+  const broadcasterFeeERC20AmountRecipientRailgun =
+    createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
 
@@ -71,7 +72,8 @@ export const populateProvedTransfer = (
     memoText,
     erc20AmountRecipients: erc20AmountRecipientsRailgun,
     nftAmountRecipients: nftAmountRecipientsRailgun,
-    relayerFeeERC20AmountRecipient: relayerFeeERC20AmountRecipientRailgun,
+    broadcasterFeeERC20AmountRecipient:
+      broadcasterFeeERC20AmountRecipientRailgun,
     sendWithPublicWallet,
     overallBatchMinGasPrice,
     transactionGasDetails,
@@ -84,8 +86,8 @@ export const populateProvedUnshield = (
   railWalletID: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
-  selectedRelayer: Optional<SelectedRelayer>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   transactionGasDetails: TransactionGasDetails,
@@ -93,12 +95,13 @@ export const populateProvedUnshield = (
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
     erc20AmountRecipients,
   );
-  const relayerFeeERC20AmountRecipient = createRelayerFeeERC20AmountRecipient(
-    selectedRelayer,
-    relayerFeeERC20Amount,
-  );
-  const relayerFeeERC20AmountRecipientRailgun =
-    createRailgunERC20AmountRecipient(relayerFeeERC20AmountRecipient);
+  const broadcasterFeeERC20AmountRecipient =
+    createBroadcasterFeeERC20AmountRecipient(
+      selectedBroadcaster,
+      broadcasterFeeERC20Amount,
+    );
+  const broadcasterFeeERC20AmountRecipientRailgun =
+    createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
 
@@ -111,7 +114,8 @@ export const populateProvedUnshield = (
     railWalletID,
     erc20AmountRecipients: erc20AmountRecipientsRailgun,
     nftAmountRecipients: nftAmountRecipientsRailgun,
-    relayerFeeERC20AmountRecipient: relayerFeeERC20AmountRecipientRailgun,
+    broadcasterFeeERC20AmountRecipient:
+      broadcasterFeeERC20AmountRecipientRailgun,
     sendWithPublicWallet,
     overallBatchMinGasPrice,
     transactionGasDetails,
@@ -124,8 +128,8 @@ export const populateProvedUnshieldBaseToken = async (
   railWalletID: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
   _nftAmountRecipients: NFTAmountRecipient[],
-  selectedRelayer: Optional<SelectedRelayer>,
-  relayerFeeERC20Amount: Optional<ERC20Amount>,
+  selectedBroadcaster: Optional<SelectedBroadcaster>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   transactionGasDetails: TransactionGasDetails,
@@ -142,12 +146,13 @@ export const populateProvedUnshieldBaseToken = async (
     throw new Error('No token selected for unshielding.');
   }
 
-  const relayerFeeERC20AmountRecipient = createRelayerFeeERC20AmountRecipient(
-    selectedRelayer,
-    relayerFeeERC20Amount,
-  );
-  const relayerFeeERC20AmountRecipientRailgun =
-    createRailgunERC20AmountRecipient(relayerFeeERC20AmountRecipient);
+  const broadcasterFeeERC20AmountRecipient =
+    createBroadcasterFeeERC20AmountRecipient(
+      selectedBroadcaster,
+      broadcasterFeeERC20Amount,
+    );
+  const broadcasterFeeERC20AmountRecipientRailgun =
+    createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
 
   const publicWalletAddress = erc20AmountRecipients[0].recipientAddress;
 
@@ -160,7 +165,8 @@ export const populateProvedUnshieldBaseToken = async (
     publicWalletAddress,
     railWalletID,
     wrappedTokenAmount: wrappedTokenAmountRailgun,
-    relayerFeeERC20AmountRecipient: relayerFeeERC20AmountRecipientRailgun,
+    broadcasterFeeERC20AmountRecipient:
+      broadcasterFeeERC20AmountRecipientRailgun,
     sendWithPublicWallet,
     overallBatchMinGasPrice,
     transactionGasDetails,

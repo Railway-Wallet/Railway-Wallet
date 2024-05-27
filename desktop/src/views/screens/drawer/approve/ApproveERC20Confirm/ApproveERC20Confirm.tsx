@@ -3,7 +3,7 @@ import {
   NetworkName,
   NFTAmountRecipient,
   RailgunWalletBalanceBucket,
-  SelectedRelayer,
+  SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
 } from '@railgun-community/shared-models';
@@ -89,8 +89,8 @@ export const ApproveERC20Confirm: React.FC<Props> = ({
   const performTransaction = async (
     finalAdjustedERC20AmountRecipientGroup: AdjustedERC20AmountRecipientGroup,
     _nftAmountRecipients: NFTAmountRecipient[],
-    _selectedRelayer: Optional<SelectedRelayer>,
-    _relayerTokenFeeAmount: Optional<ERC20Amount>,
+    _selectedBroadcaster: Optional<SelectedBroadcaster>,
+    _broadcasterTokenFeeAmount: Optional<ERC20Amount>,
     transactionGasDetails: TransactionGasDetails,
     customNonce: Optional<number>,
     _publicWalletOverride: Optional<AvailableWallet>,

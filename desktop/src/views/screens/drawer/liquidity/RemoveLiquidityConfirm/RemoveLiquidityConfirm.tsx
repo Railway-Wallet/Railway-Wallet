@@ -65,8 +65,8 @@ export const RemoveLiquidityConfirm = ({
   );
 
   const {
-    currentERC20Amount: currentRelayerFeeTokenAmount,
-    onERC20AmountUpdate: onRelayerFeeUpdate,
+    currentERC20Amount: currentBroadcasterFeeTokenAmount,
+    onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
   const {
@@ -98,7 +98,7 @@ export const RemoveLiquidityConfirm = ({
   const { unshieldERC20AmountAdjusted: unshieldAdjustedTokenAmountLP } =
     useAdjustedRecipeUnshieldERC20Amount(
       amountRecipientTokenLP,
-      currentRelayerFeeTokenAmount,
+      currentBroadcasterFeeTokenAmount,
     );
   const unshieldERC20AmountRecipientLP =
     unshieldAdjustedTokenAmountLP ?? amountRecipientTokenLP;
@@ -208,8 +208,8 @@ export const RemoveLiquidityConfirm = ({
     txHash: string,
     sendWithPublicWallet: boolean,
     publicExecutionWalletAddress: Optional<string>,
-    relayerFeeERC20Amount: Optional<ERC20Amount>,
-    relayerRailgunAddress: Optional<string>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
   ) => {
     const transactionService = new SavedTransactionService(dispatch);
@@ -224,8 +224,8 @@ export const RemoveLiquidityConfirm = ({
       receivedERC20AmountRecipients,
       network.current,
       !sendWithPublicWallet, true, true, feeERC20Amounts,
-      relayerFeeERC20Amount,
-      relayerRailgunAddress,
+      broadcasterFeeERC20Amount,
+      broadcasterRailgunAddress,
       nonce,
     );
   };
@@ -256,7 +256,7 @@ export const RemoveLiquidityConfirm = ({
       infoCalloutText={infoCalloutText}
       slippagePercent={slippagePercent}
       confirmButtonText={confirmButtonText}
-      onRelayerFeeUpdate={onRelayerFeeUpdate}
+      onBroadcasterFeeUpdate={onBroadcasterFeeUpdate}
       setSlippagePercent={handleSlippagePercent}
       receivedMinimumAmounts={receivedMinimumAmounts}
       transactionType={TransactionType.RemoveLiquidity}

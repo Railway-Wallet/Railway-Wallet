@@ -6,12 +6,12 @@ export class Constants {
   static readonly STAG_MODE = process.env.REACT_APP_STAG_BUILD === '1';
 
   static readonly USE_LOCAL_REMOTE_CONFIG_IN_DEV = false;
-  static readonly SHOW_RELAYER_OVERRIDE_IN_DEV = false;
+  static readonly SHOW_BROADCASTER_OVERRIDE_IN_DEV = false;
   static readonly REFRESH_TX_HISTORY_EVERY_LOAD_IN_DEV = false;
   static readonly PERFORM_FULL_BALANCE_REFRESH_ON_BUTTON_IN_DEV = false;
   static readonly OVERRIDE_PROD_TEST_FOR_DEV = false;
   static readonly ENABLE_MEMO_FIELD = true;
-  static readonly SHOW_VERBOSE_RELAYER_ERRORS_IN_PROD = true;
+  static readonly SHOW_VERBOSE_BROADCASTER_ERRORS_IN_PROD = true;
   static readonly SHOW_FARM_FEATURE = true;
 
   static readonly RAILWAY_IOS_APP_STORE_URL =

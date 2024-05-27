@@ -5,7 +5,7 @@ import {
   EncryptAESGCM256Params,
   EncryptDataWithSharedKeyParams,
   GetRandomBytesParams,
-  VerifyRelayerSignatureParams,
+  VerifyBroadcasterSignatureParams,
 } from '../models/bridge';
 import { bridgeCall } from './ipc';
 
@@ -16,14 +16,14 @@ export const getRandomBytes = (length: number = 32): Promise<string> => {
   );
 };
 
-export const verifyRelayerSignature = (
+export const verifyBroadcasterSignature = (
   signature: string,
   data: string,
   signingKey: string,
 ): Promise<boolean> => {
   const skipBridgeLogs = true;
-  return bridgeCall<VerifyRelayerSignatureParams, boolean>(
-    BridgeCallEvent.VerifyRelayerSignature,
+  return bridgeCall<VerifyBroadcasterSignatureParams, boolean>(
+    BridgeCallEvent.VerifyBroadcasterSignature,
     { signature, data, signingKey },
     skipBridgeLogs,
   );

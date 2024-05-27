@@ -48,17 +48,17 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import { SelectNetworkFeeStackParamList } from '@models/navigation-models';
 import { NavigationProp } from '@react-navigation/native';
 import {
-  addSkippedRelayer,
+  addSkippedBroadcaster,
   AvailableWallet,
-  BlockedRelayerService,
+  BlockedBroadcasterService,
   CalloutType,
   createAdjustedERC20AmountRecipientGroup,
   createRecipeFinalERC20Amounts,
   CustomGasTransactionDetails,
   ERC20Amount,
   ERC20AmountRecipient,
-  findAllRelayersForToken,
-  findRandomRelayer,
+  findAllBroadcastersForToken,
+  findRandomBroadcaster,
   FrontendWallet,
   GetGasEstimateProofRequired,
   GetGasEstimateSelfSigned,
@@ -72,9 +72,9 @@ import {
   NetworkFeeSelection,
   PerformGenerateProofType,
   PerformTransactionType,
-  resetRelayerSkiplist,
+  resetBroadcasterSkiplist,
   SelectTokenPurpose,
-  setRelayerAddressFilters,
+  setBroadcasterAddressFilters,
   SharedConstants,
   shortenWalletAddress,
   StorageService,
@@ -82,7 +82,9 @@ import {
   TransactionType,
   useAdjustERC20AmountRecipientsForTransaction,
   useAppDispatch,
-  useBestRelayer,
+  useBestBroadcaster,
+  useBroadcasterFee,
+  useBroadcasterFeeERC20,
   useGasFeeWatcher,
   useHasPendingTransaction,
   useIsMounted,
@@ -92,8 +94,6 @@ import {
   useProof,
   useRailgunFees,
   useReduxSelector,
-  useRelayerFee,
-  useRelayerFeeERC20,
   useRemoteConfigNetworkError,
   validateCachedProvedTransaction,
   Vault,
@@ -141,7 +141,9 @@ type Props = {
   relayAdaptShieldERC20Recipients?: RailgunERC20Recipient[];
   relayAdaptShieldNFTRecipients?: NFTAmountRecipient[];
   crossContractCalls?: ContractTransaction[];
-  onRelayerFeeUpdate?: (relayerFeeERC20Amount: Optional<ERC20Amount>) => void;
+  onBroadcasterFeeUpdate?: (
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+  ) => void;
   onTransactionGasDetailsUpdate?: (
     gasDetails: Optional<TransactionGasDetails>,
   ) => void;
@@ -188,7 +190,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
   relayAdaptShieldNFTRecipients,
   crossContractCalls,
   requireSelfSigned,
-  onRelayerFeeUpdate,
+  onBroadcasterFeeUpdate,
   onTransactionGasDetailsUpdate,
   setSlippagePercent,
   slippagePercent,
@@ -216,7 +218,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
 
   const [error, setError] = useState<Optional<Error>>();
 
-  const [hasRelayerError, setHasRelayerError] = useState(false);
+  const [hasBroadcasterError, setHasBroadcasterError] = useState(false);
 
   const [customNonce, setCustomNonce] = useState<Optional<number>>();
   const [publicWalletOverride, setPublicWalletOverride] =
@@ -260,7 +262,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
       firstUpdate.current = false;
       return;
     }
-    dispatch(resetRelayerSkiplist());
+    dispatch(resetBroadcasterSkiplist());
     navigation.goBack();
   }, [dispatch, navigation]);
 
@@ -313,31 +315,31 @@ export const ReviewTransactionView: React.FC<Props> = ({
 
   const {
     selectedFeeToken,
-    selectRelayerFeeERC20Modal,
-    showRelayerFeeERC20Modal,
-    onDismissSelectRelayerFee,
-  } = useRelayerFeeERC20(erc20AmountRecipients, useRelayAdapt);
+    selectBroadcasterFeeERC20Modal,
+    showBroadcasterFeeERC20Modal,
+    onDismissSelectBroadcasterFee,
+  } = useBroadcasterFeeERC20(erc20AmountRecipients, useRelayAdapt);
 
   const {
-    selectedRelayer,
-    requiresRelayer,
-    lockRelayer,
-    selectedRelayerLocked,
-  } = useBestRelayer(
+    selectedBroadcaster,
+    requiresBroadcaster,
+    lockBroadcaster,
+    selectedBroadcasterLocked,
+  } = useBestBroadcaster(
     transactionType,
     isFullyPrivateTransaction,
     selectedFeeToken,
     useRelayAdapt,
     isMounted,
-    findRandomRelayer,
-    findAllRelayersForToken,
-    setRelayerAddressFilters,
+    findRandomBroadcaster,
+    findAllBroadcastersForToken,
+    setBroadcasterAddressFilters,
     undefined,
   );
 
-  const isRelayerTransaction =
-    requiresRelayer && requireSelfSigned !== true && !publicWalletOverride;
-  const sendWithPublicWallet = !isRelayerTransaction;
+  const isBroadcasterTransaction =
+    requiresBroadcaster && requireSelfSigned !== true && !publicWalletOverride;
+  const sendWithPublicWallet = !isBroadcasterTransaction;
 
   const updateGasEstimateProgress = (amount: number) => {
     setGasEstimateProgress(amount / 100);
@@ -364,8 +366,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
     erc20AmountRecipients,
     nftAmountRecipients,
     customGasTransactionDetails ?? {},
-    selectedRelayerLocked,
-    selectedRelayer,
+    selectedBroadcasterLocked,
+    selectedBroadcaster,
     sendWithPublicWallet,
     isMounted,
     updateGasEstimateProgress,
@@ -387,34 +389,34 @@ export const ReviewTransactionView: React.FC<Props> = ({
   }, [onSuccessCallback, showProcessModal, transactionSuccessTxid]);
 
   const overallBatchMinGasPrice: Optional<bigint> = selectedGasDetails
-    ? getOverallBatchMinGasPrice(isRelayerTransaction, selectedGasDetails)
+    ? getOverallBatchMinGasPrice(isBroadcasterTransaction, selectedGasDetails)
     : undefined;
 
   const {
-    relayerFeeText,
-    relayerFeeSubtext,
-    relayerFeeERC20Amount,
-    relayerFeeIsEstimating,
-  } = useRelayerFee(
+    broadcasterFeeText,
+    broadcasterFeeSubtext,
+    broadcasterFeeERC20Amount,
+    broadcasterFeeIsEstimating,
+  } = useBroadcasterFee(
     selectedFeeToken,
-    selectedRelayer,
-    selectedRelayerLocked,
+    selectedBroadcaster,
+    selectedBroadcasterLocked,
     selectedGasDetails,
     gasDetailsBySpeed,
     gasEstimateError,
   );
 
   useEffect(() => {
-    if (onRelayerFeeUpdate) {
-      onRelayerFeeUpdate(relayerFeeERC20Amount);
+    if (onBroadcasterFeeUpdate) {
+      onBroadcasterFeeUpdate(broadcasterFeeERC20Amount);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [relayerFeeERC20Amount]);
+  }, [broadcasterFeeERC20Amount]);
 
   const changeThresholdBasisPoints = 500;
   const { gasPriceChangedByThreshold } = useGasFeeWatcher(
     selectedGasDetails,
-    selectedRelayerLocked,
+    selectedBroadcasterLocked,
     changeThresholdBasisPoints,
   );
 
@@ -426,7 +428,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
       transactionType,
       useRailgunBalances,
       selectedGasDetails,
-      relayerFeeERC20Amount,
+      broadcasterFeeERC20Amount,
       sendWithPublicWallet,
     );
 
@@ -445,7 +447,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
       memoText: Optional<string>,
       erc20AmountRecipients: ERC20AmountRecipient[],
       nftAmountRecipients: NFTAmountRecipient[],
-      relayerFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
+      broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
       sendWithPublicWallet: boolean,
       overallBatchMinGasPrice: Optional<bigint>,
     ) => {
@@ -465,7 +467,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
         relayAdaptShieldERC20Recipients,
         relayAdaptShieldNFTRecipients,
         crossContractCalls,
-        relayerFeeERC20AmountRecipient,
+        broadcasterFeeERC20AmountRecipient,
         sendWithPublicWallet,
         overallBatchMinGasPrice,
       );
@@ -498,12 +500,12 @@ export const ReviewTransactionView: React.FC<Props> = ({
     finalAdjustedERC20AmountRecipientGroup.inputs,
     nftAmountRecipients,
     isBaseTokenUnshield,
-    selectedRelayer,
-    relayerFeeERC20Amount,
+    selectedBroadcaster,
+    broadcasterFeeERC20Amount,
     sendWithPublicWallet,
     overallBatchMinGasPrice,
     setError,
-    lockRelayer,
+    lockBroadcaster,
     proofTimerExpired,
     validateProvedTransaction,
   );
@@ -543,9 +545,9 @@ export const ReviewTransactionView: React.FC<Props> = ({
       currentOption: networkFeeSelection,
       gasDetailsMap,
       defaultCustomGasTransactionDetails: customGasTransactionDetails ?? {},
-      selectedRelayer,
+      selectedBroadcaster,
       selectedFeeToken,
-      isRelayerTransaction,
+      isBroadcasterTransaction,
     };
 
     navigation.navigate('SelectNetworkFee', {
@@ -606,10 +608,13 @@ export const ReviewTransactionView: React.FC<Props> = ({
     onSuccessCallback();
   };
 
-  const onTransactionFail = (err: Error, isRelayerError: boolean = false) => {
+  const onTransactionFail = (
+    err: Error,
+    isBroadcasterError: boolean = false,
+  ) => {
     setShowProcessModal(false);
     setError(err);
-    setHasRelayerError(isRelayerError);
+    setHasBroadcasterError(isBroadcasterError);
   };
 
   const onTapSend = () => {
@@ -626,53 +631,53 @@ export const ReviewTransactionView: React.FC<Props> = ({
       return;
     }
 
-    setHasRelayerError(false);
+    setHasBroadcasterError(false);
     setShowProcessModal(true);
   };
 
-  const onTapRetryRelayerTransaction = () => {
+  const onTapRetryBroadcasterTransaction = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     if (sendWithPublicWallet) {
       onTapSend();
       return;
     }
 
-    const railgunAddress = selectedRelayer?.railgunAddress;
+    const railgunAddress = selectedBroadcaster?.railgunAddress;
     callActionSheet(
       showActionSheetWithOptions,
-      `Relayer: ${shortenWalletAddress(railgunAddress ?? 'Unknown')}`,
+      `Broadcaster: ${shortenWalletAddress(railgunAddress ?? 'Unknown')}`,
       [
         {
           name: 'Refresh gas and try again',
           action: resetProofAndGas,
         },
         {
-          name: 'Retry with a different public relayer',
-          action: () => skipRelayer(railgunAddress),
+          name: 'Retry with a different public broadcaster',
+          action: () => skipBroadcaster(railgunAddress),
         },
         {
-          name: 'Block this public relayer',
-          action: () => blockRelayer(railgunAddress),
+          name: 'Block this public broadcaster',
+          action: () => blockBroadcaster(railgunAddress),
           isDestructive: true,
         },
       ],
     );
   };
 
-  const onTapRelayerOptions = () => {
+  const onTapBroadcasterOptions = () => {
     triggerHaptic(HapticSurface.NavigationButton);
 
-    const disableRelayerGasPrice = !selectedRelayer || !gasDetailsMap;
+    const disableBroadcasterGasPrice = !selectedBroadcaster || !gasDetailsMap;
 
-    callActionSheet(showActionSheetWithOptions, `Relayer options`, [
+    callActionSheet(showActionSheetWithOptions, `Broadcaster options`, [
       {
         name: 'Select gas fee token',
-        action: selectRelayerFeeERC20Modal,
+        action: selectBroadcasterFeeERC20Modal,
       },
       {
         name: 'Set gas price for transaction',
         action: openNetworkFeeSelector,
-        disabled: disableRelayerGasPrice,
+        disabled: disableBroadcasterGasPrice,
       },
     ]);
   };
@@ -680,7 +685,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
   const resetProof = () => {
     invalidateProof();
     setError(undefined);
-    setHasRelayerError(false);
+    setHasBroadcasterError(false);
   };
 
   const resetProofAndGas = () => {
@@ -688,17 +693,17 @@ export const ReviewTransactionView: React.FC<Props> = ({
     resetGasData();
   };
 
-  const skipRelayer = (pubKey?: string) => {
+  const skipBroadcaster = (pubKey?: string) => {
     if (isDefined(pubKey)) {
-      dispatch(addSkippedRelayer(pubKey));
+      dispatch(addSkippedBroadcaster(pubKey));
     }
     resetProofAndGas();
   };
 
-  const blockRelayer = async (pubKey?: string) => {
+  const blockBroadcaster = async (pubKey?: string) => {
     if (isDefined(pubKey)) {
-      const blockedRelayerService = new BlockedRelayerService(dispatch);
-      await blockedRelayerService.addBlockedRelayer(
+      const blockedBroadcasterService = new BlockedBroadcasterService(dispatch);
+      await blockedBroadcasterService.addBlockedBroadcaster(
         pubKey,
         undefined,
       );
@@ -706,10 +711,10 @@ export const ReviewTransactionView: React.FC<Props> = ({
     resetProofAndGas();
   };
 
-  const promptUnlockRelayer = () => {
+  const promptUnlockBroadcaster = () => {
     Alert.alert(
-      'Unlock Relayer',
-      'Reset proof and unlock public relayer selection.',
+      'Unlock Broadcaster',
+      'Reset proof and unlock public broadcaster selection.',
       [
         {
           text: 'Reset proof',
@@ -844,7 +849,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
   };
 
   const enablePublicWalletOverride =
-    requiresRelayer && requireSelfSigned !== true;
+    requiresBroadcaster && requireSelfSigned !== true;
   const showHideSenderAddress = isRailgunShieldedTransfer;
   const enableAdvancedFields =
     showCustomNonce || enablePublicWalletOverride || showHideSenderAddress;
@@ -857,14 +862,14 @@ export const ReviewTransactionView: React.FC<Props> = ({
   const disableSendButton =
     isDefined(calculateFeesError) ||
     isDefined(remoteConfigNetworkError) ||
-    hasRelayerError ||
+    hasBroadcasterError ||
     !isDefined(selectedGasDetails) ||
     disableSendRequiresNewSwapQuote;
 
   const disableProofGeneration =
     !isDefined(selectedGasDetails) ||
     (!isDefined(publicWalletOverride) &&
-      !isDefined(selectedRelayer) &&
+      !isDefined(selectedBroadcaster) &&
       requireSelfSigned !== true) ||
     disableSendRequiresNewSwapQuote;
 
@@ -877,15 +882,15 @@ export const ReviewTransactionView: React.FC<Props> = ({
 
   return (<>
     <SelectERC20Modal
-      show={showRelayerFeeERC20Modal}
+      show={showBroadcasterFeeERC20Modal}
       headerTitle="Select fee token"
       skipBaseToken={true}
-      onDismiss={onDismissSelectRelayerFee}
+      onDismiss={onDismissSelectBroadcasterFee}
       isRailgun={true}
       balanceBucketFilter={balanceBucketFilter}
-      purpose={SelectTokenPurpose.RelayerFee}
+      purpose={SelectTokenPurpose.BroadcasterFee}
       transactionType={null}
-      useRelayAdaptForRelayerFee={useRelayAdapt}
+      useRelayAdaptForBroadcasterFee={useRelayAdapt}
     />
     <SelectWalletModal
       show={showWalletSelectorModal}
@@ -896,7 +901,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
       isRailgunInitial={false}
       selectedWallet={publicWalletOverride}
       onDismiss={onDismissPublicWalletOverrideSelector}
-      showRelayerOption={true}
+      showBroadcasterOption={true}
       availableWalletsOnly={true}
     />
     <GenerateProofModal
@@ -904,8 +909,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
         finalAdjustedERC20AmountRecipientGroup.inputs
       }
       nftAmountRecipients={nftAmountRecipients}
-      selectedRelayer={selectedRelayer}
-      relayerFeeERC20Amount={relayerFeeERC20Amount}
+      selectedBroadcaster={selectedBroadcaster}
+      broadcasterFeeERC20Amount={broadcasterFeeERC20Amount}
       show={showGenerateProofModal}
       publicWalletOverride={publicWalletOverride}
       memoText={shieldedTransferMemo}
@@ -914,8 +919,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
       performGenerateProof={async (
         finalERC20AmountRecipients,
         nftAmountRecipients,
-        selectedRelayer,
-        relayerFeeERC20Amount,
+        selectedBroadcaster,
+        broadcasterFeeERC20Amount,
         publicWalletOverride,
         showSenderAddressToRecipient,
         memoText,
@@ -931,8 +936,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
         await performGenerateProof(
           finalERC20AmountRecipients,
           nftAmountRecipients,
-          selectedRelayer,
-          relayerFeeERC20Amount,
+          selectedBroadcaster,
+          broadcasterFeeERC20Amount,
           publicWalletOverride,
           showSenderAddressToRecipient,
           memoText,
@@ -953,8 +958,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
       performTransaction={async (
         finalAdjustedERC20AmountRecipientGroup,
         nftAmountRecipients,
-        selectedRelayer,
-        relayerFeeERC20Amount,
+        selectedBroadcaster,
+        broadcasterFeeERC20Amount,
         transactionGasDetails,
         customNonce,
         publicWalletOverride,
@@ -975,8 +980,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
         const txid = await performTransaction(
           finalAdjustedERC20AmountRecipientGroup,
           nftAmountRecipients,
-          selectedRelayer,
-          relayerFeeERC20Amount,
+          selectedBroadcaster,
+          broadcasterFeeERC20Amount,
           transactionGasDetails,
           customNonce,
           publicWalletOverride,
@@ -988,8 +993,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
         setTransactionSuccessTxid(txid);
         return txid;
       }}
-      selectedRelayer={selectedRelayer}
-      relayerFeeERC20Amount={relayerFeeERC20Amount}
+      selectedBroadcaster={selectedBroadcaster}
+      broadcasterFeeERC20Amount={broadcasterFeeERC20Amount}
       transactionGasDetails={selectedGasDetails}
       onSuccessClose={onTransactionSuccess}
       onFailClose={onTransactionFail}
@@ -1083,33 +1088,33 @@ export const ReviewTransactionView: React.FC<Props> = ({
           {}
           {}
           <View style={styles.networkFeeWrapper}>
-            {requiresRelayer && !publicWalletOverride ? (
+            {requiresBroadcaster && !publicWalletOverride ? (
               <>
                 <SelectableListItem
                   title="Gas fee"
                   titleIconSource={
-                    selectedRelayerLocked ? 'lock-outline' : undefined
+                    selectedBroadcasterLocked ? 'lock-outline' : undefined
                   }
                   description={
-                    selectedGasDetails && selectedRelayer
-                      ? `via relayer ${shortenWalletAddress(
-                          selectedRelayer.railgunAddress,
+                    selectedGasDetails && selectedBroadcaster
+                      ? `via broadcaster ${shortenWalletAddress(
+                          selectedBroadcaster.railgunAddress,
                         )}`
-                      : relayerFeeIsEstimating
-                      ? relayerFeeText
+                      : broadcasterFeeIsEstimating
+                      ? broadcasterFeeText
                       : ''
                   }
-                  rightText={relayerFeeText}
-                  rightSubtext={relayerFeeSubtext}
+                  rightText={broadcasterFeeText}
+                  rightSubtext={broadcasterFeeSubtext}
                   onTap={
-                    selectedRelayerLocked
-                      ? promptUnlockRelayer
-                      : onTapRelayerOptions
+                    selectedBroadcasterLocked
+                      ? promptUnlockBroadcaster
+                      : onTapBroadcasterOptions
                   }
                   showTopBorder
                   showBottomBorder
                   customRightView={
-                    relayerFeeIsEstimating ? (
+                    broadcasterFeeIsEstimating ? (
                       <View style={styles.gasEstimateProgressBarWrapper}>
                         <Text style={styles.gasEstimateProgressLabel}>
                           Estimating...
@@ -1124,13 +1129,13 @@ export const ReviewTransactionView: React.FC<Props> = ({
                     ) : undefined
                   }
                 />
-                {selectedRelayerLocked &&
+                {selectedBroadcasterLocked &&
                   hasValidProof &&
                   gasPriceChangedByThreshold &&
                   !showGenerateProofModal &&
                   !showProcessModal && (
                     <Text
-                      style={styles.relayerFeeWarning}
+                      style={styles.broadcasterFeeWarning}
                       onPress={resetProofAndGas}
                     >
                       Gas prices have changed, and your gas fee may not be
@@ -1214,12 +1219,12 @@ export const ReviewTransactionView: React.FC<Props> = ({
                   <SelectableListItem
                     title="Signer"
                     titleIconSource={
-                      selectedRelayerLocked ? 'lock-outline' : undefined
+                      selectedBroadcasterLocked ? 'lock-outline' : undefined
                     }
                     rightText={
                       publicWalletOverride
                         ? publicWalletOverride.name
-                        : 'Relayer'
+                        : 'Broadcaster'
                     }
                     rightSubtext={
                       publicWalletOverride
@@ -1232,7 +1237,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
                     }}
                     showTopBorder
                     showBottomBorder
-                    disabled={selectedRelayerLocked || hasValidProof}
+                    disabled={selectedBroadcasterLocked || hasValidProof}
                   />
                 </View>
               )}
@@ -1315,7 +1320,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
                 title="Generate Proof"
                 onPress={() => {
                   triggerHaptic(HapticSurface.SelectItem);
-                  setHasRelayerError(false);
+                  setHasBroadcasterError(false);
                   setError(undefined);
                   tryGenerateProof();
                 }}
@@ -1330,13 +1335,13 @@ export const ReviewTransactionView: React.FC<Props> = ({
                 Proof valid for {proofExpirationSeconds} seconds.
               </Text>
             )}
-          {hasRelayerError && selectedRelayer && hasValidProof && (
+          {hasBroadcasterError && selectedBroadcaster && hasValidProof && (
             <>
               <View style={styles.bottomButtonWrapper}>
                 <ButtonWithTextAndIcon
                   icon="refresh"
                   title="Retry transaction"
-                  onPress={onTapRetryRelayerTransaction}
+                  onPress={onTapRetryBroadcasterTransaction}
                 />
               </View>
             </>

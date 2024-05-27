@@ -16,7 +16,7 @@ import './services/core/railgun/transactions/node-railgun-proofs';
 import './services/core/railgun/transactions/node-railgun-cross-contract-calls';
 import './services/core/railgun/node-railgun-util';
 import './services/core/node-ethers';
-import './services/relayer/node-waku-relayer-client';
+import './services/broadcaster/node-waku-broadcaster-client';
 
 import { sendError, sendMessage } from './services/bridge/loggers';
 

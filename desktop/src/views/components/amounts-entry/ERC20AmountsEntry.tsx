@@ -351,7 +351,7 @@ export const ERC20AmountsEntry: React.FC<Props> = ({
           purpose={SelectTokenPurpose.Transfer}
           transactionType={transactionType}
           hasExistingTokenAmounts={tokenAmounts.length > 0}
-          useRelayAdaptForRelayerFee={false}
+          useRelayAdaptForBroadcasterFee={false}
           balanceBucketFilter={balanceBucketFilter}
         />
       )}

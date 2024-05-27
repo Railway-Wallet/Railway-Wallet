@@ -10,7 +10,8 @@ import { useActionSheet } from '@expo/react-native-action-sheet';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import {
-  BlockedRelayerService,
+  BlockedBroadcasterService,
+  broadcasterFeeTransactionText,
   canCancelTransaction,
   canMarkAsFailedTransaction,
   compareTokens,
@@ -22,7 +23,6 @@ import {
   isNonSpendableBucket,
   ProviderService,
   railgunFeeTransactionText,
-  relayerFeeTransactionText,
   SavedTransaction,
   SavedTransactionStore,
   shortenTokenAddress,
@@ -80,7 +80,7 @@ export const TransactionItem: React.FC<Props> = ({
     useState(false);
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
-  const { relayerBlocklist } = useReduxSelector('relayerBlocklist');
+  const { broadcasterBlocklist } = useReduxSelector('broadcasterBlocklist');
 
   const { showActionSheetWithOptions } = useActionSheet();
 
@@ -145,15 +145,15 @@ export const TransactionItem: React.FC<Props> = ({
     );
   };
 
-  const blockRelayer = async (pubKey?: string) => {
+  const blockBroadcaster = async (pubKey?: string) => {
     if (isDefined(pubKey)) {
-      const blockedRelayerService = new BlockedRelayerService(dispatch);
-      await blockedRelayerService.addBlockedRelayer(
+      const blockedBroadcasterService = new BlockedBroadcasterService(dispatch);
+      await blockedBroadcasterService.addBlockedBroadcaster(
         pubKey,
         undefined,
       );
 
-      Alert.alert('Public relayer added to block list.');
+      Alert.alert('Public broadcaster added to block list.');
     }
   };
 
@@ -273,15 +273,15 @@ export const TransactionItem: React.FC<Props> = ({
 
     if (
       transaction.status === TransactionStatus.failed &&
-      isDefined(transaction.relayerRailgunAddress) &&
-      !BlockedRelayerService.isRelayerBlocked(
-        transaction.relayerRailgunAddress,
-        relayerBlocklist.relayers,
+      isDefined(transaction.broadcasterRailgunAddress) &&
+      !BlockedBroadcasterService.isBroadcasterBlocked(
+        transaction.broadcasterRailgunAddress,
+        broadcasterBlocklist.broadcasters,
       )
     ) {
       options.push({
-        name: 'Block this public relayer',
-        action: () => blockRelayer(transaction.relayerRailgunAddress),
+        name: 'Block this public broadcaster',
+        action: () => blockBroadcaster(transaction.broadcasterRailgunAddress),
       });
     }
 
@@ -365,7 +365,7 @@ export const TransactionItem: React.FC<Props> = ({
     wallets.available,
     filteredToken,
   );
-  const relayerFee = relayerFeeTransactionText(
+  const broadcasterFee = broadcasterFeeTransactionText(
     transaction,
     wallets.active,
     wallets.available,
@@ -415,8 +415,8 @@ export const TransactionItem: React.FC<Props> = ({
         {isDefined(railgunFee) && (
           <Text style={styles.feeText}>{railgunFee}</Text>
         )}
-        {isDefined(relayerFee) && (
-          <Text style={styles.feeText}>{relayerFee}</Text>
+        {isDefined(broadcasterFee) && (
+          <Text style={styles.feeText}>{broadcasterFee}</Text>
         )}
         {isDefined(transaction.memoText) && (
           <Text
@@ -439,14 +439,14 @@ export const TransactionItem: React.FC<Props> = ({
             {isDefined(transaction.nonce)
               ? ` • Nonce ${transaction.nonce}`
               : null}
-            {transaction.sentViaRelayer &&
+            {transaction.sentViaBroadcaster &&
             !(transaction.syncedFromRailgun ?? false)
-              ? ` • Sent via public relayer`
+              ? ` • Sent via public broadcaster`
               : null}
             {transaction.syncedFromRailgun ?? false
               ? ` • Synced from encrypted on-chain history`
               : null}
-            {transaction.sentViaRelayer &&
+            {transaction.sentViaBroadcaster &&
             !(transaction.syncedFromRailgun ?? false) &&
             !(transaction.foundBySync ?? false)
               ? ` • Not yet synced to RAILGUN balance`

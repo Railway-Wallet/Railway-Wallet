@@ -108,7 +108,7 @@ export const executeTransaction = async (
   }
 };
 
-export const executeWithoutRelayer = async (
+export const executeWithoutBroadcaster = async (
   fromWalletAddress: string,
   pKey: string,
   transaction: ContractTransaction,

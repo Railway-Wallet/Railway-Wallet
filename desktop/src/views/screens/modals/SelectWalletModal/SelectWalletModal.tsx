@@ -19,7 +19,7 @@ type Props = {
   onShowWalletSettings?: () => void;
   selectedWallet?: FrontendWallet;
   selectedAddress?: string;
-  showRelayerOption?: boolean;
+  showBroadcasterOption?: boolean;
   showNoDestinationWalletOption?: boolean;
   showCustomAddressDestinationOption?: boolean;
   availableWalletsOnly?: boolean;
@@ -34,7 +34,7 @@ export const SelectWalletModal: React.FC<Props> = ({
   onShowWalletSettings,
   selectedWallet,
   selectedAddress,
-  showRelayerOption,
+  showBroadcasterOption,
   showNoDestinationWalletOption,
   showCustomAddressDestinationOption,
   availableWalletsOnly,
@@ -71,7 +71,7 @@ export const SelectWalletModal: React.FC<Props> = ({
           selectedWallet={selectedWallet}
           selectedAddress={selectedAddress}
           onSelect={onDismiss}
-          showRelayerOption={showRelayerOption}
+          showBroadcasterOption={showBroadcasterOption}
           showNoDestinationWalletOption={showNoDestinationWalletOption}
           showCustomAddressDestinationOption={
             showCustomAddressDestinationOption
