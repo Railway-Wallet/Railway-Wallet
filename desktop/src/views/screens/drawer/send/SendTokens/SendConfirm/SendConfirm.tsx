@@ -21,23 +21,22 @@ import {
   executeERC20Transfer,
   executeNFTTransfer,
   executeWithoutBroadcaster,
- getBroadcasterFilterPeerCount , getBroadcasterLightPushPeerCount ,   getBroadcasterMeshPeerCount,
-getBroadcasterPubSubPeerCount,    getERC20TransferGasEstimate,
+  getBroadcasterFilterPeerCount, getBroadcasterLightPushPeerCount, getBroadcasterMeshPeerCount,
+  getBroadcasterPubSubPeerCount, getERC20TransferGasEstimate,
   getNFTTransferGasEstimate,
   getOverallBatchMinGasPrice,
   getPOIRequiredForNetwork,
-hasBlockedAddress,
+  hasBlockedAddress,
   logDev,
   PerformGenerateProofType,
   POIProofEventStatusUI,
   populateProvedTransfer,
-  ProviderService,
-  ReactConfig,
   SavedTransactionService,
   TransactionType,
   updatePOIProofProgressStatus,
   useAppDispatch,
-  useReduxSelector } from '@react-shared';
+  useReduxSelector
+} from '@react-shared';
 import { ReviewTransactionView } from '@screens/drawer/review-transaction/ReviewTransactionView';
 import { drawerEventsBus } from '@services/navigation/drawer-events';
 import { WalletSecureStorageWeb } from '@services/wallet/wallet-secure-service-web';
@@ -261,7 +260,6 @@ export const SendConfirm = ({
         txHash = txResponse.hash;
         nonce = txResponse.nonce;
       } else if (selectedBroadcaster) {
-        if (ReactConfig.IS_DEV) {}
         if (!isDefined(overallBatchMinGasPrice)) {
           throw new Error(
             'Broadcaster transaction requires overallBatchMinGasPrice.',

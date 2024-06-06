@@ -6,5 +6,5 @@ export const getLocalRemoteConfigDevOnly = (): RemoteConfig => {
   if (!ReactConfig.IS_DEV) {
     throw new Error('Not accessible');
   }
-  return LocalRemoteConfigDevOnly;
+  return LocalRemoteConfigDevOnly as unknown as RemoteConfig;
 };

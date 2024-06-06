@@ -300,288 +300,174 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
 
   const appVersionNumber = process.env.REACT_APP_VERSION;
 
-  return (
-    <>
-      {isDefined(loadingText) && <FullScreenSpinner text={loadingText} />}
-      <div className={styles.settingsListContainer}>
-        <div>
-          <Text className={styles.sectionHeader}>Manage</Text>
-          <ListItem
-            title="Wallets"
-            description="Add and update wallets"
-            className={styles.listItem}
-            titleClassName={styles.itemTitle}
-            descriptionClassName={styles.itemDescription}
-            onPress={() => setWalletSettingsOpen(true)}
-            right={() => (
-              <div className={styles.rightContainer}>
-                {renderIcon(IconType.ChevronRight, 18)}
-              </div>
-            )}
-          />
-          {poiRequired && (
-            <ListItem
-              title="Pending balances"
-              description="View pending shields and other balances"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              onPress={() => setPendingBalancesOpen(true)}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.ChevronRight, 18)}
-                </div>
-              )}
-            />
+  return (<>
+    {isDefined(loadingText) && <FullScreenSpinner text={loadingText} />}
+    <div className={styles.settingsListContainer}>
+      <div>
+        <Text className={styles.sectionHeader}>Manage</Text>
+        <ListItem
+          title="Wallets"
+          description="Add and update wallets"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          onPress={() => setWalletSettingsOpen(true)}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.ChevronRight, 18)}
+            </div>
           )}
+        />
+        {poiRequired && (
           <ListItem
-            title="Networks & RPCs"
-            description="Customize network RPCs"
+            title="Pending balances"
+            description="View pending shields and other balances"
             className={styles.listItem}
             titleClassName={styles.itemTitle}
             descriptionClassName={styles.itemDescription}
-            onPress={() => setNetworkSettingsOpen(true)}
+            onPress={() => setPendingBalancesOpen(true)}
             right={() => (
               <div className={styles.rightContainer}>
                 {renderIcon(IconType.ChevronRight, 18)}
               </div>
             )}
           />
-          <ListItem
-            title="Address book"
-            description="Manage saved addresses"
-            className={styles.listItem}
-            titleClassName={styles.itemTitle}
-            descriptionClassName={styles.itemDescription}
-            onPress={() => setSavedAddressesOpen(true)}
-            right={() => (
-              <div className={styles.rightContainer}>
-                {renderIcon(IconType.ChevronRight, 18)}
-              </div>
-            )}
-          />
-          <ListItem
-            title="Public Broadcasters"
-            description="Customize public broadcasters"
-            className={styles.listItem}
-            titleClassName={styles.itemTitle}
-            descriptionClassName={styles.itemDescription}
-            onPress={() => setBroadcastersSettingsOpen(true)}
-            right={() => (
-              <div className={styles.rightContainer}>
-                {renderIcon(IconType.ChevronRight, 18)}
-              </div>
-            )}
-          />
-          <ListItem
-            title="Default settings"
-            description="Set currency for balances"
-            className={styles.listItem}
-            titleClassName={styles.itemTitle}
-            descriptionClassName={styles.itemDescription}
-            onPress={() => setDefaultsModalOpen(true)}
-            right={() => (
-              <div className={styles.rightContainer}>
-                {renderIcon(IconType.ChevronRight, 18)}
-              </div>
-            )}
-          />
-          <ListItem
-            title="Change password"
-            description="Set a new password for Railway"
-            className={styles.listItem}
-            titleClassName={styles.itemTitle}
-            descriptionClassName={styles.itemDescription}
-            onPress={() => {
-              setChangePasswordSettingsOpen(true);
-            }}
-            right={() => (
-              <div className={styles.rightContainer}>
-                {renderIcon(IconType.ChevronRight, 18)}
-              </div>
-            )}
-          />
-        </div>
-
-        <div>
-          <Text className={styles.sectionHeader}>Help</Text>
-          <a
-            href={Constants.RAILWAY_USER_GUIDE}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.titleLink}
-          >
-            <ListItem
-              title="User Guide"
-              description="How to use Railway Wallet"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.Help, 18)}
-                </div>
-              )}
-            />
-          </a>
-          <a
-            href={Constants.RAILWAY_SUPPORT_TELEGRAM}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.titleLink}
-          >
-            <ListItem
-              title="Community"
-              description="@railwaywallet on Telegram"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.ChatBubble, 18)}
-                </div>
-              )}
-            />
-          </a>
-          <ListItem
-            title="Re-scan private balances"
-            description={`Sync RAILGUN balances on ${network.current.shortPublicName}`}
-            className={styles.listItem}
-            titleClassName={styles.itemTitle}
-            descriptionClassName={styles.itemDescription}
-            right={() => (
-              <div className={styles.rightContainer}>
-                {renderIcon(IconType.Refresh, 18)}
-              </div>
-            )}
-            onPress={promptRescanPrivateBalances}
-          />
-          {isDefined(networkForName(network.current.name)?.poi) && (
-            <ListItem
-              title="Generate all Private POIs"
-              description={`Run Private Proof of Innocence for ${network.current.shortPublicName}`}
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.Calculator, 18)}
-                </div>
-              )}
-              onPress={promptGenerateAllPOIs}
-            />
+        )}
+        <ListItem
+          title="Networks & RPCs"
+          description="Customize network RPCs"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          onPress={() => setNetworkSettingsOpen(true)}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.ChevronRight, 18)}
+            </div>
           )}
-          {ReactConfig.IS_DEV &&
-            isDefined(networkForName(network.current.name)?.poi) && (
-              <ListItem
-                title="[Dev] Reset RAILGUN TXIDs [V2]"
-                description={`Clear and sync TXID data on ${network.current.shortPublicName}`}
-                className={styles.listItem}
-                titleClassName={styles.itemTitle}
-                descriptionClassName={styles.itemDescription}
-                right={() => (
-                  <div className={styles.rightContainer}>
-                    {renderIcon(IconType.Refresh, 18)}
-                  </div>
-                )}
-                onPress={promptResetTXIDMerkletreesV2}
-              />
-            )}
+        />
+        <ListItem
+          title="Address book"
+          description="Manage saved addresses"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          onPress={() => setSavedAddressesOpen(true)}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.ChevronRight, 18)}
+            </div>
+          )}
+        />
+        <ListItem
+          title="Public Broadcasters"
+          description="Customize public broadcasters"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          onPress={() => setBroadcastersSettingsOpen(true)}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.ChevronRight, 18)}
+            </div>
+          )}
+        />
+        <ListItem
+          title="Default settings"
+          description="Set currency for balances"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          onPress={() => setDefaultsModalOpen(true)}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.ChevronRight, 18)}
+            </div>
+          )}
+        />
+        <ListItem
+          title="Change password (DISABLED)"
+          description="Set a new password for Railway"
+          className={styles.listItemDisabled}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          onPress={() => {}}
+        />
+      </div>
+
+      <div>
+        <Text className={styles.sectionHeader}>Help</Text>
+        <a
+          href={Constants.RAILWAY_USER_GUIDE}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.titleLink}
+        >
           <ListItem
-            title="Reset wallets"
-            description="Reset to app defaults"
+            title="User Guide"
+            description="How to use Railway Wallet"
             className={styles.listItem}
             titleClassName={styles.itemTitle}
             descriptionClassName={styles.itemDescription}
             right={() => (
               <div className={styles.rightContainer}>
-                {renderIcon(IconType.Trash, 18)}
+                {renderIcon(IconType.Help, 18)}
               </div>
             )}
-            onPress={onSelectReset}
           />
-        </div>
-
-        <div>
-          <Text className={styles.sectionHeader}>App</Text>
-          <a
-            href={Constants.DESKTOP_DOWNLOADS_URL}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.titleLink}
-          >
+        </a>
+        <a
+          href={Constants.RAILWAY_SUPPORT_TELEGRAM}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.titleLink}
+        >
+          <ListItem
+            title="Community"
+            description="@railwaywallet on Telegram"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.ChatBubble, 18)}
+              </div>
+            )}
+          />
+        </a>
+        <ListItem
+          title="Re-scan private balances"
+          description={`Sync RAILGUN balances on ${network.current.shortPublicName}`}
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.Refresh, 18)}
+            </div>
+          )}
+          onPress={promptRescanPrivateBalances}
+        />
+        {isDefined(networkForName(network.current.name)?.poi) && (
+          <ListItem
+            title="Generate all Private POIs"
+            description={`Run Private Proof of Innocence for ${network.current.shortPublicName}`}
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Calculator, 18)}
+              </div>
+            )}
+            onPress={promptGenerateAllPOIs}
+          />
+        )}
+        {ReactConfig.IS_DEV &&
+          isDefined(networkForName(network.current.name)?.poi) && (
             <ListItem
-              title="Desktop Downloads"
-              description="Get Railway for Mac, Windows, Linux"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.Desktop, 18)}
-                </div>
-              )}
-            />
-          </a>
-          <a
-            href={Constants.PRIVACY_POLICY_URL}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.titleLink}
-          >
-            <ListItem
-              title="Privacy Policy"
-              description="View Railway privacy policy"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.Privacy, 18)}
-                </div>
-              )}
-            />
-          </a>
-          <a
-            href={Constants.TERMS_URL}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.titleLink}
-          >
-            <ListItem
-              title="Terms of Use"
-              description="View Railway terms of use"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.Terms, 18)}
-                </div>
-              )}
-            />
-          </a>
-        </div>
-
-        {ReactConfig.IS_DEV && (
-          <div>
-            <Text className={styles.sectionHeader}>Dev only</Text>
-            <ListItem
-              title={`[Dev] Clear stored nonce: ${network.current.shortPublicName}`}
-              description="Reset last transaction nonce"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.Trash, 18)}
-                </div>
-              )}
-              onPress={clearLastTransactionNonce}
-            />
-            <ListItem
-              title={`[Dev] Re-sync transaction history`}
-              description="Clear synced RAILGUN history and scan again"
+              title="[Dev] Reset RAILGUN TXIDs [V2]"
+              description={`Clear and sync TXID data on ${network.current.shortPublicName}`}
               className={styles.listItem}
               titleClassName={styles.itemTitle}
               descriptionClassName={styles.itemDescription}
@@ -590,107 +476,212 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
                   {renderIcon(IconType.Refresh, 18)}
                 </div>
               )}
-              onPress={resyncTransactionHistory}
+              onPress={promptResetTXIDMerkletreesV2}
             />
-            <ListItem
-              title="[Dev] Private Proof of Innocence Lists"
-              description="Add custom Private POI list"
-              className={styles.listItem}
-              titleClassName={styles.itemTitle}
-              descriptionClassName={styles.itemDescription}
-              right={() => (
-                <div className={styles.rightContainer}>
-                  {renderIcon(IconType.PlusCircle, 18)}
-                </div>
-              )}
-              onPress={() => setPoiListSettingsOpen(true)}
-            />
-          </div>
-        )}
+          )}
+        <ListItem
+          title="Reset wallets"
+          description="Reset to app defaults"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          descriptionClassName={styles.itemDescription}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.Trash, 18)}
+            </div>
+          )}
+          onPress={onSelectReset}
+        />
       </div>
-      <footer className={styles.footer}>
-        <Text className={styles.footerText}>
-          Railway • Version {appVersionNumber}
-        </Text>
-      </footer>
-      {defaultsModalOpen && (
-        <SettingsDefaultsModal
-          onRequestClose={() => setDefaultsModalOpen(false)}
-        />
+
+      <div>
+        <Text className={styles.sectionHeader}>App</Text>
+        <a
+          href={Constants.DESKTOP_DOWNLOADS_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.titleLink}
+        >
+          <ListItem
+            title="Desktop Downloads"
+            description="Get Railway for Mac, Windows, Linux"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Desktop, 18)}
+              </div>
+            )}
+          />
+        </a>
+        <a
+          href={Constants.PRIVACY_POLICY_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.titleLink}
+        >
+          <ListItem
+            title="Privacy Policy"
+            description="View Railway privacy policy"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Privacy, 18)}
+              </div>
+            )}
+          />
+        </a>
+        <a
+          href={Constants.TERMS_URL}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.titleLink}
+        >
+          <ListItem
+            title="Terms of Use"
+            description="View Railway terms of use"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Terms, 18)}
+              </div>
+            )}
+          />
+        </a>
+      </div>
+
+      {ReactConfig.IS_DEV && (
+        <div>
+          <Text className={styles.sectionHeader}>Dev only</Text>
+          <ListItem
+            title={`[Dev] Clear stored nonce: ${network.current.shortPublicName}`}
+            description="Reset last transaction nonce"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Trash, 18)}
+              </div>
+            )}
+            onPress={clearLastTransactionNonce}
+          />
+          <ListItem
+            title={`[Dev] Re-sync transaction history`}
+            description="Clear synced RAILGUN history and scan again"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Refresh, 18)}
+              </div>
+            )}
+            onPress={resyncTransactionHistory}
+          />
+          <ListItem
+            title="[Dev] Private Proof of Innocence Lists"
+            description="Add custom Private POI list"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.PlusCircle, 18)}
+              </div>
+            )}
+            onPress={() => setPoiListSettingsOpen(true)}
+          />
+        </div>
       )}
-      {walletSettingsOpen && (
-        <SettingsWalletsModal
-          onClose={closeAllModals => {
-            setWalletSettingsOpen(false);
-            if (closeAllModals && onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {poiRequired && pendingBalancesOpen && (
-        <PendingBalancesModal
-          onClose={() => {
-            setPendingBalancesOpen(false);
-            if (onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {networkSettingsOpen && (
-        <SettingsNetworksModal
-          onClose={closeAllModals => {
-            setNetworkSettingsOpen(false);
-            if (closeAllModals && onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {savedAddressesOpen && (
-        <SettingsSavedAddressesModal
-          onClose={closeAllModals => {
-            setSavedAddressesOpen(false);
-            if (closeAllModals && onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {poiListSettingsOpen && (
-        <POIListsModal
-          onClose={closeAllModals => {
-            setPoiListSettingsOpen(false);
-            if (closeAllModals && onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {broadcastersSettingsOpen && (
-        <SettingsBroadcastersModal
-          onClose={closeAllModals => {
-            setBroadcastersSettingsOpen(false);
-            if (closeAllModals && onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {changePasswordSettingsOpen && (
-        <ChangePasswordModal
-          onClose={closeAllModals => {
-            setChangePasswordSettingsOpen(false);
-            if (closeAllModals && onClose) {
-              onClose();
-            }
-          }}
-        />
-      )}
-      {alert && <GenericAlert {...alert} />}
-      {settingsAlert && <GenericAlert {...settingsAlert} />}
-      {errorModal && <ErrorDetailsModal {...errorModal} />}
-    </>
-  );
+    </div>
+    <footer className={styles.footer}>
+      <Text className={styles.footerText}>
+        Railway • Version {appVersionNumber}
+      </Text>
+    </footer>
+    {defaultsModalOpen && (
+      <SettingsDefaultsModal
+        onRequestClose={() => setDefaultsModalOpen(false)}
+      />
+    )}
+    {walletSettingsOpen && (
+      <SettingsWalletsModal
+        onClose={closeAllModals => {
+          setWalletSettingsOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {poiRequired && pendingBalancesOpen && (
+      <PendingBalancesModal
+        onClose={() => {
+          setPendingBalancesOpen(false);
+          if (onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {networkSettingsOpen && (
+      <SettingsNetworksModal
+        onClose={closeAllModals => {
+          setNetworkSettingsOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {savedAddressesOpen && (
+      <SettingsSavedAddressesModal
+        onClose={closeAllModals => {
+          setSavedAddressesOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {poiListSettingsOpen && (
+      <POIListsModal
+        onClose={closeAllModals => {
+          setPoiListSettingsOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {broadcastersSettingsOpen && (
+      <SettingsBroadcastersModal
+        onClose={closeAllModals => {
+          setBroadcastersSettingsOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {changePasswordSettingsOpen && (
+      <ChangePasswordModal
+        onClose={closeAllModals => {
+          setChangePasswordSettingsOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {alert && <GenericAlert {...alert} />}
+    {settingsAlert && <GenericAlert {...settingsAlert} />}
+    {errorModal && <ErrorDetailsModal {...errorModal} />}
+  </>);
 };

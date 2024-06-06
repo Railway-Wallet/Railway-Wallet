@@ -13,6 +13,12 @@
   }
 }
 
+.listItemDisabled {
+  padding-left: 16px;
+  border-radius: 0;
+  cursor: not-allowed;
+}
+
 .sectionHeader {
   padding: 24px 0 8px 28px;
   font-size: 18px;
