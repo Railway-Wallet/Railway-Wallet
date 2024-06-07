@@ -1777,10 +1777,10 @@
   resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-7.0.7.tgz#c102b5110499cbef671d4719a2d734df3b2498cc"
   integrity sha512-p2G85Y83dqquL/5DKi6Xfu62QlJbIN3nfO3Sc0NS0HIQDz50+R1HVo5y45yB2F1+LaPCJi93XsQjZVoRI8qffg==
 
-"@railgun-community/waku-broadcaster-client-node@7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@railgun-community/waku-broadcaster-client-node/-/waku-broadcaster-client-node-7.0.3.tgz#487d948c83f06a65aed44b5f1d88c8cc4a90388e"
-  integrity sha512-PI2p7wVx9sgVGOZ/2mlb4vXkkJL/UwU2GZQihp4JQe306YxLtpHI4PtsVTTPLbXnND8GjpEgWJuzLJIp3ASCFQ==
+"@railgun-community/waku-broadcaster-client-node@7.0.4":
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/@railgun-community/waku-broadcaster-client-node/-/waku-broadcaster-client-node-7.0.4.tgz#23c73d7ec262ca02ef24dc65a29b57d5b737a6dc"
+  integrity sha512-chKyTyn9DzrXmSM74L41qEZO1F/97S9eTT9ViGmfZsgROqIMi2Vg4it/25PXQ+eZyJTd3e64BY5mRKSQ9jx//g==
   dependencies:
     "@libp2p/bootstrap" "^10.0.11"
     "@libp2p/tcp" "9.0.17"

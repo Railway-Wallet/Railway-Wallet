@@ -460,7 +460,11 @@ export const useNetworkFeeGasEstimator = (
         if (!(err instanceof Error)) {
           throw err;
         }
-        handleGasError(err);
+        if (
+          err.message !== 'Timed out retrieving current gas price from network.'
+        ) {
+          handleGasError(err);
+        }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
