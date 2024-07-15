@@ -1,4 +1,4 @@
 cypress/
 craco.config.js
-electron/main.js
+electron/*.js
 src/assets/libs/*.js

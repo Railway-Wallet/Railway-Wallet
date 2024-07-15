@@ -3593,10 +3593,15 @@
   resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-7.0.7.tgz#c102b5110499cbef671d4719a2d734df3b2498cc"
   integrity sha512-p2G85Y83dqquL/5DKi6Xfu62QlJbIN3nfO3Sc0NS0HIQDz50+R1HVo5y45yB2F1+LaPCJi93XsQjZVoRI8qffg==
 
-"@railgun-community/waku-broadcaster-client-web@7.0.4":
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/@railgun-community/waku-broadcaster-client-web/-/waku-broadcaster-client-web-7.0.4.tgz#d2de32721e310886b9b14988dcb49159e8efbac1"
-  integrity sha512-rCXz5k3OIpwqCSrmULQ90S3j/H1CSiqgash4OdhJ5UV9RpvFCGXWdMl+4zJAIgaL2VJlUlkeW1DN4qMrtfaxpA==
+"@railgun-community/shared-models@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-7.1.0.tgz#11402faf5d8dad1b1cdb866a67c348d57129e35d"
+  integrity sha512-Lomd2l9950CLhyUyhGDJVdEUkgiJn5rQ2l+i4OxE4b5+vsOBhjB2jgiJ+rNJFRHbNkReSbng694gIt+dfjnuQA==
+
+"@railgun-community/waku-broadcaster-client-web@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@railgun-community/waku-broadcaster-client-web/-/waku-broadcaster-client-web-7.1.0.tgz#e9f7d44259638c57d630aaa10efbcae0b9dcd4f5"
+  integrity sha512-TaA1ob4KuZUAx1QPv/5v9ZcprUoC9cQbWF3FgHacwRowR9Qcs6TJhOgw5TWBOQL60/tzvzGvjqe08Dmv5F37Rw==
   dependencies:
     "@libp2p/bootstrap" "^10.0.11"
     "@waku/core" "0.0.27"
@@ -3605,10 +3610,10 @@
     "@waku/sdk" "0.0.23"
     libp2p "^1.1.2"
 
-"@railgun-community/wallet@10.0.1":
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/@railgun-community/wallet/-/wallet-10.0.1.tgz#0a06692be80825d9f78f7fc11884f17b7505b334"
-  integrity sha512-J/vagvqWSmmzYfedzr8mAXPbkVwDZobZ21pFH2+cVdFC0smST8h7mCx4QTFmRu40VM3KyDKn7BTW0Tuqcx7zfw==
+"@railgun-community/wallet@10.0.2":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@railgun-community/wallet/-/wallet-10.0.2.tgz#8efc6330b477241c19722a6650674c8d51d58187"
+  integrity sha512-xVzK8C4A7iapqOKFJK9l+5HzxYZdXq+GrxRwbIwX7eeDm06Bpam/Cnb5CxRpEzBINs5sov6/66kJrRN3sNezzQ==
   dependencies:
     "@graphql-mesh/cache-localforage" "^0.7.20"
     "@graphql-mesh/cross-helpers" "^0.3.4"
@@ -3622,7 +3627,7 @@
     "@graphql-mesh/utils" "^0.43.22"
     "@noble/ed25519" "^1.7.1"
     "@railgun-community/engine" "9.0.1"
-    "@railgun-community/shared-models" "7.0.7"
+    "@railgun-community/shared-models" "7.1.0"
     "@whatwg-node/fetch" "^0.8.4"
     assert "2.0.0"
     axios "0.27.2"

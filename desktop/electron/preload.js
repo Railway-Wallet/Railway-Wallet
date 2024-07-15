@@ -12,4 +12,7 @@ contextBridge.exposeInMainWorld('electronBridge', {
     if (!deferredCallback) return;
     return ipcRenderer.removeListener('focused', deferredCallback);
   },
+  wipeDeviceData: () => {
+    ipcRenderer.send('wipe-device-data');
+  },
 });

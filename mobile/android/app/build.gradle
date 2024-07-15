@@ -117,6 +117,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
+    implementation 'com.facebook.fresco:fresco:2.0.0'
+    implementation 'com.facebook.fresco:animated-gif:2.6.0'
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'

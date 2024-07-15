@@ -83,6 +83,7 @@ import {
   useIsMounted,
   useNetworkFeeGasEstimator,
   useNextTransactionNonce,
+  usePOIRequiredForCurrentNetwork,
   useProof,
   useRailgunFees,
   useReduxSelector,
@@ -105,7 +106,6 @@ import {
 import { Constants } from '@utils/constants';
 import { ProgressBar } from '@views/components/ProgressBar/ProgressBar';
 import { SelectBroadcasterModal } from '@views/screens/modals/SelectBroadcasterModal/SelectBroadcasterModal';
-import { usePOIRequiredForCurrentNetwork } from '../../../../react-shared/src';
 import { ReviewTransactionReviewSection } from './ReviewTransactionReviewSection/ReviewTransactionReviewSection';
 import styles from './ReviewTransaction.module.scss';
 
@@ -316,6 +316,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
       }
       setShowProofTimerExpiredOnFail(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showProcessModal, showProofTimerExpiredOnFail]);
 
   const proofTimerExpired = () => {
@@ -881,7 +882,11 @@ export const ReviewTransactionView: React.FC<Props> = ({
   };
 
   const showSelfBroadcastDisclaimer = () => {
-    createSelfBroadcastDisclaimerAlert(setAlert, setExternalLinkAlert, dispatch);
+    createSelfBroadcastDisclaimerAlert(
+      setAlert,
+      setExternalLinkAlert,
+      dispatch,
+    );
   };
 
   const showPublicBroadcasterDisclaimer = () => {

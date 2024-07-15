@@ -27,6 +27,8 @@ import {
   refreshRailgunBalances,
   setNetworkByName,
   SettingsForNetwork,
+  SharedConstants,
+  StorageService,
   store,
   styleguide,
   useAppDispatch,
@@ -207,7 +209,8 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
 
       updateProgress(PROGRESS_END);
 
-      navigateHome();
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      navigateNextScreen();
     } catch (cause) {
       const error = new Error('Could not load Railway wallet.', { cause });
       logDevError(error);
@@ -229,10 +232,15 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   const defaultNetworkName = NetworkService.getDefaultNetworkName();
   const defaultNetwork = NETWORK_CONFIG[defaultNetworkName];
 
-  const navigateHome = () => {
+  const navigateNextScreen = async () => {
+    const hasSeenOnboarding = await StorageService.getItem(
+      SharedConstants.HAS_SEEN_APP_INTRO,
+    );
+    const shouldShowOnboarding = !isDefined(hasSeenOnboarding);
+
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Tabs' }],
+      routes: [{ name: shouldShowOnboarding ? 'OnboardingScreen' : 'Tabs' }],
     });
   };
 

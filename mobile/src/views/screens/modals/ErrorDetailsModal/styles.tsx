@@ -16,9 +16,22 @@ export const styles = StyleSheet.create({
   errorMessage: {
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.text(),
+    textAlign: 'left',
+    width: '100%',
   },
   causedBy: {
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.textSecondary,
+    textAlign: 'left',
+    width: '100%',
+    marginBottom: 8,
+  },
+  errorContainer: {
+    backgroundColor: styleguide.colors.gray5(),
+    borderRadius: 4,
+    marginBottom: 16,
+    padding: 16,
+    gap: 12,
+    alignItems: 'flex-end',
   },
 });

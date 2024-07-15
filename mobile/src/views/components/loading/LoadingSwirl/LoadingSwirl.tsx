@@ -39,7 +39,6 @@ export const LoadingSwirl: React.FC<Props> = ({ animate }) => {
   return (
     <Animated.View
       style={[
-        styles.loadingSwirl,
         {
           width: widthPct.interpolate({
             inputRange: [0, 1],
@@ -51,15 +50,7 @@ export const LoadingSwirl: React.FC<Props> = ({ animate }) => {
         },
       ]}
     >
-      <Image
-        source={ImageSwirl()}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'visible',
-        }}
-      />
+      <Image source={ImageSwirl()} style={styles.loading} />
     </Animated.View>
   );
 };

@@ -16,7 +16,7 @@ export const AppIntroView: React.FC<Props> = ({ onComplete }) => {
       case 0:
         return 'Welcome to Railway. The private DeFi wallet.';
       case 1:
-        return 'This app is a standalone, non-custodial tool to help you interact with your tokens on the blockchain. Because you are always in control of your funds, it is critical that you save your seed phrase safely. There are no back ups.';
+        return 'This app is a standalone, non-custodial tool to help you interact with your tokens on the blockchain. Because you are always in control of your funds, it is critical that you save your seed phrase safely. There are no backups.';
       case 2:
         return 'Railway Wallet takes privacy and anonymity seriously. This app exists solely on your device and does not store any data on centralized servers. It does not collect or send any analytics. You are in complete control and maintain sole responsibility of your data and funds at all times.';
     }

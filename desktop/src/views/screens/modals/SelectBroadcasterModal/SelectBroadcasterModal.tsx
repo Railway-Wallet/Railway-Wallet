@@ -9,6 +9,7 @@ import { TextButton } from '@components/TextButton/TextButton';
 import {
   ERC20Token,
   getTokenDisplayNameShort,
+  sortBroadcasters,
   useBroadcasterConnectionStatus,
   useReduxSelector,
 } from '@react-shared';
@@ -46,6 +47,7 @@ export const SelectBroadcasterModal: React.FC<Props> = ({
       wallets.available,
       network.current.name,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feeToken.address, network.current.name, wallets.available]);
 
   const broadcastersNotConnected =
@@ -62,7 +64,10 @@ export const SelectBroadcasterModal: React.FC<Props> = ({
       case BroadcasterConnectionStatus.Connected:
         return '';
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusText, broadcasterConnectionStatus]);
+
+  const sortedBroadcasters = sortBroadcasters(allBroadcasters);
 
   return (
     <>
@@ -80,7 +85,7 @@ export const SelectBroadcasterModal: React.FC<Props> = ({
             <>
               <SelectBroadcasterList
                 selectedBroadcaster={selectedBroadcaster}
-                allBroadcasters={allBroadcasters}
+                allBroadcasters={sortedBroadcasters}
                 onSelect={onSelectBroadcaster}
                 onSelectRandom={onRandomBroadcaster}
                 decimals={feeToken.decimals}

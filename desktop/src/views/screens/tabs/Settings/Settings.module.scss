@@ -1,12 +1,16 @@
 @import '@scss/styleguide';
 
+@mixin list-item {
+  padding-left: 16px;
+  border-radius: 0;
+}
+
 .settingsListContainer {
   padding-bottom: 24px;
 }
 
 .listItem {
-  padding-left: 16px;
-  border-radius: 0;
+  @include list-item;
   cursor: pointer;
   &:hover {
     background-color: $darkItemHover;
@@ -14,8 +18,7 @@
 }
 
 .listItemDisabled {
-  padding-left: 16px;
-  border-radius: 0;
+  @include list-item;
   cursor: not-allowed;
 }
 

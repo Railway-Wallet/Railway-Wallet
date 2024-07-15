@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { styleguide } from '@react-shared';
+import { isSmallScreen } from '@services/util/screen-dimensions-service';
+
+const useSmall = isSmallScreen();
 
 const ALPHA_HEX = 'B3';
 
@@ -12,18 +15,12 @@ export const styles = StyleSheet.create({
   pageWrapper: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 265,
-
-    backgroundColor: 'transparent',
-  },
-  processingWrapper: {
+    paddingTop: useSmall ? 60 : 180,
     backgroundColor: styleguide.colors.screenBackground + ALPHA_HEX,
   },
-  failWrapper: {
-    backgroundColor: styleguide.colors.screenBackground + ALPHA_HEX,
+  loading: {
+    height: 160,
   },
-  spinner: {},
-  icon: {},
   subtleText: {
     marginTop: 36,
     ...styleguide.typography.caption,
@@ -33,15 +30,8 @@ export const styles = StyleSheet.create({
   },
   boldText: {
     marginTop: 36,
-    ...styleguide.typography.heading3,
     color: styleguide.colors.text(),
-    marginHorizontal: 36,
-    textAlign: 'center',
-  },
-  errorText: {
-    marginTop: 36,
-    ...styleguide.typography.heading4,
-    color: styleguide.colors.text(),
+    fontSize: 18,
     marginHorizontal: 36,
     textAlign: 'center',
   },
@@ -52,6 +42,7 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.text(),
     marginHorizontal: 36,
     textAlign: 'center',
+    alignSelf: 'center',
   },
   progressBarWrapper: {
     marginTop: 48,
@@ -60,5 +51,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  progressBar: {},
+  animation: {
+    height: 160,
+    position: 'absolute',
+  },
+  animationsContainer: {
+    marginTop: 12,
+    position: 'relative',
+    alignItems: 'center',
+  },
+  informationContainer: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
 });

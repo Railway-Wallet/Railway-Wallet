@@ -4,6 +4,8 @@ const {
   screen: electronScreen,
   shell,
   Menu,
+  ipcMain,
+  dialog,
 } = require('electron');
 
 const isDev = require('electron-is-dev');
@@ -82,8 +84,20 @@ function createWindow() {
   });
 }
 
+const wipeDeviceData = () => {
+  const userDataPath = `${app.getPath('appData')}${
+    isWin ? '\\' : '/'
+  }railway-reactjs`;
+
+  shell.trashItem(userDataPath);
+  app.relaunch();
+  app.quit();
+};
+
+ipcMain.on('wipe-device-data', wipeDeviceData);
+
 // Menu
-const menuDefaultOptions = [
+const defaultMenuOptions = [
   ...(isMac
     ? [
         {
@@ -164,7 +178,7 @@ const menuDefaultOptions = [
   },
 ];
 
-const menuNewOptions = [
+const addedMenuOptions = [
   {
     role: 'help',
     submenu: [
@@ -180,11 +194,32 @@ const menuNewOptions = [
           }
         },
       },
+      {
+        label: 'Wipe Device Data',
+        click: () => {
+          dialog
+            .showMessageBox({
+              type: 'warning',
+              buttons: ['Delete data', 'Cancel'],
+              cancelId: 1,
+              title: 'Wipe device data',
+              message: `This action will delete all app data. Save your seed phrase or funds will be lost.\rDo you want to proceed?`,
+            })
+            .then(result => {
+              if (result.response === 0) {
+                wipeDeviceData();
+              }
+            });
+        },
+      },
     ],
   },
 ];
 
-const menu = Menu.buildFromTemplate([...menuDefaultOptions, ...menuNewOptions]);
+const menu = Menu.buildFromTemplate([
+  ...defaultMenuOptions,
+  ...addedMenuOptions,
+]);
 Menu.setApplicationMenu(menu);
 
 // This method will be called when Electron has finished

@@ -48,3 +48,32 @@ export const shouldReplaceCurrentBroadcaster = (
     isCachedFeeAboutToExpire(currentBroadcaster.tokenFee)
   );
 };
+
+export const sortBroadcasters = (broadcasters?: SelectedBroadcaster[]) => {
+  if (!broadcasters) {
+    return undefined;
+  }
+
+  const sorted = broadcasters.sort((a, b) => {
+    // eslint-disable-next-line radix
+    const tokenFeeDiff = parseInt(
+      (
+        BigInt(a.tokenFee.feePerUnitGas) - BigInt(b.tokenFee.feePerUnitGas)
+      ).toString(),
+    );
+    const reliability = b.tokenFee.reliability - a.tokenFee.reliability;
+
+    if (a.tokenFee.reliability === b.tokenFee.reliability) {
+      return tokenFeeDiff;
+    }
+    if (reliability >= 0 && tokenFeeDiff < 0) {
+      return -1;
+    }
+    if (reliability < 0 && tokenFeeDiff >= 0) {
+      return 1;
+    }
+    return reliability;
+  });
+
+  return sorted;
+};

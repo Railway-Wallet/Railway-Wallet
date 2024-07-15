@@ -1,4 +1,4 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
+import { isDefined } from '@railgun-community/shared-models';
 import React, {
   MutableRefObject,
   useCallback,

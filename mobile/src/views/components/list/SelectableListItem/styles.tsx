@@ -16,6 +16,10 @@ export const styles = StyleSheet.create({
   listItem: {
     paddingVertical: 6,
   },
+  rightView: {
+    width: '100%',
+    alignItems: 'flex-end',
+  },
   titleIcon: {
     paddingTop: 1,
     paddingLeft: 6,

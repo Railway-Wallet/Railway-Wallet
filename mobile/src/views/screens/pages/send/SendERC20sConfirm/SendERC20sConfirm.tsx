@@ -392,8 +392,8 @@ export const SendERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
     ? 'Sending shielded tokens to a private RAILGUN address.'
     : `Sending unshielded tokens to a public ${network.current.publicName} address.`;
   const processingText = isRailgun
-    ? 'Submitting transaction... \nThis may take a moment.'
-    : 'Submitting transaction...';
+    ? 'Submitting transaction. \nThis may take a moment.'
+    : 'Submitting transaction.';
 
   return (
     <ReviewTransactionView

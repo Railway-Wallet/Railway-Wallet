@@ -1,10 +1,13 @@
-import { isDefined, SelectedBroadcaster } from '@railgun-community/shared-models';
+import {
+  isDefined,
+  SelectedBroadcaster,
+} from '@railgun-community/shared-models';
 import React from 'react';
 import cn from 'classnames';
-import { formatUnits } from "ethers";
+import { formatUnits } from 'ethers';
 import { ListRow } from '@components/ListRow/ListRow';
 import { Text } from '@components/Text/Text';
-import { shortenWalletAddress, styleguide, useReduxSelector } from '@react-shared';
+import { styleguide, useReduxSelector } from '@react-shared';
 import { IconType, renderIcon } from '@services/util/icon-service';
 import styles from './SelectBroadcasterList.module.scss';
 
@@ -25,68 +28,98 @@ export const SelectBroadcasterList: React.FC<Props> = ({
   onSelect,
   onSelectRandom,
 }) => {
-
   const { network } = useReduxSelector('network');
 
+  const renderReliability = (reliability: number) => {
+    if (reliability > 0.8) {
+      return '🟢';
+    }
+    if (reliability > 0.5) {
+      return '🟡';
+    }
+    if (reliability > 0.3) {
+      return '🟠';
+    }
 
-  const renderRow = (
+    if (reliability > 0) {
+      return '🔴';
+    }
+
+    return '⚪️';
+  };
+
+  const renderBroadcaster = (
+    broadcaster: SelectedBroadcaster,
     index: number,
-    title: string,
-    description: string,
-    icon: React.ReactElement,
-    selected: boolean,
-    broadcaster: Optional<SelectedBroadcaster>,
-    customOnSelect?: () => void,
   ) => {
+    const selected =
+      broadcaster.railgunAddress === selectedBroadcaster?.railgunAddress;
+
+    const { wrappedSymbol } = network.current.baseToken;
+
+    const feeBigInt = BigInt(broadcaster.tokenFee.feePerUnitGas);
+    const reliability = broadcaster.tokenFee.reliability;
+    const formattedFee = formatUnits(feeBigInt, decimals);
+    const parsedFee = parseFloat(formattedFee);
+    const parsedDecimals = parsedFee > 1 ? 4 : 8;
+    const formattedParsedFee = parsedFee.toFixed(parsedDecimals);
+    const reliabilityTag = `${renderReliability(reliability)}`;
+    const reliabilityDescription = isDefined(reliability)
+      ? reliability
+      : 'New broadcaster';
+
     return (
       <ListRow
         key={index}
-        title={<Text className={styles.titleStyle}>{title}</Text>}
+        title={
+          <Text
+            className={styles.titleStyle}
+          >{`Fee Ratio (${formattedParsedFee} ${feeTokenName} : 1 ${wrappedSymbol.slice(
+            1,
+          )})`}</Text>
+        }
         description={
           <div className={styles.descriptionContainer}>
-            <Text className={styles.descriptionTextStyle}>{description}</Text>
+            <Text
+              className={styles.descriptionTextStyle}
+            >{`Reliability: ${reliabilityDescription}`}</Text>
           </div>
         }
         descriptionClassName={styles.descriptionStyle}
         selected={selected}
-        leftView={() => <div className={styles.iconContainer}>{icon}</div>}
-        onSelect={customOnSelect ?? (() => onSelect(broadcaster))}
+        leftView={() => (
+          <div className={styles.iconContainer}>{reliabilityTag}</div>
+        )}
+        onSelect={() => onSelect(broadcaster)}
       />
     );
   };
 
-  const renderBroadcaster = (broadcaster: SelectedBroadcaster, index: number) => {
-    const icon = renderIcon(
-      IconType.Send,
-      22,
-      styleguide.colors.lighterLabelSecondary,
-    );
-    const selected = broadcaster.railgunAddress === selectedBroadcaster?.railgunAddress;
-
-    const {wrappedSymbol} =  network.current.baseToken;
-
-    const feeBigInt = BigInt(broadcaster.tokenFee.feePerUnitGas);
-    const formattedFee = formatUnits(feeBigInt, decimals);
-    const parsedFee = parseFloat(formattedFee);
-    const parsedDecimals = parsedFee > 1 ? 4 : 8;
-    const formatedParsedFee = parsedFee.toFixed(parsedDecimals);
-
-
-    return renderRow(
-      index,
-      shortenWalletAddress(broadcaster.railgunAddress), `Fee Ratio (${formatedParsedFee} ${feeTokenName} : 1 ${wrappedSymbol.slice(1)})`, icon,
-      selected,
-      broadcaster,
-    );
-  };
-
   const renderRandomBroadcasterRow = () => {
-    return renderRow(
-      -1,
-      'Random Broadcaster',
-      'Auto-select random Public Broadcaster',
-      renderIcon(IconType.Public, 22, styleguide.colors.lighterLabelSecondary),
-      false, undefined, onSelectRandom,
+    return (
+      <ListRow
+        title={
+          <Text className={styles.titleStyle}>{'Random Broadcaster'}</Text>
+        }
+        description={
+          <div className={styles.descriptionContainer}>
+            <Text className={styles.descriptionTextStyle}>
+              {'Auto-select random Public Broadcaster'}
+            </Text>
+          </div>
+        }
+        descriptionClassName={styles.descriptionStyle}
+        leftView={() => (
+          <div className={styles.iconContainer}>
+            {renderIcon(
+              IconType.Public,
+              22,
+              styleguide.colors.lighterLabelSecondary,
+            )}
+          </div>
+        )}
+        onSelect={onSelectRandom}
+      />
     );
   };
 

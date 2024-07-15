@@ -1,0 +1,12 @@
+@import '@scss/styleguide';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  color: $white;
+
+  p {
+    margin-bottom: 16px;
+    white-space: pre-wrap;
+  }
+}

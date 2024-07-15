@@ -106,6 +106,7 @@ export const SelectableListItem: React.FC<Props> = ({
         onPress={onTap}
         disabled={disabled}
         style={styles.listItem}
+        rightStyle={styles.rightView}
         title={titleView}
         description={description}
         descriptionStyle={[styles.leftDescriptionStyle, descriptionStyle]}

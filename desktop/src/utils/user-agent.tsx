@@ -7,5 +7,6 @@ export type ElectronRendererWindow = Window & {
   electronBridge: {
     addFocusListener: (listener: () => void) => void;
     removeFocusListener: (listener: () => void) => void;
+    wipeDeviceData: () => void;
   };
 };

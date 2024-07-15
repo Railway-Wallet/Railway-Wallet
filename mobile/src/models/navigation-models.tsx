@@ -74,6 +74,7 @@ export type RootStackParamList = {
   WalletProviderLoading: undefined;
   Tabs: undefined;
   RecoveryWallets: RecoveryWalletsData;
+  OnboardingScreen: undefined;
 };
 
 export type TokenStackParamList = {
@@ -217,6 +218,8 @@ export type SettingsStackParamList = {
     network: Network;
   };
   SettingsBroadcasters: undefined;
+  SettingsAddressBook: undefined;
+  SettingsAddSavedAddress: undefined;
 };
 
 export type RecoveryStackParamList = {

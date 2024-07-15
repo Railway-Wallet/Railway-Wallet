@@ -1,11 +1,10 @@
 import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import cn from 'classnames';
-import { Spinner } from '@components/loading/Spinner/Spinner';
-import { RailgunGradient } from '@components/RailgunGradient/RailgunGradient';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import failureAnimation from '@assets/img/animations/failure.gif';
+import introLoadingAnimation from '@assets/img/animations/introLoading.gif';
+import loadingAnimation from '@assets/img/animations/loading.gif';
+import successAnimation from '@assets/img/animations/success.gif';
 import { Text } from '@components/Text/Text';
-import { styleguide } from '@react-shared';
-import { IconType, renderIcon } from '@services/util/icon-service';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
 import styles from './ProcessingView.module.scss';
 
@@ -37,70 +36,94 @@ export const ProcessingView: React.FC<ProcessingViewProps> = ({
   onPressSuccessView,
   onPressFailView,
 }) => {
-  const processingView = () => (
-    <div className={cn(styles.pageWrapper, styles.processingWrapper)}>
-      <div className={styles.spinnerContainer}>
-        <Spinner
-          size={64}
-          color={styleguide.colors.text()}
-          className={styles.spinner}
-        />
-      </div>
-      <Text className={styles.subtleText}>{processingText}</Text>
-      {isDefined(progress) && (
-        <div className={styles.progressBarContainer}>
-          <ProgressBar progress={progress} />
-        </div>
-      )}
-      <Text className={styles.warningText}>{processingWarning}</Text>
-    </div>
-  );
+  const [loadingSrc, setLoadingSrc] = useState(introLoadingAnimation);
 
-  const successView = () => (
-    <RailgunGradient
-      className={styles.pageWrapper}
-      onClick={onPressSuccessView}
-    >
-      <div className={styles.iconContainer}>
-        {renderIcon(IconType.CheckCircle, 108)}
-      </div>
-      {isDefined(successText) && (
-        <Text className={styles.boldText}>{successText}</Text>
-      )}
-    </RailgunGradient>
-  );
+  const isProcessing = processingState === ProcessingState.Processing;
+  const isSuccess = processingState === ProcessingState.Success;
+  const isFail = processingState === ProcessingState.Fail;
 
-  const failView = () => (
-    <div
-      className={cn(styles.pageWrapper, styles.failWrapper)}
-      onClick={
-        onPressFailView && failure ? () => onPressFailView(failure) : undefined
-      }
-    >
-      <div className={styles.iconContainer}>
-        {renderIcon(IconType.CloseCircle, 108, styleguide.colors.error())}
-      </div>
-      {isDefined(failure) && (
-        <>
-          <Text className={styles.boldText}>{failure.message}</Text>
-        </>
-      )}
-    </div>
-  );
-
-  const coreView = () => {
-    switch (processingState) {
-      case ProcessingState.Processing: {
-        return processingView();
-      }
-      case ProcessingState.Success: {
-        return successView();
-      }
-      case ProcessingState.Fail: {
-        return failView();
-      }
+  const description = useMemo(() => {
+    if (isProcessing) {
+      return processingText;
     }
-  };
 
-  return <div className={styles.blurView}>{coreView()}</div>;
+    if (isSuccess && isDefined(successText)) {
+      return successText;
+    }
+
+    if (isFail && failure) {
+      return failure.message;
+    }
+
+    return '';
+  }, [isProcessing, isSuccess, isFail, processingText, successText, failure]);
+
+  const handleOnPressView = useCallback(() => {
+    if (isSuccess) {
+      return onPressSuccessView;
+    }
+
+    if (isFail && onPressFailView && failure) {
+      return () => onPressFailView(failure);
+    }
+
+    return undefined;
+  }, [failure, isFail, isSuccess, onPressFailView, onPressSuccessView]);
+
+  useEffect(() => {
+    const preloadLoadingImage = new Image();
+    const preloadSuccessImage = new Image();
+    const preloadFailureImage = new Image();
+    preloadLoadingImage.src = loadingAnimation;
+    preloadSuccessImage.src = successAnimation;
+    preloadFailureImage.src = failureAnimation;
+
+    const timer = setTimeout(() => {
+      setLoadingSrc(loadingAnimation);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      setLoadingSrc(introLoadingAnimation);
+    };
+  }, []);
+
+  return (
+    <div className={styles.blurView}>
+      <div onClick={handleOnPressView} className={styles.pageWrapper}>
+        <div className={styles.animationsContainer}>
+          <img
+            src={loadingSrc}
+            className={styles.loadingAnimation}
+            alt="loading"
+          />
+          {isSuccess && (
+            <img
+              src={successAnimation}
+              className={styles.successAnimation}
+              alt="success"
+            />
+          )}
+          {isFail && (
+            <img
+              src={failureAnimation}
+              className={styles.failureAnimation}
+              alt="failure"
+            />
+          )}
+        </div>
+        <div className={styles.informationContainer}>
+          <Text className={styles.subtleText}>{description}</Text>
+          {isProcessing && isDefined(progress) && (
+            <div className={styles.progressBarContainer}>
+              <ProgressBar progress={progress} />
+            </div>
+          )}
+          {isProcessing && (
+            <Text className={styles.warningText}>{processingWarning}</Text>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };

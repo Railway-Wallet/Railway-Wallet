@@ -25,8 +25,8 @@ export class Constants {
     'https://help.railway.xyz/setup/view-only-wallets';
 
   static readonly PROCESSING_PROCESS_TIMEOUT = 1000;
-  static readonly PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT = 1800;
-  static readonly PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT = 1500;
+  static readonly PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT = 3000;
+  static readonly PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT = 3000;
 
   static readonly SECURITY_PIN = 'SECURITY_PIN';
   static readonly SECURITY_HAS_PIN = 'SECURITY_HAS_PIN';

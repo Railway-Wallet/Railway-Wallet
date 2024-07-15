@@ -21,8 +21,11 @@ import {
   executeERC20Transfer,
   executeNFTTransfer,
   executeWithoutBroadcaster,
-  getBroadcasterFilterPeerCount, getBroadcasterLightPushPeerCount, getBroadcasterMeshPeerCount,
-  getBroadcasterPubSubPeerCount, getERC20TransferGasEstimate,
+  getBroadcasterFilterPeerCount,
+  getBroadcasterLightPushPeerCount,
+  getBroadcasterMeshPeerCount,
+  getBroadcasterPubSubPeerCount,
+  getERC20TransferGasEstimate,
   getNFTTransferGasEstimate,
   getOverallBatchMinGasPrice,
   getPOIRequiredForNetwork,
@@ -35,7 +38,7 @@ import {
   TransactionType,
   updatePOIProofProgressStatus,
   useAppDispatch,
-  useReduxSelector
+  useReduxSelector,
 } from '@react-shared';
 import { ReviewTransactionView } from '@screens/drawer/review-transaction/ReviewTransactionView';
 import { drawerEventsBus } from '@services/navigation/drawer-events';
@@ -202,7 +205,9 @@ export const SendConfirm = ({
   ): Promise<Optional<string>> => {
     if (!selectedBroadcaster && !publicWalletOverride) {
       error(
-        new Error('No selected public broadcaster or self broadcast wallet found.'),
+        new Error(
+          'No selected public broadcaster or self broadcast wallet found.',
+        ),
       );
       return;
     }
@@ -289,7 +294,9 @@ export const SendConfirm = ({
           false, populateResponse.preTransactionPOIsPerTxidLeafPerList,
         );
       } else {
-        throw new Error('Must send with public broadcaster or self broadcast wallet');
+        throw new Error(
+          'Must send with public broadcaster or self broadcast wallet',
+        );
       }
 
       const transactionService = new SavedTransactionService(dispatch);
@@ -494,8 +501,8 @@ export const SendConfirm = ({
     ? 'Sending shielded tokens to a private RAILGUN address.'
     : `Sending unshielded tokens to a public ${network.current.publicName} address.`;
   const processingText = isRailgun
-    ? 'Submitting transaction... \nThis may take a moment.'
-    : 'Submitting transaction...';
+    ? 'Submitting transaction.\nThis may take a moment.'
+    : 'Submitting transaction.';
 
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
 

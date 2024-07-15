@@ -1,7 +1,7 @@
 import { getAddress } from 'ethers';
 import { validateRailgunAddress } from '@react-shared';
 
-const validateEthAddress = (address: string): boolean => {
+export const validateEthAddress = (address: string): boolean => {
   try {
     getAddress(address);
     return true;

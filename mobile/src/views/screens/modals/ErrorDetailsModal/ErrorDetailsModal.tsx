@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Platform, Text, View } from 'react-native';
+import { Modal, Platform, Text, TouchableOpacity, View } from 'react-native';
 import VersionNumber from 'react-native-version-number';
 import { AppHeader } from '@components/headers/AppHeader/AppHeader';
 import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
@@ -12,6 +12,7 @@ import {
 } from '@react-shared';
 import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
 import { getPlatformDevice } from '@services/util/platform-os-service';
+import { Icon } from '@views/components/icons/Icon';
 import { styles } from './styles';
 
 export type ErrorDetailsModalProps = {
@@ -52,6 +53,16 @@ export const ErrorDetailsModal: React.FC<ErrorDetailsModalProps> = ({
     );
   };
 
+  const renderErrorMessage = (message: string, index: number) => (
+    <TouchableOpacity onPress={copyErrorMessage(message)}>
+      {index > 0 && <Text style={styles.causedBy}>caused by</Text>}
+      <View key={index} style={styles.errorContainer}>
+        <Icon source="content-copy" size={14} color={styleguide.colors.white} />
+        <Text style={styles.errorMessage}>{message}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <Modal animationType="slide" presentationStyle="formSheet" visible={show}>
       <AppHeader
@@ -65,17 +76,7 @@ export const ErrorDetailsModal: React.FC<ErrorDetailsModalProps> = ({
         <Text key="versions" style={styles.versionsText}>
           (Railway {appVersion} on {platform} {osVersion})
         </Text>
-        {messages.map((message, index) => (
-          <View key={index}>
-            {index > 0 && <Text style={styles.causedBy}>caused by</Text>}
-            <Text
-              style={styles.errorMessage}
-              onPress={copyErrorMessage(message)}
-            >
-              {message}
-            </Text>
-          </View>
-        ))}
+        {messages.map(renderErrorMessage)}
       </View>
     </Modal>
   );

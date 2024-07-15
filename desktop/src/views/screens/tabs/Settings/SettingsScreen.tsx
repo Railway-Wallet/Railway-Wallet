@@ -40,6 +40,7 @@ import { wipeDevice_DESTRUCTIVE } from '@services/security/wipe-device-service';
 import { IconType, renderIcon } from '@services/util/icon-service';
 import { Constants } from '@utils/constants';
 import { ChangePasswordModal } from '@views/screens/modals/ChangePasswordModal/ChangePasswordModal';
+import { WipeDeviceDataModal } from '@views/screens/modals/settings/WipeDeviceDataModal/WipeDeviceDataModal';
 import styles from './Settings.module.scss';
 
 type Props = {
@@ -59,6 +60,7 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
   const [broadcastersSettingsOpen, setBroadcastersSettingsOpen] =
     useState(false);
   const [poiListSettingsOpen, setPoiListSettingsOpen] = useState(false);
+  const [wipeDeviceDataOpen, setWipeDeviceDataOpen] = useState(false);
   const [changePasswordSettingsOpen, setChangePasswordSettingsOpen] =
     useState(false);
 
@@ -553,6 +555,19 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
             )}
           />
         </a>
+        <ListItem
+          title="Wipe Device Data"
+          description="Fresh start, all data will be lost"
+          className={styles.listItem}
+          titleClassName={styles.itemTitle}
+          onPress={() => setWipeDeviceDataOpen(true)}
+          descriptionClassName={styles.itemDescription}
+          right={() => (
+            <div className={styles.rightContainer}>
+              {renderIcon(IconType.Trash, 18)}
+            </div>
+          )}
+        />
       </div>
 
       {ReactConfig.IS_DEV && (
@@ -654,6 +669,16 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
       <POIListsModal
         onClose={closeAllModals => {
           setPoiListSettingsOpen(false);
+          if (closeAllModals && onClose) {
+            onClose();
+          }
+        }}
+      />
+    )}
+    {wipeDeviceDataOpen && (
+      <WipeDeviceDataModal
+        onClose={closeAllModals => {
+          setWipeDeviceDataOpen(false);
           if (closeAllModals && onClose) {
             onClose();
           }

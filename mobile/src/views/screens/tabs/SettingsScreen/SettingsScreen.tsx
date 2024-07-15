@@ -136,6 +136,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     navigation.navigate('SettingsNetworks', {});
   };
 
+  const onSelectAddressBook = () => {
+    triggerHaptic(HapticSurface.NavigationButton);
+    navigation.navigate('SettingsAddressBook');
+  };
+
   const onSelectBroadcasters = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.navigate('SettingsBroadcasters');
@@ -501,6 +506,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 description="Customize network RPCs"
                 icon="chevron-right"
                 onTap={onSelectNetworks}
+              />
+              <View style={styles.hr} />
+              <SettingsListItem
+                title="Address book"
+                description="Manage saved addresses"
+                icon="chevron-right"
+                onTap={onSelectAddressBook}
               />
               <View style={styles.hr} />
               {ReactConfig.IS_DEV && (

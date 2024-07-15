@@ -65,7 +65,10 @@ import { LiquidityScreen } from '@views/screens/DApps/Liquidity/LiquidityScreen/
 import { RemoveLiquidityConfirm } from '@views/screens/DApps/Liquidity/RemoveLiquidityConfirm/RemoveLiquidityConfirm';
 import { RemoveLiquidityInitial } from '@views/screens/DApps/Liquidity/RemoveLiquidityInitial/RemoveLiquidityInitial';
 import { POIProgressModal } from '@views/screens/modals/POIPorgressModal/POIProgressModal';
+import { OnboardingScreen } from '@views/screens/pages/onboarding/OnboardingScreen/OnboardingScreen';
 import { SettingsAddCustomRPCScreen } from '@views/screens/pages/settings/SettingsAddCustomRPCScreen/SettingsAddCustomRPCScreen';
+import { SettingsAddressBookScreen } from '@views/screens/pages/settings/SettingsAddressBookScreen/SettingsAddressBookScreen';
+import { SettingsAddSavedAddressScreen } from '@views/screens/pages/settings/SettingsAddSavedAddress/SettingsAddSavedAddress';
 import { FarmVaultConfirm } from '../views/screens/DApps/Farm/FarmVaultConfirm/FarmVaultConfirm';
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
@@ -95,6 +98,10 @@ const RootNavigator = ({
       <RootStack.Screen
         name="WalletProviderLoading"
         component={WalletProviderLoadingView}
+      />
+      <RootStack.Screen
+        name="OnboardingScreen"
+        component={OnboardingScreen as ScreenComponent}
       />
       <RootStack.Screen
         name="RecoveryWallets"
@@ -436,6 +443,14 @@ const SettingsNavigator = () => (
       component={SettingsBroadcastersScreen}
     />
     <SettingsStack.Screen
+      name="SettingsAddressBook"
+      component={SettingsAddressBookScreen}
+    />
+    <SettingsStack.Screen
+      name="SettingsAddSavedAddress"
+      component={SettingsAddSavedAddressScreen}
+    />
+    <SettingsStack.Screen
       name="ShowSeedPhrase"
       component={ShowSeedPhraseScreen as ScreenComponent}
       options={{ gestureEnabled: true }}
@@ -567,12 +582,15 @@ export type RootNavProps = {
   backGesturesEnabled: boolean;
 };
 
-export const NavigationStack = (props: RootNavProps) => {
+export const NavigationStack = ({
+  backGesturesEnabled,
+  showLockedScreen,
+}: RootNavProps) => {
   enableScreens(true);
   return (
     <RootNavigator
-      showLockedScreen={props.showLockedScreen}
-      backGesturesEnabled={props.backGesturesEnabled}
+      showLockedScreen={showLockedScreen}
+      backGesturesEnabled={backGesturesEnabled}
     />
   );
 };

@@ -9,7 +9,10 @@ import {
   SavedAddressService,
   SharedConstants,
   useAppDispatch,
- validateEthAddress, validateRailgunAddress,  WalletAddressType } from '@react-shared';
+  validateEthAddress,
+  validateRailgunAddress,
+  WalletAddressType,
+} from '@react-shared';
 import { Text } from '@views/components/Text/Text';
 import styles from './AddSavedAddress.module.scss';
 
