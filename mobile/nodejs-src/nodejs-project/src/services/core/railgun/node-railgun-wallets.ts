@@ -16,6 +16,8 @@ import {
   resetFullTXIDMerkletreesV2,
   refreshBalances,
   syncRailgunTransactionsV2,
+  getWalletMnemonic,
+  validateEthAddress,
 } from '@railgun-community/wallet';
 import { bridgeRegisterCall } from '../../bridge/node-ipc-service';
 import {
@@ -33,7 +35,41 @@ import {
   UnloadRailgunWalletByIDParams,
   ValidateRailgunAddressParams,
   SyncRailgunTransactionsV2Params,
+  type GetWalletMnemonicParams,
+  type ValidateEthAddressParams,
 } from '../../bridge/model';
+
+bridgeRegisterCall<LoadRailgunWalletByIDParams, RailgunWalletInfo>(
+  BridgeCallEvent.LoadRailgunWalletByID,
+  async ({
+    encryptionKey,
+    railWalletID,
+    isViewOnlyWallet,
+  }): Promise<RailgunWalletInfo> => {
+    return loadWalletByID(encryptionKey, railWalletID, isViewOnlyWallet);
+  },
+);
+
+bridgeRegisterCall<UnloadRailgunWalletByIDParams, void>(
+  BridgeCallEvent.UnloadRailgunWalletByID,
+  async ({ railWalletID }): Promise<void> => {
+    return unloadWalletByID(railWalletID);
+  },
+);
+
+bridgeRegisterCall<DeleteRailgunWalletByIDParams, void>(
+  BridgeCallEvent.DeleteRailgunWalletByID,
+  async ({ railWalletID }): Promise<void> => {
+    return deleteWalletByID(railWalletID);
+  },
+);
+
+bridgeRegisterCall<GetWalletMnemonicParams, string>(
+  BridgeCallEvent.GetWalletMnemonic,
+  async ({ encryptionKey, railWalletID }): Promise<string> => {
+    return getWalletMnemonic(encryptionKey, railWalletID);
+  },
+);
 
 bridgeRegisterCall<CreateRailgunWalletParams, RailgunWalletInfo>(
   BridgeCallEvent.CreateRailgunWallet,
@@ -61,35 +97,14 @@ bridgeRegisterCall<CreateViewOnlyRailgunWalletParams, RailgunWalletInfo>(
   },
 );
 
-bridgeRegisterCall<LoadRailgunWalletByIDParams, RailgunWalletInfo>(
-  BridgeCallEvent.LoadRailgunWalletByID,
+bridgeRegisterCall<GetWalletTransactionHistoryParams, TransactionHistoryItem[]>(
+  BridgeCallEvent.GetWalletTransactionHistory,
   async ({
-    encryptionKey,
+    chain,
     railWalletID,
-    isViewOnlyWallet,
-  }): Promise<RailgunWalletInfo> => {
-    return loadWalletByID(encryptionKey, railWalletID, isViewOnlyWallet);
-  },
-);
-
-bridgeRegisterCall<UnloadRailgunWalletByIDParams, void>(
-  BridgeCallEvent.UnloadRailgunWalletByID,
-  async ({ railWalletID }): Promise<void> => {
-    return unloadWalletByID(railWalletID);
-  },
-);
-
-bridgeRegisterCall<DeleteRailgunWalletByIDParams, void>(
-  BridgeCallEvent.DeleteRailgunWalletByID,
-  async ({ railWalletID }): Promise<void> => {
-    return deleteWalletByID(railWalletID);
-  },
-);
-
-bridgeRegisterCall<ValidateRailgunAddressParams, boolean>(
-  BridgeCallEvent.ValidateRailgunAddress,
-  async ({ address }): Promise<boolean> => {
-    return validateRailgunAddress(address);
+    startingBlock,
+  }): Promise<TransactionHistoryItem[]> => {
+    return getWalletTransactionHistory(chain, railWalletID, startingBlock);
   },
 );
 
@@ -97,13 +112,6 @@ bridgeRegisterCall<GetRailgunAddressParams, Optional<string>>(
   BridgeCallEvent.GetRailgunAddress,
   async ({ railWalletID }): Promise<Optional<string>> => {
     return getRailgunAddress(railWalletID);
-  },
-);
-
-bridgeRegisterCall<GetWalletShareableViewingKeyParams, Optional<string>>(
-  BridgeCallEvent.GetWalletShareableViewingKey,
-  async ({ railWalletID }): Promise<Optional<string>> => {
-    return getWalletShareableViewingKey(railWalletID);
   },
 );
 
@@ -135,13 +143,23 @@ bridgeRegisterCall<ResetTXIDMerkletreesV2Params, void>(
   },
 );
 
-bridgeRegisterCall<GetWalletTransactionHistoryParams, TransactionHistoryItem[]>(
-  BridgeCallEvent.GetWalletTransactionHistory,
-  async ({
-    chain,
-    railWalletID,
-    startingBlock,
-  }): Promise<TransactionHistoryItem[]> => {
-    return getWalletTransactionHistory(chain, railWalletID, startingBlock);
+bridgeRegisterCall<GetWalletShareableViewingKeyParams, Optional<string>>(
+  BridgeCallEvent.GetWalletShareableViewingKey,
+  async ({ railWalletID }): Promise<Optional<string>> => {
+    return getWalletShareableViewingKey(railWalletID);
+  },
+);
+
+bridgeRegisterCall<ValidateRailgunAddressParams, boolean>(
+  BridgeCallEvent.ValidateRailgunAddress,
+  async ({ address }): Promise<boolean> => {
+    return validateRailgunAddress(address);
+  },
+);
+
+bridgeRegisterCall<ValidateEthAddressParams, boolean>(
+  BridgeCallEvent.ValidateEthAddress,
+  async ({ address }): Promise<boolean> => {
+    return validateEthAddress(address);
   },
 );

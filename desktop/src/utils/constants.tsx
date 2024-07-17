@@ -23,13 +23,13 @@ export class Constants {
 
   static readonly RAILWAY_USER_GUIDE = 'https://help.railway.xyz';
   static readonly RAILWAY_DOWNLOADS_PAGE = 'https://railway.xyz/download';
-  static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/railwaywallet';
+  static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/RailwayWalletBot';
   static readonly ABOUT_RAILGUN_URL = 'https://railgun.org';
   static readonly DESKTOP_DOWNLOADS_URL =
     'https://github.com/Railway-Wallet/Railway-Wallet/releases';
   static readonly RAILGUN_FAQ_URL = 'https://railgun.org/#/faq';
-  static readonly PRIVACY_POLICY_URL = 'https://railway.xyz/privacy.html';
-  static readonly TERMS_URL = 'https://railway.xyz/terms.html';
+  static readonly PRIVACY_POLICY_URL = 'https://railway.xyz/privacy-policy';
+  static readonly TERMS_URL = 'https://www.railway.xyz/eula';
   static readonly VIEW_ONLY_WALLETS_URL =
     'https://help.railway.xyz/setup/view-only-wallets';
 

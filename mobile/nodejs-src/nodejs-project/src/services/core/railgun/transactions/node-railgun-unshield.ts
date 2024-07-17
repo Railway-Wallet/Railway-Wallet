@@ -1,12 +1,17 @@
 import {
   RailgunPopulateTransactionResponse,
   RailgunTransactionGasEstimateResponse,
+  type RailgunERC20AmountRecipient,
+  type RailgunNFTAmountRecipient,
 } from '@railgun-community/shared-models';
 import {
   populateProvedUnshield,
   populateProvedUnshieldBaseToken,
   gasEstimateForUnprovenUnshield,
   gasEstimateForUnprovenUnshieldBaseToken,
+  populateProvedUnshieldToOrigin,
+  gasEstimateForUnprovenUnshieldToOrigin,
+  getERC20AndNFTAmountRecipientsForUnshieldToOrigin,
 } from '@railgun-community/wallet';
 import { bridgeRegisterCall } from '../../../bridge/node-ipc-service';
 import {
@@ -15,6 +20,9 @@ import {
   GasEstimateForUnprovenUnshieldParams,
   PopulateProvedUnshieldBaseTokenParams,
   PopulateProvedUnshieldParams,
+  type GasEstimateForUnprovenUnshieldToOriginParams,
+  type GetERC20AndNFTAmountRecipientsForUnshieldToOriginParams,
+  type PopulateProvedUnshieldToOriginParams,
 } from '../../../bridge/model';
 
 bridgeRegisterCall<
@@ -78,6 +86,30 @@ bridgeRegisterCall<
 );
 
 bridgeRegisterCall<
+  PopulateProvedUnshieldToOriginParams,
+  RailgunPopulateTransactionResponse
+>(
+  BridgeCallEvent.PopulateProvedUnshieldToOrigin,
+  async ({
+    txidVersion,
+    networkName,
+    railWalletID,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+    transactionGasDetails,
+  }) => {
+    return populateProvedUnshieldToOrigin(
+      txidVersion,
+      networkName,
+      railWalletID,
+      erc20AmountRecipients,
+      nftAmountRecipients,
+      transactionGasDetails,
+    );
+  },
+);
+
+bridgeRegisterCall<
   GasEstimateForUnprovenUnshieldParams,
   RailgunTransactionGasEstimateResponse
 >(
@@ -133,6 +165,52 @@ bridgeRegisterCall<
       originalGasDetails,
       feeTokenDetails,
       sendWithPublicWallet,
+    );
+  },
+);
+
+
+bridgeRegisterCall<
+  GasEstimateForUnprovenUnshieldToOriginParams,
+  RailgunTransactionGasEstimateResponse
+>(
+  BridgeCallEvent.GasEstimateForUnprovenUnshieldToOrigin,
+  async ({
+    originalShieldTxid,
+    txidVersion,
+    networkName,
+    railWalletID,
+    encryptionKey,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+  }) => {
+    return gasEstimateForUnprovenUnshieldToOrigin(
+      originalShieldTxid,
+      txidVersion,
+      networkName,
+      railWalletID,
+      encryptionKey,
+      erc20AmountRecipients,
+      nftAmountRecipients,
+    );
+  },
+);
+
+
+bridgeRegisterCall<
+  GetERC20AndNFTAmountRecipientsForUnshieldToOriginParams,
+  {
+    erc20AmountRecipients: RailgunERC20AmountRecipient[];
+    nftAmountRecipients: RailgunNFTAmountRecipient[];
+  }
+>(
+  BridgeCallEvent.GetERC20AndNFTAmountRecipientsForUnshieldToOrigin,
+  async ({ txidVersion, networkName, railgunWalletID, originalShieldTxid }) => {
+    return getERC20AndNFTAmountRecipientsForUnshieldToOrigin(
+      txidVersion,
+      networkName,
+      railgunWalletID,
+      originalShieldTxid,
     );
   },
 );

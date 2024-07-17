@@ -2,6 +2,7 @@ import {
   generateTransferProof,
   generateUnshieldBaseTokenProof,
   generateUnshieldProof,
+  generateUnshieldToOriginProof,
   validateCachedProvedTransaction,
 } from '@railgun-community/wallet';
 import {
@@ -15,6 +16,7 @@ import {
   GenerateUnshieldBaseTokenProofParams,
   GenerateUnshieldProofParams,
   ValidateCachedProvedTransactionParams,
+  type GenerateUnshieldToOriginProofParams,
 } from '../../../bridge/model';
 
 export const proofProgressCallback = (progress: number, status: string) => {
@@ -104,6 +106,30 @@ bridgeRegisterCall<GenerateUnshieldBaseTokenProofParams, void>(
       broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
+      proofProgressCallback,
+    );
+  },
+);
+
+bridgeRegisterCall<GenerateUnshieldToOriginProofParams, void>(
+  BridgeCallEvent.GenerateUnshieldToOriginProof,
+  async ({
+    originalShieldTxid,
+    txidVersion,
+    networkName,
+    railWalletID,
+    encryptionKey,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+  }) => {
+    return generateUnshieldToOriginProof(
+      originalShieldTxid,
+      txidVersion,
+      networkName,
+      railWalletID,
+      encryptionKey,
+      erc20AmountRecipients,
+      nftAmountRecipients,
       proofProgressCallback,
     );
   },

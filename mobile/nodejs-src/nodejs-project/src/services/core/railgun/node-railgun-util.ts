@@ -5,6 +5,8 @@ import {
   encryptDataWithSharedKey,
   decryptAESGCM256,
   sendMessage,
+  type EncryptedData,
+  encryptAESGCM256,
 } from '@railgun-community/wallet';
 import { sendError } from '../../bridge/loggers';
 import { bridgeRegisterCall } from '../../bridge/node-ipc-service';
@@ -14,6 +16,7 @@ import {
   EncryptDataWithSharedKeyParams,
   GetRandomBytesParams,
   VerifyBroadcasterSignatureParams,
+  type EncryptAESGCM256Params,
 } from '../../bridge/model';
 
 const hexStringToUint8Array = (str: string): Uint8Array => {
@@ -75,6 +78,13 @@ bridgeRegisterCall<
       sendError(err);
       throw err;
     }
+  },
+);
+
+bridgeRegisterCall<EncryptAESGCM256Params, EncryptedData>(
+  BridgeCallEvent.EncryptAESGCM256,
+  async ({ data, key }) => {
+    return encryptAESGCM256(data, key as Uint8Array);
   },
 );
 
