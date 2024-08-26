@@ -1,4 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
+import {
+  FallbackProviderJsonConfig,
+  isDefined,
+  ProviderJson,
+} from '@railgun-community/shared-models';
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import { AppHeader } from '@components/headers/AppHeader/AppHeader';
@@ -17,6 +21,7 @@ import {
   styleguide,
   ToastType,
   useAppDispatch,
+  useReduxSelector,
 } from '@react-shared';
 import {
   ErrorDetailsModal,
@@ -41,6 +46,7 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
 }) => {
   const { network, newRpcUrl } = route.params;
 
+  const { remoteConfig } = useReduxSelector('remoteConfig');
   const dispatch = useAppDispatch();
 
   const [networkStoredSettings, setNetworkStoredSettings] =
@@ -173,6 +179,14 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
     await reloadProviders();
   };
 
+  const defaultRPCConfigMap = remoteConfig.current?.networkProvidersConfig;
+  const defaultRPCConfigs: FallbackProviderJsonConfig[] = defaultRPCConfigMap
+    ? Object.values(defaultRPCConfigMap)
+    : [];
+  const defaultRPCProvidersForChain: ProviderJson[] =
+    defaultRPCConfigs.find(config => config.chainId === network.chain.id)
+      ?.providers ?? [];
+
   const hasCustomRPCs = (networkStoredSettings?.rpcCustomURLs ?? []).length > 0;
 
   const defaultRPCsRightView = () => (
@@ -208,9 +222,33 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
               description={`${network.chain.id}`}
             />
           </View>
+          <View style={styles.items}>
+            <SettingsListItem
+              title="Reload providers"
+              icon="refresh"
+              onTap={reloadProviders}
+            />
+          </View>
         </View>
         <View style={styles.itemRow}>
-          <SettingsListHeader title="RPC Providers" />
+          <SettingsListHeader title="Default RPC Providers" />
+          <View style={styles.items}>
+            {defaultRPCProvidersForChain.map((provider, index) => (
+              <SettingsListItem
+                key={index}
+                centerStyle={styles.listItemCenter}
+                titleStyle={styles.listItemTitle}
+                title={
+                  provider.provider.includes('railwayapi')
+                    ? 'Alchemy Proxy'
+                    : provider.provider
+                }
+              />
+            ))}
+          </View>
+        </View>
+        <View style={styles.itemRow}>
+          <SettingsListHeader title="Custom RPC Providers" />
           <View
             style={[
               styles.items,
@@ -227,6 +265,8 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
                 <SettingsListItem
                   key={index}
                   title={rpcCustomURL}
+                  centerStyle={styles.listItemCenter}
+                  titleStyle={styles.listItemTitle}
                   icon="minus-circle"
                   onTap={() => promptRemoveRPCCustomURL(rpcCustomURL)}
                 />
@@ -235,16 +275,9 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
           </View>
           <View style={styles.items}>
             <SettingsListItem
-              title="Add RPC provider"
+              title="Set custom provider"
               icon="plus"
               onTap={onAddRpc}
-            />
-          </View>
-          <View style={styles.items}>
-            <SettingsListItem
-              title="Reload RPC providers"
-              icon="refresh"
-              onTap={reloadProviders}
             />
           </View>
         </View>

@@ -56,7 +56,8 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
   if (!isDefined(txResponse)) {
     return (
       // eslint-disable-next-line react-native/no-inline-styles
-      (<Text style={{ margin: 24 }}>Nothing to cancel. Transaction not found.</Text>)
+      (<Text style={{ margin: 24 }}>Nothing to cancel. Transaction not found.
+              </Text>)
     );
   }
 
@@ -78,8 +79,9 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
   if (toWalletAddress !== activeWallet.ethAddress) {
     return (
       // eslint-disable-next-line react-native/no-inline-styles
-      (<Text style={{ margin: 24 }}>Must cancel with public wallet active:{toWalletAddress}. This is
-                currently not possible in Railway wallet.</Text>)
+      (<Text style={{ margin: 24 }}>Must cancel with public wallet active: {toWalletAddress}. This is
+                currently not possible in Railway wallet.
+              </Text>)
     );
   }
 

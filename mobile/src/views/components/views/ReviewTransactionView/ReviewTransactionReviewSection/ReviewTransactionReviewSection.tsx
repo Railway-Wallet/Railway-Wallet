@@ -1,7 +1,7 @@
 import { LiquidityV2Pool, SwapQuoteData } from '@railgun-community/cookbook';
 import { isDefined } from '@railgun-community/shared-models';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { TransactionResponse } from 'ethers';
 import {
   AdjustedERC20AmountRecipients,
@@ -175,7 +175,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
     return (
       <View key={index}>
         <View style={shouldShowFee ? styles.tokenRowWithFee : styles.tokenRow}>
-          <Icon source={imageForToken(token)} size={32} />
+          <Image source={imageForToken(token)} style={styles.tokenIcon} />
           <Text style={styles.tokenText}>
             {hideTokenAmounts !== true && (
               <Text style={styles.tokenAmount}>

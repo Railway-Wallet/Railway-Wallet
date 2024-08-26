@@ -44,12 +44,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 12,
   },
-  loadingContainer: {
-    width: 90,
-    height: 30,
-    marginTop: 8,
-    alignSelf: 'flex-end',
-  },
+
   leftDescription: {
     marginTop: 6,
     color: styleguide.colors.textSecondary,

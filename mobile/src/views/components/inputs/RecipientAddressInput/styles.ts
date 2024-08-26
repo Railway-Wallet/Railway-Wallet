@@ -1,6 +1,7 @@
+import { StyleSheet } from 'react-native';
 import { styleguide } from '@react-shared';
 
-export const styles = {
+export const styles = StyleSheet.create({
   addressInput: {
     marginTop: 8,
     backgroundColor: styleguide.colors.gray6_50,
@@ -48,7 +49,6 @@ export const styles = {
   },
   inputInsetButton: {
     justifyContent: 'center',
-    width: 'fit-content',
     height: 32,
   },
-};
+});

@@ -1,4 +1,4 @@
-import { isDefined } from '@railgun-community/shared-models';
+import { delay, isDefined } from '@railgun-community/shared-models';
 import { CoingeckoApiEndpoint, getCoingeckoData } from './coingecko-service';
 
 type TokenPrice = {
@@ -36,8 +36,13 @@ export const priceLookup = async (
       CoingeckoApiEndpoint.PriceLookup,
       coingeckoNetworkId,
       params,
-    );
-
+    ).catch(() => {
+      return undefined;
+    });
+    await delay(2500);
+    if (!isDefined(priceResponse)) {
+      continue;
+    }
     const coingeckoPriceMap: CoingeckoPriceMap = priceResponse.data;
     const coingeckoPriceData = coingeckoPriceMap[tokenAddress];
     if (!isDefined(coingeckoPriceData)) {

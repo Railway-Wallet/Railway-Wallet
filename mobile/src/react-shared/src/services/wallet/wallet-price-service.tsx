@@ -5,7 +5,7 @@ import {
 } from '@railgun-community/shared-models';
 import { ReactConfig } from '../../config/react-config';
 import { SharedConstants } from '../../config/shared-constants';
-import { CURRENCY_USD } from '../../models';
+import { Currency } from '../../models';
 import { ToastType } from '../../models/toast';
 import { ERC20Token, ERC20TokenFullInfo } from '../../models/token';
 import { FrontendWallet } from '../../models/wallet';
@@ -48,22 +48,17 @@ const pollPaprikaFallback = async (
   network: Network,
   paprikaQueries: CoinPaprikaQuery[],
   dispatch: AppDispatch,
+  currency: Currency,
 ): Promise<boolean> => {
   const networkName = network.name;
   try {
     await populateCoinPaprikaInfoCache();
 
-    const tokenPricesByAddress = await paprikaPriceLookup(paprikaQueries);
+    const tokenPricesByAddress = await paprikaPriceLookup(
+      paprikaQueries,
+      currency,
+    );
 
-    if (AppSettingsService.currency.code !== CURRENCY_USD.code) {
-      AppSettingsService.currency = CURRENCY_USD;
-      dispatch(
-        showImmediateToast({
-          message: `Localized Prices could not be loaded. Prices are shown in USD`,
-          type: ToastType.Info,
-        }),
-      );
-    }
     dispatch(
       updateTokenPrices({
         networkName,
@@ -125,20 +120,6 @@ export const pullERC20TokenPricesForNetwork = async (
   const tokenAddresses = walletTokens.map(t => t.address);
 
   try {
-    const tokenPricesByAddress = await priceLookup(
-      network.coingeckoId,
-      tokenAddresses,
-      currency.coingeckoID,
-    );
-    pullingPricesNetwork[currency.code] = false;
-
-    dispatch(
-      updateTokenPrices({
-        networkName,
-        updatedTokenPrices: tokenPricesByAddress,
-      }),
-    );
-  } catch (err) {
     const paprikaQueries = walletTokens.map(t => {
       const allToken = t as ERC20TokenFullInfo;
       return {
@@ -151,12 +132,25 @@ export const pullERC20TokenPricesForNetwork = async (
       network,
       paprikaQueries,
       dispatch,
+      currency,
     );
     pullingPricesNetwork[currency.code] = false;
     if (fallbackSuccess === true) {
       return;
     }
-
+  } catch (err) {
+    const tokenPricesByAddress = await priceLookup(
+      network.coingeckoId,
+      tokenAddresses,
+      currency.coingeckoID,
+    );
+    pullingPricesNetwork[currency.code] = false;
+    dispatch(
+      updateTokenPrices({
+        networkName,
+        updatedTokenPrices: tokenPricesByAddress,
+      }),
+    );
     logDevError(
       new Error(`Error pulling ERC20 token prices for ${networkName}`, {
         cause: err,

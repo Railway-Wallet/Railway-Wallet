@@ -17,14 +17,11 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: styleguide.colors.gray6_50,
   },
+  listItemCenter: {
+    maxWidth: '100%',
+  },
   extraItemsTopPadding: {
     paddingTop: 2,
-  },
-  hr: {
-    backgroundColor: styleguide.colors.textSecondary,
-    height: 1,
-    width: '100%',
-    marginLeft: 16,
   },
   placeholderText: {
     margin: 16,
@@ -46,8 +43,15 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.caption,
     textAlign: 'right',
   },
-  listItemCenter: {
-    maxWidth: '100%',
+  continueButton: {
+    marginTop: 16,
+    marginHorizontal: 8,
+  },
+  sectionHeader: {
+    color: styleguide.colors.text(),
+    ...styleguide.typography.paragraph,
+    marginHorizontal: 16,
+    marginTop: 16,
   },
   listItemTitle: {
     color: styleguide.colors.labelSecondary,

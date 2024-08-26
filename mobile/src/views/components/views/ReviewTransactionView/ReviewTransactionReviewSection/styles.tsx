@@ -129,4 +129,10 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.caption,
     color: styleguide.colors.text(),
   },
+  tokenIcon: {
+    width: 32,
+    height: 32,
+    alignSelf: 'center',
+    borderRadius: 15,
+  },
 });

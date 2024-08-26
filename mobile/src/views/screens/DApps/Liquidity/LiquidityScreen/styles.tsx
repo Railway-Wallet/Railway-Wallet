@@ -52,12 +52,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingTop: 2,
   },
-  loadingContainer: {
-    width: 90,
-    height: 30,
-    marginTop: 8,
-    alignSelf: 'flex-end',
-  },
   rightBalances: {
     display: 'flex',
     flexDirection: 'column',

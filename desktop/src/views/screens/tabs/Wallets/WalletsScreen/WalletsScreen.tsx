@@ -122,6 +122,7 @@ export const WalletsScreen = ({
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     checkShouldShowSetRPCsSetUpModal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network.current.name]);
 
   const refreshBalances = async () => {

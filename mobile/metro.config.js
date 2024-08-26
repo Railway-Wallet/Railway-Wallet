@@ -1,15 +1,9 @@
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 const extraNodeModules = require('node-libs-react-native');
 
-module.exports = {
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: true,
-      },
-    }),
-  },
+const config = {
   resolver: {
     extraNodeModules: {
       ...extraNodeModules,
@@ -31,3 +25,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);

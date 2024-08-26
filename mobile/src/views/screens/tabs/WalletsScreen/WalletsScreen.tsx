@@ -39,7 +39,9 @@ import {
   refreshRailgunBalances,
   setDiscreetMode,
   setTempNotification,
+  SharedConstants,
   showImmediateToast,
+  StorageService,
   syncRailgunTransactionsV2,
   useAppDispatch,
   useBalancePriceRefresh,
@@ -56,6 +58,7 @@ import { SelectWalletModal } from '@screens/modals/SelectWalletModal/SelectWalle
 import { callActionSheet } from '@services/util/action-sheet-options-service';
 import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
 import { PendingBalancesModal } from '@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal';
+import { RPCsSetUpModal } from '@views/screens/modals/RPCsSetUpModal/RPCsSetUpModal';
 import { ERC20TokenList } from './ERC20TokenList/ERC20TokenList';
 import { POIPendingBalanceCallout } from './POIPendingBalanceCallout/POIPendingBalanceCallout';
 import { WalletCardSlides } from './WalletCardSlides/WalletCardSlides';
@@ -89,6 +92,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
   ]);
   const [showPendingBalancesModal, setShowPendingBalancesModal] =
     useState(false);
+  const [showRPCsSetUpModal, setShowRPCsSetUpModal] = useState(false);
   const [headerOpacity, setHeaderOpacity] = useState(0);
   const [showLoadingNetworkPublicName, setShowLoadingNetworkPublicName] =
     useState<Optional<string>>();
@@ -121,6 +125,23 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     wallets.active?.isViewOnlyWallet ?? false ? true : isRailgun;
 
   const currentTempNotification = tempNotification.current;
+
+  useEffect(() => {
+    const checkShouldShowSetRPCsSetUpModal = async () => {
+      const rpcSetUpKey =
+        SharedConstants.HAS_SEEN_RPC_SET_UP + '_' + network.current.name;
+      const hasSeen = await StorageService.getItem(rpcSetUpKey);
+      if (!isDefined(hasSeen)) {
+        setShowRPCsSetUpModal(true);
+        await StorageService.setItem(rpcSetUpKey, '1');
+      }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    checkShouldShowSetRPCsSetUpModal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network.current.name]);
+
   useEffect(() => {
     if (currentTempNotification) {
       setAlert({
@@ -451,6 +472,12 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
       />
       <GenericAlert {...alert} />
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
+      {showRPCsSetUpModal && (
+        <RPCsSetUpModal
+          selectedNetwork={network.current}
+          onClose={() => setShowRPCsSetUpModal(false)}
+        />
+      )}
     </>
   );
 };

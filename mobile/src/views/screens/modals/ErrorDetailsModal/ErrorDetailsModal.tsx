@@ -32,13 +32,16 @@ export const ErrorDetailsModal: React.FC<ErrorDetailsModalProps> = ({
   const osVersion = Platform.Version;
 
   const [messages, setMessages] = useState<Array<string>>([]);
+
   useEffect(() => {
     const newMessages = [];
     let thisErr: Error = error;
+
     while (thisErr?.message ?? thisErr) {
       newMessages.push(thisErr.message ?? String(thisErr));
       thisErr = thisErr?.cause as Error;
     }
+
     setMessages(newMessages);
   }, [error]);
 

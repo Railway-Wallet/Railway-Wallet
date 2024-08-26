@@ -198,7 +198,8 @@ export const getTransactionPOIStatusInfoText = (
       const poiLaunchTimestamp = network.poi?.launchTimestamp;
       const transactionIsBeforePOILaunch =
         isDefined(poiLaunchTimestamp) &&
-        transaction.timestamp < poiLaunchTimestamp;
+        (poiLaunchTimestamp === 0 ||
+          transaction.timestamp < poiLaunchTimestamp);
 
       if (transactionIsBeforePOILaunch) {
         return 'This transaction occurred before Private Proof of Innocence launched on this network. Please wait. Your wallet will make these funds spendable within a few minutes.';

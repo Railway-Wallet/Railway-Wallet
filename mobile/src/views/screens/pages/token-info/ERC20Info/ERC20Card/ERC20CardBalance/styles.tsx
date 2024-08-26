@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     width: 24,
     height: 24,
     alignSelf: 'center',
+    borderRadius: 15,
   },
   balanceText: {
     ...styleguide.typography.label,

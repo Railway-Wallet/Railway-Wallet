@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   plugins: ['flowtype', 'react-native', 'import', 'simple-import-sort'],
   extends: [
-    '@react-native-community',
+    '@react-native',
     'eslint:recommended',
     'plugin:import/typescript',
     'prettier',

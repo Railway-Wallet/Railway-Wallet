@@ -1,6 +1,6 @@
 import { isDefined } from '@railgun-community/shared-models';
 import React from 'react';
-import { Text, TextStyle, View } from 'react-native';
+import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { Icon, IconSource } from '@components/icons/Icon';
 import { ListItem } from '@components/list/ListItem/ListItem';
 import { styleguide } from '@react-shared';
@@ -14,6 +14,7 @@ type Props = {
   iconColor?: string;
   onTap?: () => void;
   titleStyle?: TextStyle;
+  centerStyle?: StyleProp<ViewStyle>;
   descriptionNumberOfLines?: number;
   descriptionStyle?: TextStyle;
   rightView?: () => JSX.Element;
@@ -25,6 +26,7 @@ export const SettingsListItem: React.FC<Props> = ({
   description,
   icon,
   iconColor,
+  centerStyle,
   onTap,
   titleStyle,
   descriptionStyle,
@@ -67,6 +69,7 @@ export const SettingsListItem: React.FC<Props> = ({
         description={description}
         descriptionNumberOfLines={descriptionNumberOfLines}
         rightView={customRightView ?? rightView}
+        centerStyle={centerStyle}
         testID="SettingsListItem-Item"
       />
     </View>

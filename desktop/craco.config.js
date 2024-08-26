@@ -32,7 +32,7 @@ module.exports = {
         ...config.resolve.alias,
         '@achingbrain/nat-port-mapper': false,
         '@achingbrain/ssdp': false,
-      }
+      };
       config.resolve.fallback = {
         url: require.resolve('url'),
         fs: false,
@@ -45,6 +45,8 @@ module.exports = {
         buffer: require.resolve('buffer'),
         crypto: require.resolve('crypto-browserify'),
         stream: require.resolve('stream-browserify'),
+        constants: require.resolve('constants-browserify'),
+        zlib: require.resolve('browserify-zlib'),
       };
 
       config.plugins.push(

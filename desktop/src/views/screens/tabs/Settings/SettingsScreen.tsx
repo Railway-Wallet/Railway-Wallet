@@ -426,7 +426,7 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
         >
           <ListItem
             title="Community"
-            description="@RailwayWalletBot on Telegram"
+            description="@railwaywallet on Telegram"
             className={styles.listItem}
             titleClassName={styles.itemTitle}
             descriptionClassName={styles.itemDescription}

@@ -16,7 +16,7 @@ export enum CoinPaprikaApiEndpoint {
 
 const paramString = (params?: string[]): string => {
   if (isDefined(params)) {
-    return `/${params.join('/')}`;
+    return `?quotes=${params.map(p => p.toUpperCase()).join(',')}`;
   }
   return '';
 };

@@ -238,11 +238,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
     const hasBalance = isDefined(balance);
 
     if (!hasBalance || !balance) {
-      return (
-        <View style={styles.loadingContainer}>
-          <LoadingSwirl animate={true} />
-        </View>
-      );
+      return <LoadingSwirl />;
     }
 
     const balanceDecimal = getDecimalBalance(BigInt(balance), token.decimals);

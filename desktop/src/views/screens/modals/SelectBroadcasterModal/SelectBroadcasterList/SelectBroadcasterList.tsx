@@ -7,7 +7,7 @@ import cn from 'classnames';
 import { formatUnits } from 'ethers';
 import { ListRow } from '@components/ListRow/ListRow';
 import { Text } from '@components/Text/Text';
-import { styleguide, useReduxSelector } from '@react-shared';
+import { AppSettingsService, styleguide, useReduxSelector } from '@react-shared';
 import { IconType, renderIcon } from '@services/util/icon-service';
 import styles from './SelectBroadcasterList.module.scss';
 
@@ -29,6 +29,11 @@ export const SelectBroadcasterList: React.FC<Props> = ({
   onSelectRandom,
 }) => {
   const { network } = useReduxSelector('network');
+  const { networkPrices } = useReduxSelector('networkPrices');
+  const tokenPrices =
+    networkPrices.forNetwork[network.current.name]?.forCurrency[
+    AppSettingsService.currency.code
+    ];
 
   const renderReliability = (reliability: number) => {
     if (reliability > 0.8) {
@@ -67,6 +72,20 @@ export const SelectBroadcasterList: React.FC<Props> = ({
     const reliabilityDescription = isDefined(reliability)
       ? reliability
       : 'New broadcaster';
+
+    if (isDefined(tokenPrices)) {
+      const currentTokenPrice = tokenPrices[broadcaster.tokenAddress];
+      if (isDefined(currentTokenPrice)) {
+        const baseTokenPrice = tokenPrices[network.current.baseToken.wrappedAddress];
+        if (isDefined(baseTokenPrice)) {
+          const feeTokenRatio = (currentTokenPrice * parseFloat(formattedParsedFee)) / baseTokenPrice;
+          if (feeTokenRatio < 0.6 || feeTokenRatio > 2.1) {
+            return undefined;
+          }
+        }
+      }
+    }
+
 
     return (
       <ListRow

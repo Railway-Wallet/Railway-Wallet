@@ -14,7 +14,7 @@ export class Constants {
 
   static readonly ENABLE_SWAPS_PROD_IOS = false;
 
-  static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/RailwayWalletBot';
+  static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/railwaywallet';
   static readonly ABOUT_RAILGUN_URL = 'https://railgun.org';
   static readonly RAILGUN_FAQ_URL = 'https://railgun.org/#/faq';
   static readonly RAILWAY_APP_STORE =

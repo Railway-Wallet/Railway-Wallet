@@ -4,7 +4,7 @@ import {
   StyleProp,
   Text,
   TextStyle,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
@@ -75,7 +75,7 @@ export const ListItem: React.FC<Props> = ({
   };
 
   return (
-    <TouchableWithoutFeedback testID={testID} onPress={handleOnPress}>
+    <TouchableOpacity testID={testID} onPress={handleOnPress}>
       <View style={[styles.listItemContainer, style]}>
         {leftView && <View style={styles.leftViewContainer}>{leftView()}</View>}
         <View style={styles.centerAndRightViewContainer}>
@@ -102,6 +102,6 @@ export const ListItem: React.FC<Props> = ({
           )}
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };

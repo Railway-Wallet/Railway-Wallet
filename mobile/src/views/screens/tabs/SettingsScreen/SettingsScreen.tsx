@@ -502,7 +502,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 </>
               )}
               <SettingsListItem
-                title="Networks"
+                title="Networks & RPCs"
                 description="Customize network RPCs"
                 icon="chevron-right"
                 onTap={onSelectNetworks}

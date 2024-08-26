@@ -6,7 +6,7 @@ export const SWIRL_DEFAULT_WIDTH_PCT = 54;
 export const styles = StyleSheet.create({
   swirl: {
     position: 'absolute',
-    width: SWIRL_DEFAULT_WIDTH_PCT + '%',
+    width: `${SWIRL_DEFAULT_WIDTH_PCT}%`,
     height: 75,
     left: '-4%',
     top: isAndroid() ? 8 : 55,

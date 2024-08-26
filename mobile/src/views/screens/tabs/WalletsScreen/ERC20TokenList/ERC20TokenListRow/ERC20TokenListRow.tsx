@@ -70,11 +70,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
     const hasBalance = isDefined(balance);
 
     if (!hasBalance) {
-      return (
-        <View style={styles.loadingContainer}>
-          <LoadingSwirl animate={true} />
-        </View>
-      );
+      return <LoadingSwirl />;
     }
 
     const balanceDecimal = getDecimalBalance(balance, token.decimals);

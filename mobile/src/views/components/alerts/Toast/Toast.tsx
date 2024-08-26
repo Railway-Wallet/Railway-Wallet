@@ -118,6 +118,7 @@ export const Toast: React.FC<ToastProps> = ({
           return;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
         (navigation as any).navigate(navigationData.stack, {
           screen: navigationData.screen,
           params: navigationData.params,

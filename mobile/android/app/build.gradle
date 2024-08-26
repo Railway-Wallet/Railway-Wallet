@@ -1,8 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-
-import com.android.build.OutputFile
-import org.apache.tools.ant.taskdefs.condition.Os
 
 react {
     hermesEnabled = true
@@ -10,16 +8,9 @@ react {
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
-def enableSeparateBuildPerCPUArchitecture = false
-
 def enableProguardInReleaseBuilds = false
 
 def jscFlavor = 'org.webkit:android-jsc-intl:+'
-
-def reactNativeArchitectures() {
-    def value = project.getProperties().get("reactNativeArchitectures")
-    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-}
 
 def keystorePropertiesFile = rootProject.file("keystore.properties");
 def keystoreProperties = new Properties()
@@ -32,20 +23,18 @@ if (keystorePropertiesFile.exists()) {
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
+    namespace  "com.railway.rtp"
 
     defaultConfig {
         applicationId "com.railway.rtp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 119
-        versionName "5.5.0"
+        versionCode 124
+        versionName "5.5.3"
 
         missingDimensionStrategy 'react-native-camera', 'general'
-
-        ndk {
-            abiFilters (*reactNativeArchitectures())
-        }
 
         aaptOptions {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
@@ -58,14 +47,6 @@ android {
         }
     }
 
-    splits {
-        abi {
-            reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false
-            include (*reactNativeArchitectures())
-        }
-    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -94,25 +75,10 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {
-                output.versionCodeOverride =
-                        defaultConfig.versionCode * 1000 + versionCodes.get(abi)
-            }
-
-        }
-    }
 }
 
 dependencies {
     implementation("com.facebook.react:react-android")
-
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
@@ -120,11 +86,6 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.0.0'
     implementation 'com.facebook.fresco:animated-gif:2.6.0'
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

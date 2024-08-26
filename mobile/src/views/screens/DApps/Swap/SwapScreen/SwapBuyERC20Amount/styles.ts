@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
     height: 16,
   },
   selectTokenButton: {
-    width: 'fit-content',
     marginLeft: 8,
     minWidth: 128,
   },
@@ -26,7 +25,6 @@ export const styles = StyleSheet.create({
   },
   inputInsetButton: {
     justifyContent: 'center',
-    width: 'fit-content',
     height: 32,
   },
   feeDisclaimerContainer: {
