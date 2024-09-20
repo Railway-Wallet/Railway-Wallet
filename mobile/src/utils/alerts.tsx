@@ -73,3 +73,65 @@ export const createPOIDisclaimerAlert = (
     },
   });
 };
+
+export const createSelfBroadcastDisclaimerAlert = (
+  setAlert: React.Dispatch<React.SetStateAction<AlertProps | undefined>>,
+  dispatch: AppDispatch,
+) => {
+  const handleRedirect = (url: string) => () => {
+    openExternalLinkAlert(url, dispatch);
+  };
+
+  setAlert({
+    show: true,
+    title: 'Self Broadcast',
+    message:
+      'Use a wallet you control to sign a private transaction and and broadcast to the blockchain nodes. This wallet will pay gas fees from its public balance. Be sure to follow best practices when self broadcasting to maintain anonymity.',
+    submitTitle: 'Okay',
+    footerView: (
+      <View style={styles.footerView}>
+        <ButtonTextOnly
+          title="Learn more"
+          onTap={handleRedirect(
+            'https://help.railway.xyz/transactions/self-signing',
+          )}
+          labelStyle={styles.submitButtonText}
+        />
+      </View>
+    ),
+    onSubmit: () => {
+      setAlert(undefined);
+    },
+  });
+};
+
+export const createPublicBroadcasterDisclaimerAlert = (
+  setAlert: React.Dispatch<React.SetStateAction<AlertProps | undefined>>,
+  dispatch: AppDispatch,
+) => {
+  const handleRedirect = (url: string) => () => {
+    openExternalLinkAlert(url, dispatch);
+  };
+
+  setAlert({
+    show: true,
+    title: 'Public Broadcaster',
+    message:
+      'Use a third-party public broadcaster to sign a private transaction and broadcast to the blockchain nodes. This provides more anonymity. Public broadcasters do not ever gain control or custody of your funds and cannot see any details of the sender or the contents of the private transaction. Railway does not control or maintain any broadcasters in the decentralized public broadcaster network.',
+    submitTitle: 'Okay',
+    footerView: (
+      <View style={styles.footerView}>
+        <ButtonTextOnly
+          title="Learn more"
+          onTap={handleRedirect(
+            'https://docs.railgun.org/wiki/learn/privacy-system/community-broadcasters',
+          )}
+          labelStyle={styles.submitButtonText}
+        />
+      </View>
+    ),
+    onSubmit: () => {
+      setAlert(undefined);
+    },
+  });
+};

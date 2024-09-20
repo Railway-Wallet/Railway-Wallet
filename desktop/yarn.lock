@@ -3368,10 +3368,10 @@
     web3 "^1.6.0"
     web3-utils "^1.6.0"
 
-"@railgun-community/cookbook@2.8.4":
-  version "2.8.4"
-  resolved "https://registry.yarnpkg.com/@railgun-community/cookbook/-/cookbook-2.8.4.tgz#1c6810ee6106d07414f9dadbeb36e955b732cfc1"
-  integrity sha512-ZCtGx7dV/UZjp7BNuLKne9a8OZVEmJTwpFjiBUCH1LCjF8DuRTHtedl2i44UXpetkyRnYI+9tAqAaD13aKG4cw==
+"@railgun-community/cookbook@2.8.5":
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/@railgun-community/cookbook/-/cookbook-2.8.5.tgz#7d8ed67312904f0cd22da465bf7b298b6fd4009d"
+  integrity sha512-rpKQsAPb0HSqPfE36mZkN94XbtpENNZXaauFvCihoXnzb3387tbWgeZDBLvxVTJXteengZMCQUgjOkkAYKVMOA==
   dependencies:
     "@0x/contract-addresses" "^8.13.0"
     "@graphql-mesh/cache-localforage" "^0.7.20"
@@ -3394,10 +3394,10 @@
   resolved "https://registry.yarnpkg.com/@railgun-community/curve25519-scalarmult-wasm/-/curve25519-scalarmult-wasm-0.1.5.tgz#edb5e40a8f1fdb7f7e0de1d04e8badabe41cb2a8"
   integrity sha512-Cur8uM/IdNW3WzUwdPloDG1CF0rpSBDWq2yGXJMZ7IMeBGdc4Jj0h9tnNMFRZ35ZuCVVbZ3yClmqSa4PsbpdGQ==
 
-"@railgun-community/engine@9.1.1":
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/@railgun-community/engine/-/engine-9.1.1.tgz#6f097dd0260d02e908b062d46a0584b58e70f4a7"
-  integrity sha512-pmgEV5QwQXcrdoHrPCeMMLpV9cUg+EWSL6r02qwzyacrtIHls4rPgExkuCTOy/RtKdySZYJtblw8FqrGsM0dcw==
+"@railgun-community/engine@9.1.2":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@railgun-community/engine/-/engine-9.1.2.tgz#570c04222dfa589869ad945a23d4bc2389cf1d86"
+  integrity sha512-GfE5AY+U/+0Gf4T5jmxE7EzEPJGwB7YOf684QTU5LnZtHGKvEL1jxTHloL0u6YfoLnPFAZW8GxfD+pWzKfAkBQ==
   dependencies:
     "@noble/ciphers" "^0.4.0"
     "@noble/ed25519" "^1.7.1"
@@ -3434,10 +3434,10 @@
   resolved "https://registry.yarnpkg.com/@railgun-community/shared-models/-/shared-models-7.4.3.tgz#f052b3c1f26ffc206d66fa010d452b07c86c137f"
   integrity sha512-63YDTWvvXvZG7U7R4j1ZG0lvnCl95Kn9LPvJRd+56oachKs1Z6Z3TeXCBQXN2dK+viqXgHH4Aa6+Ij4goTeG3Q==
 
-"@railgun-community/waku-broadcaster-client-web@7.2.2":
-  version "7.2.2"
-  resolved "https://registry.yarnpkg.com/@railgun-community/waku-broadcaster-client-web/-/waku-broadcaster-client-web-7.2.2.tgz#ed86dff4161cc1a29672bd5900985da7a518c75f"
-  integrity sha512-wLxURPaau8q/JeFq4Th5xRhDMH67MbrEKuw6//fkJEWRldi7Rq7rjvq7EbHhAsCVeMU1h/SCb4K+4wE+04foBg==
+"@railgun-community/waku-broadcaster-client-web@7.2.4":
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/@railgun-community/waku-broadcaster-client-web/-/waku-broadcaster-client-web-7.2.4.tgz#1e381b05047930113099c40e9d2977c8d7ccb784"
+  integrity sha512-SwHwL4ZoHcZILKSgNpGu5IbqtdvD7tl2iyjyC37vJAlPb+K8WSoaa05ZA8SxqIonOpRcK1xSBWZ7kw/dBpA/xA==
   dependencies:
     "@libp2p/bootstrap" "^10.0.11"
     "@waku/core" "0.0.27"
@@ -3446,10 +3446,10 @@
     "@waku/sdk" "0.0.23"
     libp2p "^1.1.2"
 
-"@railgun-community/wallet@10.2.3":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@railgun-community/wallet/-/wallet-10.2.3.tgz#d09a541a32fa5e85774cc7d9e71b33ecf8bbda5c"
-  integrity sha512-Npe8bFiBg3wKxjKDUnXlavFuf8NwsG3wiaxkhQRvz52O313WHeWVX/YKCL7RIfUaiTXSto936UDbNcbPKIgDQg==
+"@railgun-community/wallet@10.2.4":
+  version "10.2.4"
+  resolved "https://registry.yarnpkg.com/@railgun-community/wallet/-/wallet-10.2.4.tgz#13bee6de5ae5316bd3fabc779efcd37a389ce45d"
+  integrity sha512-+PADhy2eaLXrSGCoS+ytHK/smb2Ouwihr/Twh/5CHr3ReyOr6ECNx8MQnfmn9XJNXdcHMniCy94In19Y83YPFg==
   dependencies:
     "@graphql-mesh/cache-localforage" "^0.7.20"
     "@graphql-mesh/cross-helpers" "^0.3.4"
@@ -3462,7 +3462,7 @@
     "@graphql-mesh/types" "^0.91.14"
     "@graphql-mesh/utils" "^0.43.22"
     "@noble/ed25519" "^1.7.1"
-    "@railgun-community/engine" "9.1.1"
+    "@railgun-community/engine" "9.1.2"
     "@railgun-community/shared-models" "7.4.3"
     "@whatwg-node/fetch" "^0.8.4"
     assert "2.0.0"

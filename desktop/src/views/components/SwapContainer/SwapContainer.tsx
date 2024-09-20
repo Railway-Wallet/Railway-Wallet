@@ -1,4 +1,4 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
+import { isDefined } from '@railgun-community/shared-models';
 import { useEffect, useState } from 'react';
 import { Button } from '@components/Button/Button';
 import { Text } from '@components/Text/Text';
@@ -15,12 +15,9 @@ import {
   validERC20Amount,
 } from '@react-shared';
 import { ErrorDetailsModal } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import {
-  SwapSettings,
-  SwapSettingsModal,
-} from '@screens/modals/SwapSettingsModal/SwapSettingsModal';
 import { IconType } from '@services/util/icon-service';
 import { getGradientColor } from '@utils/colors';
+import { SlippageSelectorModal } from '@views/screens/modals/SlippageSelectorModal/SlippageSelectorModal';
 import {
   appEventsBus,
   SWAP_COMPLETE,
@@ -46,9 +43,11 @@ export const SwapContainer: React.FC<Props> = ({
   const { wallets } = useReduxSelector('wallets');
   const [showSwapSettings, setShowSwapSettings] = useState(false);
   const [showErrorDetailsModal, setShowErrorDetailsModal] = useState(false);
-  const [slippagePercentageOverride, setSlippagePercentageOverride] =
-    useState<Optional<number>>();
-
+  const [slippagePercentage, setSlippagePercentage] = useState(
+    isRailgun
+      ? SharedConstants.DEFAULT_SLIPPAGE_PRIVATE_TXS
+      : SharedConstants.DEFAULT_SLIPPAGE_PUBLIC_TXS,
+  );
   const [alert, setAlert] = useState<Optional<AlertProps>>(undefined);
 
   const { topPickSellToken, topPickBuyToken } = useTopPickSwapERC20s(
@@ -87,21 +86,6 @@ export const SwapContainer: React.FC<Props> = ({
 
   const activeWallet = wallets.active;
 
-  const defaultSlippagePercentage = isRailgun
-    ? SharedConstants.DEFAULT_SLIPPAGE_PRIVATE_TXS
-    : SharedConstants.DEFAULT_SLIPPAGE_PUBLIC_TXS;
-  const swapSettings: SwapSettings = {
-    slippagePercentage: slippagePercentageOverride ?? defaultSlippagePercentage,
-  };
-  const onDismissSwapSettings = (newSettings?: SwapSettings) => {
-    if (newSettings) {
-      if (newSettings.slippagePercentage !== swapSettings.slippagePercentage) {
-        setSlippagePercentageOverride(newSettings.slippagePercentage);
-      }
-    }
-    setShowSwapSettings(false);
-  };
-
   const openErrorDetailsModal = () => {
     setShowErrorDetailsModal(true);
   };
@@ -125,11 +109,11 @@ export const SwapContainer: React.FC<Props> = ({
 
   const swapContentParams: SwapContentProps = {
     setAlert,
-    swapSettings,
     sellERC20: currentSellERC20,
     sellERC20Amount: validSellERC20Amount,
     buyERC20: currentBuyERC20,
     sellTokenEntryString,
+    slippagePercentage,
     setCurrentSellERC20,
     setCurrentBuyERC20,
     setSellTokenEntryString,
@@ -138,10 +122,11 @@ export const SwapContainer: React.FC<Props> = ({
   return (
     <>
       {showSwapSettings && (
-        <SwapSettingsModal
+        <SlippageSelectorModal
           isRailgun={isRailgun}
-          currentSettings={swapSettings}
-          onDismiss={onDismissSwapSettings}
+          setFinalSlippagePercentage={setSlippagePercentage}
+          initialSlippagePercentage={slippagePercentage}
+          onClose={() => setShowSwapSettings(false)}
         />
       )}
       <div className={styles.swapContainer}>

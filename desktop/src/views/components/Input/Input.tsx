@@ -40,6 +40,7 @@ export type InputProps = {
   onKeyDown?: (event: any) => void;
   testId?: string;
   autoComplete?: string;
+  step?: string;
 };
 
 export const Input = ({
@@ -67,6 +68,7 @@ export const Input = ({
   autoFocus,
   onKeyDown,
   testId,
+  step,
   autoComplete = 'on',
 }: InputProps) => {
   const [selected, setSelected] = useState(false);
@@ -105,6 +107,7 @@ export const Input = ({
     autoCapitalize,
     autoFocus,
     autoComplete,
+    step,
   };
 
   const createIcon = (icon: IconType) => {

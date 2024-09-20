@@ -20,7 +20,7 @@ import { IconType, renderIcon } from '@services/util/icon-service';
 import { ERC20AmountsEntry } from '@views/components/amounts-entry/ERC20AmountsEntry';
 import { Button } from '@views/components/Button/Button';
 import { InfoCallout } from '@views/components/InfoCallout/InfoCallout';
-import { LiquiditySettingsModal } from '@views/screens/modals/LiquiditySettingsModal/LiquiditySettingsModal';
+import { SlippageSelectorModal } from '@views/screens/modals/SlippageSelectorModal/SlippageSelectorModal';
 import {
   LiquidityView,
   RemoveLiquidityConfirmData,
@@ -146,7 +146,8 @@ export const RemoveLiquidityInitial = ({
         )}
       </div>
       {showSettingsModal && (
-        <LiquiditySettingsModal
+        <SlippageSelectorModal
+          isRailgun
           setFinalSlippagePercentage={setSlippagePercentage}
           initialSlippagePercentage={slippagePercentage}
           onClose={() => setShowSettingsModal(false)}

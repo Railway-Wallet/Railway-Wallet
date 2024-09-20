@@ -37,11 +37,7 @@ import {
 } from '@react-shared';
 import { SelectWalletModal } from '@screens/modals/SelectWalletModal/SelectWalletModal';
 import { IconType, renderIcon } from '@services/util/icon-service';
-import { LiquiditySettingsModal } from '@views/screens/modals/LiquiditySettingsModal/LiquiditySettingsModal';
-import {
-  SwapSettings,
-  SwapSettingsModal,
-} from '@views/screens/modals/SwapSettingsModal/SwapSettingsModal';
+import { SlippageSelectorModal } from '@views/screens/modals/SlippageSelectorModal/SlippageSelectorModal';
 import { ReviewNFTAmount } from './ReviewNFTAmount/ReviewNFTAmount';
 import styles from './ReviewTransactionReviewSection.module.scss';
 
@@ -531,13 +527,6 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
     return isRailgunAddress(swapDestinationAddress);
   };
 
-  const onDismissSwapSettings = (newSettings?: SwapSettings) => {
-    if (newSettings && isDefined(setSlippagePercent)) {
-      setSlippagePercent(newSettings.slippagePercentage);
-    }
-    setShowSwapSettingsModal(false);
-  };
-
   const openLiquiditySettings = () => {
     setShowLiquiditySettingsModal(true);
   };
@@ -570,17 +559,19 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
       />
     )}
     {showLiquiditySlippageSelector && showLiquiditySettingsModal && (
-      <LiquiditySettingsModal
+      <SlippageSelectorModal
+        isRailgun={isRailgunAddress(fromWalletAddress)}
         setFinalSlippagePercentage={setSlippagePercent}
         initialSlippagePercentage={slippagePercent}
         onClose={() => setShowLiquiditySettingsModal(false)}
       />
     )}
     {showSwapSlippageSelector && showSwapSettingsModal && (
-      <SwapSettingsModal
+      <SlippageSelectorModal
         isRailgun={isRailgunAddress(fromWalletAddress)}
-        currentSettings={{ slippagePercentage: slippagePercent }}
-        onDismiss={onDismissSwapSettings}
+        setFinalSlippagePercentage={setSlippagePercent}
+        initialSlippagePercentage={slippagePercent}
+        onClose={() => setShowSwapSettingsModal(false)}
       />
     )}
     <div className={styles.reviewSection}>

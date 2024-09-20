@@ -37,7 +37,7 @@ import { IconType, renderIcon } from '@services/util/icon-service';
 import { createExternalSiteAlert } from '@utils/alerts';
 import { ERC20AmountsEntry } from '@views/components/amounts-entry/ERC20AmountsEntry';
 import { Selector } from '@views/components/Selector/Selector';
-import { LiquiditySettingsModal } from '@views/screens/modals/LiquiditySettingsModal/LiquiditySettingsModal';
+import { SlippageSelectorModal } from '@views/screens/modals/SlippageSelectorModal/SlippageSelectorModal';
 import {
   AddLiquidityConfirmData,
   LiquidityView,
@@ -325,7 +325,8 @@ export const AddLiquidityInitial = ({
       </div>
       {alert && <GenericAlert {...alert} />}
       {showSettingsModal && (
-        <LiquiditySettingsModal
+        <SlippageSelectorModal
+          isRailgun
           setFinalSlippagePercentage={setSlippagePercentage}
           initialSlippagePercentage={slippagePercentage}
           onClose={() => setShowSettingsModal(false)}

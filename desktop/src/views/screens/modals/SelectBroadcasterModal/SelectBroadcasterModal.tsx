@@ -98,7 +98,6 @@ export const SelectBroadcasterModal: React.FC<Props> = ({
                   </Text>
                   <div className={styles.footerTextButtonWrapper}>
                     <TextButton
-                      textClassName={styles.footerTextButton}
                       text="Change fee token"
                       action={changeFeeToken}
                     />

@@ -109,4 +109,13 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: styleguide.colors.gray6_50,
   },
+  disclaimerText: {
+    ...styleguide.typography.labelSmall,
+    color: styleguide.colors.labelSecondary,
+    alignSelf: 'flex-end',
+    marginTop: 12,
+  },
+  selectSignerTypeButton: {
+    marginTop: 18,
+  },
 });

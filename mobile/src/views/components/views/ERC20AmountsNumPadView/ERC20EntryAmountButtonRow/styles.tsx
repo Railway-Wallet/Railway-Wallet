@@ -6,36 +6,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  titleWrapper: {
-    borderColor: styleguide.colors.textSecondary,
+  input: {
+    ...styleguide.typography.heading2,
+    borderColor: styleguide.colors.white,
+    minWidth: 160,
     borderBottomWidth: 1,
-    marginHorizontal: 12,
     flexShrink: 1,
     flexGrow: 1,
-    minWidth: 160,
-  },
-  focusedBorder: {
-    borderColor: styleguide.colors.white,
-  },
-  title: {
-    ...styleguide.typography.heading2,
+    textAlign: 'center',
     fontSize: 28,
     color: styleguide.colors.text(),
-    alignSelf: 'center',
-    textAlign: 'center',
-    marginTop: 3,
-  },
-  placeholderTitle: {
-    color: styleguide.colors.textSecondary,
-  },
-  placeholderTitleFocused: {
-    color: styleguide.colors.labelSecondary,
-  },
-  errorTitleBorder: {
-    borderColor: styleguide.colors.error(),
-  },
-  toastStyle: {
-    top: -28,
-    left: 75,
+    marginHorizontal: 12,
   },
 });

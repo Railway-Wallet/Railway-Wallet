@@ -57,15 +57,19 @@ export const RecipientAddressInput: React.FC<Props> = ({
   addressEntryRef,
   isValidatingRecipient,
 }) => {
+  const dispatch = useAppDispatch();
   const { network } = useReduxSelector('network');
+  const { showActionSheetWithOptions } = useActionSheet();
+
+  const isRailgunAddress = walletAddressType === WalletAddressType.Railgun;
+  let placeholder: string;
 
   const [addressText, setAddressText] = useState<string>(initialAddress ?? '');
-
   const [showScanQRCodeModal, setShowScanQRCodeModal] = useState(false);
   const [errorModal, setErrorModal] =
     useState<Optional<ErrorDetailsModalProps>>(undefined);
+  const [_, setAddressFocused] = useState(false);
 
-  let placeholder: string;
   switch (walletAddressType) {
     case WalletAddressType.Ethereum:
       placeholder = `Enter ${network.current.shortPublicName} address`;
@@ -74,14 +78,6 @@ export const RecipientAddressInput: React.FC<Props> = ({
       placeholder = `Enter RAILGUN address`;
       break;
   }
-
-  const isRailgunAddress = walletAddressType === WalletAddressType.Railgun;
-
-  const [_addressFocused, setAddressFocused] = useState(false);
-
-  const dispatch = useAppDispatch();
-
-  const { showActionSheetWithOptions } = useActionSheet();
 
   const {
     addressResolverStatus,

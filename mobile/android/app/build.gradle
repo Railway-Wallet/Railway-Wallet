@@ -31,8 +31,8 @@ android {
         applicationId "com.railway.rtp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 124
-        versionName "5.5.3"
+        versionCode 125
+        versionName "5.6.0"
 
         missingDimensionStrategy 'react-native-camera', 'general'
 
@@ -93,4 +93,15 @@ dependencies {
     }
 }
 
+afterEvaluate {
+    tasks.named('lintVitalAnalyzeRelease').configure {
+        dependsOn 'copyReactNativeVectorIconFonts'
+    }
+
+    tasks.named('generateReleaseLintVitalReportModel').configure {
+        dependsOn 'copyReactNativeVectorIconFonts'
+    }
+}
+
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+

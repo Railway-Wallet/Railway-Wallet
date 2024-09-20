@@ -31,8 +31,15 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 16,
   },
+  disclaimerText: {
+    ...styleguide.typography.caption,
+    color: styleguide.colors.textSecondary,
+    textAlign: 'center',
+    paddingHorizontal: 16,
+    marginTop: 12,
+  },
   progressBarWrapper: {
-    marginTop: 32,
+    marginTop: 24,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

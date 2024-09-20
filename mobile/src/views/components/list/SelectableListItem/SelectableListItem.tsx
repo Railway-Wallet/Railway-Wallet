@@ -10,7 +10,7 @@ type Props = {
   title: string;
   titleIconSource?: string;
   description?: string;
-  rightText: string;
+  rightText?: string;
   rightSubtext?: string;
   onTap: () => void;
   showTopBorder?: boolean;

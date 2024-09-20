@@ -70,6 +70,7 @@ import {
   setBroadcasterAddressFilters,
   SharedConstants,
   shortenWalletAddress,
+  SignerType,
   StorageService,
   styleguide,
   TransactionType,
@@ -108,11 +109,6 @@ import { ProgressBar } from '@views/components/ProgressBar/ProgressBar';
 import { SelectBroadcasterModal } from '@views/screens/modals/SelectBroadcasterModal/SelectBroadcasterModal';
 import { ReviewTransactionReviewSection } from './ReviewTransactionReviewSection/ReviewTransactionReviewSection';
 import styles from './ReviewTransaction.module.scss';
-
-enum SignerType {
-  SelfBroadcast = 'SelfBroadcast',
-  PublicBroadcaster = 'PublicBroadcaster',
-}
 
 type Props = {
   goBack?: () => void;

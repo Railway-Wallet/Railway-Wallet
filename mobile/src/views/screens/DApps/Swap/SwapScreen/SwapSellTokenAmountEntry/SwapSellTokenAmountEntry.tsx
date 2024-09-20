@@ -5,7 +5,6 @@ import {
 } from '@railgun-community/shared-models';
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { PinEntryPanel } from '@components/inputs/PinEntryPanel/PinEntryPanel';
 import { ApproveButton } from '@components/views/ERC20AmountsNumPadView/ApproveButton/ApproveButton';
 import { ERC20AmountRowView } from '@components/views/ERC20AmountsNumPadView/ERC20AmountRowView';
 import { SendERC20sNumberInput } from '@components/views/ERC20AmountsNumPadView/SendERC20sNumberInput/SendERC20sNumberInput';
@@ -158,56 +157,6 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
     setShowSelectERC20Modal(true);
   };
 
-  const onTapPanelButton = (num: number) => {
-    const newString = sellTokenEntryString + String(num);
-    if (
-      disableNumPad ||
-      (newString === sellTokenEntryString && !(num === 0 && entryHasDecimal()))
-    ) {
-      return;
-    }
-
-    triggerHaptic(HapticSurface.NumPad);
-    setSellTokenEntryString(newString);
-  };
-
-  const entryHasDecimal = () => {
-    return sellTokenEntryString.includes('.');
-  };
-
-  const onTapDecimalButton = () => {
-    if (disableNumPad) {
-      return;
-    }
-    if (entryHasDecimal()) {
-      return;
-    }
-    if (!sellTokenEntryString.length) {
-      const newString = '0.';
-      triggerHaptic(HapticSurface.NumPad);
-      setSellTokenEntryString(newString);
-      return;
-    }
-    const newString = sellTokenEntryString + '.';
-    if (isNaN(Number(newString))) {
-      return;
-    }
-    triggerHaptic(HapticSurface.NumPad);
-    setSellTokenEntryString(newString);
-  };
-
-  const onTapBackspaceButton = () => {
-    if (disableNumPad) {
-      return;
-    }
-    if (!sellTokenEntryString.length) {
-      return;
-    }
-    const newString = sellTokenEntryString.slice(0, -1);
-    triggerHaptic(HapticSurface.NumPad);
-    setSellTokenEntryString(newString);
-  };
-
   const onTapMaxButton = () => {
     if (disableNumPad) {
       return;
@@ -259,15 +208,6 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
             focused={true}
             balanceBucketFilter={balanceBucketFilter}
           />
-          {!showTokenApprove && (
-            <PinEntryPanel
-              enteredPinLength={sellTokenEntryString.length}
-              onTapPanelButton={onTapPanelButton}
-              onTapDecimalButton={onTapDecimalButton}
-              onTapBackspaceButton={onTapBackspaceButton}
-              addDecimalEntry={true}
-            />
-          )}
         </>
       )}
       {!showAmountEntry && validSellTokenAmount && (

@@ -16,6 +16,7 @@ export * from './nft-balance-reducer-railgun';
 export * from './nfts-metadata-reducer';
 export * from './omitted-private-tokens-reducer';
 export * from './poi-proof-progress-reducer';
+export * from './proof-batch-reducer';
 export * from './proof-progress-reducer';
 export * from './remote-config-reducer';
 export * from './saved-addresses-reducer';

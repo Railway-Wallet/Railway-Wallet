@@ -63,6 +63,8 @@ export const SidebarMenu = (): JSX.Element => {
   const { network } = useReduxSelector('network');
   const { txidVersion } = useReduxSelector('txidVersion');
   const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
+  const { proofBatcher } = useReduxSelector('proofBatcher');
+
 
   const [showLoadingText, setShowLoadingText] = useState<Optional<string>>();
   const [errorModal, setErrorModal] = useState<
@@ -208,7 +210,7 @@ export const SidebarMenu = (): JSX.Element => {
 
   const utxoMerkletreeScanData: Optional<MerkletreeScanCurrentStatus> =
     merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
-      MerkletreeType.UTXO
+    MerkletreeType.UTXO
     ];
   const railgunBalancesUpdating =
     utxoMerkletreeScanData?.status === MerkletreeScanStatus.Started ||
@@ -217,12 +219,20 @@ export const SidebarMenu = (): JSX.Element => {
 
   const txidMerkletreeScanData: Optional<MerkletreeScanCurrentStatus> =
     merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
-      MerkletreeType.TXID
+    MerkletreeType.TXID
     ];
   const txidsUpdating =
     txidMerkletreeScanData?.status === MerkletreeScanStatus.Started ||
     txidMerkletreeScanData?.status === MerkletreeScanStatus.Updated;
   const txidScanProgress = txidMerkletreeScanData?.progress ?? 0;
+
+  const batchListUpdating =
+    isDefined(proofBatcher) === true &&
+    isDefined(proofBatcher.status) === true &&
+    proofBatcher.status !== '' &&
+    // @ts-ignore - TS doesn't like the includes method
+    proofBatcher.status.includes('100.00%') === false;
+  const batchListProgress = proofBatcher?.status ?? '';
 
   const tabs: TabOptionType[] = useMemo(
     () => [
@@ -311,6 +321,16 @@ export const SidebarMenu = (): JSX.Element => {
               <div>
                 <Text className={styles.historyScanText}>
                   RAILGUN TXIDs updating: {(txidScanProgress * 100).toFixed(0)}%
+                </Text>
+              </div>
+            </div>
+          )}
+          {batchListUpdating && (
+            <div className={styles.proofBatchContainer}>
+              <Spinner size={20} />
+              <div>
+                <Text className={styles.historyScanText}>
+                  {batchListProgress}
                 </Text>
               </div>
             </div>

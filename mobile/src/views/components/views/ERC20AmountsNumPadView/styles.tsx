@@ -73,4 +73,16 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.error(),
     marginLeft: 24,
   },
+  tokenBalanceWithFeesText: {
+    ...styleguide.typography.caption,
+    color: styleguide.colors.labelSecondary,
+  },
+  checkboxContainer: {
+    gap: 12,
+    marginHorizontal: 12,
+    marginTop: 24,
+  },
+  disclaimerContainer: {
+    marginLeft: 12,
+  },
 });

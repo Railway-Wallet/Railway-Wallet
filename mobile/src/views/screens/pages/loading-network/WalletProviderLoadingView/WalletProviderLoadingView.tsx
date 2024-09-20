@@ -350,6 +350,9 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
         {!isDefined(error) && (
           <>
             <Text style={styles.loadingText}>{progressStatus}</Text>
+            <Text style={styles.disclaimerText}>
+              {'This process might take some time.'}
+            </Text>
             <View style={styles.progressBarWrapper}>
               <ProgressBar
                 progress={progress}

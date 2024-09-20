@@ -46,7 +46,6 @@ export const SendERC20sNumberInput: React.FC<Props> = ({
   onSaveAmount,
   error,
   hasValidNumEntry,
-  focused,
   balanceBucketFilter,
 }) => {
   const { network } = useReduxSelector('network');
@@ -141,7 +140,6 @@ export const SendERC20sNumberInput: React.FC<Props> = ({
           rightView={rightView}
           numEntryString={numEntryString}
           updateAmount={updateAmount}
-          focused={focused}
           placeholder={formatNumberToLocaleWithMinDecimals(0, 2)}
         />
       </View>

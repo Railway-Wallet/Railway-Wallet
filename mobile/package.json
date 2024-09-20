@@ -1,6 +1,6 @@
 {
   "name": "railway-react-native",
-  "version": "5.5.3",
+  "version": "5.6.0",
   "private": true,
   "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
   "license": "AGPL-3.0-only",
@@ -25,7 +25,7 @@
     "@0x/contract-addresses": "8.7.0",
     "@ethersproject/shims": "^5.7.0",
     "@expo/react-native-action-sheet": "4.0.1",
-    "@railgun-community/cookbook": "2.8.4",
+    "@railgun-community/cookbook": "2.8.5",
     "@railgun-community/shared-models": "7.4.3",
     "@react-native-async-storage/async-storage": "^1.22.3",
     "@react-native-clipboard/clipboard": "^1.14.0",
@@ -188,7 +188,8 @@
     "FaceID"
   ],
   "resolutions": {
-    "react-native-permissions": "3.8.0"
+    "react-native-permissions": "3.8.0",
+    "wrap-ansi": "^6.2.0"
   },
   "overrides": {
     "react-native-qrcode-scanner": {

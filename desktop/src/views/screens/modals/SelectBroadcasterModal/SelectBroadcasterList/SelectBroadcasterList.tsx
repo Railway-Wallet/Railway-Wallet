@@ -7,7 +7,12 @@ import cn from 'classnames';
 import { formatUnits } from 'ethers';
 import { ListRow } from '@components/ListRow/ListRow';
 import { Text } from '@components/Text/Text';
-import { AppSettingsService, styleguide, useReduxSelector } from '@react-shared';
+import {
+  AppSettingsService,
+  renderBroadcasterReliability,
+  styleguide,
+  useReduxSelector,
+} from '@react-shared';
 import { IconType, renderIcon } from '@services/util/icon-service';
 import styles from './SelectBroadcasterList.module.scss';
 
@@ -32,26 +37,8 @@ export const SelectBroadcasterList: React.FC<Props> = ({
   const { networkPrices } = useReduxSelector('networkPrices');
   const tokenPrices =
     networkPrices.forNetwork[network.current.name]?.forCurrency[
-    AppSettingsService.currency.code
+      AppSettingsService.currency.code
     ];
-
-  const renderReliability = (reliability: number) => {
-    if (reliability > 0.8) {
-      return '🟢';
-    }
-    if (reliability > 0.5) {
-      return '🟡';
-    }
-    if (reliability > 0.3) {
-      return '🟠';
-    }
-
-    if (reliability > 0) {
-      return '🔴';
-    }
-
-    return '⚪️';
-  };
 
   const renderBroadcaster = (
     broadcaster: SelectedBroadcaster,
@@ -68,7 +55,7 @@ export const SelectBroadcasterList: React.FC<Props> = ({
     const parsedFee = parseFloat(formattedFee);
     const parsedDecimals = parsedFee > 1 ? 4 : 8;
     const formattedParsedFee = parsedFee.toFixed(parsedDecimals);
-    const reliabilityTag = `${renderReliability(reliability)}`;
+    const reliabilityTag = `${renderBroadcasterReliability(reliability)}`;
     const reliabilityDescription = isDefined(reliability)
       ? reliability
       : 'New broadcaster';
@@ -76,16 +63,18 @@ export const SelectBroadcasterList: React.FC<Props> = ({
     if (isDefined(tokenPrices)) {
       const currentTokenPrice = tokenPrices[broadcaster.tokenAddress];
       if (isDefined(currentTokenPrice)) {
-        const baseTokenPrice = tokenPrices[network.current.baseToken.wrappedAddress];
+        const baseTokenPrice =
+          tokenPrices[network.current.baseToken.wrappedAddress];
         if (isDefined(baseTokenPrice)) {
-          const feeTokenRatio = (currentTokenPrice * parseFloat(formattedParsedFee)) / baseTokenPrice;
+          const feeTokenRatio =
+            (currentTokenPrice * parseFloat(formattedParsedFee)) /
+            baseTokenPrice;
           if (feeTokenRatio < 0.6 || feeTokenRatio > 2.1) {
             return undefined;
           }
         }
       }
     }
-
 
     return (
       <ListRow

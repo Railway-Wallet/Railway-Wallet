@@ -7,6 +7,7 @@ import {
   ProofProgressEvent,
   RailgunBalancesEvent,
 } from '@railgun-community/shared-models';
+import { BatchListUpdateEvent } from '@railgun-community/wallet';
 import {
   AppDispatch,
   BridgeEvent,
@@ -21,6 +22,7 @@ import {
   ReactConfig,
   RemoteConfig,
   setMerkletreeHistoryScanStatus,
+  setProofBatchProgress,
   setProofProgress,
   startRailgunEngine,
   store,
@@ -82,6 +84,12 @@ export const startEngine = async (
     BridgeEvent.OnProofProgress,
     (progressEvent: ProofProgressEvent) =>
       handleProofProgress(progressEvent, dispatch),
+  );
+
+  bridgeListen(
+    BridgeEvent.OnBatchListCallback,
+    (batchListUpdateEvent: BatchListUpdateEvent) =>
+      handleBatchListCallback(batchListUpdateEvent, dispatch),
   );
 };
 
@@ -181,7 +189,7 @@ const handleMerkletreeScanUpdate = async (
 
   const merkletreeStatus =
     store.getState().merkletreeHistoryScan.forNetwork[network.name]?.forType[
-      merkletreeType
+    merkletreeType
     ];
   if (
     isDefined(merkletreeStatus) &&
@@ -215,3 +223,14 @@ const handleProofProgress = (
 ) => {
   dispatch(setProofProgress(progressEvent));
 };
+
+const handleBatchListCallback = async (
+  event: BatchListUpdateEvent,
+  dispatch: AppDispatch
+) => {
+  const proofProgess = {
+    progress: event.percent,
+    status: event.status,
+  }
+  dispatch(setProofBatchProgress(proofProgess));
+}

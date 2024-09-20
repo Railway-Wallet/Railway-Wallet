@@ -33,6 +33,7 @@ export type ShieldERC20sViewData =
 export type ShieldERC20sInitialData = {
   erc20AmountRecipients: ERC20AmountRecipient[];
   approvedToken?: ERC20Token;
+  initialRecipientAddress?: string;
 };
 export type ShieldERC20ConfirmData = {
   erc20AmountRecipients: ERC20AmountRecipient[];
@@ -40,6 +41,7 @@ export type ShieldERC20ConfirmData = {
 export type ShieldERC20ApproveData = {
   erc20AmountRecipients: ERC20AmountRecipient[];
   approveERC20Amount: ERC20Amount;
+  recipientAddress: string;
 };
 
 export const ShieldERC20s = ({ token }: Props) => {
@@ -110,6 +112,9 @@ export const ShieldERC20s = ({ token }: Props) => {
         <ShieldERC20sInitial
           handleSetView={handleSetView}
           navigationToken={token}
+          initialRecipientAddress={
+            (viewData as ShieldERC20sInitialData)?.initialRecipientAddress
+          }
           initialERC20AmountRecipients={
             (viewData as ShieldERC20sInitialData)?.erc20AmountRecipients
           }
@@ -143,6 +148,8 @@ export const ShieldERC20s = ({ token }: Props) => {
             <ApproveERC20Confirm
               goBack={() => {
                 handleSetView(ShieldERC20sView.INITIAL, {
+                  initialRecipientAddress: (viewData as ShieldERC20ApproveData)
+                    .recipientAddress,
                   erc20AmountRecipients: (viewData as ShieldERC20ApproveData)
                     .erc20AmountRecipients,
                   approveERC20Amount: (viewData as ShieldERC20ApproveData)

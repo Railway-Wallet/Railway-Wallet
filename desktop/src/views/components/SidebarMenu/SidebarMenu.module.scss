@@ -10,7 +10,10 @@
   padding: 0 25px;
   z-index: 2;
 }
-
+.proofBatchContainer {
+  @include scanContainer;
+  bottom: 160px;
+}
 .historyScanContainer {
   @include scanContainer;
   bottom: 100px;

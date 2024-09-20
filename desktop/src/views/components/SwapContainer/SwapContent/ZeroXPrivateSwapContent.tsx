@@ -16,7 +16,7 @@ import { SharedSwapContent, SwapContentProps } from './SharedSwapContent';
 
 export const ZeroXPrivateSwapContent: React.FC<SwapContentProps> = ({
   setAlert,
-  swapSettings,
+  slippagePercentage,
   sellERC20Amount,
   buyERC20,
   ...props
@@ -28,7 +28,7 @@ export const ZeroXPrivateSwapContent: React.FC<SwapContentProps> = ({
       swapRecipeType,
       sellERC20Amount,
       buyERC20,
-      swapSettings.slippagePercentage,
+      slippagePercentage,
       undefined,
     );
 
@@ -58,7 +58,7 @@ export const ZeroXPrivateSwapContent: React.FC<SwapContentProps> = ({
       swapRecipeType,
       sellERC20Amount,
       buyERC20,
-      originalSlippagePercentage: swapSettings.slippagePercentage,
+      originalSlippagePercentage: slippagePercentage,
     };
     drawerEventsBus.dispatch(EVENT_OPEN_DRAWER_WITH_DATA, {
       drawerName: DrawerName.SwapPrivate,
@@ -102,9 +102,9 @@ export const ZeroXPrivateSwapContent: React.FC<SwapContentProps> = ({
     <SharedSwapContent
       isRailgun={true}
       quote={quote}
+      slippagePercentage={slippagePercentage}
       quoteError={recipeError}
       isLoadingQuote={isLoadingRecipeOutput}
-      swapSettings={swapSettings}
       sellERC20Amount={sellERC20Amount}
       buyERC20={buyERC20}
       buyERC20Amount={buyERC20Amount}

@@ -137,6 +137,7 @@ export const useRecipientAddress = (
     hasValidRecipient,
     nftAmountRecipients,
     erc20AmountRecipients,
+    recipientAddress: address,
     recipientInput: (
       <RecipientAddressInput
         initialAddress={address}

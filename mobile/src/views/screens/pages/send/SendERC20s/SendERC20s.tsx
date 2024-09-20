@@ -22,10 +22,6 @@ export const SendERC20s: React.FC<Props> = ({ navigation, route }) => {
   const { isRailgun, token: navigationToken } = route.params;
 
   const [erc20Amounts, setERC20Amounts] = useState<ERC20Amount[]>([]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [addressFocused, setAddressFocused] = useState(false);
-
   const [showAmountEntry, setShowAmountEntry] = useState(true);
 
   const transactionType = TransactionType.Send;

@@ -40,9 +40,7 @@ export const UnshieldERC20s = ({ token, setHasValidProof }: Props) => {
   const [view, setView] = useState(UnshieldERC20sView.INITIAL);
   const [viewData, setViewData] = useState<UnshieldERC20sViewData>(undefined);
   const [authKey, setAuthKey] = useState<Optional<string>>();
-  const [balanceBucketFilter, setBalanceBucketFilter] = useState<
-    RailgunWalletBalanceBucket[]
-  >([RailgunWalletBalanceBucket.Spendable]);
+  const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
 
   const dispatch = useAppDispatch();
   const navigationDataError = (view: UnshieldERC20sView) => {

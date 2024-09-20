@@ -77,3 +77,21 @@ export const sortBroadcasters = (broadcasters?: SelectedBroadcaster[]) => {
 
   return sorted;
 };
+
+export const renderBroadcasterReliability = (reliability: number) => {
+  if (reliability > 0.8) {
+    return '🟢';
+  }
+  if (reliability > 0.5) {
+    return '🟡';
+  }
+  if (reliability > 0.3) {
+    return '🟠';
+  }
+
+  if (reliability > 0) {
+    return '🔴';
+  }
+
+  return '⚪️';
+};

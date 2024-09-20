@@ -15,6 +15,7 @@ export * from './poi';
 export * from './proof';
 export * from './providers';
 export * from './security';
+export * from './signer';
 export * from './toast';
 export * from './token';
 export * from './transaction';

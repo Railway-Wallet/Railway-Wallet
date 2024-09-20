@@ -11,8 +11,10 @@ export const usePersistedState = (
       ? JSON.parse(persistedState)
       : defaultValue;
   });
+
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(state));
   }, [state, key]);
+
   return [state, setState];
 };

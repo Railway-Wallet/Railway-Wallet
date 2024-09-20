@@ -3,7 +3,7 @@ import {
   RailgunWalletBalanceBucket,
 } from '@railgun-community/shared-models';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { ButtonTextOnly } from '@components/buttons/ButtonTextOnly/ButtonTextOnly';
 import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
 import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
@@ -22,6 +22,7 @@ import {
   hasWrappedBaseToken,
   SelectTokenPurpose,
   stringEntryToBigInt,
+  styleguide,
   TransactionType,
   useERC20Allowance,
   useERC20Balance,
@@ -31,6 +32,9 @@ import {
 } from '@react-shared';
 import { SelectERC20Modal } from '@screens/modals/SelectERC20Modal/SelectERC20Modal';
 import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
+import { COMMON_HIT_SLOP } from '@utils/constants';
+import { Icon } from '@views/components/icons/Icon';
+import { Checkbox } from '@views/components/inputs/Checkbox/Checkbox';
 import { ApproveButton } from './ApproveButton/ApproveButton';
 import { ERC20AmountRowView } from './ERC20AmountRowView';
 import { styles } from './styles';
@@ -72,11 +76,6 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
-
-  const [error, setError] = useState<Optional<Error>>(undefined);
-  const [showSelectERC20Modal, setShowSelectERC20Modal] = useState(false);
-  const activeWallet = wallets.active;
-
   const { topPickToken } = useTopPickERC20(
     transactionType,
     navigationToken,
@@ -84,8 +83,16 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     erc20Amounts,
   );
 
+  const [singleFeeChecked, setSingleFeeChecked] = useState(false);
+  const [bothFeesChecked, setBothFeesChecked] = useState(false);
+  const [error, setError] = useState<Optional<Error>>(undefined);
+  const [showSelectERC20Modal, setShowSelectERC20Modal] = useState(false);
   const [currentToken, setCurrentToken] =
     useState<Optional<ERC20Token>>(topPickToken);
+
+  const isShieldView = transactionType === TransactionType.Shield;
+  const isUnshieldView = transactionType === TransactionType.Unshield;
+  const activeWallet = wallets.active;
 
   useEffect(() => {
     if (erc20Amounts.length > 1 && currentToken) {
@@ -121,13 +128,6 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     setError,
   );
 
-  let { tokenBalance } = useERC20Balance(
-    activeWallet,
-    currentToken,
-    isRailgunBalance,
-    balanceBucketFilter,
-  );
-
   const onTapTokenSelector =
     disableERC20Selection === true
       ? undefined
@@ -136,11 +136,18 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
           setShowSelectERC20Modal(true);
         };
 
+  let { tokenBalance } = useERC20Balance(
+    activeWallet,
+    currentToken,
+    isRailgunBalance,
+    balanceBucketFilter,
+  );
+
   const {
     numEntryString,
     setNumEntryString,
     sendTokenNumberInput,
-    pinEntryPanel,
+    finalEntryString,
   } = useSendERC20sNumInput(
     transactionType,
     error,
@@ -156,6 +163,8 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     balanceBucketFilter,
     requiresApproval,
     focused,
+    singleFeeChecked,
+    bothFeesChecked,
   );
 
   const onRemoveToken = useCallback(() => {
@@ -166,6 +175,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
       }
       newTokenAmounts.push(tokenAmount);
     }
+
     triggerHaptic(HapticSurface.EditSuccess);
     setTokenAmounts(newTokenAmounts);
     setShowAmountEntry(false);
@@ -196,6 +206,28 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     );
     setShowAmountEntry(true);
   };
+
+  const renderFeeCheckboxDisclaimerInfo = (title: string, message: string) => (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={styles.disclaimerContainer}
+      hitSlop={COMMON_HIT_SLOP}
+      onPress={() => {
+        Alert.alert(title, message, [
+          {
+            text: 'Cancel',
+            style: 'destructive',
+          },
+        ]);
+      }}
+    >
+      <Icon
+        size={20}
+        source="alert-circle"
+        color={styleguide.colors.textSecondary}
+      />
+    </TouchableOpacity>
+  );
 
   const showTokenApproveForShielding =
     requiresApproval &&
@@ -237,7 +269,49 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
         {showAmountEntry && (
           <>
             {sendTokenNumberInput}
-            {showPinEntryPanel && pinEntryPanel}
+            {(isShieldView || isUnshieldView) && (
+              <View style={styles.checkboxContainer}>
+                <Checkbox
+                  selected={singleFeeChecked}
+                  rightView={renderFeeCheckboxDisclaimerInfo(
+                    `${isUnshieldView ? 'Unshield' : 'Shield'} fee included`,
+                    'This is useful if you would like the destination 0zk address to receive the amount entered after the fee. If selected, the shield fee amount will be added to your input amount.\n\nIf left unselected, the shield fee will be taken out of your input amount. The destination 0zk address will receive the amount originally entered minus the shield fee.',
+                  )}
+                  label={`Add ${
+                    isUnshieldView ? 'unshield' : 'shield'
+                  } fee to input`}
+                  onPress={() => {
+                    setSingleFeeChecked(!singleFeeChecked);
+                    setBothFeesChecked(false);
+                  }}
+                />
+                {isShieldView && (
+                  <Checkbox
+                    selected={bothFeesChecked}
+                    rightView={renderFeeCheckboxDisclaimerInfo(
+                      'Shield and unshield fee included',
+                      'This is useful if you would like the destination 0zk address to be able to unshield and end up with the amount you entered after fees are applied. If selected, the shield fee and unshield fee amounts will be added to your input amount.\n\nIf left unselected, only the shield fee will be taken out of your input amount. The destination 0zk address will receive the amount originally entered minus the shield fee.',
+                    )}
+                    label="Add shield and unshield fee to input"
+                    onPress={() => {
+                      setBothFeesChecked(!bothFeesChecked);
+                      setSingleFeeChecked(false);
+                    }}
+                  />
+                )}
+                {(singleFeeChecked || bothFeesChecked) &&
+                  currentToken &&
+                  numEntryString && (
+                    <Text style={styles.tokenBalanceWithFeesText}>
+                      {`Total with ${
+                        bothFeesChecked
+                          ? 'shield and unshield fee'
+                          : `${isShieldView ? 'shield' : 'unshield'} fee`
+                      }: ${finalEntryString}`}
+                    </Text>
+                  )}
+              </View>
+            )}
             {showTokenApproveForShielding && (
               <ApproveButton
                 pendingApproveTransaction={pendingApproveERC20Transaction}

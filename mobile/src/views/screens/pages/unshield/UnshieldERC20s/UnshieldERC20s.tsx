@@ -37,15 +37,10 @@ export const UnshieldERC20s: React.FC<Props> = ({ navigation, route }) => {
   const { token: navigationToken } = route.params;
 
   const [erc20Amounts, setERC20Amounts] = useState<ERC20Amount[]>([]);
-
+  const [showAmountEntry, setShowAmountEntry] = useState(true);
   const [balanceBucketFilter] = useState<RailgunWalletBalanceBucket[]>([
     RailgunWalletBalanceBucket.Spendable,
   ]);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [addressFocused, setAddressFocused] = useState(false);
-
-  const [showAmountEntry, setShowAmountEntry] = useState(true);
 
   const transactionType = TransactionType.Unshield;
   const walletAddressType = WalletAddressType.Ethereum;

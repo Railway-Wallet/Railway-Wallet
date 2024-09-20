@@ -25,6 +25,7 @@ export enum BridgeEvent {
   OnBalancesUpdate = 'onBalancesUpdate',
   OnUTXOMerkletreeScanUpdate = 'onUTXOMerkletreeScanCallback',
   OnTXIDMerkletreeScanUpdate = 'onTXIDMerkletreeScanCallback',
+  OnBatchListCallback = 'onBatchListCallback',
   OnProofProgress = 'onProofProgress',
   OnPOIProofProgress = 'OnPOIProofProgress',
   OnArtifactsProgress = 'onArtifactsProgress',

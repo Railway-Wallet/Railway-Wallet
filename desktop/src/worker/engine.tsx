@@ -5,9 +5,11 @@ import {
   RailgunBalancesEvent,
 } from '@railgun-community/shared-models';
 import {
+  type BatchListUpdateEvent,
   getProver,
   POIList,
   POIListType,
+  setBatchListCallback,
   setOnBalanceUpdateCallback,
   setOnTXIDMerkletreeScanCallback,
   setOnUTXOMerkletreeScanCallback,
@@ -73,7 +75,8 @@ bridgeRegisterCall<StartRailgunEngineParams, void>(
     setOnWalletPOIProofProgressCallback(onPOIProofProgressCallback);
     setOnUTXOMerkletreeScanCallback(onUTXOMerkletreeScanCallback);
     setOnTXIDMerkletreeScanCallback(onTXIDMerkletreeScanCallback);
-
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    setBatchListCallback(onBatchListCallback)
     const prover = getProver();
     prover.setSnarkJSGroth16(snarkjs.groth16 as SnarkJSGroth16);
   },
@@ -96,3 +99,7 @@ const onPOIProofProgressCallback = (
 ) => {
   triggerBridgeEvent(BridgeEvent.OnPOIProofProgress, poiProofProgress);
 };
+
+const onBatchListCallback = (batchList: BatchListUpdateEvent) => {
+  triggerBridgeEvent(BridgeEvent.OnBatchListCallback, batchList);
+}

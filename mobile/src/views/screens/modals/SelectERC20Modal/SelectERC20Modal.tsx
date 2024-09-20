@@ -103,7 +103,7 @@ export const SelectERC20Modal: React.FC<Props> = ({
         title={headerTitle}
         headerStatusBarHeight={16}
         backgroundColor={styleguide.colors.gray5()}
-        isModal={true}
+        isModal
         headerLeft={
           <HeaderTextButton
             text="Cancel"

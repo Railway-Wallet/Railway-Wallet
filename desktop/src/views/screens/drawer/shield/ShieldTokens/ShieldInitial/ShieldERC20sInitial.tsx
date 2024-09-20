@@ -33,6 +33,7 @@ type Props = {
   navigationToken?: ERC20Token;
   approvedToken?: ERC20Token;
   initialERC20AmountRecipients?: ERC20AmountRecipient[];
+  initialRecipientAddress?: string;
 };
 
 export const ShieldERC20sInitial = ({
@@ -40,6 +41,7 @@ export const ShieldERC20sInitial = ({
   navigationToken,
   approvedToken,
   initialERC20AmountRecipients = [],
+  initialRecipientAddress,
 }: Props) => {
   const firstInitialRecipient =
     isDefined(initialERC20AmountRecipients) &&
@@ -62,16 +64,20 @@ export const ShieldERC20sInitial = ({
   const transactionType = TransactionType.Shield;
   const walletAddressType = WalletAddressType.Railgun;
 
-  const { hasValidRecipient, erc20AmountRecipients, recipientInput } =
-    useRecipientAddress(
-      firstInitialRecipient?.recipientAddress,
-      firstInitialRecipient?.externalUnresolvedToWalletAddress,
-      erc20Amounts,
-      [], transactionType,
-      walletAddressType,
-      validateWalletAddress,
-      setAlert,
-    );
+  const {
+    hasValidRecipient,
+    erc20AmountRecipients,
+    recipientInput,
+    recipientAddress,
+  } = useRecipientAddress(
+    initialRecipientAddress ?? firstInitialRecipient?.recipientAddress,
+    firstInitialRecipient?.externalUnresolvedToWalletAddress,
+    erc20Amounts,
+    [], transactionType,
+    walletAddressType,
+    validateWalletAddress,
+    setAlert,
+  );
 
   const onTapNext = () => {
     const data: ShieldERC20ConfirmData = {
@@ -89,6 +95,7 @@ export const ShieldERC20sInitial = ({
     const data: ShieldERC20ApproveData = {
       erc20AmountRecipients,
       approveERC20Amount,
+      recipientAddress,
     };
 
     handleSetView(ShieldERC20sView.APPROVE, data);
@@ -104,7 +111,7 @@ export const ShieldERC20sInitial = ({
         {recipientInput}
         <ERC20AmountsEntry
           transactionType={TransactionType.Shield}
-          canSendMultipleTokens={true}
+          canSendMultipleTokens
           isRailgunBalance={false}
           balanceBucketFilter={[RailgunWalletBalanceBucket.Spendable]}
           initialToken={approvedToken ?? navigationToken}

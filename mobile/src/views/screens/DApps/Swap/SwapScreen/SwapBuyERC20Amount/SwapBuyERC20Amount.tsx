@@ -162,8 +162,8 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
       />
       <View style={styles.wrapper}>
         <ERC20EntryAmountButtonRow
+          autoFocus={false}
           numEntryString={buyERC20AmountText ?? ''}
-          focused={false}
           leftView={swapSettingsView}
           rightView={tokenSelectorView}
           placeholder={formatNumberToLocaleWithMinDecimals(0, 2)}

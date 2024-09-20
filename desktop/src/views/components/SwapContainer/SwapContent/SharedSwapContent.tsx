@@ -11,7 +11,6 @@ import {
   isRebaseToken,
   useReduxSelector,
 } from '@react-shared';
-import { SwapSettings } from '@screens/modals/SwapSettingsModal/SwapSettingsModal';
 import { IconType } from '@services/util/icon-service';
 import { ErrorDetailsModal } from '@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal';
 import { SwapBuyTokenAmount } from './SwapBuyTokenAmount/SwapBuyTokenAmount';
@@ -22,9 +21,9 @@ export type SwapContentProps = {
   setAlert: (alert: Optional<AlertProps>) => void;
   sellERC20: Optional<ERC20Token>;
   sellERC20Amount: Optional<ERC20Amount>;
-  swapSettings: SwapSettings;
   buyERC20: Optional<ERC20Token>;
   sellTokenEntryString: string;
+  slippagePercentage: number;
   setCurrentSellERC20: (token: Optional<ERC20Token>) => void;
   setCurrentBuyERC20: (token: Optional<ERC20Token>) => void;
   setSellTokenEntryString: (value: string) => void;

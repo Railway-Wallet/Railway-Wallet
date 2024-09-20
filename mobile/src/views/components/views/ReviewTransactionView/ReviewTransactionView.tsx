@@ -11,6 +11,7 @@ import {
   ProofType,
   RailgunERC20Recipient,
   RailgunWalletBalanceBucket,
+  SelectedBroadcaster,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
 import React, {
@@ -77,6 +78,7 @@ import {
   setBroadcasterAddressFilters,
   SharedConstants,
   shortenWalletAddress,
+  SignerType,
   StorageService,
   styleguide,
   TransactionType,
@@ -105,8 +107,14 @@ import { SelectERC20Modal } from '@screens/modals/SelectERC20Modal/SelectERC20Mo
 import { SelectWalletModal } from '@screens/modals/SelectWalletModal/SelectWalletModal';
 import { callActionSheet } from '@services/util/action-sheet-options-service';
 import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { createPOIDisclaimerAlert } from '@utils/alerts';
+import {
+  createPOIDisclaimerAlert,
+  createPublicBroadcasterDisclaimerAlert,
+  createSelfBroadcastDisclaimerAlert,
+} from '@utils/alerts';
 import { Constants } from '@utils/constants';
+import { Icon } from '@views/components/icons/Icon';
+import { SelectBroadcasterModal } from '@views/screens/modals/SelectBroadcasterModal/SelectBroadcasterModal';
 import { ReviewTransactionReviewSection } from './ReviewTransactionReviewSection/ReviewTransactionReviewSection';
 import { styles } from './styles';
 
@@ -220,9 +228,14 @@ export const ReviewTransactionView: React.FC<Props> = ({
 
   const [hasBroadcasterError, setHasBroadcasterError] = useState(false);
 
+  const [showBroadcasterSelectorModal, setShowBroadcasterSelectorModal] =
+    useState(false);
+  const [signerType, setSignerType] = useState<Optional<SignerType>>();
   const [customNonce, setCustomNonce] = useState<Optional<number>>();
   const [publicWalletOverride, setPublicWalletOverride] =
     useState<Optional<AvailableWallet>>();
+  const [forceBroadcaster, setForceBroadcaster] =
+    useState<Optional<SelectedBroadcaster>>();
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
   const [shieldedTransferMemo, setShieldedTransferMemo] =
@@ -322,6 +335,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
 
   const {
     selectedBroadcaster,
+    allBroadcasters,
     requiresBroadcaster,
     lockBroadcaster,
     selectedBroadcasterLocked,
@@ -334,7 +348,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
     findRandomBroadcaster,
     findAllBroadcastersForToken,
     setBroadcasterAddressFilters,
-    undefined,
+    forceBroadcaster,
   );
 
   const isBroadcasterTransaction =
@@ -343,6 +357,11 @@ export const ReviewTransactionView: React.FC<Props> = ({
 
   const updateGasEstimateProgress = (amount: number) => {
     setGasEstimateProgress(amount / 100);
+  };
+
+  const changeFeeToken = () => {
+    setShowBroadcasterSelectorModal(false);
+    selectBroadcasterFeeERC20Modal();
   };
 
   const {
@@ -355,7 +374,6 @@ export const ReviewTransactionView: React.FC<Props> = ({
     gasDetailsBySpeed,
     gasTokenBalanceError,
     gasEstimateError,
-    refreshGasEstimate,
     refreshGasFeeData,
     resetGasData,
   } = useNetworkFeeGasEstimator(
@@ -521,6 +539,27 @@ export const ReviewTransactionView: React.FC<Props> = ({
     setError(undefined);
     await refreshGasFeeData();
     setRefreshing(false);
+  };
+
+  const openPublicWalletOverrideSelector = () => {
+    setShowWalletSelectorModal(true);
+  };
+
+  const openBroadcasterSelector = () => {
+    setShowBroadcasterSelectorModal(true);
+  };
+
+  const onDismissBroadcasterSelector = (
+    broadcaster: Optional<SelectedBroadcaster>,
+    randomBroadcaster: boolean,
+  ) => {
+    if (broadcaster || randomBroadcaster) {
+      setForceBroadcaster(broadcaster);
+      setSignerType(SignerType.PublicBroadcaster);
+      resetGasData();
+    }
+
+    setShowBroadcasterSelectorModal(false);
   };
 
   const openErrorDetailsModal = () => {
@@ -848,6 +887,14 @@ export const ReviewTransactionView: React.FC<Props> = ({
     return null;
   };
 
+  const showSelfBroadcastDisclaimer = () => {
+    createSelfBroadcastDisclaimerAlert(setAlert, dispatch);
+  };
+
+  const showPublicBroadcasterDisclaimer = () => {
+    createPublicBroadcasterDisclaimerAlert(setAlert, dispatch);
+  };
+
   const enablePublicWalletOverride =
     requiresBroadcaster && requireSelfSigned !== true;
   const showHideSenderAddress = isRailgunShieldedTransfer;
@@ -880,18 +927,56 @@ export const ReviewTransactionView: React.FC<Props> = ({
     error ??
     gasEstimateError;
 
+  const renderSelectSignerType = () => {
+    return (
+      <View>
+        <View style={styles.selectSignerTypeButton}>
+          <SelectableListItem
+            title="Self Broadcast"
+            onTap={openPublicWalletOverrideSelector}
+            showTopBorder
+            showBottomBorder
+            customRightView={
+              <Icon
+                source="chevron-right"
+                size={24}
+                color={styleguide.colors.labelSecondary}
+              />
+            }
+          />
+          <Text
+            style={styles.disclaimerText}
+            onPress={showSelfBroadcastDisclaimer}
+          >
+            What is this?
+          </Text>
+        </View>
+        <View style={styles.selectSignerTypeButton}>
+          <SelectableListItem
+            title="Public Broadcaster"
+            onTap={openBroadcasterSelector}
+            showTopBorder
+            showBottomBorder
+            customRightView={
+              <Icon
+                source="chevron-right"
+                size={24}
+                color={styleguide.colors.labelSecondary}
+              />
+            }
+          />
+          <Text
+            style={styles.disclaimerText}
+            onPress={showPublicBroadcasterDisclaimer}
+          >
+            What is this?
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
   return (<>
-    <SelectERC20Modal
-      show={showBroadcasterFeeERC20Modal}
-      headerTitle="Select fee token"
-      skipBaseToken={true}
-      onDismiss={onDismissSelectBroadcasterFee}
-      isRailgun={true}
-      balanceBucketFilter={balanceBucketFilter}
-      purpose={SelectTokenPurpose.BroadcasterFee}
-      transactionType={null}
-      useRelayAdaptForBroadcasterFee={useRelayAdapt}
-    />
     <SelectWalletModal
       show={showWalletSelectorModal}
       closeModal={() => {
@@ -901,8 +986,33 @@ export const ReviewTransactionView: React.FC<Props> = ({
       isRailgunInitial={false}
       selectedWallet={publicWalletOverride}
       onDismiss={onDismissPublicWalletOverrideSelector}
-      showBroadcasterOption={true}
-      availableWalletsOnly={true}
+      showBroadcasterOption={false}
+      availableWalletsOnly
+    />
+    <SelectBroadcasterModal
+      show={showBroadcasterSelectorModal}
+      onDismiss={() => onDismissBroadcasterSelector(undefined, false)}
+      onRandomBroadcaster={() =>
+        onDismissBroadcasterSelector(undefined, true)
+      }
+      onSelectBroadcaster={(broadcaster: Optional<SelectedBroadcaster>) =>
+        onDismissBroadcasterSelector(broadcaster, false)
+      }
+      changeFeeToken={changeFeeToken}
+      selectedBroadcaster={forceBroadcaster}
+      allBroadcasters={allBroadcasters}
+      feeToken={selectedFeeToken}
+    />
+    <SelectERC20Modal
+      isRailgun
+      skipBaseToken
+      transactionType={null}
+      show={showBroadcasterFeeERC20Modal}
+      headerTitle="Select fee token"
+      onDismiss={onDismissSelectBroadcasterFee}
+      balanceBucketFilter={balanceBucketFilter}
+      purpose={SelectTokenPurpose.BroadcasterFee}
+      useRelayAdaptForBroadcasterFee={useRelayAdapt}
     />
     <GenerateProofModal
       finalERC20AmountRecipients={
@@ -1008,7 +1118,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
     />
     <AppHeader
       title="Review transaction"
-      allowFontScaling={true}
+      allowFontScaling
       isModal={false}
       headerLeft={
         <HeaderBackButton
@@ -1055,7 +1165,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
             tintColor={styleguide.colors.white}
           />
         }
-        enableOnAndroid={true}
+        enableOnAndroid
         extraHeight={110}
       >
         <View style={styles.wrapper}>
@@ -1087,263 +1197,278 @@ export const ReviewTransactionView: React.FC<Props> = ({
           />
           {}
           {}
-          <View style={styles.networkFeeWrapper}>
-            {requiresBroadcaster && !publicWalletOverride ? (
-              <>
-                <SelectableListItem
-                  title="Gas fee"
-                  titleIconSource={
-                    selectedBroadcasterLocked ? 'lock-outline' : undefined
-                  }
-                  description={
-                    selectedGasDetails && selectedBroadcaster
-                      ? `via broadcaster ${shortenWalletAddress(
-                          selectedBroadcaster.railgunAddress,
-                        )}`
-                      : broadcasterFeeIsEstimating
-                      ? broadcasterFeeText
-                      : ''
-                  }
-                  rightText={broadcasterFeeText}
-                  rightSubtext={broadcasterFeeSubtext}
-                  onTap={
-                    selectedBroadcasterLocked
-                      ? promptUnlockBroadcaster
-                      : onTapBroadcasterOptions
-                  }
-                  showTopBorder
-                  showBottomBorder
-                  customRightView={
-                    broadcasterFeeIsEstimating ? (
-                      <View style={styles.gasEstimateProgressBarWrapper}>
-                        <Text style={styles.gasEstimateProgressLabel}>
-                          Estimating...
-                        </Text>
-                        <ProgressBar
-                          progress={gasEstimateProgress}
-                          color={styleguide.colors.txGreen()}
-                          borderColor={styleguide.colors.white}
-                          style={styles.gasEstimateProgressBar}
-                        />
-                      </View>
-                    ) : undefined
-                  }
-                />
-                {selectedBroadcasterLocked &&
-                  hasValidProof &&
-                  gasPriceChangedByThreshold &&
-                  !showGenerateProofModal &&
-                  !showProcessModal && (
-                    <Text
-                      style={styles.broadcasterFeeWarning}
-                      onPress={resetProofAndGas}
-                    >
-                      Gas prices have changed, and your gas fee may not be
-                      valid. Tap to update.
-                    </Text>
-                  )}
-              </>
-            ) : (
-              <SelectableListItem
-                title="Gas fee"
-                description={
-                  networkFeeText === SharedConstants.ESTIMATING_GAS_FEE_TEXT
-                    ? `Paid in ${network.current.baseToken.symbol}`
-                    : 'Estimated'
-                }
-                rightText={networkFeeText}
-                rightSubtext={networkFeePriceText}
-                onTap={openNetworkFeeSelector}
-                disabled={!selectedGasDetails}
-                showTopBorder
-                showBottomBorder
-                customRightView={
-                  networkFeeText ===
-                  SharedConstants.ESTIMATING_GAS_FEE_TEXT ? (
-                    <View style={styles.gasEstimateProgressBarWrapper}>
-                      <Text style={styles.gasEstimateProgressLabel}>
-                        Estimating...
-                      </Text>
-                      <ProgressBar
-                        progress={gasEstimateProgress}
-                        color={styleguide.colors.txGreen()}
-                        borderColor={styleguide.colors.white}
-                        style={styles.gasEstimateProgressBar}
-                      />
-                    </View>
-                  ) : undefined
-                }
-              />
-            )}
-          </View>
-          {Constants.ENABLE_MEMO_FIELD && isRailgunShieldedTransfer && (
-            <View style={styles.textFieldWrapper}>
-              <TextEntry
-                label="Private memo"
-                placeholder="Text and emojis"
-                viewStyles={[styles.textEntryField]}
-                autoCapitalize="none"
-                multiline
-                onChangeText={invalidateProof}
-                onEndEditing={(
-                  event: NativeSyntheticEvent<TextInputEndEditingEventData>,
-                ) => {
-                  setShieldedTransferMemo(
-                    event.nativeEvent.text.length
-                      ? event.nativeEvent.text.trim()
-                      : undefined,
-                  );
-                }}
-              />
-            </View>
-          )}
-          {enableAdvancedFields && (
+          {!isDefined(signerType) &&
+            isBroadcasterTransaction &&
+            renderSelectSignerType()}
+          {(isDefined(signerType) || !isBroadcasterTransaction) && (
             <>
-              {!showAdvancedOptions && (
-                <View style={styles.advancedOptionsButtonWrapper}>
-                  <Text
-                    onPress={() => {
-                      triggerHaptic(HapticSurface.SelectItem);
-                      setShowAdvancedOptions(!showAdvancedOptions);
-                    }}
-                    style={styles.advancedOptionsButton}
-                  >
-                    {showAdvancedOptions
-                      ? 'Hide advanced options'
-                      : 'Show advanced options'}
-                  </Text>
-                </View>
-              )}
-              {showAdvancedOptions && enablePublicWalletOverride && (
-                <View style={styles.textFieldWrapper}>
+              <View style={styles.networkFeeWrapper}>
+                {requiresBroadcaster && !publicWalletOverride ? (
+                  <>
+                    <SelectableListItem
+                      title="Gas fee"
+                      titleIconSource={
+                        selectedBroadcasterLocked ? 'lock-outline' : undefined
+                      }
+                      description={
+                        selectedGasDetails && selectedBroadcaster
+                          ? `via broadcaster ${shortenWalletAddress(
+                              selectedBroadcaster.railgunAddress,
+                            )}`
+                          : broadcasterFeeIsEstimating
+                          ? broadcasterFeeText
+                          : ''
+                      }
+                      rightText={broadcasterFeeText}
+                      rightSubtext={broadcasterFeeSubtext}
+                      onTap={
+                        selectedBroadcasterLocked
+                          ? promptUnlockBroadcaster
+                          : onTapBroadcasterOptions
+                      }
+                      showTopBorder
+                      showBottomBorder
+                      customRightView={
+                        broadcasterFeeIsEstimating ? (
+                          <View style={styles.gasEstimateProgressBarWrapper}>
+                            <Text style={styles.gasEstimateProgressLabel}>
+                              Estimating...
+                            </Text>
+                            <ProgressBar
+                              progress={gasEstimateProgress}
+                              color={styleguide.colors.txGreen()}
+                              borderColor={styleguide.colors.white}
+                              style={styles.gasEstimateProgressBar}
+                            />
+                          </View>
+                        ) : undefined
+                      }
+                    />
+                    {selectedBroadcasterLocked &&
+                      hasValidProof &&
+                      gasPriceChangedByThreshold &&
+                      !showGenerateProofModal &&
+                      !showProcessModal && (
+                        <Text
+                          style={styles.broadcasterFeeWarning}
+                          onPress={resetProofAndGas}
+                        >
+                          Gas prices have changed, and your gas fee may not be
+                          valid. Tap to update.
+                        </Text>
+                      )}
+                  </>
+                ) : (
                   <SelectableListItem
-                    title="Signer"
-                    titleIconSource={
-                      selectedBroadcasterLocked ? 'lock-outline' : undefined
+                    title="Gas fee"
+                    description={
+                      networkFeeText ===
+                      SharedConstants.ESTIMATING_GAS_FEE_TEXT
+                        ? `Paid in ${network.current.baseToken.symbol}`
+                        : 'Estimated'
                     }
-                    rightText={
-                      publicWalletOverride
-                        ? publicWalletOverride.name
-                        : 'Broadcaster'
-                    }
-                    rightSubtext={
-                      publicWalletOverride
-                        ? 'Encrypted'
-                        : 'Encrypted & anonymous'
-                    }
-                    onTap={() => {
-                      triggerHaptic(HapticSurface.NavigationButton);
-                      setShowWalletSelectorModal(true);
-                    }}
+                    rightText={networkFeeText}
+                    rightSubtext={networkFeePriceText}
+                    onTap={openNetworkFeeSelector}
+                    disabled={!selectedGasDetails}
                     showTopBorder
                     showBottomBorder
-                    disabled={selectedBroadcasterLocked || hasValidProof}
+                    customRightView={
+                      networkFeeText ===
+                      SharedConstants.ESTIMATING_GAS_FEE_TEXT ? (
+                        <View style={styles.gasEstimateProgressBarWrapper}>
+                          <Text style={styles.gasEstimateProgressLabel}>
+                            Estimating...
+                          </Text>
+                          <ProgressBar
+                            progress={gasEstimateProgress}
+                            color={styleguide.colors.txGreen()}
+                            borderColor={styleguide.colors.white}
+                            style={styles.gasEstimateProgressBar}
+                          />
+                        </View>
+                      ) : undefined
+                    }
                   />
-                </View>
-              )}
-              {showAdvancedOptions &&
-                (showCustomNonce || publicWalletOverride) && (
-                  <View style={styles.textFieldWrapper}>
-                    <TextEntry
-                      label="Nonce"
-                      placeholder={String(
-                        nextTransactionNonce ?? 'Enter nonce',
-                      )}
-                      viewStyles={[styles.textEntryField]}
-                      onChangeText={text =>
-                        setCustomNonce(
-                          text.length ? parseInt(text, 10) : undefined,
-                        )
-                      }
-                      keyboardType="number-pad"
-                      maxLength={8}
-                    />
-                  </View>
                 )}
-              {showAdvancedOptions && showHideSenderAddress && (
+              </View>
+              {Constants.ENABLE_MEMO_FIELD && isRailgunShieldedTransfer && (
                 <View style={styles.textFieldWrapper}>
-                  <SelectableListItem
-                    title="Sender address"
-                    rightText={
-                      showSenderAddressToRecipient ? 'Visible' : 'Hidden'
-                    }
-                    rightSubtext={
-                      showSenderAddressToRecipient
-                        ? 'Shown only to receiver'
-                        : 'Not seen by anyone'
-                    }
-                    onTap={() => {
-                      triggerHaptic(HapticSurface.SelectItem);
-                      resetProof();
-                      setShowSenderAddressToRecipient(
-                        !showSenderAddressToRecipient,
+                  <TextEntry
+                    label="Private memo"
+                    placeholder="Text and emojis"
+                    viewStyles={[styles.textEntryField]}
+                    autoCapitalize="none"
+                    multiline
+                    onChangeText={invalidateProof}
+                    onEndEditing={(
+                      event: NativeSyntheticEvent<TextInputEndEditingEventData>,
+                    ) => {
+                      setShieldedTransferMemo(
+                        event.nativeEvent.text.length
+                          ? event.nativeEvent.text.trim()
+                          : undefined,
                       );
                     }}
-                    showTopBorder
-                    showBottomBorder
-                    hideRightIcon={true}
                   />
                 </View>
               )}
-            </>
-          )}
-          {isDefined(currentError) &&
-            !showGenerateProofModal &&
-            !showProcessModal && (
-              <>
-                <Text style={styles.errorText}>
-                  {currentError.message}{' '}
-                  <Text
-                    style={styles.errorShowMore}
-                    onPress={openErrorDetailsModal}
-                  >
-                    (show more)
-                  </Text>
-                </Text>
-                {isDefined(gasEstimateError) && (
-                  <Text
-                    style={styles.gasEstimateRetryButton}
-                    onPress={async () => {
+              {enableAdvancedFields && (
+                <>
+                  {!showAdvancedOptions && (
+                    <View style={styles.advancedOptionsButtonWrapper}>
+                      <Text
+                        onPress={() => {
+                          triggerHaptic(HapticSurface.SelectItem);
+                          setShowAdvancedOptions(!showAdvancedOptions);
+                        }}
+                        style={styles.advancedOptionsButton}
+                      >
+                        {showAdvancedOptions
+                          ? 'Hide advanced options'
+                          : 'Show advanced options'}
+                      </Text>
+                    </View>
+                  )}
+                  {showAdvancedOptions && enablePublicWalletOverride && (
+                    <View style={styles.textFieldWrapper}>
+                      <SelectableListItem
+                        title="Signer"
+                        titleIconSource={
+                          selectedBroadcasterLocked
+                            ? 'lock-outline'
+                            : undefined
+                        }
+                        rightText={
+                          publicWalletOverride
+                            ? publicWalletOverride.name
+                            : 'Public Broadcaster'
+                        }
+                        rightSubtext={
+                          publicWalletOverride
+                            ? 'Encrypted'
+                            : 'Encrypted & anonymous'
+                        }
+                        onTap={() => {
+                          triggerHaptic(HapticSurface.NavigationButton);
+                          resetProof();
+                          setPublicWalletOverride(undefined);
+                          setForceBroadcaster(undefined);
+                          setSignerType(undefined);
+                        }}
+                        showTopBorder
+                        showBottomBorder
+                        disabled={selectedBroadcasterLocked || hasValidProof}
+                      />
+                    </View>
+                  )}
+                  {showAdvancedOptions &&
+                    (showCustomNonce || publicWalletOverride) && (
+                      <View style={styles.textFieldWrapper}>
+                        <TextEntry
+                          label="Nonce"
+                          placeholder={String(
+                            nextTransactionNonce ?? 'Enter nonce',
+                          )}
+                          viewStyles={[styles.textEntryField]}
+                          onChangeText={text =>
+                            setCustomNonce(
+                              text.length ? parseInt(text, 10) : undefined,
+                            )
+                          }
+                          keyboardType="number-pad"
+                          maxLength={8}
+                        />
+                      </View>
+                    )}
+                  {showAdvancedOptions && showHideSenderAddress && (
+                    <View style={styles.textFieldWrapper}>
+                      <SelectableListItem
+                        title="Sender address"
+                        rightText={
+                          showSenderAddressToRecipient ? 'Visible' : 'Hidden'
+                        }
+                        rightSubtext={
+                          showSenderAddressToRecipient
+                            ? 'Shown only to receiver'
+                            : 'Not seen by anyone'
+                        }
+                        onTap={() => {
+                          triggerHaptic(HapticSurface.SelectItem);
+                          resetProof();
+                          setShowSenderAddressToRecipient(
+                            !showSenderAddressToRecipient,
+                          );
+                        }}
+                        showTopBorder
+                        showBottomBorder
+                        hideRightIcon
+                      />
+                    </View>
+                  )}
+                </>
+              )}
+              {isDefined(currentError) &&
+                !showGenerateProofModal &&
+                !showProcessModal && (
+                  <>
+                    <Text style={styles.errorText}>
+                      {currentError.message}{' '}
+                      <Text
+                        style={styles.errorShowMore}
+                        onPress={openErrorDetailsModal}
+                      >
+                        (show more)
+                      </Text>
+                    </Text>
+                    {isDefined(gasEstimateError) && (
+                      <Text
+                        style={styles.gasEstimateRetryButton}
+                        onPress={async () => {
+                          setError(undefined);
+                          resetProofAndGas();
+                        }}
+                      >
+                        Tap to retry gas estimate
+                      </Text>
+                    )}
+                  </>
+                )}
+              {requiresProofGeneration && !hasValidProof && (
+                <View style={styles.bottomButtonWrapper}>
+                  <ButtonWithTextAndIcon
+                    icon="calculator"
+                    title="Generate Proof"
+                    onPress={() => {
+                      triggerHaptic(HapticSurface.SelectItem);
+                      setHasBroadcasterError(false);
                       setError(undefined);
-                      resetProofAndGas();
+                      tryGenerateProof();
                     }}
-                  >
-                    Tap to retry gas estimate
+                    disabled={disableProofGeneration}
+                  />
+                </View>
+              )}
+              {requiresProofGeneration &&
+                hasValidProof &&
+                isDefined(proofExpirationSeconds) && (
+                  <Text style={styles.bottomButtonProofExpirationText}>
+                    Proof valid for {proofExpirationSeconds} seconds.
                   </Text>
                 )}
-              </>
-            )}
-          {requiresProofGeneration && !hasValidProof && (
-            <View style={styles.bottomButtonWrapper}>
-              <ButtonWithTextAndIcon
-                icon="calculator"
-                title="Generate Proof"
-                onPress={() => {
-                  triggerHaptic(HapticSurface.SelectItem);
-                  setHasBroadcasterError(false);
-                  setError(undefined);
-                  tryGenerateProof();
-                }}
-                disabled={disableProofGeneration}
-              />
-            </View>
-          )}
-          {requiresProofGeneration &&
-            hasValidProof &&
-            isDefined(proofExpirationSeconds) && (
-              <Text style={styles.bottomButtonProofExpirationText}>
-                Proof valid for {proofExpirationSeconds} seconds.
-              </Text>
-            )}
-          {hasBroadcasterError && selectedBroadcaster && hasValidProof && (
-            <>
-              <View style={styles.bottomButtonWrapper}>
-                <ButtonWithTextAndIcon
-                  icon="refresh"
-                  title="Retry transaction"
-                  onPress={onTapRetryBroadcasterTransaction}
-                />
-              </View>
+              {hasBroadcasterError &&
+                selectedBroadcaster &&
+                hasValidProof && (
+                  <>
+                    <View style={styles.bottomButtonWrapper}>
+                      <ButtonWithTextAndIcon
+                        icon="refresh"
+                        title="Retry transaction"
+                        onPress={onTapRetryBroadcasterTransaction}
+                      />
+                    </View>
+                  </>
+                )}
             </>
           )}
         </View>

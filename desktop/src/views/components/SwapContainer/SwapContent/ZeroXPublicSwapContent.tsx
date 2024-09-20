@@ -13,7 +13,7 @@ import { drawerEventsBus } from '../../../../services/navigation/drawer-events';
 import { SharedSwapContent, SwapContentProps } from './SharedSwapContent';
 
 export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
-  swapSettings,
+  slippagePercentage,
   sellERC20Amount,
   buyERC20,
   ...props
@@ -24,7 +24,7 @@ export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
   const { quote, quoteError, isLoadingQuote } = usePublicSwapQuote(
     sellERC20Amount,
     buyERC20,
-    swapSettings.slippagePercentage,
+    slippagePercentage,
     ZeroXQuote.getSwapQuote,
   );
 
@@ -43,7 +43,7 @@ export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
     const extraData: SwapPublicData = {
       sellERC20Amount,
       buyERC20: buyERC20,
-      originalSlippagePercentage: swapSettings.slippagePercentage,
+      originalSlippagePercentage: slippagePercentage,
       originalQuote: quote,
     };
     drawerEventsBus.dispatch(EVENT_OPEN_DRAWER_WITH_DATA, {
@@ -58,7 +58,7 @@ export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
       quote={quote}
       quoteError={quoteError}
       isLoadingQuote={isLoadingQuote}
-      swapSettings={swapSettings}
+      slippagePercentage={slippagePercentage}
       sellERC20Amount={sellERC20Amount}
       buyERC20={buyERC20}
       buyERC20Amount={buyERC20Amount}

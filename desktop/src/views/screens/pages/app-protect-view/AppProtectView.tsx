@@ -1,13 +1,15 @@
 import { isDefined } from '@railgun-community/shared-models';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import cn from 'classnames';
 import html2canvas from 'html2canvas';
 import FingerprintJS, {
   GetResult as FingerprintResult,
 } from '@fingerprintjs/fingerprintjs';
 import { usePersistedState } from '@hooks/usePersistedState';
+import { Spinner } from '@views/components/loading/Spinner/Spinner';
 import CryptoJS from 'crypto-js';
 import aes from 'crypto-js/aes';
-import cssStyles from './styles.module.css';
+import styles from './styles.module.css';
 
 type AppProtectViewProps = {
   sha512: string;
@@ -20,49 +22,45 @@ export const AppProtectView: React.FC<AppProtectViewProps> = ({
   blur = false,
   children,
 }) => {
-  const styles = {
-    input: {},
-    button: {},
-    header: {},
-    wrapper: {},
-  };
-
   const chkHash = sha512.toLowerCase();
-  const [fp, setFP] = useState<Optional<FingerprintResult>>();
+  const refBlur = useRef<HTMLDivElement>(null);
+
+  const [fingerprint, setFingerprint] = useState<Optional<FingerprintResult>>();
   const [decryptedHash, setDecryptedHash] = useState('');
-  const [pass, setPass] = useState('');
+  const [renderChild, setRenderChild] = useState(true);
+  const [password, setPassword] = useState('');
 
   const [cipher, setCipher] = usePersistedState('cipher', '');
   useMemo(() => ({ cipher, setCipher }), [cipher, setCipher]);
 
-  const refBlur = useRef<HTMLDivElement>(null);
-  const [renderChild, setRenderChild] = useState(true);
-
   const handleSubmit = () => {
-    const hash = CryptoJS.SHA512(pass).toString();
+    const hash = CryptoJS.SHA512(password).toString();
 
-    if (hash === chkHash && fp) {
-      setCipher(aes.encrypt(JSON.stringify({ pass }), fp.visitorId).toString());
+    if (hash === chkHash && fingerprint) {
+      setCipher(
+        aes
+          .encrypt(JSON.stringify({ password }), fingerprint.visitorId)
+          .toString(),
+      );
       setDecryptedHash(hash);
     } else {
       setCipher('');
-      setPass('');
+      setPassword('');
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleKeyDown = (e: any) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSubmit();
     }
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async function getFingerprint() {
+    const getFingerprint = async () => {
       const fpi = await FingerprintJS.load();
       const result = await fpi.get();
       let d;
+
       try {
         d = aes.decrypt(cipher, result.visitorId).toString(CryptoJS.enc.Utf8);
       } catch (e) {
@@ -70,12 +68,15 @@ export const AppProtectView: React.FC<AppProtectViewProps> = ({
       }
 
       if (d) {
-        const hash = CryptoJS.SHA512(JSON.parse(d).pass).toString();
+        const hash = CryptoJS.SHA512(JSON.parse(d).password).toString();
         setDecryptedHash(hash);
       }
 
-      setFP(result);
-    })();
+      setFingerprint(result);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getFingerprint();
   }, [cipher]);
 
   useEffect(() => {
@@ -89,40 +90,29 @@ export const AppProtectView: React.FC<AppProtectViewProps> = ({
     }
   });
 
-  if (isDefined(fp) && decryptedHash === chkHash) {
-    return <div>{children}</div>;
-  }
+  const isSuccessView = isDefined(fingerprint) && decryptedHash === chkHash;
+  const isLoginView = isDefined(fingerprint) && decryptedHash !== chkHash;
+  const isLoadingView = !isDefined(fingerprint);
 
-  return (
-    (<div>
-      {!isDefined(fp) && (
-        <div className={cssStyles.skChase}>
-          <div className={cssStyles.skChaseDot} />
-          <div className={cssStyles.skChaseDot} />
-          <div className={cssStyles.skChaseDot} />
-          <div className={cssStyles.skChaseDot} />
-          <div className={cssStyles.skChaseDot} />
-        </div>
-      )}
-      {isDefined(fp) && decryptedHash !== chkHash && (
+  return isSuccessView ? (
+    <div>{children}</div>
+  ) : (
+    <div>
+      {isLoadingView && <Spinner className={styles.spinner} />}
+      {isLoginView && (
         <div>
-          <div style={styles.wrapper} className={cssStyles.box}>
-            {}
-            <div>
-              <input
-                value={pass}
-                onChange={e => setPass(e.target.value)}
-                type="password"
-                onKeyDown={handleKeyDown}
-                placeholder=""
-                style={styles.input}
-              />
-            </div>
-            {}
+          <div className={styles.inputContainer}>
+            <input
+              value={password}
+              type="password"
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className={styles.input}
+            />
           </div>
           <div
             ref={refBlur}
-            className={blur ? cssStyles.blurClass : ''}
+            className={cn({ [styles.blurClass]: blur })}
             style={{
               filter: `${blur && 'blur(10px)'}`,
               overflow: 'hidden',
@@ -132,6 +122,6 @@ export const AppProtectView: React.FC<AppProtectViewProps> = ({
           </div>
         </div>
       )}
-    </div>)
+    </div>
   );
 };

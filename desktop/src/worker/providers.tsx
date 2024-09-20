@@ -1,8 +1,10 @@
-import { LoadProviderResponse } from '@railgun-community/shared-models';
+import { LoadProviderResponse, NETWORK_CONFIG, type NetworkName } from '@railgun-community/shared-models';
 import {
   loadProvider,
   pauseAllPollingProviders,
+  pausePPOIBatchingForChain,
   resumeIsolatedPollingProviderForNetwork,
+  resumePPOIBatching,
   unloadProvider,
 } from '@railgun-community/wallet';
 import {
@@ -16,6 +18,8 @@ import { bridgeRegisterCall } from './worker-ipc-service';
 bridgeRegisterCall<LoadProviderParams, LoadProviderResponse>(
   BridgeCallEvent.LoadProvider,
   async ({ providerConfig, networkName, pollingInterval }) => {
+    const chain = NETWORK_CONFIG[networkName as NetworkName].chain;
+    resumePPOIBatching(chain);
     return loadProvider(providerConfig, networkName, pollingInterval);
   },
 );
@@ -23,6 +27,8 @@ bridgeRegisterCall<LoadProviderParams, LoadProviderResponse>(
 bridgeRegisterCall<UnloadProviderParams, void>(
   BridgeCallEvent.UnloadProvider,
   async ({ networkName }) => {
+    const chain = NETWORK_CONFIG[networkName as NetworkName].chain;
+    pausePPOIBatchingForChain(chain);
     await unloadProvider(networkName);
   },
 );
@@ -36,6 +42,8 @@ bridgeRegisterCall<
 bridgeRegisterCall<ResumeIsolatedPollingProviderForNetworkParams, void>(
   BridgeCallEvent.ResumeIsolatedPollingProviderForNetwork,
   async ({ networkName }) => {
+    const chain = NETWORK_CONFIG[networkName as NetworkName].chain;
+    resumePPOIBatching(chain);
     return resumeIsolatedPollingProviderForNetwork(networkName);
   },
 );
