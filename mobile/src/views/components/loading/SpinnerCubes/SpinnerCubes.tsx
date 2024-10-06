@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import Spinner from 'react-native-spinkit';
-import { styleguide } from '@react-shared';
+import React from "react";
+import { StyleProp, ViewStyle } from "react-native";
+import Spinner from "react-native-spinkit";
+import { styleguide } from "@react-shared";
 
 export type Props = {
   size: number;

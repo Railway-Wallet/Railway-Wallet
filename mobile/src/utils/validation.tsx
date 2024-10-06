@@ -1,5 +1,5 @@
-import { getAddress } from 'ethers';
-import { validateRailgunAddress } from '@react-shared';
+import { getAddress } from "ethers";
+import { validateRailgunAddress } from "@react-shared";
 
 export const validateEthAddress = (address: string): boolean => {
   try {
@@ -12,7 +12,7 @@ export const validateEthAddress = (address: string): boolean => {
 
 export const validateWalletAddress = async (
   address: string,
-  isRailgun: boolean,
+  isRailgun: boolean
 ): Promise<boolean> => {
   if (isRailgun) {
     return validateRailgunAddress(address);

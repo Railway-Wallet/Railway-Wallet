@@ -1,4 +1,4 @@
-import { EVMGasType } from '@railgun-community/shared-models';
+import { EVMGasType } from "@railgun-community/shared-models";
 
 export interface FeeHistoryResult {
   baseFeePerGas: string[];

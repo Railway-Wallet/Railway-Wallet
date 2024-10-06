@@ -1,37 +1,39 @@
-import { isDefined, NETWORK_CONFIG } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { ERC20Token } from '../../models/token';
-import { SavedTransaction, TransactionAction } from '../../models/transaction';
+import { isDefined, NETWORK_CONFIG } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { ERC20Token } from "../../models/token";
+import { SavedTransaction, TransactionAction } from "../../models/transaction";
 import {
   isPrivateTx,
   transactionIncludesAnyWalletAddress,
-} from '../../utils/saved-transactions';
+} from "../../utils/saved-transactions";
 import {
   compareTokens,
   isWrappedBaseTokenForNetwork,
-} from '../../utils/tokens';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../utils/tokens";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useFilteredTokenTransactions = (
   token: ERC20Token,
-  isRailgun: boolean,
+  isRailgun: boolean
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { savedTransactions } = useReduxSelector('savedTransactions');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { savedTransactions } = useReduxSelector("savedTransactions");
 
   const tokenTransactions: SavedTransaction[] = useMemo(() => {
     const txs = savedTransactions.forNetwork[network.current.name] ?? [];
-    const filteredTxs = txs.filter(tx => {
+    const filteredTxs = txs.filter((tx) => {
       const foundInTxTokenList =
         compareTokens(token, tx.swapSellTokenAmount?.token) ||
         compareTokens(token, tx.swapBuyTokenAmount?.token) ||
-        isDefined(tx.tokenAmounts.find(ta => compareTokens(ta.token, token))) ||
+        isDefined(
+          tx.tokenAmounts.find((ta) => compareTokens(ta.token, token))
+        ) ||
         (isDefined(tx.syncedReceiveTokenAmounts) &&
           isDefined(
-            tx.syncedReceiveTokenAmounts.find(ta =>
-              compareTokens(ta.token, token),
-            ),
+            tx.syncedReceiveTokenAmounts.find((ta) =>
+              compareTokens(ta.token, token)
+            )
           )) ||
         (isDefined(tx.broadcasterFeeTokenAmount) &&
           compareTokens(tx.broadcasterFeeTokenAmount.token, token));

@@ -1,10 +1,10 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { ActionSheetOptions } from '@expo/react-native-action-sheet';
-import { styleguide } from '@react-shared';
+import { isDefined } from "@railgun-community/shared-models";
+import { ActionSheetOptions } from "@expo/react-native-action-sheet";
+import { styleguide } from "@react-shared";
 
 type ShowActionSheet = (
   options: ActionSheetOptions,
-  callback: (i?: number) => void | Promise<void>,
+  callback: (i?: number) => void | Promise<void>
 ) => void;
 
 export type OptionWithAction = {
@@ -17,11 +17,11 @@ export type OptionWithAction = {
 export const callActionSheet = (
   showActionSheet: ShowActionSheet,
   title: string,
-  optionsWithActions: OptionWithAction[],
+  optionsWithActions: OptionWithAction[]
 ) => {
   const numButtons = optionsWithActions.length;
   const cancelIndex = numButtons;
-  const options = optionsWithActions.map(o => o.name);
+  const options = optionsWithActions.map((o) => o.name);
   const destructiveIndices: number[] = [];
   const disabledIndices: number[] = [];
   for (let i = 0; i < optionsWithActions.length; i++) {
@@ -37,11 +37,11 @@ export const callActionSheet = (
   showActionSheet(
     {
       title: title,
-      options: [...options, 'Cancel'],
+      options: [...options, "Cancel"],
       cancelButtonIndex: cancelIndex,
       destructiveButtonIndex: destructiveIndices,
       disabledButtonIndices: disabledIndices,
-      userInterfaceStyle: 'dark',
+      userInterfaceStyle: "dark",
       textStyle: {
         ...styleguide.typography.label,
         color: styleguide.colors.text(),
@@ -63,6 +63,6 @@ export const callActionSheet = (
       if (isDefined(i) && i < cancelIndex) {
         await optionsWithActions[i].action();
       }
-    },
+    }
   );
 };

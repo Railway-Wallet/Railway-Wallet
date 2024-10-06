@@ -1,11 +1,11 @@
-import { BroadcasterConnectionStatus } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { useReduxSelector } from '../hooks-redux';
-import { styleguide } from '../../styles/styleguide';
+import { BroadcasterConnectionStatus } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { useReduxSelector } from "../hooks-redux";
+import { styleguide } from "../../styles/styleguide";
 
 export const useBroadcasterConnectionStatus = () => {
-  const { network } = useReduxSelector('network');
-  const { broadcasterStatus } = useReduxSelector('broadcasterStatus');
+  const { network } = useReduxSelector("network");
+  const { broadcasterStatus } = useReduxSelector("broadcasterStatus");
 
   const networkName = network.current.name;
   const broadcasterConnectionStatus =
@@ -28,15 +28,15 @@ export const useBroadcasterConnectionStatus = () => {
   const statusText = useMemo(() => {
     switch (broadcasterConnectionStatus) {
       case BroadcasterConnectionStatus.Searching:
-        return 'Connecting to public broadcasters';
+        return "Connecting to public broadcasters";
       case BroadcasterConnectionStatus.Connected:
-        return 'Connected to public broadcasters';
+        return "Connected to public broadcasters";
       case BroadcasterConnectionStatus.Error:
-        return 'Public broadcaster connection error';
+        return "Public broadcaster connection error";
       case BroadcasterConnectionStatus.Disconnected:
-        return 'Lost public broadcaster connection';
+        return "Lost public broadcaster connection";
       case BroadcasterConnectionStatus.AllUnavailable:
-        return 'All public broadcasters are busy';
+        return "All public broadcasters are busy";
     }
   }, [broadcasterConnectionStatus]);
 

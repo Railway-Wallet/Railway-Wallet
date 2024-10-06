@@ -2,18 +2,18 @@ import {
   calculateTotalGas,
   isDefined,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { BASE_TOKEN_ADDRESS } from '../../models/token';
-import { useReduxSelector } from '../hooks-redux';
+} from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { BASE_TOKEN_ADDRESS } from "../../models/token";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useGasTokenBalanceError = (
   requiresProofGeneration: boolean,
-  gasDetails?: TransactionGasDetails,
+  gasDetails?: TransactionGasDetails
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { erc20BalancesNetwork } = useReduxSelector("erc20BalancesNetwork");
 
   const currentWallet = wallets.active;
 
@@ -35,17 +35,17 @@ export const useGasTokenBalanceError = (
     }
     if (
       !isDefined(currentBaseTokenBalanceString) ||
-      currentBaseTokenBalanceString === ''
+      currentBaseTokenBalanceString === ""
     ) {
       return new Error(
-        `No balance found for ${network.current.baseToken.symbol}.`,
+        `No balance found for ${network.current.baseToken.symbol}.`
       );
     }
     const currentBaseTokenBalance = BigInt(currentBaseTokenBalanceString);
     const totalGas = calculateTotalGas(gasDetails);
     if (totalGas > currentBaseTokenBalance) {
       return new Error(
-        `You do not have enough ${network.current.baseToken.symbol} for this transaction.`,
+        `You do not have enough ${network.current.baseToken.symbol} for this transaction.`
       );
     }
     return undefined;

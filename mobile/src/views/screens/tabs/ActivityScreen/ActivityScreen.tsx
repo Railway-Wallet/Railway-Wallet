@@ -2,8 +2,8 @@ import {
   isDefined,
   MerkletreeScanStatus,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useState } from 'react';
+} from "@railgun-community/shared-models";
+import React, { useState } from "react";
 import {
   Alert,
   NativeScrollEvent,
@@ -13,14 +13,14 @@ import {
   StatusBar,
   Text,
   View,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TransactionResponse } from 'ethers';
-import { FloatingHeader } from '@components/headers/FloatingHeader/FloatingHeader';
-import { SpinnerCubes } from '@components/loading/SpinnerCubes/SpinnerCubes';
-import { TabHeaderText } from '@components/text/TabHeaderText/TabHeaderText';
-import { ActivityStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { TransactionResponse } from "ethers";
+import { FloatingHeader } from "@components/headers/FloatingHeader/FloatingHeader";
+import { SpinnerCubes } from "@components/loading/SpinnerCubes/SpinnerCubes";
+import { TabHeaderText } from "@components/text/TabHeaderText/TabHeaderText";
+import { ActivityStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   generateAllPOIsForWallet,
   getWalletTransactionHistory,
@@ -38,33 +38,33 @@ import {
   usePOIRequiredForCurrentNetwork,
   useReduxSelector,
   useTransactionSearch,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { TransactionList } from '@screens/pages/token-info/ERC20Info/TransactionList/TransactionList';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { calculateFloatingHeaderOpacityFromPageContentOffset } from '../WalletsScreen/WalletFloatingHeader/WalletFloatingHeader';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { TransactionList } from "@screens/pages/token-info/ERC20Info/TransactionList/TransactionList";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { calculateFloatingHeaderOpacityFromPageContentOffset } from "../WalletsScreen/WalletFloatingHeader/WalletFloatingHeader";
+import { styles } from "./styles";
 
 interface ActivityScreenProps {
-  navigation: NavigationProp<ActivityStackParamList, 'Activity'>;
+  navigation: NavigationProp<ActivityStackParamList, "Activity">;
 }
 
 export const ActivityScreen: React.FC<ActivityScreenProps> = ({
   navigation,
 }) => {
-  StatusBar.setBarStyle('light-content');
+  StatusBar.setBarStyle("light-content");
 
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
   const { transactionHistoryStatus } = useReduxSelector(
-    'transactionHistoryStatus',
+    "transactionHistoryStatus"
   );
-  const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
-  const { savedTransactions } = useReduxSelector('savedTransactions');
+  const { merkletreeHistoryScan } = useReduxSelector("merkletreeHistoryScan");
+  const { savedTransactions } = useReduxSelector("savedTransactions");
   const { poiRequired } = usePOIRequiredForCurrentNetwork();
 
   const [headerOpacity, setHeaderOpacity] = useState(0);
@@ -90,12 +90,12 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
     utxoMerkletreeScanStatus === MerkletreeScanStatus.Started ||
     utxoMerkletreeScanStatus === MerkletreeScanStatus.Updated;
 
-  const searchText = '';
+  const searchText = "";
   const isRailgunForTokenInfo = false;
   const { filteredTransactions } = useTransactionSearch(
     networkTransactions,
     isRailgunForTokenInfo,
-    searchText,
+    searchText
   );
 
   const insets = useSafeAreaInsets();
@@ -109,10 +109,10 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
 
   const onCancelTransaction = (
     transaction: SavedTransaction,
-    txResponse: TransactionResponse,
+    txResponse: TransactionResponse
   ) => {
-    (navigation as any).navigate('Token', {
-      screen: 'CancelTransactionConfirm',
+    (navigation as any).navigate("Token", {
+      screen: "CancelTransactionConfirm",
       params: {
         transaction,
         txResponse,
@@ -123,18 +123,18 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
   const promptGenerateAllPOIs = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     Alert.alert(
-      'Generate Private POI',
-      'This action will generate a Private Proof of Innocence for your transaction.',
+      "Generate Private POI",
+      "This action will generate a Private Proof of Innocence for your transaction.",
       [
         {
-          text: 'Generate',
+          text: "Generate",
           onPress: generatePOIs,
         },
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
-      ],
+      ]
     );
   };
 
@@ -145,7 +145,7 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
 
     await generateAllPOIsForWallet(
       network.current.name,
-      wallets.active.railWalletID,
+      wallets.active.railWalletID
     );
 
     setGeneratingPOIs(false);
@@ -162,7 +162,7 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
       savedTransactions.forNetwork[network.current.name] ?? [];
     PendingTransactionWatcher.watchPendingTransactions(
       allNetworkTransactions,
-      network.current,
+      network.current
     );
 
     if (status === TransactionHistoryStatus.Syncing) {
@@ -184,11 +184,11 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
         await RailgunTransactionHistorySync.unsafeSyncTransactionHistory(
           dispatch,
           network.current,
-          getWalletTransactionHistory,
+          getWalletTransactionHistory
         );
       }
     } catch (cause) {
-      const error = new Error('Error syncing transaction history', {
+      const error = new Error("Error syncing transaction history", {
         cause,
       });
       logDevError(error);
@@ -215,7 +215,7 @@ export const ActivityScreen: React.FC<ActivityScreenProps> = ({
           style={styles.scrollView}
           onScroll={onPageScroll}
           scrollEventThrottle={16}
-          indicatorStyle={'white'}
+          indicatorStyle={"white"}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing || generatingPOIs}

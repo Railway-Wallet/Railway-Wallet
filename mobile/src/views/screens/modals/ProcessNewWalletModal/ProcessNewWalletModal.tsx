@@ -1,11 +1,11 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Modal } from 'react-native';
-import { Mnemonic, randomBytes } from 'ethers';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-native";
+import { Mnemonic, randomBytes } from "ethers";
 import {
   ProcessingState,
   ProcessingView,
-} from '@components/views/ProcessingView/ProcessingView';
+} from "@components/views/ProcessingView/ProcessingView";
 import {
   FrontendWallet,
   getWalletTransactionHistory,
@@ -17,14 +17,14 @@ import {
   useReduxSelector,
   validateMnemonic,
   WalletService,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
-import { Constants } from '@utils/constants';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
+import { Constants } from "@utils/constants";
 
 interface ProcessNewWalletModalProps {
   show: boolean;
@@ -54,10 +54,10 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
   shareableViewingKey,
 }) => {
   const dispatch = useAppDispatch();
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const [processingState, setProcessingState] = useState(
-    ProcessingState.Processing,
+    ProcessingState.Processing
   );
   const [failure, setFailure] = useState<Optional<Error>>(undefined);
   const [processingText, setProcessingText] = useState(defaultProcessingText);
@@ -73,7 +73,7 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
         show: true,
         error,
         onDismiss: () => setErrorModal(undefined),
-      }),
+      })
   );
 
   const resetState = () => {
@@ -103,19 +103,19 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
 
         const walletService = new WalletService(
           dispatch,
-          new WalletSecureServiceReactNative(),
+          new WalletSecureServiceReactNative()
         );
 
         try {
           let wallet: FrontendWallet;
           if (isViewOnlyWallet) {
             if (!isDefined(shareableViewingKey)) {
-              throw new Error('Requires shareable private key.');
+              throw new Error("Requires shareable private key.");
             }
             wallet = await walletService.addViewOnlyWallet(
               walletName.trim(),
               shareableViewingKey,
-              undefined,
+              undefined
             );
           } else if (isDefined(walletMnemonic)) {
             const trimmedMnemonic = walletMnemonic.trim();
@@ -126,13 +126,13 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
               network.current,
               derivationIndex,
               isNewWallet,
-              originalCreationTimestamp,
+              originalCreationTimestamp
             );
           } else {
-            throw new Error('No view key or mnemonic provided');
+            throw new Error("No view key or mnemonic provided");
           }
 
-          setProcessingText('Pre-scanning balances...');
+          setProcessingText("Pre-scanning balances...");
           await pullBalances(wallet);
 
           if (isDefined(mnemonic)) {
@@ -140,7 +140,7 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
             RailgunTransactionHistorySync.safeSyncTransactionHistory(
               dispatch,
               network.current,
-              getWalletTransactionHistory,
+              getWalletTransactionHistory
             );
           }
 
@@ -148,7 +148,7 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
             if (wallet.railAddress) {
               success(wallet);
             } else {
-              fail(new Error('Failed to generate wallet.'));
+              fail(new Error("Failed to generate wallet."));
             }
           };
 
@@ -158,11 +158,11 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
           } else {
             timer = setTimeout(
               finalCallback,
-              Constants.PROCESSING_PROCESS_TIMEOUT - elapsedMsec,
+              Constants.PROCESSING_PROCESS_TIMEOUT - elapsedMsec
             );
           }
         } catch (cause) {
-          const err = new Error('Failed to create wallet', { cause });
+          const err = new Error("Failed to create wallet", { cause });
           logDev(err);
           fail(err);
         }
@@ -176,16 +176,14 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
       const tryImportWallet = async (importedMnemonic: string) => {
         const validMnemonic = validateMnemonic(importedMnemonic);
         if (!validMnemonic) {
-          fail(new Error('Invalid seed phrase'));
+          fail(new Error("Invalid seed phrase"));
           return;
         }
         await generateWallet(importedMnemonic);
       };
 
       const tryAddViewOnlyWallet = async () => {
-        await generateWallet(
-          undefined,
-        );
+        await generateWallet(undefined);
       };
 
       const success = (wallet: FrontendWallet) => {
@@ -194,16 +192,16 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
         setSuccessWallet(wallet);
         timer = setTimeout(
           onSuccess(wallet),
-          Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT,
+          Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT
         );
       };
       const fail = (cause: Error) => {
         triggerHaptic(HapticSurface.NotifyError);
-        setFailure(new Error('Failed to process new wallet', { cause }));
+        setFailure(new Error("Failed to process new wallet", { cause }));
         setProcessingState(ProcessingState.Fail);
         timer = setTimeout(
           onFail,
-          Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT,
+          Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT
         );
       };
 

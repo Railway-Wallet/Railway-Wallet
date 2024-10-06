@@ -1,14 +1,14 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Alert, Text, View } from 'react-native';
-import { TransactionResponse } from 'ethers';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Alert, Text, View } from "react-native";
+import { TransactionResponse } from "ethers";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import {
   BlockedBroadcasterService,
   broadcasterFeeTransactionText,
@@ -40,17 +40,17 @@ import {
   useAddedTokenSearch,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
+} from "@react-shared";
 import {
   callActionSheet,
   OptionWithAction,
-} from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { openInAppBrowserLink } from '@services/util/in-app-browser-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { PendingBalancesModal } from '@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal';
-import { TokenStackParamList } from '../../../../../../../models/navigation-models';
-import { styles } from './styles';
+} from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { openInAppBrowserLink } from "@services/util/in-app-browser-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { PendingBalancesModal } from "@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal";
+import { TokenStackParamList } from "../../../../../../../models/navigation-models";
+import { styles } from "./styles";
 
 type Props = {
   transaction: SavedTransaction;
@@ -58,7 +58,7 @@ type Props = {
   isRailgun?: boolean;
   onCancelTransaction: (
     transaction: SavedTransaction,
-    txResponse: TransactionResponse,
+    txResponse: TransactionResponse
   ) => void;
   generatePOIs?: () => void;
   refreshPOILists?: () => void;
@@ -78,9 +78,9 @@ export const TransactionItem: React.FC<Props> = ({
     useState<Optional<number>>(4);
   const [showPendingBalancesModal, setShowPendingBalancesModal] =
     useState(false);
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { broadcasterBlocklist } = useReduxSelector('broadcasterBlocklist');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { broadcasterBlocklist } = useReduxSelector("broadcasterBlocklist");
 
   const { showActionSheetWithOptions } = useActionSheet();
 
@@ -99,18 +99,18 @@ export const TransactionItem: React.FC<Props> = ({
 
     if (!txResponse) {
       Alert.alert(
-        'Cannot cancel',
+        "Cannot cancel",
         `Unable to find transaction with hash ${transaction.id}. Mark this transaction as failed?\n\nWarning: If you submitted this transaction recently, it may take up to 30 minutes to appear on the blockchain.`,
         [
           {
-            text: 'Mark as Failed',
+            text: "Mark as Failed",
             onPress: markAsFailed,
-            style: 'destructive',
+            style: "destructive",
           },
           {
-            text: 'Do nothing',
+            text: "Do nothing",
           },
-        ],
+        ]
       );
       return;
     }
@@ -120,18 +120,18 @@ export const TransactionItem: React.FC<Props> = ({
 
   const markAsFailedTransaction = () => {
     Alert.alert(
-      'WARNING',
+      "WARNING",
       `Please note that this action will not cancel the pending transaction, which may still complete. This action will remove the badge notification on the Activity tab, and set this transaction's status as FAILED.`,
       [
         {
-          text: 'Mark as Failed',
+          text: "Mark as Failed",
           onPress: markAsFailed,
-          style: 'destructive',
+          style: "destructive",
         },
         {
-          text: 'Do nothing',
+          text: "Do nothing",
         },
-      ],
+      ]
     );
   };
 
@@ -141,19 +141,16 @@ export const TransactionItem: React.FC<Props> = ({
       transaction.id,
       network.current.name,
       transaction.walletAddress,
-      undefined,
+      undefined
     );
   };
 
   const blockBroadcaster = async (pubKey?: string) => {
     if (isDefined(pubKey)) {
       const blockedBroadcasterService = new BlockedBroadcasterService(dispatch);
-      await blockedBroadcasterService.addBlockedBroadcaster(
-        pubKey,
-        undefined,
-      );
+      await blockedBroadcasterService.addBlockedBroadcaster(pubKey, undefined);
 
-      Alert.alert('Public broadcaster added to block list.');
+      Alert.alert("Public broadcaster added to block list.");
     }
   };
 
@@ -177,7 +174,7 @@ export const TransactionItem: React.FC<Props> = ({
         action: async () => {
           const link = transactionLinkOnExternalScanSite(
             network.current.name,
-            transaction.id,
+            transaction.id
           );
           if (isDefined(link)) {
             await openInAppBrowserLink(link, dispatch);
@@ -192,10 +189,10 @@ export const TransactionItem: React.FC<Props> = ({
           dispatch(
             showImmediateToast({
               message: `${shortenWalletAddress(
-                transaction.id,
+                transaction.id
               )} copied to clipboard`,
               type: ToastType.Copy,
-            }),
+            })
           );
         },
       },
@@ -203,14 +200,14 @@ export const TransactionItem: React.FC<Props> = ({
 
     let unknownERC20Tokens: ERC20Token[] = [];
 
-    transaction.tokenAmounts.forEach(amount => {
+    transaction.tokenAmounts.forEach((amount) => {
       const { token } = amount;
       if (token.isAddressOnly ?? false) {
         unknownERC20Tokens.push(token);
       }
     });
 
-    transaction.syncedReceiveTokenAmounts?.forEach(amount => {
+    transaction.syncedReceiveTokenAmounts?.forEach((amount) => {
       const { token } = amount;
       if (token.isAddressOnly ?? false) {
         unknownERC20Tokens.push(token);
@@ -220,7 +217,7 @@ export const TransactionItem: React.FC<Props> = ({
     const uniqueUnknownERC20Tokens: ERC20Token[] =
       getDistinctERC20Tokens(unknownERC20Tokens);
 
-    uniqueUnknownERC20Tokens.forEach(token => {
+    uniqueUnknownERC20Tokens.forEach((token) => {
       let tokenAdded = false;
       for (const addedToken of tokens) {
         const match = compareTokens(addedToken, token);
@@ -235,12 +232,12 @@ export const TransactionItem: React.FC<Props> = ({
           name: `Add token to wallet: ${shortenTokenAddress(token.address)}`,
           action: () => {
             navigation.dispatch(
-              CommonActions.navigate('AddTokens', {
-                screen: 'AddTokensScreen',
+              CommonActions.navigate("AddTokens", {
+                screen: "AddTokensScreen",
                 params: {
                   initialTokenAddress: token.address,
                 },
-              }),
+              })
             );
           },
         });
@@ -258,14 +255,14 @@ export const TransactionItem: React.FC<Props> = ({
     }
     if (canCancelTransaction(transaction)) {
       options.push({
-        name: 'Cancel transaction',
+        name: "Cancel transaction",
         action: cancelTransaction,
         isDestructive: true,
       });
     }
     if (canMarkAsFailedTransaction(transaction)) {
       options.push({
-        name: 'Mark as failed',
+        name: "Mark as failed",
         action: markAsFailedTransaction,
         isDestructive: true,
       });
@@ -276,11 +273,11 @@ export const TransactionItem: React.FC<Props> = ({
       isDefined(transaction.broadcasterRailgunAddress) &&
       !BlockedBroadcasterService.isBroadcasterBlocked(
         transaction.broadcasterRailgunAddress,
-        broadcasterBlocklist.broadcasters,
+        broadcasterBlocklist.broadcasters
       )
     ) {
       options.push({
-        name: 'Block this public broadcaster',
+        name: "Block this public broadcaster",
         action: () => blockBroadcaster(transaction.broadcasterRailgunAddress),
       });
     }
@@ -288,13 +285,13 @@ export const TransactionItem: React.FC<Props> = ({
     if (poiRequired) {
       if (isReceivedPOIPending) {
         options.push({
-          name: 'View pending balances',
+          name: "View pending balances",
           action: openPendingBalances,
         });
 
         if (isDefined(refreshPOILists)) {
           options.push({
-            name: 'Resync proofs',
+            name: "Resync proofs",
             action: refreshPOILists,
           });
         }
@@ -302,7 +299,7 @@ export const TransactionItem: React.FC<Props> = ({
 
       if (isSpentPOIPending && isDefined(generatePOIs)) {
         options.push({
-          name: 'Generate Proof',
+          name: "Generate Proof",
           action: generatePOIs,
         });
       }
@@ -311,7 +308,7 @@ export const TransactionItem: React.FC<Props> = ({
     callActionSheet(
       showActionSheetWithOptions,
       `Transaction from ${formatTimestampDate()}`,
-      options,
+      options
     );
   };
 
@@ -322,7 +319,7 @@ export const TransactionItem: React.FC<Props> = ({
     }
     Alert.alert(
       `On-chain history v${transaction.syncedHistoryVersion}`,
-      description,
+      description
     );
   };
 
@@ -342,10 +339,10 @@ export const TransactionItem: React.FC<Props> = ({
 
   const navigateUnshieldToOrigin = (
     originalShieldTxid: string,
-    erc20AmountRecipients: ERC20AmountRecipient[],
+    erc20AmountRecipients: ERC20AmountRecipient[]
   ) => {
     setShowPendingBalancesModal(false);
-    const params: TokenStackParamList['UnshieldERC20sConfirm'] = {
+    const params: TokenStackParamList["UnshieldERC20sConfirm"] = {
       erc20AmountRecipients: erc20AmountRecipients,
       isBaseTokenUnshield: false,
       nftAmountRecipients: [],
@@ -353,22 +350,22 @@ export const TransactionItem: React.FC<Props> = ({
       unshieldToOriginShieldTxid: originalShieldTxid,
     };
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'UnshieldERC20sConfirm',
+      CommonActions.navigate("Token", {
+        screen: "UnshieldERC20sConfirm",
         params,
-      }),
+      })
     );
   };
 
   const railgunFee = railgunFeeTransactionText(
     transaction,
     wallets.available,
-    filteredToken,
+    filteredToken
   );
   const broadcasterFee = broadcasterFeeTransactionText(
     transaction,
     wallets.active,
-    wallets.available,
+    wallets.available
   );
 
   const txidVersionText = txidVersionTransactionText(transaction);
@@ -396,7 +393,7 @@ export const TransactionItem: React.FC<Props> = ({
             </Text>
           </View>
           <ButtonIconOnly
-            icon={isAndroid() ? 'dots-vertical' : 'dots-horizontal'}
+            icon={isAndroid() ? "dots-vertical" : "dots-horizontal"}
             onTap={showTransactionMenu}
             size={24}
             color={styleguide.colors.white}
@@ -409,7 +406,7 @@ export const TransactionItem: React.FC<Props> = ({
             network.current,
             wallets.active,
             wallets.available,
-            filteredToken,
+            filteredToken
           ).trim()}
         </Text>
         {isDefined(railgunFee) && (
@@ -457,7 +454,7 @@ export const TransactionItem: React.FC<Props> = ({
               style={[styles.footerText, styles.pendingBalancesButton]}
               onPress={openPendingBalances}
             >
-              {'View pending balances'}
+              {"View pending balances"}
             </Text>
           )}
         </View>

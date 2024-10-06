@@ -3,10 +3,10 @@ import {
   Network,
   NetworkName,
   RailgunWalletInfo,
-} from '@railgun-community/shared-models';
-import { Wallet } from 'ethers';
-import { mnemonicTo0xPKey } from '../../bridge/bridge-ethers';
-import { SharedConstants } from '../../config/shared-constants';
+} from "@railgun-community/shared-models";
+import { Wallet } from "ethers";
+import { mnemonicTo0xPKey } from "../../bridge/bridge-ethers";
+import { SharedConstants } from "../../config/shared-constants";
 import {
   AvailableWallet,
   FrontendWallet,
@@ -14,26 +14,26 @@ import {
   StoredWallet,
   ViewOnlyWallet,
   WalletAddSource,
-} from '../../models/wallet';
-import { WalletSecureService } from '../../models/wallet-secure-service';
+} from "../../models/wallet";
+import { WalletSecureService } from "../../models/wallet-secure-service";
 import {
   clearAllWallets,
   removeWalletByID,
   setActiveWalletByID,
   setAvailableWallets,
   setViewOnlyWallets,
-} from '../../redux-store/reducers/wallets-reducer';
-import { AppDispatch, store } from '../../redux-store/store';
-import { isBlockedAddress } from '../../utils';
-import { getBlockNumbersForAllNetworks } from '../../utils/blocks';
-import { logDev, logDevError } from '../../utils/logging';
-import { getSupportedNetworks } from '../../utils/networks';
-import { getDefaultAddedTokensForNetworks } from '../../utils/tokens';
-import { generateKey } from '../../utils/util';
-import { ProgressService } from '../progress/progress-service';
-import { StorageService } from '../storage/storage-service';
-import { refreshReceivedTransactionWatchers } from '../transactions/transfer-watcher-service';
-import { WalletStorageService } from './wallet-storage-service';
+} from "../../redux-store/reducers/wallets-reducer";
+import { AppDispatch, store } from "../../redux-store/store";
+import { isBlockedAddress } from "../../utils";
+import { getBlockNumbersForAllNetworks } from "../../utils/blocks";
+import { logDev, logDevError } from "../../utils/logging";
+import { getSupportedNetworks } from "../../utils/networks";
+import { getDefaultAddedTokensForNetworks } from "../../utils/tokens";
+import { generateKey } from "../../utils/util";
+import { ProgressService } from "../progress/progress-service";
+import { StorageService } from "../storage/storage-service";
+import { refreshReceivedTransactionWatchers } from "../transactions/transfer-watcher-service";
+import { WalletStorageService } from "./wallet-storage-service";
 
 export class WalletService {
   private dispatch: AppDispatch;
@@ -49,7 +49,7 @@ export class WalletService {
   async assertNoDuplicateWallet(name: string): Promise<void> {
     const storedWallets = await this.walletStorageService.fetchStoredWallets();
     const duplicateWallet = storedWallets.find(
-      wallet => wallet.name.toLowerCase() === name.toLowerCase(),
+      (wallet) => wallet.name.toLowerCase() === name.toLowerCase()
     );
     if (duplicateWallet) {
       throw new Error(`A wallet with name '${name}' already exists.`);
@@ -74,23 +74,23 @@ export class WalletService {
     } else if (isDefined(originalCreationTimestamp)) {
       originalCreationDate = originalCreationTimestamp;
       creationBlockNumbers = await getBlockNumbersForAllNetworks(
-        originalCreationTimestamp,
+        originalCreationTimestamp
       );
     }
-    logDev('originalCreationDate:', originalCreationDate);
-    logDev('creationBlockNumbers:', creationBlockNumbers);
+    logDev("originalCreationDate:", originalCreationDate);
+    logDev("creationBlockNumbers:", creationBlockNumbers);
 
     if (!isNewWallet && window.navigator.onLine) {
       const pKey = await mnemonicTo0xPKey(mnemonic, derivationIndex);
       const wallet = new Wallet(pKey);
       if (await isBlockedAddress(wallet.address)) {
-        throw new Error('This wallet cannot be used with Railway Wallet.');
+        throw new Error("This wallet cannot be used with Railway Wallet.");
       }
     }
 
     const railWalletInfo = await this.createRailgunWallet(
       mnemonic,
-      creationBlockNumbers,
+      creationBlockNumbers
     );
     const isViewOnlyWallet = false;
     const wallet = await this.addWallet(
@@ -100,7 +100,7 @@ export class WalletService {
       derivationIndex,
       creationBlockNumbers,
       isNewWallet ? WalletAddSource.CreateWallet : WalletAddSource.ImportWallet,
-      originalCreationDate,
+      originalCreationDate
     );
     await this.walletSecureService.storeWalletMnemonic(wallet, mnemonic);
 
@@ -113,12 +113,12 @@ export class WalletService {
     this.dispatch(setActiveWalletByID(wallet.id));
 
     const newAvailableWallet = availableWallets.find(
-      availableWallet => wallet.id === availableWallet.id,
+      (availableWallet) => wallet.id === availableWallet.id
     );
 
     if (!newAvailableWallet) {
       throw new Error(
-        'Wallet created successfully, but could not be found in list.',
+        "Wallet created successfully, but could not be found in list."
       );
     }
 
@@ -128,12 +128,12 @@ export class WalletService {
       await refreshReceivedTransactionWatchers(
         newAvailableWallet,
         currentNetwork,
-        this.dispatch,
+        this.dispatch
       );
     } catch (error) {
       logDevError(
-        'Failed to set up transaction watchers for new wallet.',
-        error,
+        "Failed to set up transaction watchers for new wallet.",
+        error
       );
     }
 
@@ -148,15 +148,16 @@ export class WalletService {
     await this.assertNoDuplicateWallet(name);
     const railWalletInfo = await this.createViewOnlyRailgunWallet(
       shareableViewingKey,
-      creationBlockNumbers,
+      creationBlockNumbers
     );
     const isViewOnlyWallet = true;
     const wallet = await this.addWallet(
       name,
       railWalletInfo,
       isViewOnlyWallet,
-      undefined, creationBlockNumbers,
-      WalletAddSource.AddViewOnlyWallet,
+      undefined,
+      creationBlockNumbers,
+      WalletAddSource.AddViewOnlyWallet
     );
 
     const storedWallets = await this.walletStorageService.fetchStoredWallets();
@@ -168,11 +169,11 @@ export class WalletService {
     this.dispatch(setActiveWalletByID(wallet.id));
 
     const newViewOnlyWallet = viewOnlyWallets.find(
-      viewOnlyWallet => wallet.id === viewOnlyWallet.id,
+      (viewOnlyWallet) => wallet.id === viewOnlyWallet.id
     );
     if (!newViewOnlyWallet) {
       throw new Error(
-        'View-Only Wallet created successfully, but could not be found in list.',
+        "View-Only Wallet created successfully, but could not be found in list."
       );
     }
 
@@ -186,10 +187,10 @@ export class WalletService {
     derivationIndex: Optional<number>,
     creationBlockNumbers: Optional<MapType<number>>,
     walletAddSource: WalletAddSource,
-    originalCreationDate?: number,
+    originalCreationDate?: number
   ): Promise<StoredWallet> {
     const supportedNetworkNames: NetworkName[] = getSupportedNetworks().map(
-      n => n.name,
+      (n) => n.name
     );
 
     const id = generateKey();
@@ -225,40 +226,40 @@ export class WalletService {
   }
 
   assertValidImportedWalletData(
-    importedWalletData: FrontendWalletWithMnemonic,
+    importedWalletData: FrontendWalletWithMnemonic
   ) {
     if (!isDefined(importedWalletData)) {
-      throw new Error('No imported wallet data provided');
+      throw new Error("No imported wallet data provided");
     }
-    if (typeof importedWalletData.name !== 'string') {
-      throw new Error('name is not a string');
+    if (typeof importedWalletData.name !== "string") {
+      throw new Error("name is not a string");
     }
     if (
       isDefined(importedWalletData.originalCreationDate) &&
-      typeof importedWalletData.originalCreationDate !== 'number'
+      typeof importedWalletData.originalCreationDate !== "number"
     ) {
-      throw new Error('originalCreationDate is not a number');
+      throw new Error("originalCreationDate is not a number");
     }
-    if (typeof importedWalletData.addedTokens !== 'object') {
-      throw new Error('addedTokens is not an object');
+    if (typeof importedWalletData.addedTokens !== "object") {
+      throw new Error("addedTokens is not an object");
     }
     if (
       isDefined(importedWalletData.derivationIndex) &&
-      typeof importedWalletData.derivationIndex !== 'number'
+      typeof importedWalletData.derivationIndex !== "number"
     ) {
-      throw new Error('derivationIndex is not a number');
+      throw new Error("derivationIndex is not a number");
     }
     if (
       importedWalletData.isViewOnlyWallet &&
-      typeof importedWalletData.isViewOnlyWallet !== 'boolean'
+      typeof importedWalletData.isViewOnlyWallet !== "boolean"
     ) {
-      throw new Error('isViewOnlyWallet is not a boolean');
+      throw new Error("isViewOnlyWallet is not a boolean");
     }
   }
 
   async updateImportedWalletData(
     wallet: FrontendWallet,
-    importedWalletData: FrontendWalletWithMnemonic,
+    importedWalletData: FrontendWalletWithMnemonic
   ): Promise<void> {
     this.assertValidImportedWalletData(importedWalletData);
 
@@ -286,27 +287,27 @@ export class WalletService {
 
   async createRailgunWallet(
     mnemonic: string,
-    creationBlockNumbers: Optional<MapType<number>>,
+    creationBlockNumbers: Optional<MapType<number>>
   ): Promise<RailgunWalletInfo> {
     return this.walletSecureService.createRailgunWallet(
       mnemonic,
-      creationBlockNumbers,
+      creationBlockNumbers
     );
   }
 
   async createViewOnlyRailgunWallet(
     shareableViewingKey: string,
-    creationBlockNumbers: Optional<MapType<number>>,
+    creationBlockNumbers: Optional<MapType<number>>
   ): Promise<RailgunWalletInfo> {
     return this.walletSecureService.createViewOnlyRailgunWallet(
       shareableViewingKey,
-      creationBlockNumbers,
+      creationBlockNumbers
     );
   }
 
   async removeWallet(id: string, skipUpdatingActiveWallet?: boolean) {
     const storedWallets = await this.walletStorageService.fetchStoredWallets();
-    const storedWallet = storedWallets.find(w => w.id === id);
+    const storedWallet = storedWallets.find((w) => w.id === id);
     if (!storedWallet) {
       return;
     }
@@ -314,7 +315,7 @@ export class WalletService {
     this.dispatch(removeWalletByID(id));
 
     const newStoredWalletsArray = storedWallets.filter(
-      wallet => wallet.id !== id,
+      (wallet) => wallet.id !== id
     );
 
     if (storedWallet.isActive && newStoredWalletsArray.length) {
@@ -333,14 +334,14 @@ export class WalletService {
     }
 
     const hasAnotherWalletSameID = newStoredWalletsArray.some(
-      wallet =>
+      (wallet) =>
         wallet.railWalletID === storedWallet.railWalletID &&
-        wallet.id !== storedWallet.id,
+        wallet.id !== storedWallet.id
     );
 
     if (!hasAnotherWalletSameID) {
       await this.walletSecureService.deleteRailgunWalletByID(
-        storedWallet.railWalletID,
+        storedWallet.railWalletID
       );
     }
   }
@@ -353,17 +354,17 @@ export class WalletService {
     this.dispatch(clearAllWallets());
 
     await Promise.all(
-      storedWallets.map(async wallet => {
+      storedWallets.map(async (wallet) => {
         await this.walletSecureService.deleteRailgunWalletByID(
-          wallet.railWalletID,
+          wallet.railWalletID
         );
-      }),
+      })
     );
   }
 
   async loadWalletsFromStorage(
     network: Network,
-    progressCallback: (walletLoadProgress: number) => void,
+    progressCallback: (walletLoadProgress: number) => void
   ): Promise<boolean> {
     progressCallback(0);
 
@@ -380,7 +381,7 @@ export class WalletService {
       10,
       65,
       4000,
-      250,
+      250
     );
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     progressServiceGetAvailableWallets.progressSteadily(progressCallback);
@@ -401,13 +402,13 @@ export class WalletService {
       65,
       99,
       2000,
-      250,
+      250
     );
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     progressServiceLoadRailgunWallets.progressSteadily(progressCallback);
 
     let activeWallet: Optional<FrontendWallet> = allWallets.find(
-      w => w.isActive,
+      (w) => w.isActive
     );
     if (!activeWallet) {
       allWallets[0] = {
@@ -416,7 +417,7 @@ export class WalletService {
       };
       activeWallet = allWallets[0];
       const storedWallet = storedWallets.find(
-        wallet => wallet.id === activeWallet?.id,
+        (wallet) => wallet.id === activeWallet?.id
       );
       if (storedWallet) {
         storedWallet.isActive = true;
@@ -436,7 +437,7 @@ export class WalletService {
     await refreshReceivedTransactionWatchers(
       activeWallet,
       network,
-      this.dispatch,
+      this.dispatch
     );
 
     progressCallback(100);
@@ -447,13 +448,13 @@ export class WalletService {
 
   async loadRailgunWalletForFrontendWallet(wallet: FrontendWallet) {
     if (!wallet.isActive) {
-      throw new Error('Can only load active wallet into RAILGUN Engine.');
+      throw new Error("Can only load active wallet into RAILGUN Engine.");
     }
 
     const railWalletInfo: RailgunWalletInfo =
       await this.walletSecureService.loadRailgunWalletByID(
         wallet.railWalletID,
-        wallet.isViewOnlyWallet,
+        wallet.isViewOnlyWallet
       );
 
     const updatedWallet = { ...wallet, isRailgunWalletLoaded: true };
@@ -462,7 +463,7 @@ export class WalletService {
       await this.updateRailgunWalletInfoForWallet(
         updatedWallet,
         railWalletInfo.railgunAddress,
-        railWalletInfo.id,
+        railWalletInfo.id
       );
     } else if (!(wallet.isRailgunWalletLoaded ?? false)) {
       await this.walletStorageService.updateWallet(updatedWallet);
@@ -471,7 +472,7 @@ export class WalletService {
 
   private railWalletInfoUpdated(
     activeWallet: StoredWallet,
-    railWalletInfo: RailgunWalletInfo,
+    railWalletInfo: RailgunWalletInfo
   ) {
     return (
       activeWallet.railAddress !== railWalletInfo.railgunAddress ||
@@ -482,7 +483,7 @@ export class WalletService {
   async updateRailgunWalletInfoForWallet(
     activeWallet: StoredWallet,
     railgunAddress: string,
-    railWalletID: string,
+    railWalletID: string
   ): Promise<StoredWallet> {
     const updatedWallet: StoredWallet = {
       ...activeWallet,
@@ -506,7 +507,7 @@ export class WalletService {
   }
 
   private async getAvailableWalletWithEthAddress(
-    storedWallet: StoredWallet,
+    storedWallet: StoredWallet
   ): Promise<AvailableWallet> {
     const pKey = await this.walletSecureService.getWallet0xPKey(storedWallet);
     const ethWallet = new Wallet(pKey);
@@ -518,22 +519,22 @@ export class WalletService {
   }
 
   private async getAvailableWallets(
-    storedWallets: StoredWallet[],
+    storedWallets: StoredWallet[]
   ): Promise<AvailableWallet[]> {
     const availableWallets: AvailableWallet[] = await Promise.all(
       storedWallets
-        .filter(storedWallet => !(storedWallet.isViewOnlyWallet ?? false))
-        .map(storedWallet =>
-          this.getAvailableWalletWithEthAddress(storedWallet),
-        ),
+        .filter((storedWallet) => !(storedWallet.isViewOnlyWallet ?? false))
+        .map((storedWallet) =>
+          this.getAvailableWalletWithEthAddress(storedWallet)
+        )
     );
     return availableWallets;
   }
 
   private getViewOnlyWallets(storedWallets: StoredWallet[]): ViewOnlyWallet[] {
     const viewOnlyWallets: ViewOnlyWallet[] = storedWallets
-      .filter(storedWallet => storedWallet.isViewOnlyWallet)
-      .map(storedWallet => ({ ...storedWallet, isViewOnlyWallet: true }));
+      .filter((storedWallet) => storedWallet.isViewOnlyWallet)
+      .map((storedWallet) => ({ ...storedWallet, isViewOnlyWallet: true }));
     return viewOnlyWallets;
   }
 }

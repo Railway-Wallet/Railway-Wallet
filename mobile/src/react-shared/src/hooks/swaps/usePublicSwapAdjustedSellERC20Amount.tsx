@@ -1,21 +1,18 @@
-import { TransactionGasDetails } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { formatUnits } from 'ethers';
-import { ERC20Amount, ERC20AmountRecipient } from '../../models/token';
-import { TransactionType } from '../../models/transaction';
-import { getTokenBalanceSerialized } from '../../utils/tokens';
-import { adjustERC20AmountRecipientForTransaction } from '../../utils/transactions';
-import { useERC20BalancesSerialized } from '../balances/useERC20BalancesSerialized';
+import { TransactionGasDetails } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { formatUnits } from "ethers";
+import { ERC20Amount, ERC20AmountRecipient } from "../../models/token";
+import { TransactionType } from "../../models/transaction";
+import { getTokenBalanceSerialized } from "../../utils/tokens";
+import { adjustERC20AmountRecipientForTransaction } from "../../utils/transactions";
+import { useERC20BalancesSerialized } from "../balances/useERC20BalancesSerialized";
 
 export const usePublicSwapAdjustedSellERC20Amount = (
   sellERC20AmountRecipient: Optional<ERC20AmountRecipient>,
-  gasDetails: Optional<TransactionGasDetails>,
+  gasDetails: Optional<TransactionGasDetails>
 ) => {
   const isRailgun = false;
-  const { tokenBalancesSerialized } = useERC20BalancesSerialized(
-    isRailgun,
-    [],
-  );
+  const { tokenBalancesSerialized } = useERC20BalancesSerialized(isRailgun, []);
 
   const sellERC20AmountRecipientAmount = sellERC20AmountRecipient?.amountString;
   const sellERC20AmountRecipientTokenAddress =
@@ -37,14 +34,19 @@ export const usePublicSwapAdjustedSellERC20Amount = (
     const { token } = sellERC20AmountRecipient;
     const tokenBalanceSerialized = getTokenBalanceSerialized(
       token,
-      tokenBalancesSerialized,
+      tokenBalancesSerialized
     );
 
     const adjustedAmounts = adjustERC20AmountRecipientForTransaction(
       sellERC20AmountRecipient,
-      TransactionType.Send, isRailgun,
-      gasDetails, undefined, "undefined", "undefined", tokenBalanceSerialized,
-      false,
+      TransactionType.Send,
+      isRailgun,
+      gasDetails,
+      undefined,
+      "undefined",
+      "undefined",
+      tokenBalanceSerialized,
+      false
     );
 
     const finalSellTokenAmount: ERC20Amount = {

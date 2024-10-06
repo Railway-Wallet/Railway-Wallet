@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   listHeader: {
@@ -16,8 +16,8 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   addedContainer: {
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: "center",
+    alignItems: "flex-end",
     marginRight: 8,
   },
   addedText: {

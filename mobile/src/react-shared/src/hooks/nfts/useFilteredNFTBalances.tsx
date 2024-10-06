@@ -2,19 +2,19 @@ import {
   isDefined,
   NFTAmount,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { useCallback } from 'react';
-import { FrontendWallet } from '../../models/wallet';
-import { formatTokenSubID } from '../../utils/nft';
-import { useReduxSelector } from '../hooks-redux';
-import { NFTData, useNFTBalances } from './useNFTBalances';
+} from "@railgun-community/shared-models";
+import { useCallback } from "react";
+import { FrontendWallet } from "../../models/wallet";
+import { formatTokenSubID } from "../../utils/nft";
+import { useReduxSelector } from "../hooks-redux";
+import { NFTData, useNFTBalances } from "./useNFTBalances";
 
 export const useFilteredNFTBalances = (
   searchText: string,
   wallet: Optional<FrontendWallet>,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): { filteredNFTBalances: Optional<NFTData> } => {
-  const { nftsMetadata } = useReduxSelector('nftsMetadata');
+  const { nftsMetadata } = useReduxSelector("nftsMetadata");
 
   const { nftBalances } = useNFTBalances(wallet, balanceBucketFilter);
 
@@ -26,7 +26,7 @@ export const useFilteredNFTBalances = (
         return undefined;
       }
 
-      return nftAmounts.filter(nftAmount => {
+      return nftAmounts.filter((nftAmount) => {
         if (!searchText.length) {
           return true;
         }
@@ -57,7 +57,7 @@ export const useFilteredNFTBalances = (
         return false;
       });
     },
-    [lowerCaseSearchText, nftsMetadata, searchText],
+    [lowerCaseSearchText, nftsMetadata, searchText]
   );
 
   if (!nftBalances) {

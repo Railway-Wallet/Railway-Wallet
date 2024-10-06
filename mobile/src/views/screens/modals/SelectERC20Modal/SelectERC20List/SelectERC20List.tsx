@@ -1,7 +1,7 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { FlatList, Text, View } from 'react-native';
-import { TokenListRow } from '@components/list/TokenListRow/TokenListRow';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { FlatList, Text, View } from "react-native";
+import { TokenListRow } from "@components/list/TokenListRow/TokenListRow";
 import {
   calculateTokenBalance,
   ERC20BalancesSerialized,
@@ -13,9 +13,9 @@ import {
   SelectTokenPurpose,
   truncateStr,
   useReduxSelector,
-} from '@react-shared';
-import { SelectBroadcasterFeeTokenListRow } from './SelectBroadcasterFeeTokenListRow';
-import { styles } from './styles';
+} from "@react-shared";
+import { SelectBroadcasterFeeTokenListRow } from "./SelectBroadcasterFeeTokenListRow";
+import { styles } from "./styles";
 
 type Props = {
   addedTokens: ERC20Token[];
@@ -38,15 +38,15 @@ export const SelectERC20List: React.FC<Props> = ({
   useRelayAdaptForBroadcasterFee,
   broadcasterFeeRefreshButtonCount,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const renderRightBalance = (token: ERC20Token) => {
     const tokenBalance = calculateTokenBalance(
       wallet,
       token,
       ERC20BalancesSerialized,
-      isRailgun,
+      isRailgun
     );
 
     const hasBalance = isDefined(tokenBalance);
@@ -57,7 +57,7 @@ export const SelectERC20List: React.FC<Props> = ({
     const balanceDecimal = getDecimalBalance(tokenBalance, token.decimals);
     const balanceText = hasBalance
       ? balanceDecimal > 0 && balanceDecimal < 0.0001
-        ? '<' + formatNumberToLocaleWithMinDecimals(0.0001, 4)
+        ? "<" + formatNumberToLocaleWithMinDecimals(0.0001, 4)
         : formatNumberToLocaleWithMinDecimals(balanceDecimal, 4)
       : undefined;
 
@@ -72,7 +72,7 @@ export const SelectERC20List: React.FC<Props> = ({
     const description = getTokenDisplayNameShort(
       token,
       wallets.available,
-      network.current.name,
+      network.current.name
     );
 
     if (purpose === SelectTokenPurpose.BroadcasterFee) {
@@ -111,7 +111,7 @@ export const SelectERC20List: React.FC<Props> = ({
         contentContainerStyle={styles.tokenListContentContainer}
         data={addedTokens}
         keyExtractor={(_item: ERC20Token, index: number) => String(index)}
-        renderItem={info => renderToken(info.item)}
+        renderItem={(info) => renderToken(info.item)}
       />
     </>
   );

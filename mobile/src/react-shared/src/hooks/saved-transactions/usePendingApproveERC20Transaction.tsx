@@ -1,17 +1,17 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
 import {
   SavedTransaction,
   TransactionAction,
   TransactionStatus,
-} from '../../models/transaction';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../models/transaction";
+import { useReduxSelector } from "../hooks-redux";
 
 export const usePendingApproveERC20Transaction = (
   networkName: NetworkName,
   tokenAddress: Optional<string>,
-  spender: Optional<string>,
+  spender: Optional<string>
 ): { pendingApproveERC20Transaction: Optional<SavedTransaction> } => {
-  const { savedTransactions } = useReduxSelector('savedTransactions');
+  const { savedTransactions } = useReduxSelector("savedTransactions");
 
   const visibleTransactions = savedTransactions.forNetwork[networkName] ?? [];
 
@@ -21,11 +21,11 @@ export const usePendingApproveERC20Transaction = (
   }
 
   const pendingApproveERC20Transaction = visibleTransactions.find(
-    tx =>
+    (tx) =>
       tx.status === TransactionStatus.pending &&
       tx.action === TransactionAction.approve &&
       tx.spender === spender &&
-      tx.tokenAmounts.map(ta => ta.token.address).includes(tokenAddress),
+      tx.tokenAmounts.map((ta) => ta.token.address).includes(tokenAddress)
   );
 
   return { pendingApproveERC20Transaction };

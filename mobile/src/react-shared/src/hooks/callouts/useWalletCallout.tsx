@@ -1,26 +1,26 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
-import { CalloutType } from '../../models/callout';
-import { AvailableWallet } from '../../models/wallet';
-import { AppSettingsService } from '../../services/settings/app-settings-service';
+} from "@railgun-community/shared-models";
+import { useEffect, useState } from "react";
+import { CalloutType } from "../../models/callout";
+import { AvailableWallet } from "../../models/wallet";
+import { AppSettingsService } from "../../services/settings/app-settings-service";
 import {
   getERC20TokensForNetwork,
   getTotalBalanceCurrency,
   tokenBalancesForWalletAndState,
-} from '../../services/wallet/wallet-balance-service';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../services/wallet/wallet-balance-service";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useWalletCallout = (
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
-  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { erc20BalancesRailgun } = useReduxSelector("erc20BalancesRailgun");
+  const { erc20BalancesNetwork } = useReduxSelector("erc20BalancesNetwork");
 
   const [text, setText] = useState<Optional<string>>();
   const [calloutType, setCalloutType] = useState<Optional<CalloutType>>();
@@ -34,13 +34,13 @@ export const useWalletCallout = (
     networkPrices.forNetwork[network.current.name]?.forCurrency[
       AppSettingsService.currency.code
     ];
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { txidVersion } = useReduxSelector("txidVersion");
   const currentTxidVersion = txidVersion.current;
 
   useEffect(() => {
     if (wallets.active?.isViewOnlyWallet ?? false) {
       setText(
-        'View-only: You can view the entire private history for this wallet. Transfers and other transactions are restricted.',
+        "View-only: You can view the entire private history for this wallet. Transfers and other transactions are restricted."
       );
       setCalloutType(CalloutType.Info);
       return;
@@ -50,39 +50,41 @@ export const useWalletCallout = (
       wallets.active,
       walletBalancesNetwork,
       walletBalancesRail,
-      true, currentTxidVersion,
-      balanceBucketFilter,
+      true,
+      currentTxidVersion,
+      balanceBucketFilter
     );
     const tokenBalancesNetwork = tokenBalancesForWalletAndState(
       wallets.active,
       walletBalancesNetwork,
       walletBalancesRail,
-      false, currentTxidVersion,
-      balanceBucketFilter,
+      false,
+      currentTxidVersion,
+      balanceBucketFilter
     );
     if (
       !isDefined(tokenBalancesRail) ||
       !isDefined(tokenPrices) ||
       !isDefined(tokenBalancesNetwork)
     ) {
-      setText('');
+      setText("");
       return;
     }
     const totalBalanceNetwork = getTotalBalanceCurrency(
       tokens,
       tokenBalancesNetwork,
-      tokenPrices,
+      tokenPrices
     );
     const totalBalanceRail = getTotalBalanceCurrency(
       tokens,
       tokenBalancesRail,
-      tokenPrices,
+      tokenPrices
     );
     const messageAndCallout = getWalletTodoMessageAndCalloutType(
       wallets.available,
       network.current.publicName,
       totalBalanceNetwork,
-      totalBalanceRail,
+      totalBalanceRail
     );
     setText(messageAndCallout?.message);
     setCalloutType(messageAndCallout?.calloutType);
@@ -101,12 +103,12 @@ export const useWalletCallout = (
     allAvailableWallets: AvailableWallet[],
     networkPublicName: string,
     totalBalanceNetwork: number,
-    totalBalanceRail: number,
+    totalBalanceRail: number
   ): Optional<{ calloutType: CalloutType; message: string }> => {
     if (!allAvailableWallets.length) {
       return {
         message:
-          'Create or import a wallet to view your balances and shield your assets.',
+          "Create or import a wallet to view your balances and shield your assets.",
         calloutType: CalloutType.Create,
       };
     }

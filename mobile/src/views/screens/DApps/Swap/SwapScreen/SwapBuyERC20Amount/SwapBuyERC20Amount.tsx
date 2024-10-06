@@ -1,10 +1,10 @@
-import { SwapQuoteData } from '@railgun-community/cookbook';
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import React, { useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { ERC20EntryAmountButtonRow } from '@components/views/ERC20AmountsNumPadView/ERC20EntryAmountButtonRow/ERC20EntryAmountButtonRow';
-import { SelectTokenInlineButton } from '@components/views/ERC20AmountsNumPadView/SelectTokenInlineButton/SelectTokenInlineButton';
+import { SwapQuoteData } from "@railgun-community/cookbook";
+import { RailgunWalletBalanceBucket } from "@railgun-community/shared-models";
+import React, { useMemo, useState } from "react";
+import { Text, View } from "react-native";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { ERC20EntryAmountButtonRow } from "@components/views/ERC20AmountsNumPadView/ERC20EntryAmountButtonRow/ERC20EntryAmountButtonRow";
+import { SelectTokenInlineButton } from "@components/views/ERC20AmountsNumPadView/SelectTokenInlineButton/SelectTokenInlineButton";
 import {
   ERC20Amount,
   ERC20Token,
@@ -15,10 +15,10 @@ import {
   styleguide,
   TransactionType,
   useReduxSelector,
-} from '@react-shared';
-import { SelectERC20Modal } from '@screens/modals/SelectERC20Modal/SelectERC20Modal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { SelectERC20Modal } from "@screens/modals/SelectERC20Modal/SelectERC20Modal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 const ZERO_X_PRICE_DECIMALS = 18;
 
@@ -45,8 +45,8 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
   onTapSwapSettingsButton,
   openAddTokens,
 }: Props) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [showSelectERC20Modal, setShowSelectERC20Modal] = useState(false);
   const [
@@ -56,7 +56,7 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
 
   const onDismissSelectERC20Modal = (
     token?: ERC20Token,
-    shouldOpenAddTokens: boolean = false,
+    shouldOpenAddTokens: boolean = false
   ) => {
     setShowSelectERC20Modal(false);
     if (shouldOpenAddTokens) {
@@ -79,7 +79,7 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
     !isLoadingQuote && buyERC20Amount
       ? getDecimalBalanceString(
           BigInt(buyERC20Amount.amountString),
-          buyERC20Amount.token.decimals,
+          buyERC20Amount.token.decimals
         )
       : undefined;
 
@@ -91,31 +91,31 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
     if (reverseOrderSellBuyConversionText) {
       const quotePriceText = getDecimalBalanceString(
         (10n ** BigInt(ZERO_X_PRICE_DECIMALS) * 2n) / currentQuote.price,
-        ZERO_X_PRICE_DECIMALS,
+        ZERO_X_PRICE_DECIMALS
       );
       return `1 ${getTokenDisplayName(
         buyERC20,
         wallets.available,
-        network.current.name,
+        network.current.name
       )} = ${quotePriceText} ${getTokenDisplayName(
         sellERC20,
         wallets.available,
-        network.current.name,
+        network.current.name
       )}`;
     }
 
     const quotePriceText = getDecimalBalanceString(
       currentQuote.price,
-      ZERO_X_PRICE_DECIMALS,
+      ZERO_X_PRICE_DECIMALS
     );
     return `1 ${getTokenDisplayName(
       sellERC20,
       wallets.available,
-      network.current.name,
+      network.current.name
     )} = ${quotePriceText} ${getTokenDisplayName(
       buyERC20,
       wallets.available,
-      network.current.name,
+      network.current.name
     )}`;
   }, [
     wallets.available,
@@ -163,7 +163,7 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
       <View style={styles.wrapper}>
         <ERC20EntryAmountButtonRow
           autoFocus={false}
-          numEntryString={buyERC20AmountText ?? ''}
+          numEntryString={buyERC20AmountText ?? ""}
           leftView={swapSettingsView}
           rightView={tokenSelectorView}
           placeholder={formatNumberToLocaleWithMinDecimals(0, 2)}
@@ -173,11 +173,11 @@ export const SwapBuyERC20Amount: React.FC<Props> = ({
           onPress={() => {
             triggerHaptic(HapticSurface.SelectItem);
             setReverseOrderSellBuyConversionText(
-              !reverseOrderSellBuyConversionText,
+              !reverseOrderSellBuyConversionText
             );
           }}
         >
-          {isLoadingQuote ? 'Getting best price...' : sellBuyConversionText}
+          {isLoadingQuote ? "Getting best price..." : sellBuyConversionText}
         </Text>
       </View>
     </>

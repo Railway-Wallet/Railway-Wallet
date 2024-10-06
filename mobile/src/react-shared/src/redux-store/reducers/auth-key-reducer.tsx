@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type AuthKeyState = {
   key: Optional<string>;
@@ -9,7 +9,7 @@ const initialState = {
 } as AuthKeyState;
 
 const slice = createSlice({
-  name: 'authKey',
+  name: "authKey",
   initialState,
   reducers: {
     setAuthKey(state, action: PayloadAction<string>) {

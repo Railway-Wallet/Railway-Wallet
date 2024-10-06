@@ -1,26 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import debug, { Debugger } from 'debug';
-import { ReactConfig } from '../config/react-config';
-import { SharedConstants } from '../config/shared-constants';
+import debug, { Debugger } from "debug";
+import { ReactConfig } from "../config/react-config";
+import { SharedConstants } from "../config/shared-constants";
 
 enum Logger {
-  AppLogs = 'railway:log',
-  AppError = 'railway:error',
-  ReduxLogs = 'railway:redux',
-  BridgeLogs = 'railway:backend',
-  BridgeError = 'railway:backend:error',
-  WakuLogs = 'railway:waku',
-  WakuError = 'railway:waku:error',
+  AppLogs = "railway:log",
+  AppError = "railway:error",
+  ReduxLogs = "railway:redux",
+  BridgeLogs = "railway:backend",
+  BridgeError = "railway:backend:error",
+  WakuLogs = "railway:waku",
+  WakuError = "railway:waku:error",
 }
 
 const loggerOptions: Record<Logger, { color: string }> = {
-  [Logger.AppLogs]: { color: 'blue' },
-  [Logger.ReduxLogs]: { color: 'cyan' },
-  [Logger.AppError]: { color: 'red' },
-  [Logger.BridgeLogs]: { color: 'magenta' },
-  [Logger.BridgeError]: { color: 'red' },
-  [Logger.WakuLogs]: { color: 'grey' },
-  [Logger.WakuError]: { color: 'red' },
+  [Logger.AppLogs]: { color: "blue" },
+  [Logger.ReduxLogs]: { color: "cyan" },
+  [Logger.AppError]: { color: "red" },
+  [Logger.BridgeLogs]: { color: "magenta" },
+  [Logger.BridgeError]: { color: "red" },
+  [Logger.WakuLogs]: { color: "grey" },
+  [Logger.WakuError]: { color: "red" },
 };
 
 const loggers: Partial<Record<Logger, Debugger>> = {};
@@ -91,7 +91,7 @@ const logDbg = (dbg: Optional<debug.Debugger>, ...messages: any) => {
   if (!dbg) {
     return;
   }
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === "test") {
     return;
   }
   for (const msg of messages) {

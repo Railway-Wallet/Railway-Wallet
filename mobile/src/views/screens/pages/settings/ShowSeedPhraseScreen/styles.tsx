@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -10,12 +10,12 @@ export const styles = StyleSheet.create({
   textNoticeWrapper: {
     paddingHorizontal: 32,
     paddingVertical: 24,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   textNotice: {
     marginBottom: 16,
     ...styleguide.typography.caption,
     color: styleguide.colors.labelSecondary,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

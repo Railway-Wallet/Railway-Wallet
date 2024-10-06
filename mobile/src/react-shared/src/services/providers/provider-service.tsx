@@ -3,15 +3,15 @@ import {
   isDefined,
   NETWORK_CONFIG,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { FallbackProvider, JsonRpcProvider } from 'ethers';
-import { ProviderNodeType } from '../../models/providers';
-import { logDev } from '../../utils/logging';
+} from "@railgun-community/shared-models";
+import { FallbackProvider, JsonRpcProvider } from "ethers";
+import { ProviderNodeType } from "../../models/providers";
+import { logDev } from "../../utils/logging";
 import {
   getNetworkFallbackProviderJsonConfig,
   networkForName,
-} from '../../utils/networks';
-import { createPollingJsonRpcProviderForListeners } from './polling-util';
+} from "../../utils/networks";
+import { createPollingJsonRpcProviderForListeners } from "./polling-util";
 
 export class ProviderService {
   private static providers: Record<
@@ -26,7 +26,7 @@ export class ProviderService {
   static setProvider(
     networkName: NetworkName,
     fallbackProvider: Optional<FallbackProvider>,
-    providerNodeType: ProviderNodeType,
+    providerNodeType: ProviderNodeType
   ) {
     if (!fallbackProvider) {
       logDev(`No fallback provider given for network: ${networkName}`);
@@ -36,7 +36,7 @@ export class ProviderService {
   }
 
   static getProviderNodeTypeForTransactionReceipts(
-    networkName: NetworkName,
+    networkName: NetworkName
   ): ProviderNodeType {
     switch (networkName) {
       case NetworkName.Ethereum:
@@ -51,17 +51,17 @@ export class ProviderService {
       case NetworkName.EthereumGoerli_DEPRECATED:
       case NetworkName.EthereumRopsten_DEPRECATED:
       case NetworkName.Hardhat:
-        throw new Error('No Archive Nodes available for this network.');
+        throw new Error("No Archive Nodes available for this network.");
     }
   }
 
   private static async createProviderFromStoredSettingsAndJsonConfig(
     networkName: NetworkName,
-    providerNodeType: ProviderNodeType,
+    providerNodeType: ProviderNodeType
   ): Promise<Optional<FallbackProvider>> {
     const config = await getNetworkFallbackProviderJsonConfig(
       networkName,
-      providerNodeType,
+      providerNodeType
     );
     if (!config) {
       const network = networkForName(networkName);
@@ -69,7 +69,7 @@ export class ProviderService {
       throw new Error(
         network
           ? `Could not load RPC providers for ${network.publicName}: ${providerNodeType}.`
-          : 'Could not load RPC providers.',
+          : "Could not load RPC providers."
       );
     }
     return createFallbackProviderFromJsonConfig(config);
@@ -77,12 +77,12 @@ export class ProviderService {
 
   static async loadFrontendProviderForNetwork(
     networkName: NetworkName,
-    providerNodeType: ProviderNodeType,
+    providerNodeType: ProviderNodeType
   ): Promise<Optional<FallbackProvider>> {
     const newProvider =
       await ProviderService.createProviderFromStoredSettingsAndJsonConfig(
         networkName,
-        providerNodeType,
+        providerNodeType
       );
     if (newProvider) {
       ProviderService.setProvider(networkName, newProvider, providerNodeType);
@@ -94,7 +94,7 @@ export class ProviderService {
   static getFirstProvider = async (networkName: NetworkName) => {
     const fallbackProvider = await ProviderService.getProvider(
       networkName,
-      ProviderNodeType.FullNode,
+      ProviderNodeType.FullNode
     );
     const provider = fallbackProvider.provider.providerConfigs[0]
       .provider as JsonRpcProvider;
@@ -103,7 +103,7 @@ export class ProviderService {
 
   static async getProvider(
     networkName: NetworkName,
-    providerNodeType = ProviderNodeType.FullNode,
+    providerNodeType = ProviderNodeType.FullNode
   ): Promise<FallbackProvider> {
     const existingProvider = this.providers[providerNodeType][networkName];
     if (isDefined(existingProvider)) {
@@ -112,19 +112,19 @@ export class ProviderService {
 
     const newProvider = await ProviderService.loadFrontendProviderForNetwork(
       networkName,
-      providerNodeType,
+      providerNodeType
     );
     if (newProvider) {
       return newProvider;
     }
     throw new Error(
-      `No available RPC providers for ${NETWORK_CONFIG[networkName].publicName}.`,
+      `No available RPC providers for ${NETWORK_CONFIG[networkName].publicName}.`
     );
   }
 
   static async getPollingProvider(
     networkName: NetworkName,
-    pollingIntervalInMs: number,
+    pollingIntervalInMs: number
   ): Promise<JsonRpcProvider> {
     const existingProvider = this.pollingProviders[networkName];
     if (isDefined(existingProvider)) {
@@ -132,18 +132,18 @@ export class ProviderService {
     }
     const fallbackProvider = await this.getProvider(
       networkName,
-      ProviderNodeType.FullNode,
+      ProviderNodeType.FullNode
     );
     const pollingProvider = await createPollingJsonRpcProviderForListeners(
       fallbackProvider,
-      pollingIntervalInMs,
+      pollingIntervalInMs
     );
     this.pollingProviders[networkName] = pollingProvider;
     return pollingProvider;
   }
 
   static pauseAllPollingProviders(excludeNetworkName?: NetworkName) {
-    Object.keys(this.pollingProviders).forEach(networkName => {
+    Object.keys(this.pollingProviders).forEach((networkName) => {
       if (networkName === excludeNetworkName) {
         return;
       }
@@ -155,9 +155,7 @@ export class ProviderService {
   }
 
   static resumeIsolatedPollingProviderForNetwork(networkName: NetworkName) {
-    ProviderService.pauseAllPollingProviders(
-      networkName,
-    );
+    ProviderService.pauseAllPollingProviders(networkName);
     const pollingProvider = ProviderService.pollingProviders[networkName];
     if (isDefined(pollingProvider) && pollingProvider.paused) {
       pollingProvider.resume();

@@ -1,13 +1,13 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { InteractionManager } from 'react-native';
-import { BiometricsAuthResponse } from '@react-shared';
-import { biometricsAuthenticate } from '@services/security/biometrics-service';
-import { getEncryptedPin } from '@services/security/secure-app-service';
-import { Constants } from '@utils/constants';
+import { isDefined } from "@railgun-community/shared-models";
+import { InteractionManager } from "react-native";
+import { BiometricsAuthResponse } from "@react-shared";
+import { biometricsAuthenticate } from "@services/security/biometrics-service";
+import { getEncryptedPin } from "@services/security/secure-app-service";
+import { Constants } from "@utils/constants";
 
 export const useSecurityAuthorization = (
   authSuccess: (key: string) => void,
-  authFail: () => void,
+  authFail: () => void
 ) => {
   const authenticate = async () => {
     const storedPin = await getEncryptedPin();

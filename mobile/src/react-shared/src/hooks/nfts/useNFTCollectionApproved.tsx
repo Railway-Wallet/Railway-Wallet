@@ -1,23 +1,23 @@
-import { isDefined, NFTAmount } from '@railgun-community/shared-models';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { TransactionType } from '../../models/transaction';
-import { getNFTCollectionApprovedForSpender } from '../../services/token/nft-allowance';
-import { promiseTimeout } from '../../utils';
-import { requiresTokenApproval } from '../../utils/util';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
-import { usePendingApproveNFTCollectionTransaction } from '../saved-transactions/usePendingApproveNFTCollectionTransaction';
+import { isDefined, NFTAmount } from "@railgun-community/shared-models";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { TransactionType } from "../../models/transaction";
+import { getNFTCollectionApprovedForSpender } from "../../services/token/nft-allowance";
+import { promiseTimeout } from "../../utils";
+import { requiresTokenApproval } from "../../utils/util";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
+import { usePendingApproveNFTCollectionTransaction } from "../saved-transactions/usePendingApproveNFTCollectionTransaction";
 
-const NULL_SPENDER = '0x0000000000000000000000000000000000000000';
+const NULL_SPENDER = "0x0000000000000000000000000000000000000000";
 
 export const useNFTCollectionApproved = (
   currentNFTAmount: Optional<NFTAmount>,
   transactionType: TransactionType,
   spender: Optional<string>,
   isPrivate: boolean,
-  setError: (error: Error) => void,
+  setError: (error: Error) => void
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const dispatch = useAppDispatch();
 
@@ -30,17 +30,13 @@ export const useNFTCollectionApproved = (
 
   const requiresApproval =
     isDefined(currentNFTAmount) &&
-    requiresTokenApproval(
-      transactionType,
-      isPrivate,
-      false,
-    );
+    requiresTokenApproval(transactionType, isPrivate, false);
 
   const { pendingApproveNFTCollectionTransaction } =
     usePendingApproveNFTCollectionTransaction(
       networkName,
       currentNFTAmount?.nftAddress,
-      spender,
+      spender
     );
 
   const updateNFTAllowance = useCallback(async () => {
@@ -48,12 +44,12 @@ export const useNFTCollectionApproved = (
     spenderRef.current = spender;
 
     if (!isDefined(spender) || spender === NULL_SPENDER) {
-      setError(new Error('Requires spender contract'));
+      setError(new Error("Requires spender contract"));
       setNFTApproved(false);
       return;
     }
     if (isDefined(wallets.active) && wallets.active.isViewOnlyWallet) {
-      setError(new Error('View-only wallet cannot have allowance'));
+      setError(new Error("View-only wallet cannot have allowance"));
       setNFTApproved(false);
       return;
     }
@@ -65,9 +61,9 @@ export const useNFTCollectionApproved = (
           networkName,
           wallets.active?.ethAddress,
           currentNFTAmount,
-          spender,
+          spender
         ),
-        5000,
+        5000
       );
 
       if (
@@ -80,8 +76,8 @@ export const useNFTCollectionApproved = (
     } catch (err) {
       setError(
         new Error(
-          'Unable to get NFT collection approval data. This may not be a valid NFT collection.',
-        ),
+          "Unable to get NFT collection approval data. This may not be a valid NFT collection."
+        )
       );
       setNFTApproved(false);
     }

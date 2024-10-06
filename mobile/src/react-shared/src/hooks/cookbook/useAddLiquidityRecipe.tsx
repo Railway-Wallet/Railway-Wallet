@@ -3,28 +3,28 @@ import {
   RecipeAddLiquidityData,
   RecipeERC20Info,
   UniV2LikeAddLiquidityRecipe,
-} from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Provider } from 'ethers';
-import { ERC20Amount } from '../../models/token';
-import { ProviderService } from '../../services';
+} from "@railgun-community/cookbook";
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Provider } from "ethers";
+import { ERC20Amount } from "../../models/token";
+import { ProviderService } from "../../services";
 import {
   createERC20AmountFromRecipeERC20Amount,
   generateKey,
   getRecipeERC20Amount,
   getSlippageBasisPoints,
-} from '../../utils';
-import { useReduxSelector } from '../hooks-redux';
-import { useRecipe } from './useRecipe';
+} from "../../utils";
+import { useReduxSelector } from "../hooks-redux";
+import { useRecipe } from "./useRecipe";
 
 export const useAddLiquidityRecipe = (
   liquidityPool: LiquidityV2Pool,
   tokenUnshieldAmountA: Optional<ERC20Amount>,
-  slippagePercentage: Optional<number>,
+  slippagePercentage: Optional<number>
 ) => {
-  const { wallets } = useReduxSelector('wallets');
-  const { network } = useReduxSelector('network');
+  const { wallets } = useReduxSelector("wallets");
+  const { network } = useReduxSelector("network");
   const networkName = network.current.name;
 
   const [tokenUnshieldAmountB, setTokenUnshieldAmountB] =
@@ -69,7 +69,7 @@ export const useAddLiquidityRecipe = (
         erc20InfoA,
         erc20InfoB,
         slippageBasisPoints,
-        provider,
+        provider
       );
     }, [liquidityPool, provider, slippagePercentage]);
 
@@ -87,7 +87,7 @@ export const useAddLiquidityRecipe = (
       const { erc20UnshieldAmountB, addLiquidityData: liquidityData } =
         await addLiquidityRecipe.getAddLiquidityAmountBForUnshield(
           networkName,
-          getRecipeERC20Amount(tokenUnshieldAmountA),
+          getRecipeERC20Amount(tokenUnshieldAmountA)
         );
 
       if (currentTokenBCalculationID === latestTokenBCalculationID.current) {
@@ -95,8 +95,8 @@ export const useAddLiquidityRecipe = (
           createERC20AmountFromRecipeERC20Amount(
             wallets.active,
             networkName,
-            erc20UnshieldAmountB,
-          ),
+            erc20UnshieldAmountB
+          )
         );
         setAddLiquidityData(liquidityData);
       }
@@ -112,11 +112,7 @@ export const useAddLiquidityRecipe = (
       : [];
 
   const { recipe, recipeError, recipeOutput, isLoadingRecipeOutput } =
-    useRecipe(
-      addLiquidityRecipe,
-      unshieldERC20Amounts,
-      [],
-    );
+    useRecipe(addLiquidityRecipe, unshieldERC20Amounts, []);
 
   useEffect(() => {
     if (!isDefined(recipeOutput) || !isDefined(addLiquidityRecipe)) {

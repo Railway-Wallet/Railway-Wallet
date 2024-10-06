@@ -1,24 +1,23 @@
-import { IPCEventHandler, NodejsMobileIPC as IPC } from 'nodejs-mobile-ipc2';
-import { BridgeCallEvent, BridgeEvent } from '../models/bridge';
-import { logDevBridge, logDevBridgeError } from '../utils';
+import { IPCEventHandler, NodejsMobileIPC as IPC } from "nodejs-mobile-ipc2";
+import { BridgeCallEvent, BridgeEvent } from "../models/bridge";
+import { logDevBridge, logDevBridgeError } from "../utils";
 
 let ipc: Optional<IPC>;
 
 export const bridgeSetup = (
   post: <ParamsType>(event: BridgeCallEvent, result: ParamsType) => void,
-  on: (event: BridgeCallEvent, cb: IPCEventHandler) => void,
+  on: (event: BridgeCallEvent, cb: IPCEventHandler) => void
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   ipc = new IPC({ post, on });
 };
 
 export const bridgeCall = async <ParamsType, ReturnType>(
   event: BridgeCallEvent,
   params: ParamsType,
-  skipBridgeLogs = false,
+  skipBridgeLogs = false
 ): Promise<ReturnType> => {
   if (!ipc) {
-    throw new Error('Bridge IPC not set up');
+    throw new Error("Bridge IPC not set up");
   }
   !skipBridgeLogs && logDevBridge(`BRIDGE (CALL): ${event}`, params);
   try {
@@ -34,8 +33,8 @@ export const bridgeCall = async <ParamsType, ReturnType>(
 
 export const bridgeListen = (event: BridgeEvent, cb: IPCEventHandler) => {
   if (!ipc) {
-    throw new Error('Bridge IPC not set up');
+    throw new Error("Bridge IPC not set up");
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
   ipc.on(event, cb);
 };

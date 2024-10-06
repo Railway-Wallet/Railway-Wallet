@@ -1,20 +1,20 @@
-import { isDefined, Network } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
+import { isDefined, Network } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
 import {
   AvailableWallet,
   FrontendWallet,
   StoredWallet,
   ViewOnlyWallet,
-} from '../../models/wallet';
+} from "../../models/wallet";
 import {
   setActiveWalletByID,
   setAvailableWallets,
   setViewOnlyWallets,
-} from '../../redux-store/reducers/wallets-reducer';
-import { AppDispatch, store } from '../../redux-store/store';
-import { logDevError } from '../../utils/logging';
-import { StorageService } from '../storage/storage-service';
-import { refreshReceivedTransactionWatchers } from '../transactions/transfer-watcher-service';
+} from "../../redux-store/reducers/wallets-reducer";
+import { AppDispatch, store } from "../../redux-store/store";
+import { logDevError } from "../../utils/logging";
+import { StorageService } from "../storage/storage-service";
+import { refreshReceivedTransactionWatchers } from "../transactions/transfer-watcher-service";
 
 export class WalletStorageService {
   private dispatch: AppDispatch;
@@ -26,7 +26,7 @@ export class WalletStorageService {
   async fetchStoredWallets(): Promise<StoredWallet[]> {
     try {
       const storedJsonValue = await StorageService.getItem(
-        SharedConstants.AVAILABLE_WALLETS,
+        SharedConstants.AVAILABLE_WALLETS
       );
       if (isDefined(storedJsonValue)) {
         const wallets = JSON.parse(storedJsonValue) as StoredWallet[];
@@ -35,7 +35,7 @@ export class WalletStorageService {
 
       return [];
     } catch (e) {
-      const error = new Error('Error fetching wallets', { cause: e });
+      const error = new Error("Error fetching wallets", { cause: e });
       logDevError(error);
       throw error;
     }
@@ -59,13 +59,13 @@ export class WalletStorageService {
   async storeWallets(wallets: StoredWallet[]) {
     await StorageService.setItem(
       SharedConstants.AVAILABLE_WALLETS,
-      JSON.stringify(wallets),
+      JSON.stringify(wallets)
     );
   }
 
   async setActiveWallet(
     activeWallet: FrontendWallet,
-    network: Network,
+    network: Network
   ): Promise<FrontendWallet> {
     activeWallet.isActive = true;
 
@@ -79,7 +79,7 @@ export class WalletStorageService {
     await refreshReceivedTransactionWatchers(
       activeWallet,
       network,
-      this.dispatch,
+      this.dispatch
     );
 
     this.dispatch(setActiveWalletByID(activeWallet.id));
@@ -89,19 +89,19 @@ export class WalletStorageService {
 
   async updateWallet(wallet: StoredWallet) {
     const storedWallets = await this.fetchStoredWallets();
-    const indexStored = storedWallets.findIndex(w => w.id === wallet.id);
+    const indexStored = storedWallets.findIndex((w) => w.id === wallet.id);
     const foundStored = indexStored !== -1;
     if (!foundStored) {
-      throw new Error('Stored wallet not found.');
+      throw new Error("Stored wallet not found.");
     }
     wallet.updatedAt = Date.now() / 1000;
     storedWallets[indexStored] = wallet;
 
     if (wallet.isViewOnlyWallet ?? false) {
       const viewOnlyWallets = store.getState().wallets.viewOnly;
-      const found = viewOnlyWallets.find(w => w.id === wallet.id);
+      const found = viewOnlyWallets.find((w) => w.id === wallet.id);
       if (!found) {
-        throw new Error('View only wallet not found.');
+        throw new Error("View only wallet not found.");
       }
 
       const updatedViewOnlyWallet: ViewOnlyWallet = {
@@ -109,17 +109,17 @@ export class WalletStorageService {
         isViewOnlyWallet: true,
       };
       const filteredViewOnlyWallets = viewOnlyWallets.filter(
-        w => w.id !== wallet.id,
+        (w) => w.id !== wallet.id
       );
 
       this.dispatch(
-        setViewOnlyWallets([updatedViewOnlyWallet, ...filteredViewOnlyWallets]),
+        setViewOnlyWallets([updatedViewOnlyWallet, ...filteredViewOnlyWallets])
       );
     } else {
       const availableWallets = store.getState().wallets.available;
-      const found = availableWallets.find(w => w.id === wallet.id);
+      const found = availableWallets.find((w) => w.id === wallet.id);
       if (!found) {
-        throw new Error('Available wallet not found.');
+        throw new Error("Available wallet not found.");
       }
 
       const updatedAvailableWallet: AvailableWallet = {
@@ -128,14 +128,14 @@ export class WalletStorageService {
         isViewOnlyWallet: false,
       };
       const filteredAvailableWallets = availableWallets.filter(
-        w => w.id !== wallet.id,
+        (w) => w.id !== wallet.id
       );
 
       this.dispatch(
         setAvailableWallets([
           updatedAvailableWallet,
           ...filteredAvailableWallets,
-        ]),
+        ])
       );
     }
 

@@ -5,12 +5,12 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useRef } from 'react';
-import { ReviewTransactionView } from '@components/views/ReviewTransactionView/ReviewTransactionView';
-import { TokenStackParamList } from '@models/navigation-models';
-import { StackActions } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+} from "@railgun-community/shared-models";
+import React, { useRef } from "react";
+import { ReviewTransactionView } from "@components/views/ReviewTransactionView/ReviewTransactionView";
+import { TokenStackParamList } from "@models/navigation-models";
+import { StackActions } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   AdjustedERC20AmountRecipientGroup,
   AvailableWallet,
@@ -23,17 +23,17 @@ import {
   TransactionType,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
 
 type Props = NativeStackScreenProps<
   TokenStackParamList,
-  'MintTokensConfirm'
+  "MintTokensConfirm"
 > & {};
 
 export const MintTokensConfirm: React.FC<Props> = ({ navigation, route }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const { tokenAmount } = route.params;
 
@@ -72,7 +72,7 @@ export const MintTokensConfirm: React.FC<Props> = ({ navigation, route }) => {
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ): Promise<Optional<string>> => {
     try {
       const walletSecureService = new WalletSecureServiceReactNative();
@@ -84,7 +84,7 @@ export const MintTokensConfirm: React.FC<Props> = ({ navigation, route }) => {
           toWalletAddress,
           finalAdjustedERC20AmountRecipientGroup.inputs[0],
           transactionGasDetails,
-          customNonce,
+          customNonce
         ),
         delay(500),
       ]);
@@ -94,12 +94,12 @@ export const MintTokensConfirm: React.FC<Props> = ({ navigation, route }) => {
         toWalletAddress,
         finalAdjustedERC20AmountRecipientGroup.inputs[0],
         network.current,
-        txResponse.nonce,
+        txResponse.nonce
       );
       success();
       return txResponse.hash;
     } catch (cause) {
-      error(new Error('Failed to execute ERC20 mint.', { cause }));
+      error(new Error("Failed to execute ERC20 mint.", { cause }));
       return undefined;
     }
   };
@@ -108,17 +108,17 @@ export const MintTokensConfirm: React.FC<Props> = ({ navigation, route }) => {
     _txidVersion: TXIDVersion,
     networkName: NetworkName,
     fromWalletAddress: string,
-    erc20Amounts: ERC20Amount[],
+    erc20Amounts: ERC20Amount[]
   ) =>
     getERC20MintGasEstimate(
       networkName,
       toWalletAddress,
       fromWalletAddress,
-      erc20Amounts[0],
+      erc20Amounts[0]
     );
 
   const infoCalloutText = `Minting tokens into a public ${network.current.publicName} address.`;
-  const processingText = 'Minting tokens...';
+  const processingText = "Minting tokens...";
 
   return (
     <ReviewTransactionView

@@ -1,13 +1,13 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const standardStyles = StyleSheet.create({
   buttonWrapper: {
     marginRight: 16,
     borderRadius: 4,
     marginTop: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     maxWidth: 120,
   },
   buttonIcon: {
@@ -15,10 +15,10 @@ export const standardStyles = StyleSheet.create({
   },
   buttonText: {
     ...styleguide.typography.caption,
-    textTransform: 'none',
+    textTransform: "none",
   },
   buttonContent: {
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
     height: 48,
   },
   buttonStyle: {

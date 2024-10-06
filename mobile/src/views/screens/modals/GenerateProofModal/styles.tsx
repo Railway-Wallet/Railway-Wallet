@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   processingWrapper: {
@@ -8,10 +8,10 @@ export const styles = StyleSheet.create({
   },
   successWrapper: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
   failWrapper: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
 });

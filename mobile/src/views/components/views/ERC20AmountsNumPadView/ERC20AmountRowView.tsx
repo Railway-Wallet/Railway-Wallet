@@ -1,7 +1,7 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { Text, View } from 'react-native';
-import { TokenListRow } from '@components/list/TokenListRow/TokenListRow';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { Text, View } from "react-native";
+import { TokenListRow } from "@components/list/TokenListRow/TokenListRow";
 import {
   AppSettingsService,
   ERC20Amount,
@@ -14,9 +14,9 @@ import {
   tokenAddressForPrices,
   tokenPriceUndefinedLabel,
   useReduxSelector,
-} from '@react-shared';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@react-shared";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   tokenAmount: ERC20Amount;
@@ -35,9 +35,9 @@ export const ERC20AmountRowView: React.FC<Props> = ({
   errorText,
   error,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
   const currency = AppSettingsService.currency;
 
   const token = tokenAmount.token;
@@ -51,10 +51,10 @@ export const ERC20AmountRowView: React.FC<Props> = ({
       const decimalBalanceCurrency = getDecimalBalanceCurrency(
         BigInt(tokenAmount.amountString),
         tokenPrice,
-        tokenAmount.token.decimals,
+        tokenAmount.token.decimals
       );
       if (decimalBalanceCurrency > 0 && decimalBalanceCurrency < 0.01) {
-        return '<' + formatNumberToLocaleWithMinDecimals(0.01, 2);
+        return "<" + formatNumberToLocaleWithMinDecimals(0.01, 2);
       } else {
         return formatNumberToLocaleWithMinDecimals(decimalBalanceCurrency, 2);
       }
@@ -72,7 +72,7 @@ export const ERC20AmountRowView: React.FC<Props> = ({
         >
           {formatUnitFromHexStringToLocale(
             tokenAmount.amountString,
-            tokenAmount.token.decimals,
+            tokenAmount.token.decimals
           )}
         </Text>
         <Text
@@ -98,7 +98,7 @@ export const ERC20AmountRowView: React.FC<Props> = ({
         description={getTokenDisplayNameShort(
           token,
           wallets.available,
-          network.current.name,
+          network.current.name
         )}
         onSelect={onSelectTokenAmount}
         rightView={rightView}
@@ -108,7 +108,7 @@ export const ERC20AmountRowView: React.FC<Props> = ({
       {isDefined(isCalculated) && (
         <View style={styles.calculatedContainer}>
           <Icon
-            source={'calculator'}
+            source={"calculator"}
             size={22}
             color={styleguide.colors.labelSecondary}
           />

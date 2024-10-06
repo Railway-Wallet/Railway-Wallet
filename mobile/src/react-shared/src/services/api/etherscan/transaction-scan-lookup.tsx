@@ -1,22 +1,22 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
 
-export const SCAN_SITE_NOT_FOUND_TEXT = '[Scan site not found]';
+export const SCAN_SITE_NOT_FOUND_TEXT = "[Scan site not found]";
 
 enum SCAN_BASE_URL {
-  Etherscan = 'https://etherscan.io',
-  Bscscan = 'https://bscscan.com',
-  Polygonscan = 'https://polygonscan.com',
-  Arbiscan = 'https://arbiscan.io',
-  Ropstenscan = 'https://ropsten.etherscan.io',
-  Goerliscan = 'https://goerli.etherscan.io',
-  Sepoliascan = 'https://sepolia.etherscan.io',
-  Mumbaiscan = 'https://mumbai.polygonscan.com',
-  ArbiscanGoerli = 'https://goerli.arbiscan.io',
-  PolygonscanAmoy = 'https://amoy.polygonscan.com',
+  Etherscan = "https://etherscan.io",
+  Bscscan = "https://bscscan.com",
+  Polygonscan = "https://polygonscan.com",
+  Arbiscan = "https://arbiscan.io",
+  Ropstenscan = "https://ropsten.etherscan.io",
+  Goerliscan = "https://goerli.etherscan.io",
+  Sepoliascan = "https://sepolia.etherscan.io",
+  Mumbaiscan = "https://mumbai.polygonscan.com",
+  ArbiscanGoerli = "https://goerli.arbiscan.io",
+  PolygonscanAmoy = "https://amoy.polygonscan.com",
 }
 
 export const baseUrlExternalScanSite = (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Optional<string> => {
   switch (networkName) {
     case NetworkName.Ethereum:
@@ -46,7 +46,7 @@ export const baseUrlExternalScanSite = (
 
 export const transactionLinkOnExternalScanSite = (
   networkName: NetworkName,
-  txHash: string,
+  txHash: string
 ): Optional<string> => {
   const baseUrl = baseUrlExternalScanSite(networkName);
   if (!isDefined(baseUrl) || !baseUrl) return;
@@ -55,35 +55,35 @@ export const transactionLinkOnExternalScanSite = (
 
 export const addressLinkOnExternalScanSite = (
   networkName: NetworkName,
-  address: string,
+  address: string
 ): Optional<string> => {
   const baseUrl = baseUrlExternalScanSite(networkName);
-  if (!isDefined(baseUrl) || !baseUrl) return 'Unknown link';
+  if (!isDefined(baseUrl) || !baseUrl) return "Unknown link";
   return `${baseUrl}/address/${address}`;
 };
 
 export const getExternalScanSiteName = (networkName: NetworkName): string => {
   switch (networkName) {
     case NetworkName.Ethereum:
-      return 'Etherscan';
+      return "Etherscan";
     case NetworkName.BNBChain:
-      return 'BscScan';
+      return "BscScan";
     case NetworkName.Polygon:
-      return 'Polygonscan';
+      return "Polygonscan";
     case NetworkName.Arbitrum:
-      return 'Arbiscan';
+      return "Arbiscan";
     case NetworkName.EthereumSepolia:
-      return 'Etherscan (Sepolia)';
+      return "Etherscan (Sepolia)";
     case NetworkName.PolygonAmoy:
-      return 'Polygonscan (Amoy)';
+      return "Polygonscan (Amoy)";
     case NetworkName.EthereumRopsten_DEPRECATED:
-      return 'Etherscan (Ropsten)';
+      return "Etherscan (Ropsten)";
     case NetworkName.EthereumGoerli_DEPRECATED:
-      return 'Etherscan (Görli)';
+      return "Etherscan (Görli)";
     case NetworkName.PolygonMumbai_DEPRECATED:
-      return 'Polygonscan (Mumbai)';
+      return "Polygonscan (Mumbai)";
     case NetworkName.ArbitrumGoerli_DEPRECATED:
-      return 'Arbiscan (Görli)';
+      return "Arbiscan (Görli)";
     case NetworkName.Hardhat:
       return SCAN_SITE_NOT_FOUND_TEXT;
   }

@@ -1,15 +1,15 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { formatUnits, Mnemonic, parseUnits } from 'ethers';
-import { TransactionType } from '../models/transaction';
+} from "@railgun-community/shared-models";
+import { formatUnits, Mnemonic, parseUnits } from "ethers";
+import { TransactionType } from "../models/transaction";
 import {
   AppSettingsService,
   DEFAULT_LOCALE,
-} from '../services/settings/app-settings-service';
-import { maxBigInt } from './big-numbers';
-import { logDev, logDevError } from './logging';
+} from "../services/settings/app-settings-service";
+import { maxBigInt } from "./big-numbers";
+import { logDev, logDevError } from "./logging";
 
 export const formatNumberToLocale = (number: number | string) => {
   const locale = [AppSettingsService.locale, DEFAULT_LOCALE];
@@ -21,9 +21,9 @@ export const formatNumberToLocale = (number: number | string) => {
     maximumFractionDigits: 0,
   };
 
-  const [mainString, decimalString] = stringifyNumber.split('.');
+  const [mainString, decimalString] = stringifyNumber.split(".");
   const formattedMain = new Intl.NumberFormat(locale, options).format(
-    Number(mainString),
+    Number(mainString)
   );
 
   if (stringifyNumber.match(/^\d+\.$/)) {
@@ -40,7 +40,7 @@ export const formatNumberToLocale = (number: number | string) => {
 export const formatNumberToLocaleWithMinDecimals = (
   number: string | number,
   decimals: number,
-  minDecimals = 2,
+  minDecimals = 2
 ) => {
   const decimalSeparator = localDecimalSymbol();
 
@@ -49,11 +49,11 @@ export const formatNumberToLocaleWithMinDecimals = (
   const [mainString, decimalString] = formattedNumber.split(decimalSeparator);
 
   if (!decimalString) {
-    const zeros = '0'.repeat(minDecimals);
+    const zeros = "0".repeat(minDecimals);
     return `${mainString}${decimalSeparator}${zeros}`;
   }
   if (decimalString.length <= minDecimals) {
-    const zeros = '0'.repeat(minDecimals - decimalString.length);
+    const zeros = "0".repeat(minDecimals - decimalString.length);
     if (zeros) {
       return `${mainString}${decimalSeparator}${decimalString}${zeros}`;
     }
@@ -66,22 +66,22 @@ export const formatNumberToLocaleWithMinDecimals = (
 
 export const formatUnitFromHexString = (
   number: string | bigint,
-  decimals: number,
+  decimals: number
 ): string => {
   try {
     return formatUnits(number, decimals);
   } catch {
-    return '[OVERFLOW]';
+    return "[OVERFLOW]";
   }
 };
 
 export const formatUnitFromHexStringToLocale = (
   number: string | bigint,
-  decimals: number,
+  decimals: number
 ) => {
   return formatNumberToLocaleWithMinDecimals(
     formatUnitFromHexString(number, decimals),
-    decimals,
+    decimals
   );
 };
 
@@ -92,7 +92,7 @@ export const copyByValue = <T,>(obj: T): T => {
 export const valuesWithinThreshold = (
   value1: number,
   value2: number,
-  threshold: number,
+  threshold: number
 ): boolean => {
   const difference = Math.abs(value1 - value2);
   const average = (value1 + value2) / 2;
@@ -107,7 +107,7 @@ export const absBigInt = (n: bigint): bigint => {
 export const valuesWithinThresholdBigNumber = (
   value1: bigint,
   value2: bigint,
-  threshold: number,
+  threshold: number
 ): boolean => {
   const diff = absBigInt(value1 - value2);
   const maxNum = maxBigInt(value1, value2);
@@ -125,33 +125,29 @@ export const roundStringToNDecimals = (value: string, n: number): string => {
 };
 
 export const numToPlainString = (num: number | string): string => {
-  if (typeof num === 'string') {
+  if (typeof num === "string") {
     return num;
   }
 
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  return ('' + +num).replace(
+  return ("" + +num).replace(
     /(-?)(\d*)\.?(\d*)e([+-]\d+)/,
     function (a, b, c, d, e) {
       return e < 0
-        ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands
-          b + '0.' + Array(1 - e - c.length).join('0') + c + d
-        : // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands
-          b + c + d + Array(e - d.length + 1).join('0');
-    },
+        ? b + "0." + Array(1 - e - c.length).join("0") + c + d
+        : b + c + d + Array(e - d.length + 1).join("0");
+    }
   );
 };
 
 export const roundToNDecimals = (value: number, n: number): string => {
   const rounded = Number(
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    +(Math.round(Number(numToPlainString(value) + 'e+' + n)) + 'e-' + n),
+    +(Math.round(Number(numToPlainString(value) + "e+" + n)) + "e-" + n)
   );
   return rounded.toFixed(n);
 };
 
 export const bigintToHexString = (n: bigint): string => {
-  return '0x' + n.toString(16);
+  return "0x" + n.toString(16);
 };
 
 export const decimalToHexString = (dec: number | string): string => {
@@ -160,15 +156,15 @@ export const decimalToHexString = (dec: number | string): string => {
 
 export const stringEntryToBigInt = (
   entry: string,
-  decimals: number,
+  decimals: number
 ): bigint => {
-  if (entry === '') {
+  if (entry === "") {
     return 0n;
   }
   try {
     return parseUnits(entry, decimals);
   } catch (err) {
-    logDev('Invalid string number entry - returning 0n');
+    logDev("Invalid string number entry - returning 0n");
     logDevError(err);
     return 0n;
   }
@@ -176,16 +172,16 @@ export const stringEntryToBigInt = (
 
 export const endsWithAny = (text: string, suffixList: string[]): boolean => {
   return isDefined(
-    suffixList.find(suffix => {
+    suffixList.find((suffix) => {
       return text.endsWith(suffix);
-    }),
+    })
   );
 };
 
 export const requiresTokenApproval = (
   transactionType: TransactionType,
   isPrivate: boolean,
-  isBaseToken: Optional<boolean>,
+  isBaseToken: Optional<boolean>
 ) => {
   switch (transactionType) {
     case TransactionType.Shield:
@@ -208,28 +204,28 @@ export const requiresTokenApproval = (
 export const formatGasFeeForCurrency = (
   gasTokenPrice: Optional<number>,
   gasAmount: number,
-  showExactCurrencyGasPrice: boolean = false,
+  showExactCurrencyGasPrice: boolean = false
 ): string => {
   const currentCurrencySymbol = AppSettingsService.currency.symbol;
   if (!isDefined(gasTokenPrice)) {
-    return 'Unknown price';
+    return "Unknown price";
   }
   const price = gasTokenPrice * gasAmount;
   if (price > 0 && price < 0.0001 && !showExactCurrencyGasPrice) {
     return `< ${currentCurrencySymbol}${formatNumberToLocaleWithMinDecimals(
       0.0001,
-      4,
+      4
     )}`;
   }
   return `${currentCurrencySymbol}${formatNumberToLocaleWithMinDecimals(
     gasTokenPrice * gasAmount,
-    7,
+    7
   )}`;
 };
 
 export const generateKey = (length = 16) => {
-  const CHARSET = 'abcdefghijklnopqrstuvwxyz0123456789';
-  let retVal = '';
+  const CHARSET = "abcdefghijklnopqrstuvwxyz0123456789";
+  let retVal = "";
   for (let i = 0; i < length; i += 1) {
     retVal += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
   }
@@ -264,7 +260,7 @@ export const maxBigIntForTransaction = (): bigint => {
 
 export const getDecimalBalance = (
   balance: bigint,
-  decimals: number,
+  decimals: number
 ): number => {
   return Number(formatUnits(balance, decimals));
 };
@@ -279,14 +275,14 @@ export const gweiToWei = (gwei: bigint) => {
 
 export const getDecimalBalanceString = (
   balance: bigint,
-  decimals: number,
+  decimals: number
 ): string => {
   return formatNumberToLocale(formatUnits(balance, decimals));
 };
 
 export const getDecimalBalanceFromSerialized = (
   balanceSerialized: string | bigint,
-  decimals: number,
+  decimals: number
 ): number => {
   return getDecimalBalance(BigInt(balanceSerialized), decimals);
 };
@@ -294,7 +290,7 @@ export const getDecimalBalanceFromSerialized = (
 export const getDecimalBalanceCurrency = (
   balance: bigint,
   price: number,
-  decimals: number,
+  decimals: number
 ) => {
   const decimalBalance = getDecimalBalance(balance, decimals);
   return decimalBalance * price;
@@ -309,7 +305,7 @@ export const easeInCubic = (x: number): number => {
 };
 
 export const validateMnemonic = (value: string): boolean => {
-  if (!containsChar(value, ' ')) {
+  if (!containsChar(value, " ")) {
     return false;
   }
   return Mnemonic.isValidMnemonic(value);
@@ -322,7 +318,7 @@ export const validateWalletName = (value: string): boolean => {
 export const formatTransactionTimestamp = (txTimestamp: number) => {
   const now = Date.now() / 1000;
   const txSecAgo = now - txTimestamp;
-  let timeStr = '';
+  let timeStr = "";
   if (txSecAgo < 60) {
     timeStr = `${Math.round(txSecAgo)}s`;
   } else if (txSecAgo < 60 * 60) {
@@ -334,13 +330,13 @@ export const formatTransactionTimestamp = (txTimestamp: number) => {
   } else {
     timeStr = `${Math.round(txSecAgo / (60 * 60 * 24 * 7))}w`;
   }
-  return timeStr + ' ago';
+  return timeStr + " ago";
 };
 
 export const truncateStr = (
   str: Optional<string>,
   length: number,
-  append = '…',
+  append = "…"
 ) => {
   if (!isDefined(str)) {
     return;
@@ -354,13 +350,13 @@ export const dedupeByParam = <T,>(array: T[], param: string): T[] => {
   const found: string[] = [];
 
   for (const obj of array) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value = (obj as any)[param];
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
     if (found.includes(value)) {
       continue;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
     found.push(value);
     deduped.push(obj);
   }
@@ -376,7 +372,7 @@ export const formatEntryAmountWithFeesIfNeeded = (
   numEntryString: string,
   tokenDecimals: number,
   shieldFee: Optional<string>,
-  unshieldFee: Optional<string>,
+  unshieldFee: Optional<string>
 ): { finalEntryBigInt: bigint; finalEntryString: string } => {
   let total = stringEntryToBigInt(numEntryString, tokenDecimals);
   if (isDefined(shieldFee)) {
@@ -400,7 +396,7 @@ export const formatEntryAmountWithFeesIfNeeded = (
 export const getFee = (
   amount: bigint,
   isInclusive: boolean,
-  feeBP: bigint,
+  feeBP: bigint
 ): { base: bigint; fee: bigint } => {
   const BASIS_POINTS = 10000n;
   let base;
@@ -418,7 +414,10 @@ export const getFee = (
 };
 
 export const isNonSpendableBucket = (
-  balanceBucket: RailgunWalletBalanceBucket,
+  balanceBucket: RailgunWalletBalanceBucket
 ) => {
-  return (balanceBucket !== RailgunWalletBalanceBucket.Spendable && balanceBucket !== RailgunWalletBalanceBucket.Spent);
+  return (
+    balanceBucket !== RailgunWalletBalanceBucket.Spendable &&
+    balanceBucket !== RailgunWalletBalanceBucket.Spent
+  );
 };

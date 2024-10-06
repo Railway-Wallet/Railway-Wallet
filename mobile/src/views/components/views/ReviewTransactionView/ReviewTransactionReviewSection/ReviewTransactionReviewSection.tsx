@@ -1,8 +1,8 @@
-import { LiquidityV2Pool, SwapQuoteData } from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Image, Text, View } from 'react-native';
-import { TransactionResponse } from 'ethers';
+import { LiquidityV2Pool, SwapQuoteData } from "@railgun-community/cookbook";
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Image, Text, View } from "react-native";
+import { TransactionResponse } from "ethers";
 import {
   AdjustedERC20AmountRecipients,
   createERC20AmountRecipientGroups,
@@ -32,16 +32,16 @@ import {
   useReduxSelector,
   useWalletNameMap,
   Vault,
-} from '@react-shared';
-import { SelectWalletModal } from '@screens/modals/SelectWalletModal/SelectWalletModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Icon, IconSource } from '@views/components/icons/Icon';
-import { LiquiditySettingsModal } from '@views/screens/DApps/Liquidity/LiquiditySettingsModal/LiquiditySettingsModal';
+} from "@react-shared";
+import { SelectWalletModal } from "@screens/modals/SelectWalletModal/SelectWalletModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Icon, IconSource } from "@views/components/icons/Icon";
+import { LiquiditySettingsModal } from "@views/screens/DApps/Liquidity/LiquiditySettingsModal/LiquiditySettingsModal";
 import {
   SwapSettings,
   SwapSettingsModal,
-} from '@views/screens/DApps/Swap/SwapSettingsModal/SwapSettingsModal';
-import { styles } from './styles';
+} from "@views/screens/DApps/Swap/SwapSettingsModal/SwapSettingsModal";
+import { styles } from "./styles";
 
 type Props = {
   transactionType: TransactionType;
@@ -92,8 +92,8 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   vault,
   pool,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [showSelectSwapDestinationModal, setShowSelectSwapDestinationModal] =
     useState(false);
@@ -119,24 +119,24 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   const inputERC20AmountRecipients: ERC20AmountRecipient[] =
     recipeFinalERC20Amounts
       ? recipeFinalERC20Amounts.inputERC20AmountRecipients
-      : adjustedERC20AmountRecipients.map(adjustedERC20AmountRecipient => {
+      : adjustedERC20AmountRecipients.map((adjustedERC20AmountRecipient) => {
           return adjustedERC20AmountRecipient.input;
         });
 
   const outputERC20AmountRecipients: ERC20AmountRecipient[] =
     recipeFinalERC20Amounts
       ? recipeFinalERC20Amounts.outputERC20AmountRecipients
-      : adjustedERC20AmountRecipients.map(adjustedERC20AmountRecipient => {
+      : adjustedERC20AmountRecipients.map((adjustedERC20AmountRecipient) => {
           return adjustedERC20AmountRecipient.output;
         });
   const outputTokenRecipientGroups = createERC20AmountRecipientGroups(
-    outputERC20AmountRecipients,
+    outputERC20AmountRecipients
   );
 
   const { walletNameMap, getWalletName } = useWalletNameMap(
     outputTokenRecipientGroups,
     transactionType,
-    isFullyPrivateTransaction,
+    isFullyPrivateTransaction
   );
 
   const isBaseTokenShield =
@@ -156,13 +156,13 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
     tokenAmount: ERC20Amount,
     index: number,
     feeTokenAmount?: ERC20Amount,
-    isDestinationToken = false,
+    isDestinationToken = false
   ) => {
     const shouldShowFee =
       isDefined(feeTokenAmount) &&
       BigInt(feeTokenAmount.amountString) !== 0n &&
       [TransactionType.Shield, TransactionType.Unshield].includes(
-        transactionType,
+        transactionType
       );
 
     const token = isDestinationToken
@@ -181,15 +181,15 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
               <Text style={styles.tokenAmount}>
                 {formatUnitFromHexStringToLocale(
                   tokenAmount.amountString,
-                  token.decimals,
-                )}{' '}
+                  token.decimals
+                )}{" "}
               </Text>
             )}
             <Text style={styles.tokenSymbol}>
               {getTokenDisplayNameShort(
                 token,
                 wallets.available,
-                network.current.name,
+                network.current.name
               )}
             </Text>
           </Text>
@@ -208,15 +208,15 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
         <Text style={styles.includedFeeText}>
           {hideTokenAmounts !== true && (
             <Text style={styles.includedFeeTokenAmount}>
-              Fee:{' '}
+              Fee:{" "}
               {formatUnitFromHexStringToLocale(
                 tokenAmount.amountString,
-                token.decimals,
-              )}{' '}
+                token.decimals
+              )}{" "}
               {getTokenDisplayNameShort(
                 token,
                 wallets.available,
-                network.current.name,
+                network.current.name
               )}
             </Text>
           )}
@@ -228,7 +228,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   const dismissSelectSwapDestinationModal = (
     _wallet?: FrontendWallet,
     destinationAddress?: string,
-    removeSelectedWallet?: boolean,
+    removeSelectedWallet?: boolean
   ) => {
     if (!isDefined(setSwapDestinationAddress)) {
       return;
@@ -272,7 +272,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
           onPress={promptSwapDestinationAddress}
           style={styles.setSwapDestinationAddressButton}
         >
-          {isDefined(swapDestinationAddress) ? 'Update' : 'Add'} destination
+          {isDefined(swapDestinationAddress) ? "Update" : "Add"} destination
           address
         </Text>
       </View>
@@ -287,7 +287,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
     return (
       <View style={styles.vaultTextWrapper}>
         <Text style={styles.sectionItemTitle}>Minimum received</Text>
-        {receivedMinimumAmounts.map(tokenAmount => {
+        {receivedMinimumAmounts.map((tokenAmount) => {
           const { token, amountString } = tokenAmount;
 
           return (
@@ -296,12 +296,12 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
                 <Text style={styles.includedFeeTokenAmount}>
                   {formatUnitFromHexStringToLocale(
                     amountString,
-                    token.decimals,
-                  )}{' '}
+                    token.decimals
+                  )}{" "}
                   {getTokenDisplayNameShort(
                     token,
                     wallets.available,
-                    network.current.name,
+                    network.current.name
                   )}
                 </Text>
               )}
@@ -316,7 +316,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
     switch (transactionType) {
       case TransactionType.ApproveShield:
       case TransactionType.ApproveSpender:
-        return 'check-network-outline';
+        return "check-network-outline";
       case TransactionType.Shield:
       case TransactionType.Unshield:
       case TransactionType.Send:
@@ -325,11 +325,11 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
       case TransactionType.AddLiquidity:
       case TransactionType.RemoveLiquidity:
       case TransactionType.Mint:
-        return 'arrow-down';
+        return "arrow-down";
       case TransactionType.Swap:
-        return 'swap-vertical';
+        return "swap-vertical";
       case TransactionType.Cancel:
-        return 'close-circle';
+        return "close-circle";
     }
   };
 
@@ -357,7 +357,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   };
 
   const originalGasFeesForCancelType0 = (
-    cancelTxResponse: TransactionResponse,
+    cancelTxResponse: TransactionResponse
   ) => {
     const originalGasPrice = cancelTxResponse.gasPrice;
 
@@ -368,13 +368,13 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
           style={Object.assign(
             {},
             styles.cancelTransactionText,
-            styles.cancelTransactionID,
+            styles.cancelTransactionID
           )}
         >
-          Gas price:{' '}
+          Gas price:{" "}
           {originalGasPrice
             ? getDecimalBalanceString(originalGasPrice, 9)
-            : 'Unknown'}{' '}
+            : "Unknown"}{" "}
           GWEI
         </Text>
       </>
@@ -382,7 +382,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   };
 
   const originalGasFeesForCancelType2 = (
-    cancelTxResponse: TransactionResponse,
+    cancelTxResponse: TransactionResponse
   ) => {
     const originalBaseFee = cancelTxResponse.maxFeePerGas;
     const originalPriorityFee = cancelTxResponse.maxPriorityFeePerGas;
@@ -394,26 +394,26 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
           style={Object.assign(
             {},
             styles.cancelTransactionText,
-            styles.cancelTransactionID,
+            styles.cancelTransactionID
           )}
         >
-          Max base fee:{' '}
+          Max base fee:{" "}
           {isDefined(originalBaseFee)
             ? getDecimalBalanceString(originalBaseFee, 9)
-            : 'Unknown'}{' '}
+            : "Unknown"}{" "}
           GWEI
         </Text>
         <Text
           style={Object.assign(
             {},
             styles.cancelTransactionText,
-            styles.cancelTransactionID,
+            styles.cancelTransactionID
           )}
         >
-          Priority fee:{' '}
+          Priority fee:{" "}
           {isDefined(originalPriorityFee)
             ? getDecimalBalanceString(originalPriorityFee, 9)
-            : 'Unknown'}{' '}
+            : "Unknown"}{" "}
           GWEI
         </Text>
       </>
@@ -445,7 +445,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
     }
     const gasToken = network.current.baseToken;
     if (gasToken.decimals !== 18) {
-      logDevError(new Error('Gas token decimals must be 18'));
+      logDevError(new Error("Gas token decimals must be 18"));
       return null;
     }
 
@@ -459,16 +459,16 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
         </View>
         <View style={styles.erc20AmountsWrapper}>
           <Text style={styles.cancelTransactionText}>
-            Cancel pending transaction:{' '}
+            Cancel pending transaction:{" "}
           </Text>
           <Text
             style={Object.assign(
               {},
               styles.cancelTransactionText,
-              styles.cancelTransactionID,
+              styles.cancelTransactionID
             )}
           >
-            {cancelTxResponse?.hash ?? 'N/A'}
+            {cancelTxResponse?.hash ?? "N/A"}
           </Text>
           {/* eslint-disable-next-line eqeqeq */}
           {cancelTxResponse.type == 0 &&
@@ -497,7 +497,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
         <Text style={styles.walletNameText}>
           {`${getWalletNameFromMap(
             isRailgunWallet,
-            address,
+            address
           )} (${shortenWalletAddress(address)})`}
         </Text>
       </View>
@@ -533,162 +533,162 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   const showSwapSlippageSelector =
     isSwap && isDefined(slippagePercent) && isDefined(setSlippagePercent);
 
-  return (<>
-    <SelectWalletModal
-      show={showSelectSwapDestinationModal}
-      title="Select swap destination"
-      isRailgunInitial={showPrivateSwapDestination()}
-      onDismiss={dismissSelectSwapDestinationModal}
-      selectedAddress={swapDestinationAddress}
-      availableWalletsOnly
-      showNoDestinationWalletOption
-      showCustomAddressDestinationOption
-      showSavedAddresses
-      showPublicPrivateToggle
-      closeModal={() => setShowSelectSwapDestinationModal(false)}
-    />
-    {showLiquiditySlippageSelector && (
-      <LiquiditySettingsModal
-        show={showLiquiditySettingsModal}
-        setFinalSlippagePercentage={setSlippagePercent}
-        initialSlippagePercentage={slippagePercent}
-        onClose={() => setShowLiquiditySettingsModal(false)}
+  return (
+    <>
+      <SelectWalletModal
+        show={showSelectSwapDestinationModal}
+        title="Select swap destination"
+        isRailgunInitial={showPrivateSwapDestination()}
+        onDismiss={dismissSelectSwapDestinationModal}
+        selectedAddress={swapDestinationAddress}
+        availableWalletsOnly
+        showNoDestinationWalletOption
+        showCustomAddressDestinationOption
+        showSavedAddresses
+        showPublicPrivateToggle
+        closeModal={() => setShowSelectSwapDestinationModal(false)}
       />
-    )}
-    {showSwapSlippageSelector && (
-      <SwapSettingsModal
-        show={showSwapSettingsModal}
-        isRailgun={isRailgunAddress(fromWalletAddress)}
-        currentSettings={{ slippagePercentage: slippagePercent }}
-        onDismiss={onDismissSwapSettings}
-      />
-    )}
-    <View style={styles.reviewSection}>
-      <View style={styles.walletNameIconWrapper}>
-        {walletIcon(isShieldedFromAddress)}
-        <Text style={styles.walletNameText}>
-          {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
-        </Text>
-      </View>
-      <View style={styles.erc20AmountsWrapper}>
-        {recipeFinalERC20Amounts
-          ? inputERC20AmountRecipients.map((tokenAmount, index) => {
-              return reviewTokenAmount(tokenAmount, index);
-            })
-          : adjustedERC20AmountRecipients.map(
-              (adjustedTokenAmount, index) => {
-                return reviewTokenAmount(
-                  adjustedTokenAmount.input,
-                  index,
-                  adjustedTokenAmount.fee,
-                );
-              },
-            )}
-      </View>
-      {showReceiverWallets() &&
-        outputTokenRecipientGroups.map(tokenRecipientGroup => {
-          return (
-            (<View key={tokenRecipientGroup.recipientAddress}>
-              <View style={styles.arrowIconWrapper}>
-                <Icon source={transactionIcon()} size={24} color="white" />
-              </View>
-              {showOutputAddress &&
-                outputAddress(
-                  isFullyPrivateTransaction,
-                  tokenRecipientGroup.recipientAddress,
-                )}
-              <View style={styles.erc20AmountsWrapper}>
-                {tokenRecipientGroup.tokenAmounts.map(
-                  (outputTokenAmount, index) => {
-                    return reviewTokenAmount(
-                      outputTokenAmount,
-                      index,
-                      undefined, true,
-                    );
-                  },
-                )}
-              </View>
-            </View>)
-          );
-        })}
-      {isSwap && swapQuote && swapBuyTokenAmount && (
-        <>
-          <View style={styles.arrowIconWrapper}>
-            <Icon source={transactionIcon()} size={24} color="white" />
-          </View>
-          {isDefined(swapDestinationAddress) &&
-            outputAddress(false, swapDestinationAddress)}
-          <View style={styles.erc20AmountsWrapper}>
-            {reviewTokenAmount(
-              swapBuyTokenAmount,
-              0, undefined, true,
-            )}
-            {modifySwapDestinationAddress()}
-            {modifySlippagePercent(openSwapSettings)}
-            {minimumReceivedTokenAmounts()}
-          </View>
-          {(swapQuoteOutdated ?? false) && updateSwapQuote && (
-            <View style={styles.swapPriceUpdatedContainer}>
-              <Text
-                onPress={updateSwapQuote}
-                style={styles.swapPriceUpdatedButton}
-              >
-                Price outdated. Tap to refresh.
-              </Text>
-            </View>
-          )}
-        </>
+      {showLiquiditySlippageSelector && (
+        <LiquiditySettingsModal
+          show={showLiquiditySettingsModal}
+          setFinalSlippagePercentage={setSlippagePercent}
+          initialSlippagePercentage={slippagePercent}
+          onClose={() => setShowLiquiditySettingsModal(false)}
+        />
       )}
-      {isFarmFeature && (
-        <View style={styles.vaultTextWrapper}>
-          <Text style={styles.vaultExchangeRateText}>
-            {getVaultExchangeRateDisplayText(vault, transactionType)}
+      {showSwapSlippageSelector && (
+        <SwapSettingsModal
+          show={showSwapSettingsModal}
+          isRailgun={isRailgunAddress(fromWalletAddress)}
+          currentSettings={{ slippagePercentage: slippagePercent }}
+          onDismiss={onDismissSwapSettings}
+        />
+      )}
+      <View style={styles.reviewSection}>
+        <View style={styles.walletNameIconWrapper}>
+          {walletIcon(isShieldedFromAddress)}
+          <Text style={styles.walletNameText}>
+            {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
           </Text>
-          <Text
-            style={styles.vaultApyText}
-          >{`Current APY: ${expectedVaultApy}%`}</Text>
         </View>
-      )}
-      {isLiquidity && (
-        <>
+        <View style={styles.erc20AmountsWrapper}>
+          {recipeFinalERC20Amounts
+            ? inputERC20AmountRecipients.map((tokenAmount, index) => {
+                return reviewTokenAmount(tokenAmount, index);
+              })
+            : adjustedERC20AmountRecipients.map(
+                (adjustedTokenAmount, index) => {
+                  return reviewTokenAmount(
+                    adjustedTokenAmount.input,
+                    index,
+                    adjustedTokenAmount.fee
+                  );
+                }
+              )}
+        </View>
+        {showReceiverWallets() &&
+          outputTokenRecipientGroups.map((tokenRecipientGroup) => {
+            return (
+              <View key={tokenRecipientGroup.recipientAddress}>
+                <View style={styles.arrowIconWrapper}>
+                  <Icon source={transactionIcon()} size={24} color="white" />
+                </View>
+                {showOutputAddress &&
+                  outputAddress(
+                    isFullyPrivateTransaction,
+                    tokenRecipientGroup.recipientAddress
+                  )}
+                <View style={styles.erc20AmountsWrapper}>
+                  {tokenRecipientGroup.tokenAmounts.map(
+                    (outputTokenAmount, index) => {
+                      return reviewTokenAmount(
+                        outputTokenAmount,
+                        index,
+                        undefined,
+                        true
+                      );
+                    }
+                  )}
+                </View>
+              </View>
+            );
+          })}
+        {isSwap && swapQuote && swapBuyTokenAmount && (
+          <>
+            <View style={styles.arrowIconWrapper}>
+              <Icon source={transactionIcon()} size={24} color="white" />
+            </View>
+            {isDefined(swapDestinationAddress) &&
+              outputAddress(false, swapDestinationAddress)}
+            <View style={styles.erc20AmountsWrapper}>
+              {reviewTokenAmount(swapBuyTokenAmount, 0, undefined, true)}
+              {modifySwapDestinationAddress()}
+              {modifySlippagePercent(openSwapSettings)}
+              {minimumReceivedTokenAmounts()}
+            </View>
+            {(swapQuoteOutdated ?? false) && updateSwapQuote && (
+              <View style={styles.swapPriceUpdatedContainer}>
+                <Text
+                  onPress={updateSwapQuote}
+                  style={styles.swapPriceUpdatedButton}
+                >
+                  Price outdated. Tap to refresh.
+                </Text>
+              </View>
+            )}
+          </>
+        )}
+        {isFarmFeature && (
           <View style={styles.vaultTextWrapper}>
             <Text style={styles.vaultExchangeRateText}>
-              {getPairExchangeRateDisplayText(pool)}
+              {getVaultExchangeRateDisplayText(vault, transactionType)}
             </Text>
+            <Text
+              style={styles.vaultApyText}
+            >{`Current APY: ${expectedVaultApy}%`}</Text>
           </View>
-          {modifySlippagePercent(openLiquiditySettings)}
-          {minimumReceivedTokenAmounts()}
-        </>
-      )}
-      {(recipeFinalERC20Amounts?.feeERC20AmountRecipients?.length ?? 0) >
-        0 && (
-        <View style={styles.recipeFeeWrapper}>
-          {recipeFinalERC20Amounts?.feeERC20AmountRecipients.map(
-            (feeERC20Amount, index) => {
-              const { amountString, recipientAddress, token } =
-                feeERC20Amount;
-              const amount = formatUnitFromHexStringToLocale(
-                amountString,
-                token.decimals,
-              );
-              return (
-                <View style={styles.recipeFeeTextWrapper} key={index}>
-                  <Text style={styles.sectionItemTitle}>
-                    {recipientAddress}
-                  </Text>
-                  <Text
-                    style={styles.recipeFeeAmount}
-                  >{`${amount} ${getTokenDisplayName(
-                    token,
-                    wallets.available,
-                    network.current.name,
-                  )}`}</Text>
-                </View>
-              );
-            },
-          )}
-        </View>
-      )}
-    </View>
-  </>);
+        )}
+        {isLiquidity && (
+          <>
+            <View style={styles.vaultTextWrapper}>
+              <Text style={styles.vaultExchangeRateText}>
+                {getPairExchangeRateDisplayText(pool)}
+              </Text>
+            </View>
+            {modifySlippagePercent(openLiquiditySettings)}
+            {minimumReceivedTokenAmounts()}
+          </>
+        )}
+        {(recipeFinalERC20Amounts?.feeERC20AmountRecipients?.length ?? 0) >
+          0 && (
+          <View style={styles.recipeFeeWrapper}>
+            {recipeFinalERC20Amounts?.feeERC20AmountRecipients.map(
+              (feeERC20Amount, index) => {
+                const { amountString, recipientAddress, token } =
+                  feeERC20Amount;
+                const amount = formatUnitFromHexStringToLocale(
+                  amountString,
+                  token.decimals
+                );
+                return (
+                  <View style={styles.recipeFeeTextWrapper} key={index}>
+                    <Text style={styles.sectionItemTitle}>
+                      {recipientAddress}
+                    </Text>
+                    <Text
+                      style={styles.recipeFeeAmount}
+                    >{`${amount} ${getTokenDisplayName(
+                      token,
+                      wallets.available,
+                      network.current.name
+                    )}`}</Text>
+                  </View>
+                );
+              }
+            )}
+          </View>
+        )}
+      </View>
+    </>
+  );
 };

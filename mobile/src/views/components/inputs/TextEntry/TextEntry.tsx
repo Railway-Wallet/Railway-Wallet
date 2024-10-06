@@ -1,5 +1,5 @@
-import { isDefined, removeUndefineds } from '@railgun-community/shared-models';
-import React, { MutableRefObject, useRef, useState } from 'react';
+import { isDefined, removeUndefineds } from "@railgun-community/shared-models";
+import React, { MutableRefObject, useRef, useState } from "react";
 import {
   Keyboard,
   KeyboardTypeOptions,
@@ -8,12 +8,12 @@ import {
   TextInputProps,
   View,
   ViewStyle,
-} from 'react-native';
-import { useClickOutside } from 'react-native-click-outside';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { styleguide } from '@react-shared';
-import { Icon, IconSource } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "react-native";
+import { useClickOutside } from "react-native-click-outside";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { styleguide } from "@react-shared";
+import { Icon, IconSource } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type TextInputIconButton = {
   icon: string;
@@ -62,8 +62,8 @@ export const TextEntry: React.FC<TextEntryProps> = ({
   };
 
   const keyboardType: KeyboardTypeOptions = useNumberPad
-    ? 'number-pad'
-    : 'default';
+    ? "number-pad"
+    : "default";
 
   const labelText = () => {
     return (
@@ -90,7 +90,7 @@ export const TextEntry: React.FC<TextEntryProps> = ({
   }
   if (useSecureEntry) {
     iconButtonsWithSecureEntry.push({
-      icon: secureTextEntry ? 'eye-off-outline' : 'eye-outline',
+      icon: secureTextEntry ? "eye-off-outline" : "eye-outline",
       onTap: onTapPasswordIcon,
     });
   }
@@ -119,7 +119,7 @@ export const TextEntry: React.FC<TextEntryProps> = ({
   };
 
   return (
-    (<View ref={clickOutsideRef} style={[styles.wrapper, ...viewStyles]}>
+    <View ref={clickOutsideRef} style={[styles.wrapper, ...viewStyles]}>
       <View style={styles.topWrapper}>
         {labelText()}
         {rightIconButtons()}
@@ -137,11 +137,11 @@ export const TextEntry: React.FC<TextEntryProps> = ({
         placeholderTextColor={styleguide.colors.textSecondary}
         autoCorrect={false}
         spellCheck={false}
-        returnKeyType={returnKeyType ?? 'done'}
+        returnKeyType={returnKeyType ?? "done"}
         blurOnSubmit={blurOnSubmit ?? true}
         {...props}
-        pointerEvents={props.editable === false ? 'none' : 'auto'}
+        pointerEvents={props.editable === false ? "none" : "auto"}
       />
-    </View>)
+    </View>
   );
 };

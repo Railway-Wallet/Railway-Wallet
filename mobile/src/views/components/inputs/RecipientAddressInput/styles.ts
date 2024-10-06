@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   addressInput: {
@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
     borderColor: styleguide.colors.inputBorder,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    width: '100%',
+    width: "100%",
   },
   addressInputError: {
     borderBottomColor: styleguide.colors.error(),
   },
   knownWalletContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     marginTop: 6,
     marginLeft: 6,
   },
@@ -39,16 +39,16 @@ export const styles = StyleSheet.create({
   },
   buttonLabel: {
     ...styleguide.typography.label,
-    textTransform: 'none' as 'none',
+    textTransform: "none" as "none",
   },
   inputRightView: {
-    display: 'flex',
+    display: "flex",
   },
   inputSpinner: {
     marginRight: 12,
   },
   inputInsetButton: {
-    justifyContent: 'center',
+    justifyContent: "center",
     height: 32,
   },
 });

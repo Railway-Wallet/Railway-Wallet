@@ -1,10 +1,10 @@
-import { SwapQuoteData } from '@railgun-community/cookbook';
-import { useMemo } from 'react';
-import { SharedConstants } from '../../config/shared-constants';
+import { SwapQuoteData } from "@railgun-community/cookbook";
+import { useMemo } from "react";
+import { SharedConstants } from "../../config/shared-constants";
 
 export const useSwapQuoteSignificantlyChanged = (
   lockedQuote: SwapQuoteData,
-  currentQuote: Optional<SwapQuoteData>,
+  currentQuote: Optional<SwapQuoteData>
 ) => {
   const quoteSignificantlyChanged = useMemo(() => {
     if (!currentQuote) {

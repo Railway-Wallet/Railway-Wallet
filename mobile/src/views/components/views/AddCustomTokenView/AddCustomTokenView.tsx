@@ -1,11 +1,11 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { WideButtonTextOnly } from '@components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { ModalTextEntryInput } from '@components/inputs/ModalTextEntryInput/ModalTextEntryInput';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
+import { Text, TextInput, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { WideButtonTextOnly } from "@components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { ModalTextEntryInput } from "@components/inputs/ModalTextEntryInput/ModalTextEntryInput";
 import {
   getERC20TokenDetails,
   logDevError,
@@ -15,9 +15,9 @@ import {
   useReduxSelector,
   validateCustomTokenFields,
   validateERC20TokenContract,
-} from '@react-shared';
-import { ErrorDetailsModal } from '@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { styles } from './styles';
+} from "@react-shared";
+import { ErrorDetailsModal } from "@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { styles } from "./styles";
 
 type Props = {
   initialAddTokenAddress?: string;
@@ -36,16 +36,16 @@ export const AddCustomTokenView: React.FC<Props> = ({
   onClose,
   disableEditing,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const [hasValidTokenContract, setHasValidTokenContract] = useState(false);
   const [foundToken, setFoundToken] =
     useState<Optional<SearchableERC20>>(undefined);
 
-  const [contractAddress, setContractAddress] = useState('');
-  const [name, setName] = useState('');
-  const [symbol, setSymbol] = useState('');
-  const [decimals, setDecimals] = useState('');
+  const [contractAddress, setContractAddress] = useState("");
+  const [name, setName] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [decimals, setDecimals] = useState("");
   const [icon, setIcon] = useState<Optional<TokenIconKey>>();
   const [logoURI, setLogoURI] = useState<Optional<string>>();
   const [isSearching, setIsSearching] = useState(false);
@@ -78,9 +78,9 @@ export const AddCustomTokenView: React.FC<Props> = ({
   const clearStates = () => {
     setError(undefined);
     setFoundToken(undefined);
-    setName('');
-    setSymbol('');
-    setDecimals('');
+    setName("");
+    setSymbol("");
+    setDecimals("");
     setIcon(undefined);
     setLogoURI(undefined);
   };
@@ -103,25 +103,25 @@ export const AddCustomTokenView: React.FC<Props> = ({
 
       const isValidTokenContract = await validateERC20TokenContract(
         network.current.name,
-        contractAddress,
+        contractAddress
       );
       setHasValidTokenContract(isValidTokenContract);
       if (!isValidTokenContract) {
-        throw new Error('Invalid token address');
+        throw new Error("Invalid token address");
       }
 
       setIcon(undefined);
-      setDecimals('');
+      setDecimals("");
       setIsSearching(true);
       const searchCoin: SearchableERC20 = await getERC20TokenDetails(
         contractAddress,
-        network.current,
+        network.current
       );
       setIsSearching(false);
 
       setDecimals(String(searchCoin.decimals));
 
-      if (searchCoin.name !== '' && searchCoin.symbol !== '') {
+      if (searchCoin.name !== "" && searchCoin.symbol !== "") {
         setFoundToken(searchCoin);
         setName(searchCoin.name);
         setSymbol(searchCoin.symbol);
@@ -132,7 +132,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
       setFoundToken(undefined);
       const error = new Error(
         `Could not get token details for ${network.current.publicName}`,
-        { cause },
+        { cause }
       );
       logDevError(error);
       setError(error);
@@ -149,7 +149,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
         symbol,
         decimals,
         icon,
-        logoURI,
+        logoURI
       );
       if (token) {
         onSuccess(token);
@@ -181,7 +181,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
           placeholder="0x0"
           value={contractAddress}
           onChangeText={setContractAddress}
-          invalid={contractAddress !== '' && !hasValidTokenContract}
+          invalid={contractAddress !== "" && !hasValidTokenContract}
           maxLength={42}
           autoCapitalize="none"
           multiline
@@ -193,7 +193,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
           onSubmitEditing={() => {
             refEntry2.current?.focus();
           }}
-          labelIcon={hasValidTokenContract ? 'check' : undefined}
+          labelIcon={hasValidTokenContract ? "check" : undefined}
           labelIconColor={styleguide.colors.txGreen()}
           labelIconSize={18}
           reference={addressEntryRef}
@@ -203,7 +203,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
         <ModalTextEntryInput
           label="Name"
           placeholder="Railgun"
-          value={isSearching ? 'Loading...' : name}
+          value={isSearching ? "Loading..." : name}
           onChangeText={setName}
           editable={
             !isDefined(foundToken) && !isSearching && disableEditing !== true
@@ -221,7 +221,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
         <ModalTextEntryInput
           label="Symbol"
           placeholder="RAIL"
-          value={isSearching ? 'Loading...' : symbol}
+          value={isSearching ? "Loading..." : symbol}
           onChangeText={setSymbol}
           editable={
             !isDefined(foundToken) && !isSearching && disableEditing !== true
@@ -237,8 +237,8 @@ export const AddCustomTokenView: React.FC<Props> = ({
         <WideButtonTextOnly
           title={
             isDefined(isAddingToken) && isAddingToken
-              ? 'Adding Token...'
-              : 'Add'
+              ? "Adding Token..."
+              : "Add"
           }
           disabled={isAddingToken}
           onPress={onAddToken}
@@ -248,7 +248,7 @@ export const AddCustomTokenView: React.FC<Props> = ({
         {isDefined(error) && (
           <View style={styles.errorTextWrapper}>
             <Text style={styles.errorText}>
-              {error.message}{' '}
+              {error.message}{" "}
               <Text
                 style={styles.errorShowMore}
                 onPress={openErrorDetailsModal}

@@ -1,23 +1,23 @@
-import { isDefined } from '@railgun-community/shared-models';
+import { isDefined } from "@railgun-community/shared-models";
 import {
   CoinPaprikaApiEndpoint,
   createPaprikaRequestUrl,
   getCoinPaprikaData,
-} from './coinpaprika-service';
+} from "./coinpaprika-service";
 import {
   CoinPaprikaTokenDetails,
   CoinPaprikaTokenDetailsCache,
-} from './coinpaprika-token-details-cache';
+} from "./coinpaprika-token-details-cache";
 
 export const getCoinPaprikaTokenID = async (
-  symbol: string,
+  symbol: string
 ): Promise<Optional<string>> => {
   const cachedTokenId = await CoinPaprikaTokenDetailsCache.getCachedID(
     createPaprikaRequestUrl(
       CoinPaprikaApiEndpoint.CachedInfo,
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      `${symbol}`,
-    ),
+
+      `${symbol}`
+    )
   );
 
   if (isDefined(cachedTokenId)) {
@@ -27,7 +27,7 @@ export const getCoinPaprikaTokenID = async (
 };
 
 export const getCoinPaprikaTokenDetails = async (
-  symbol: string,
+  symbol: string
 ): Promise<Optional<CoinPaprikaTokenDetails>> => {
   const tokenID = await getCoinPaprikaTokenID(symbol);
   if (!isDefined(tokenID)) {
@@ -41,7 +41,7 @@ export const getCoinPaprikaTokenDetails = async (
 
   const tokenResult = await getCoinPaprikaData(
     CoinPaprikaApiEndpoint.CoinInfo,
-    tokenID,
+    tokenID
   );
   if (isDefined(tokenResult) && !isDefined(tokenResult.error)) {
     const { data } = tokenResult;
@@ -57,7 +57,7 @@ export const getCoinPaprikaTokenDetails = async (
     };
     await CoinPaprikaTokenDetailsCache.store(
       createPaprikaRequestUrl(CoinPaprikaApiEndpoint.CoinInfo, tokenID),
-      tokenInfo,
+      tokenInfo
     );
     return tokenInfo;
   }

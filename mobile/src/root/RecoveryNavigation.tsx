@@ -1,14 +1,14 @@
-import React from 'react';
-import { enableScreens } from 'react-native-screens';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LockedScreen } from '@screens/pages/locked/LockedScreen/LockedScreen';
-import { RecoveryWalletsScreen } from '@screens/pages/recovery/RecoveryWalletsScreen';
-import { ShowSeedPhraseScreen } from '@screens/pages/settings/ShowSeedPhraseScreen/ShowSeedPhraseScreen';
-import { SettingsAddCustomRPCScreen } from '@views/screens/pages/settings/SettingsAddCustomRPCScreen/SettingsAddCustomRPCScreen';
-import { SettingsNetworkInfoScreen } from '@views/screens/pages/settings/SettingsNetworkInfoScreen/SettingsNetworkInfoScreen';
-import { SettingsNetworksScreen } from '@views/screens/pages/settings/SettingsNetworksScreen/SettingsNetworksScreen';
-import { ShowViewingKeyScreen } from '@views/screens/pages/settings/ShowViewingKeyScreen/ShowViewingKeyScreen';
-import { RootNavProps, ScreenComponent } from './Navigation';
+import React from "react";
+import { enableScreens } from "react-native-screens";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { LockedScreen } from "@screens/pages/locked/LockedScreen/LockedScreen";
+import { RecoveryWalletsScreen } from "@screens/pages/recovery/RecoveryWalletsScreen";
+import { ShowSeedPhraseScreen } from "@screens/pages/settings/ShowSeedPhraseScreen/ShowSeedPhraseScreen";
+import { SettingsAddCustomRPCScreen } from "@views/screens/pages/settings/SettingsAddCustomRPCScreen/SettingsAddCustomRPCScreen";
+import { SettingsNetworkInfoScreen } from "@views/screens/pages/settings/SettingsNetworkInfoScreen/SettingsNetworkInfoScreen";
+import { SettingsNetworksScreen } from "@views/screens/pages/settings/SettingsNetworksScreen/SettingsNetworksScreen";
+import { ShowViewingKeyScreen } from "@views/screens/pages/settings/ShowViewingKeyScreen/ShowViewingKeyScreen";
+import { RootNavProps, ScreenComponent } from "./Navigation";
 
 const RootStack = createNativeStackNavigator();
 const RootNavigator = ({
@@ -57,7 +57,7 @@ const RootNavigator = ({
       />
     </RootStack.Group>
     <RootStack.Group
-      screenOptions={{ gestureEnabled: false, animation: 'fade' }}
+      screenOptions={{ gestureEnabled: false, animation: "fade" }}
     >
       <RootStack.Screen
         name="LockedModal"

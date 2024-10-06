@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { Button, Modal, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { styleguide } from '@react-shared';
-import { createQrScanner } from '@services/util/qr-scan-service';
-import { styles } from './styles';
+import React, { useEffect } from "react";
+import { Button, Modal, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { styleguide } from "@react-shared";
+import { createQrScanner } from "@services/util/qr-scan-service";
+import { styles } from "./styles";
 
 type Props = {
   show: boolean;
@@ -11,7 +11,7 @@ type Props = {
   mockResponse_DevOnly?: string;
 };
 
-const MOCKED_ADDRESS = '0x9E9F988356f46744Ee0374A17a5Fa1a3A3cC3777';
+const MOCKED_ADDRESS = "0x9E9F988356f46744Ee0374A17a5Fa1a3A3cC3777";
 
 export const ScanQRCodeModal: React.FC<Props> = ({
   show,
@@ -26,7 +26,7 @@ export const ScanQRCodeModal: React.FC<Props> = ({
   const bottomContent = <></>;
 
   return (
-    (<Modal animationType="slide" presentationStyle="formSheet" visible={show}>
+    <Modal animationType="slide" presentationStyle="formSheet" visible={show}>
       <View style={styles.wrapper}>
         <AppHeader
           title="Scan QR code"
@@ -54,6 +54,6 @@ export const ScanQRCodeModal: React.FC<Props> = ({
         />
         {createQrScanner(onDismiss, topContent, bottomContent)}
       </View>
-    </Modal>)
+    </Modal>
   );
 };

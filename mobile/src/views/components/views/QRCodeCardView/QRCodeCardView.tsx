@@ -1,13 +1,13 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { CalloutType } from '@react-shared';
+import React from "react";
+import { Text, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { CalloutType } from "@react-shared";
 import {
   createRailgunQrCode,
   fadedQrCodePlaceholder,
-} from '@services/util/qr-code-service';
-import { styles } from './styles';
+} from "@services/util/qr-code-service";
+import { styles } from "./styles";
 
 type Props = {
   title: string;

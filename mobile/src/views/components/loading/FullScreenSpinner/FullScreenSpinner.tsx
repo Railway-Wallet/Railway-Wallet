@@ -1,9 +1,9 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-import { styleguide } from '@react-shared';
-import { AnimatedWrapper } from '@services/animation/AnimatedWrapper';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useRef } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
+import { styleguide } from "@react-shared";
+import { AnimatedWrapper } from "@services/animation/AnimatedWrapper";
+import { styles } from "./styles";
 
 export type FullScreenSpinnerProps = {
   show: boolean;
@@ -48,7 +48,7 @@ export const FullScreenSpinner: React.FC<FullScreenSpinnerProps> = ({
   return (
     <View
       style={styles.container}
-      pointerEvents={shouldPreventTouch ? 'auto' : 'none'}
+      pointerEvents={shouldPreventTouch ? "auto" : "none"}
     >
       <AnimatedWrapper.View
         style={{ ...styles.spinnerContainer, opacity: fadeAnim }}

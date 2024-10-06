@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const styles = StyleSheet.create({
   wrapper: {},
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.lighterLabelSecondary,
     marginTop: 16,
     paddingRight: 8,
-    textAlign: 'right',
+    textAlign: "right",
     height: 16,
   },
   selectTokenButton: {
@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
   },
   bottomButtonLabel: {
     ...styleguide.typography.label,
-    textTransform: 'none',
+    textTransform: "none",
   },
   inputInsetButton: {
-    justifyContent: 'center',
+    justifyContent: "center",
     height: 32,
   },
   feeDisclaimerContainer: {

@@ -1,12 +1,12 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config';
+import { isDefined } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config";
 import {
   BlockedBroadcaster,
   setBlockedBroadcasters,
-} from '../../redux-store/reducers/broadcaster-blocklist-reducer';
-import { AppDispatch } from '../../redux-store/store';
-import { logDev } from '../../utils/logging';
-import { StorageService } from '../storage';
+} from "../../redux-store/reducers/broadcaster-blocklist-reducer";
+import { AppDispatch } from "../../redux-store/store";
+import { logDev } from "../../utils/logging";
+import { StorageService } from "../storage";
 
 export class BlockedBroadcasterService {
   private dispatch: AppDispatch;
@@ -20,26 +20,26 @@ export class BlockedBroadcasterService {
   > {
     try {
       const storedJsonValue = await StorageService.getItem(
-        SharedConstants.BLOCKED_BROADCASTERS,
+        SharedConstants.BLOCKED_BROADCASTERS
       );
       if (isDefined(storedJsonValue)) {
         const broadcasters = JSON.parse(
-          storedJsonValue,
+          storedJsonValue
         ) as BlockedBroadcaster[];
         return BlockedBroadcasterService.sortBlockedBroadcasters(broadcasters);
       }
 
       return [];
     } catch (cause) {
-      logDev('Error fetching blocked broadcasters:', cause);
-      throw new Error('Error fetching blocked broadcasters.', { cause });
+      logDev("Error fetching blocked broadcasters:", cause);
+      throw new Error("Error fetching blocked broadcasters.", { cause });
     }
   }
 
   private async storeBlockedBroadcasters(broadcasters: BlockedBroadcaster[]) {
     await StorageService.setItem(
       SharedConstants.BLOCKED_BROADCASTERS,
-      JSON.stringify(broadcasters),
+      JSON.stringify(broadcasters)
     );
   }
 
@@ -51,7 +51,7 @@ export class BlockedBroadcasterService {
 
   async addBlockedBroadcaster(
     railgunAddress: string,
-    expiration: Optional<number>,
+    expiration: Optional<number>
   ) {
     const blockedBroadcaster: BlockedBroadcaster = {
       railgunAddress,
@@ -66,7 +66,7 @@ export class BlockedBroadcasterService {
         blockedBroadcaster.railgunAddress.toLowerCase() ===
         railgunAddress.toLowerCase()
       ) {
-        throw new Error('You have already blocked this broadcaster.');
+        throw new Error("You have already blocked this broadcaster.");
       }
     }
 
@@ -80,7 +80,7 @@ export class BlockedBroadcasterService {
     const blockedBroadcasters = await this.fetchStoredBlockedBroadcasters();
 
     const updatedBlockedBroadcasters = blockedBroadcasters.filter(
-      broadcaster => broadcaster.railgunAddress !== railgunAddress,
+      (broadcaster) => broadcaster.railgunAddress !== railgunAddress
     );
 
     await this.storeBlockedBroadcasters(updatedBlockedBroadcasters);
@@ -88,7 +88,7 @@ export class BlockedBroadcasterService {
   }
 
   static sortBlockedBroadcasters(
-    broadcasters: BlockedBroadcaster[],
+    broadcasters: BlockedBroadcaster[]
   ): BlockedBroadcaster[] {
     return broadcasters.sort((a, b) => {
       return a.blockedTimestamp > b.blockedTimestamp ? -1 : 0;
@@ -97,8 +97,10 @@ export class BlockedBroadcasterService {
 
   static isBroadcasterBlocked(
     railgunAddress: Optional<string>,
-    blockedBroadcasters: BlockedBroadcaster[],
+    blockedBroadcasters: BlockedBroadcaster[]
   ) {
-    return !blockedBroadcasters.every(r => r.railgunAddress !== railgunAddress);
+    return !blockedBroadcasters.every(
+      (r) => r.railgunAddress !== railgunAddress
+    );
   }
 }

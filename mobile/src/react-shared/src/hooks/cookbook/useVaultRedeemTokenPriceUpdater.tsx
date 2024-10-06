@@ -1,19 +1,19 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect } from 'react';
-import { formatUnits, parseUnits } from 'ethers';
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect } from "react";
+import { formatUnits, parseUnits } from "ethers";
 import {
   UpdatedTokenPrice,
   updateTokenPrices,
-} from '../../redux-store/reducers/network-price-reducer';
-import { AppSettingsService, getERC20TokensForNetwork } from '../../services';
-import { compareTokenAddress, logDev } from '../../utils';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
+} from "../../redux-store/reducers/network-price-reducer";
+import { AppSettingsService, getERC20TokensForNetwork } from "../../services";
+import { compareTokenAddress, logDev } from "../../utils";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
 
 export const useVaultRedeemTokenPriceUpdater = () => {
-  const { network } = useReduxSelector('network');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { vaults } = useReduxSelector('vaults');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { vaults } = useReduxSelector("vaults");
+  const { wallets } = useReduxSelector("wallets");
 
   const dispatch = useAppDispatch();
 
@@ -44,14 +44,14 @@ export const useVaultRedeemTokenPriceUpdater = () => {
 
         if (!isDefined(depositTokenPrice)) {
           logDev(
-            `Redeem token price calculation failed for ${vault.redeemERC20Symbol}. No corresponding deposit token (${vault.depositERC20Symbol}) in price map.`,
+            `Redeem token price calculation failed for ${vault.redeemERC20Symbol}. No corresponding deposit token (${vault.depositERC20Symbol}) in price map.`
           );
           continue;
         }
 
         const depositPriceBigInt = parseUnits(
           depositTokenPrice.toString(),
-          vault.redeemERC20Decimals,
+          vault.redeemERC20Decimals
         );
 
         const redeemPriceBigInt =
@@ -59,7 +59,7 @@ export const useVaultRedeemTokenPriceUpdater = () => {
           10n ** BigInt(vault.redeemERC20Decimals);
 
         const redeemTokenPrice = Number(
-          formatUnits(redeemPriceBigInt, vault.redeemERC20Decimals),
+          formatUnits(redeemPriceBigInt, vault.redeemERC20Decimals)
         );
 
         const existingRedeemTokenPrice = tokenPricesForNetwork[tokenAddress];
@@ -79,17 +79,18 @@ export const useVaultRedeemTokenPriceUpdater = () => {
 
     if (redeemTokenPrices.length > 0) {
       const existingTokenPrices: UpdatedTokenPrice[] = Object.keys(
-        tokenPricesForNetwork,
+        tokenPricesForNetwork
       )
         .filter(
-          existingPriceTokenAddress => !redeemTokenPrices.some(redeemTokenPrice =>
-            compareTokenAddress(
-              redeemTokenPrice.tokenAddress,
-              existingPriceTokenAddress,
-            ),
-          ),
+          (existingPriceTokenAddress) =>
+            !redeemTokenPrices.some((redeemTokenPrice) =>
+              compareTokenAddress(
+                redeemTokenPrice.tokenAddress,
+                existingPriceTokenAddress
+              )
+            )
         )
-        .map(tokenAddress => {
+        .map((tokenAddress) => {
           return {
             tokenAddress,
             price: tokenPricesForNetwork[tokenAddress] ?? 0,
@@ -100,7 +101,7 @@ export const useVaultRedeemTokenPriceUpdater = () => {
         updateTokenPrices({
           networkName,
           updatedTokenPrices: [...existingTokenPrices, ...redeemTokenPrices],
-        }),
+        })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

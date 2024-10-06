@@ -1,17 +1,17 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
 import {
   SavedTransaction,
   TransactionAction,
   TransactionStatus,
-} from '../../models/transaction';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../models/transaction";
+import { useReduxSelector } from "../hooks-redux";
 
 export const usePendingApproveNFTCollectionTransaction = (
   networkName: NetworkName,
   nftAddress: Optional<string>,
-  spender: Optional<string>,
+  spender: Optional<string>
 ): { pendingApproveNFTCollectionTransaction: Optional<SavedTransaction> } => {
-  const { savedTransactions } = useReduxSelector('savedTransactions');
+  const { savedTransactions } = useReduxSelector("savedTransactions");
 
   const visibleTransactions = savedTransactions.forNetwork[networkName] ?? [];
 
@@ -21,14 +21,14 @@ export const usePendingApproveNFTCollectionTransaction = (
   }
 
   const pendingApproveNFTCollectionTransaction = visibleTransactions.find(
-    tx =>
+    (tx) =>
       tx.status === TransactionStatus.pending &&
       tx.action === TransactionAction.approve &&
       tx.spender === spender &&
       tx.nftAmountRecipients &&
       tx.nftAmountRecipients
-        .map(nftAmountRecipient => nftAmountRecipient.nftAddress)
-        .includes(nftAddress),
+        .map((nftAmountRecipient) => nftAmountRecipient.nftAddress)
+        .includes(nftAddress)
   );
 
   return { pendingApproveNFTCollectionTransaction };

@@ -1,4 +1,4 @@
-import { isDefined } from '@railgun-community/shared-models';
+import { isDefined } from "@railgun-community/shared-models";
 
 type StorageServiceType = {
   getItem: (name: string) => Promise<string | null>;
@@ -16,7 +16,7 @@ export class StorageService {
   static getItem = (name: string): Promise<string | null> => {
     if (!isDefined(this.storage)) {
       throw new Error(
-        'Storage mechanism not set. Please call StorageService.init.',
+        "Storage mechanism not set. Please call StorageService.init."
       );
     }
     return this.storage.getItem(name);
@@ -25,7 +25,7 @@ export class StorageService {
   static setItem = (name: string, value: string): Promise<void> => {
     if (!isDefined(this.storage)) {
       throw new Error(
-        'Storage mechanism not set. Please call StorageService.init.',
+        "Storage mechanism not set. Please call StorageService.init."
       );
     }
     return this.storage.setItem(name, value);
@@ -34,7 +34,7 @@ export class StorageService {
   static removeItem = (name: string): Promise<void> => {
     if (!isDefined(this.storage)) {
       throw new Error(
-        'Storage mechanism not set. Please call StorageService.init.',
+        "Storage mechanism not set. Please call StorageService.init."
       );
     }
     return this.storage.removeItem(name);

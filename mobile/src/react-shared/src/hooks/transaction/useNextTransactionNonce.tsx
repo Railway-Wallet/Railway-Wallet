@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { AvailableWallet } from '../../models/wallet';
-import { ProviderService } from '../../services/providers/provider-service';
-import { NonceStorageService } from '../../services/wallet/nonce-storage-service';
-import { useReduxSelector } from '../hooks-redux';
+import { useEffect, useState } from "react";
+import { AvailableWallet } from "../../models/wallet";
+import { ProviderService } from "../../services/providers/provider-service";
+import { NonceStorageService } from "../../services/wallet/nonce-storage-service";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useNextTransactionNonce = (
   fromWalletAddress: string,
   isShieldedFromAddress: boolean,
-  publicWalletOverride: Optional<AvailableWallet>,
+  publicWalletOverride: Optional<AvailableWallet>
 ) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const [nextTransactionNonce, setNextTransactionNonce] =
     useState<Optional<number>>();
@@ -27,7 +27,7 @@ export const useNextTransactionNonce = (
         provider,
         ethAddress,
         network.current.name,
-        undefined,
+        undefined
       );
       setNextTransactionNonce(nonce);
     };

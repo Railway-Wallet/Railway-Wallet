@@ -1,31 +1,31 @@
-import { isDefined } from '@railgun-community/shared-models';
-import axios from 'axios';
-import { ReactConfig } from '../../../config/react-config';
-import { logDev } from '../../../utils/logging';
+import { isDefined } from "@railgun-community/shared-models";
+import axios from "axios";
+import { ReactConfig } from "../../../config/react-config";
+import { logDev } from "../../../utils/logging";
 
-const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/';
+const COINGECKO_API_URL = "https://api.coingecko.com/api/v3/";
 
 export enum CoingeckoApiEndpoint {
-  PriceLookup = 'simple/token_price/',
+  PriceLookup = "simple/token_price/",
 }
 
 const MAX_NUM_RETRIES = 1;
 
 const paramString = (params?: MapType<any>) => {
   if (!params) {
-    return '';
+    return "";
   }
   const searchParams = new URLSearchParams(params);
-  return searchParams.toString() ? `?${searchParams.toString()}` : '';
+  return searchParams.toString() ? `?${searchParams.toString()}` : "";
 };
 
 const createUrl = (
   endpoint: CoingeckoApiEndpoint | string,
   endpointParam?: string,
-  params?: MapType<any>,
+  params?: MapType<any>
 ) => {
   const url = `${COINGECKO_API_URL}${endpoint}${
-    endpointParam ?? ''
+    endpointParam ?? ""
   }${paramString(params)}`;
   return url;
 };
@@ -34,21 +34,21 @@ export const getCoingeckoData = async (
   endpoint: CoingeckoApiEndpoint | string,
   endpointParam?: string,
   params?: MapType<any>,
-  retryCount?: number,
+  retryCount?: number
 ): Promise<any> => {
   const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
+    Accept: "application/json",
+    "Content-Type": "application/json",
   };
   if (ReactConfig.SHOULD_DISABLE_USER_AGENT) {
     // @ts-ignore
-    headers['User-Agent'] = '';
+    headers["User-Agent"] = "";
   }
 
   const url = createUrl(endpoint, endpointParam, params);
   try {
     return await axios.get(url, {
-      method: 'GET',
+      method: "GET",
       headers,
     });
   } catch (cause) {
@@ -58,12 +58,12 @@ export const getCoingeckoData = async (
     const err = new Error(`Failed to get data from Coingecko`, { cause });
     logDev(err);
     if (!isDefined(retryCount) || retryCount < MAX_NUM_RETRIES) {
-      logDev('Retrying getCoingeckoData request...');
+      logDev("Retrying getCoingeckoData request...");
       return getCoingeckoData(
         endpoint,
         endpointParam,
         params,
-        isDefined(retryCount) ? retryCount + 1 : 1,
+        isDefined(retryCount) ? retryCount + 1 : 1
       );
     }
     throw err;

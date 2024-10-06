@@ -1,23 +1,29 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import KeepAwake from 'react-native-keep-awake';
-import { Bar as ProgressBar } from 'react-native-progress';
-import failureAnimation from '@assets/animations/failure.gif';
-import introLoadingAnimation from '@assets/animations/introLoading.gif';
-import loadingAnimation from '@assets/animations/loading.gif';
-import successAnimation from '@assets/animations/success.gif';
-import { BlurView } from '@react-native-community/blur';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
-import { Icon } from '@views/components/icons/Icon';
-import { SpinnerCubes } from '@views/components/loading/SpinnerCubes/SpinnerCubes';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Image,
+  ImageSourcePropType,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import KeepAwake from "react-native-keep-awake";
+import { Bar as ProgressBar } from "react-native-progress";
+import failureAnimation from "@assets/animations/failure.gif";
+import introLoadingAnimation from "@assets/animations/introLoading.gif";
+import loadingAnimation from "@assets/animations/loading.gif";
+import successAnimation from "@assets/animations/success.gif";
+import { BlurView } from "@react-native-community/blur";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
+import { Icon } from "@views/components/icons/Icon";
+import { SpinnerCubes } from "@views/components/loading/SpinnerCubes/SpinnerCubes";
+import { styles } from "./styles";
 
 export enum ProcessingState {
-  Processing = 'processing',
-  Success = 'success',
-  Fail = 'fail',
+  Processing = "processing",
+  Success = "success",
+  Fail = "fail",
 }
 
 interface ProcessingViewProps {
@@ -62,7 +68,7 @@ export const ProcessingView: React.FC<ProcessingViewProps> = ({
       return failure.message;
     }
 
-    return '';
+    return "";
   }, [isProcessing, isSuccess, isFail, processingText, successText, failure]);
 
   useEffect(() => {
@@ -112,7 +118,7 @@ export const ProcessingView: React.FC<ProcessingViewProps> = ({
                 )
               ) : (
                 <Image
-                  source={loadingSrc}
+                  source={loadingSrc as ImageSourcePropType}
                   style={styles.loading}
                   resizeMode="contain"
                 />
@@ -126,7 +132,7 @@ export const ProcessingView: React.FC<ProcessingViewProps> = ({
                   />
                 ) : (
                   <Image
-                    source={successAnimation}
+                    source={successAnimation as ImageSourcePropType}
                     style={styles.animation}
                     resizeMode="contain"
                   />
@@ -140,7 +146,7 @@ export const ProcessingView: React.FC<ProcessingViewProps> = ({
                   />
                 ) : (
                   <Image
-                    source={failureAnimation}
+                    source={failureAnimation as ImageSourcePropType}
                     style={styles.animation}
                     resizeMode="contain"
                   />

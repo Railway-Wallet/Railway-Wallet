@@ -8,48 +8,48 @@ import {
   TransactionHistoryItem,
   TransactionHistoryItemCategory,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { LiquidityV2PoolSerialized } from './liquidity-pool';
-import { ERC20Amount } from './token';
-import { Vault } from './vault';
+} from "@railgun-community/shared-models";
+import { LiquidityV2PoolSerialized } from "./liquidity-pool";
+import { ERC20Amount } from "./token";
+import { Vault } from "./vault";
 
 export enum TransactionStatus {
-  pending = 'pending',
-  completed = 'completed',
-  failed = 'failed',
-  cancelled = 'cancelled',
-  timedOut = 'timedOut'
+  pending = "pending",
+  completed = "completed",
+  failed = "failed",
+  cancelled = "cancelled",
+  timedOut = "timedOut",
 }
 
 export enum TransactionAction {
-  send = 'send',
-  receive = 'receive',
-  shield = 'shield',
-  unshield = 'unshield',
-  swap = 'swap',
-  approve = 'approve',
-  mint = 'mint',
-  cancel = 'cancel',
-  synced = 'synced',
-  farmDeposit = 'farm deposit',
-  farmRedeem = 'farm redemption',
-  addLiquidity = 'add liquidity',
-  removeLiquidity = 'remove liquidity'
+  send = "send",
+  receive = "receive",
+  shield = "shield",
+  unshield = "unshield",
+  swap = "swap",
+  approve = "approve",
+  mint = "mint",
+  cancel = "cancel",
+  synced = "synced",
+  farmDeposit = "farm deposit",
+  farmRedeem = "farm redemption",
+  addLiquidity = "add liquidity",
+  removeLiquidity = "remove liquidity",
 }
 
 export enum TransactionType {
-  ApproveShield = 'Approve Shield',
-  Shield = 'Shield',
-  Unshield = 'Unshield',
-  Send = 'Send',
-  Swap = 'Swap',
-  ApproveSpender = 'ApproveSpender',
-  Mint = 'Mint',
-  Cancel = 'Cancel',
-  FarmDeposit = 'Farm Deposit',
-  FarmRedeem = 'Farm Redeem',
-  AddLiquidity = 'Add Liquidity',
-  RemoveLiquidity = 'Remove Liquidity'
+  ApproveShield = "Approve Shield",
+  Shield = "Shield",
+  Unshield = "Unshield",
+  Send = "Send",
+  Swap = "Swap",
+  ApproveSpender = "ApproveSpender",
+  Mint = "Mint",
+  Cancel = "Cancel",
+  FarmDeposit = "Farm Deposit",
+  FarmRedeem = "Farm Redeem",
+  AddLiquidity = "Add Liquidity",
+  RemoveLiquidity = "Remove Liquidity",
 }
 
 export type TransactionReceiptTransfer = {
@@ -89,18 +89,18 @@ export type SavedTransaction = {
   status: TransactionStatus;
   action: TransactionAction;
   network: NetworkName;
-  sentViaBroadcaster: boolean
+  sentViaBroadcaster: boolean;
   isPrivate: boolean;
   vault?: Vault;
   pool?: LiquidityV2PoolSerialized;
   tokenAmounts: TransferRecipientERC20Amount[];
   nftAmountRecipients: Optional<TransferNFTAmountRecipient[]>;
   walletAddress: string;
-  toWalletAddress?: string
+  toWalletAddress?: string;
   publicExecutionWalletAddress: Optional<string>;
   publicExecutionGasFeeString?: string;
-  timestamp: number
-  railFeeTokenAmounts?: ERC20Amount[]
+  timestamp: number;
+  railFeeTokenAmounts?: ERC20Amount[];
   broadcasterFeeTokenAmount?: ERC20Amount;
   gasDetails?: TransactionGasDetails;
   spender?: string;
@@ -121,11 +121,11 @@ export type SavedTransaction = {
   foundBySync?: boolean;
   memoText?: string;
   failedErrorMessage?: string;
-  externalUnresolvedToWalletAddress?: string
+  externalUnresolvedToWalletAddress?: string;
   broadcasterRailgunAddress?: string;
   balanceBucket?: RailgunWalletBalanceBucket;
   pendingSpentPOI?: boolean;
-  txidVersion: Optional<TXIDVersion>
+  txidVersion: Optional<TXIDVersion>;
 };
 export type KoinlyExportERC20Info = {
   symbol: string;
@@ -170,23 +170,23 @@ export type KoinlyTransaction = {
 };
 
 export enum KoinlyTransactionLabel {
-  RegularDepositWithdrawalTrade = '',
-  Gift = 'gift',
-  Stake = 'stake',
-  Lost = 'lost',
-  Cost = 'cost',
-  MarginFee = 'margin fee',
-  Airdrop = 'airdrop',
-  Fork = 'fork',
-  Mining = 'mining',
-  Reward = 'reward',
-  OtherIncome = 'income',
-  LoanInterest = 'loan interest',
-  RealizedGain = 'realized gain',
-  Unstake = 'unstake',
-  Swap = 'swap',
-  LiquidityIn = 'liquidity in',
-  LiquidityOut = 'liquidity out',
+  RegularDepositWithdrawalTrade = "",
+  Gift = "gift",
+  Stake = "stake",
+  Lost = "lost",
+  Cost = "cost",
+  MarginFee = "margin fee",
+  Airdrop = "airdrop",
+  Fork = "fork",
+  Mining = "mining",
+  Reward = "reward",
+  OtherIncome = "income",
+  LoanInterest = "loan interest",
+  RealizedGain = "realized gain",
+  Unstake = "unstake",
+  Swap = "swap",
+  LiquidityIn = "liquidity in",
+  LiquidityOut = "liquidity out",
 }
 export type TransactionReceiptDetails = {
   timestamp: number;

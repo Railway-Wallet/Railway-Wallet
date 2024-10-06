@@ -7,33 +7,33 @@ import {
   RailgunERC20Recipient,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { ContractTransaction } from 'ethers';
+} from "@railgun-community/shared-models";
+import { ContractTransaction } from "ethers";
 import {
   gasEstimateForUnprovenCrossContractCalls,
   generateCrossContractCallsProof,
-} from '../../bridge/bridge-cross-contract-calls';
+} from "../../bridge/bridge-cross-contract-calls";
 import {
   generateTransferProof,
   generateUnshieldBaseTokenProof,
   generateUnshieldProof,
   generateUnshieldToOriginProof,
-} from '../../bridge/bridge-proofs';
+} from "../../bridge/bridge-proofs";
 import {
   gasEstimateForUnprovenTransfer,
   gasEstimateForUnprovenUnshield,
   gasEstimateForUnprovenUnshieldBaseToken,
   gasEstimateForUnprovenUnshieldToOrigin,
-} from '../../bridge/bridge-unshield-transfer';
-import { GetGasEstimateProofRequired } from '../../models/callbacks';
-import { ERC20Amount, ERC20AmountRecipient } from '../../models/token';
+} from "../../bridge/bridge-unshield-transfer";
+import { GetGasEstimateProofRequired } from "../../models/callbacks";
+import { ERC20Amount, ERC20AmountRecipient } from "../../models/token";
 
 export class AuthenticatedWalletService {
   private dbEncryptionKey?: string;
   private dbEncryptionKeyPromise?: Promise<string>;
 
   constructor(dbEncryptionKey: string | Promise<string>) {
-    if (typeof dbEncryptionKey === 'string') {
+    if (typeof dbEncryptionKey === "string") {
       this.dbEncryptionKey = dbEncryptionKey;
     } else {
       this.dbEncryptionKeyPromise = dbEncryptionKey;
@@ -48,7 +48,7 @@ export class AuthenticatedWalletService {
     } else if (isDefined(this.dbEncryptionKey)) {
       return this.dbEncryptionKey;
     } else {
-      throw new Error('No encryption key');
+      throw new Error("No encryption key");
     }
   };
 
@@ -64,7 +64,7 @@ export class AuthenticatedWalletService {
     originalGasDetails: TransactionGasDetails,
     feeTokenDetails: Optional<FeeTokenDetails>,
     sendWithPublicWallet: boolean,
-    minGasLimit: bigint,
+    minGasLimit: bigint
   ): Promise<bigint> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return gasEstimateForUnprovenCrossContractCalls(
@@ -80,7 +80,7 @@ export class AuthenticatedWalletService {
       originalGasDetails,
       feeTokenDetails,
       sendWithPublicWallet,
-      minGasLimit,
+      minGasLimit
     );
   };
 
@@ -93,7 +93,7 @@ export class AuthenticatedWalletService {
     nftAmountRecipients: NFTAmountRecipient[],
     originalGasDetails: TransactionGasDetails,
     feeTokenDetails: Optional<FeeTokenDetails>,
-    sendWithPublicWallet: boolean,
+    sendWithPublicWallet: boolean
   ): Promise<bigint> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return gasEstimateForUnprovenTransfer(
@@ -106,7 +106,7 @@ export class AuthenticatedWalletService {
       nftAmountRecipients,
       originalGasDetails,
       feeTokenDetails,
-      sendWithPublicWallet,
+      sendWithPublicWallet
     );
   };
 
@@ -119,7 +119,7 @@ export class AuthenticatedWalletService {
     nftAmountRecipients: NFTAmountRecipient[],
     originalGasDetails: TransactionGasDetails,
     feeTokenDetails: Optional<FeeTokenDetails>,
-    sendWithPublicWallet: boolean,
+    sendWithPublicWallet: boolean
   ): Promise<bigint> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return gasEstimateForUnprovenUnshield(
@@ -132,7 +132,7 @@ export class AuthenticatedWalletService {
       nftAmountRecipients,
       originalGasDetails,
       feeTokenDetails,
-      sendWithPublicWallet,
+      sendWithPublicWallet
     );
   };
 
@@ -142,7 +142,7 @@ export class AuthenticatedWalletService {
     networkName: NetworkName,
     railWalletID: string,
     erc20AmountRecipients: ERC20AmountRecipient[],
-    nftAmountRecipients: NFTAmountRecipient[],
+    nftAmountRecipients: NFTAmountRecipient[]
   ): Promise<bigint> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return gasEstimateForUnprovenUnshieldToOrigin(
@@ -152,7 +152,7 @@ export class AuthenticatedWalletService {
       railWalletID,
       dbEncryptionKey,
       erc20AmountRecipients,
-      nftAmountRecipients,
+      nftAmountRecipients
     );
   };
 
@@ -166,11 +166,11 @@ export class AuthenticatedWalletService {
       nftAmountRecipients: NFTAmountRecipient[],
       originalGasDetails: TransactionGasDetails,
       feeTokenDetails: Optional<FeeTokenDetails>,
-      sendWithPublicWallet: boolean,
+      sendWithPublicWallet: boolean
     ): Promise<bigint> => {
       if (erc20AmountRecipients.length !== 1) {
         throw new Error(
-          'You must select one token for this unshield transaction.',
+          "You must select one token for this unshield transaction."
         );
       }
 
@@ -185,7 +185,7 @@ export class AuthenticatedWalletService {
         nftAmountRecipients,
         originalGasDetails,
         feeTokenDetails,
-        sendWithPublicWallet,
+        sendWithPublicWallet
       );
     };
 
@@ -201,7 +201,7 @@ export class AuthenticatedWalletService {
     broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
     overallBatchMinGasPrice: Optional<bigint>,
-    minGasLimit: bigint,
+    minGasLimit: bigint
   ): Promise<void> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return generateCrossContractCallsProof(
@@ -217,7 +217,7 @@ export class AuthenticatedWalletService {
       broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
-      minGasLimit,
+      minGasLimit
     );
   };
 
@@ -231,7 +231,7 @@ export class AuthenticatedWalletService {
     nftAmountRecipients: NFTAmountRecipient[],
     broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
-    overallBatchMinGasPrice: Optional<bigint>,
+    overallBatchMinGasPrice: Optional<bigint>
   ): Promise<void> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return generateTransferProof(
@@ -245,7 +245,7 @@ export class AuthenticatedWalletService {
       nftAmountRecipients,
       broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
-      overallBatchMinGasPrice,
+      overallBatchMinGasPrice
     );
   };
 
@@ -257,7 +257,7 @@ export class AuthenticatedWalletService {
     nftAmountRecipients: NFTAmountRecipient[],
     broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
-    overallBatchMinGasPrice: Optional<bigint>,
+    overallBatchMinGasPrice: Optional<bigint>
   ): Promise<void> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return generateUnshieldProof(
@@ -269,7 +269,7 @@ export class AuthenticatedWalletService {
       nftAmountRecipients,
       broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
-      overallBatchMinGasPrice,
+      overallBatchMinGasPrice
     );
   };
 
@@ -281,7 +281,7 @@ export class AuthenticatedWalletService {
     wrappedTokenAmount: ERC20Amount,
     broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
     sendWithPublicWallet: boolean,
-    overallBatchMinGasPrice: Optional<bigint>,
+    overallBatchMinGasPrice: Optional<bigint>
   ): Promise<void> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return generateUnshieldBaseTokenProof(
@@ -294,7 +294,7 @@ export class AuthenticatedWalletService {
       [],
       broadcasterFeeERC20AmountRecipient,
       sendWithPublicWallet,
-      overallBatchMinGasPrice,
+      overallBatchMinGasPrice
     );
   };
 
@@ -304,7 +304,7 @@ export class AuthenticatedWalletService {
     networkName: NetworkName,
     railWalletID: string,
     erc20AmountRecipients: ERC20AmountRecipient[],
-    nftAmountRecipients: NFTAmountRecipient[],
+    nftAmountRecipients: NFTAmountRecipient[]
   ): Promise<void> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return generateUnshieldToOriginProof(
@@ -314,7 +314,7 @@ export class AuthenticatedWalletService {
       railWalletID,
       dbEncryptionKey,
       erc20AmountRecipients,
-      nftAmountRecipients,
+      nftAmountRecipients
     );
   };
 }

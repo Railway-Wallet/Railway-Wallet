@@ -7,9 +7,9 @@ import {
   ProofType,
   SelectedBroadcaster,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { formatUnits } from 'ethers';
-import { BroadcasterFeeInfo } from '../models/broadcaster';
+} from "@railgun-community/shared-models";
+import { formatUnits } from "ethers";
+import { BroadcasterFeeInfo } from "../models/broadcaster";
 import {
   AdjustedERC20AmountRecipientGroup,
   AdjustedERC20AmountRecipients,
@@ -17,27 +17,27 @@ import {
   ERC20AmountRecipient,
   ERC20BalancesSerialized,
   ERC20Token,
-} from '../models/token';
-import { TransactionType } from '../models/transaction';
-import { AvailableWallet } from '../models/wallet';
-import { NetworkTokenPriceState } from '../redux-store/reducers/network-price-reducer';
-import { ProviderService } from '../services/providers/provider-service';
-import { AppSettingsService } from '../services/settings/app-settings-service';
+} from "../models/token";
+import { TransactionType } from "../models/transaction";
+import { AvailableWallet } from "../models/wallet";
+import { NetworkTokenPriceState } from "../redux-store/reducers/network-price-reducer";
+import { ProviderService } from "../services/providers/provider-service";
+import { AppSettingsService } from "../services/settings/app-settings-service";
 import {
   compareTokenAddress,
   compareTokens,
   getTokenBalanceSerialized,
   getTokenDisplayName,
-} from './tokens';
+} from "./tokens";
 import {
   formatGasFeeForCurrency,
   formatNumberToLocale,
   roundStringToNDecimals,
-} from './util';
+} from "./util";
 
 export const getProofTypeFromTransactionType = (
   transactionType: TransactionType,
-  isBaseTokenWithdraw: boolean,
+  isBaseTokenWithdraw: boolean
 ) => {
   switch (transactionType) {
     case TransactionType.Send:
@@ -65,7 +65,7 @@ export const getProofTypeFromTransactionType = (
 
 export const isShieldedFromToAddress = (
   transactionType: TransactionType,
-  isPrivateTransaction: boolean,
+  isPrivateTransaction: boolean
 ): { isShieldedFromAddress: boolean; isShieldedToAddress: boolean } => {
   switch (transactionType) {
     case TransactionType.FarmDeposit:
@@ -100,23 +100,23 @@ export const isShieldedFromToAddress = (
 };
 
 export const getRawProviderGasPrice = async (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Promise<bigint> => {
   const provider = await ProviderService.getFirstProvider(networkName);
-  const gasPrice: bigint = BigInt(await provider.send('eth_gasPrice', []));
+  const gasPrice: bigint = BigInt(await provider.send("eth_gasPrice", []));
   if (!isDefined(gasPrice)) {
-    throw new Error('Gas price not found');
+    throw new Error("Gas price not found");
   }
   return gasPrice;
 };
 
 export const getProviderGasPrice = async (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Promise<bigint> => {
   const provider = await ProviderService.getProvider(networkName);
   const { gasPrice } = await provider.getFeeData();
   if (gasPrice == null) {
-    throw new Error('Gas price not found');
+    throw new Error("Gas price not found");
   }
   return gasPrice;
 };
@@ -129,50 +129,51 @@ export const adjustERC20AmountsForShieldUnshield = (
   gasDetails: Optional<TransactionGasDetails>,
   broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   tokenBalancesSerialized: ERC20BalancesSerialized,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): AdjustedERC20AmountRecipientGroup => {
   const allAdjusted: AdjustedERC20AmountRecipients[] = [];
   for (const erc20AmountRecipient of erc20AmountRecipients) {
     const { token } = erc20AmountRecipient;
     const tokenBalanceSerialized = getTokenBalanceSerialized(
       token,
-      tokenBalancesSerialized,
+      tokenBalancesSerialized
     );
 
     allAdjusted.push(
       adjustERC20AmountRecipientForTransaction(
         erc20AmountRecipient,
         transactionType,
-        false, gasDetails,
+        false,
+        gasDetails,
         broadcasterFeeERC20Amount,
         depositFeeBasisPoints,
         withdrawFeeBasisPoints,
         tokenBalanceSerialized,
-        sendWithPublicWallet,
-      ),
+        sendWithPublicWallet
+      )
     );
   }
   return createAdjustedERC20AmountRecipientGroup(allAdjusted);
 };
 
 export const createAdjustedERC20AmountRecipientGroup = (
-  adjustedERC20AmountRecipients: AdjustedERC20AmountRecipients[],
+  adjustedERC20AmountRecipients: AdjustedERC20AmountRecipients[]
 ) => {
   const allFees: ERC20Amount[] = adjustedERC20AmountRecipients.map(
-    ar => ar.fee,
+    (ar) => ar.fee
   );
   const allInputs: ERC20AmountRecipient[] = adjustedERC20AmountRecipients.map(
-    ar => ar.input,
+    (ar) => ar.input
   );
   const allOutputs: ERC20AmountRecipient[] = adjustedERC20AmountRecipients.map(
-    ar => ar.output,
+    (ar) => ar.output
   );
   return { fees: allFees, inputs: allInputs, outputs: allOutputs };
 };
 
 export const maxBalanceAvailableToShield = (
   maxBalance: bigint,
-  _depositFeeBasisPoints: string,
+  _depositFeeBasisPoints: string
 ): bigint => {
   return maxBalance;
 };
@@ -190,7 +191,7 @@ export const adjustERC20AmountRecipientForTransaction = (
   depositFeeBasisPoints: string,
   withdrawFeeBasisPoints: string,
   tokenBalanceSerialized: string,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): AdjustedERC20AmountRecipients => {
   switch (transactionType) {
     case TransactionType.Send:
@@ -200,7 +201,7 @@ export const adjustERC20AmountRecipientForTransaction = (
         gasDetails,
         broadcasterFeeERC20Amount,
         tokenBalanceSerialized,
-        sendWithPublicWallet,
+        sendWithPublicWallet
       );
     case TransactionType.Shield:
     case TransactionType.Unshield:
@@ -212,7 +213,7 @@ export const adjustERC20AmountRecipientForTransaction = (
         gasDetails,
         broadcasterFeeERC20Amount,
         tokenBalanceSerialized,
-        sendWithPublicWallet,
+        sendWithPublicWallet
       );
     case TransactionType.ApproveShield:
     case TransactionType.Swap:
@@ -228,7 +229,7 @@ export const adjustERC20AmountRecipientForTransaction = (
         output: erc20AmountRecipient,
         fee: {
           ...erc20AmountRecipient,
-          amountString: '0',
+          amountString: "0",
         },
         isMax: false,
       };
@@ -241,7 +242,7 @@ const adjustERC20AmountForSendTransaction = (
   gasDetails: Optional<TransactionGasDetails>,
   broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   tokenBalanceSerialized: string,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): AdjustedERC20AmountRecipients => {
   const {
     amountString,
@@ -299,7 +300,7 @@ const adjustERC20AmountForSendTransaction = (
     },
     fee: {
       token,
-      amountString: '0',
+      amountString: "0",
     },
     isMax,
   };
@@ -313,7 +314,7 @@ const adjustERC20AmountForShieldUnshield = (
   gasDetails: Optional<TransactionGasDetails>,
   broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   tokenBalanceSerialized: string,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): AdjustedERC20AmountRecipients => {
   let input: bigint, output: bigint, fee: bigint;
 
@@ -366,7 +367,7 @@ const adjustERC20AmountForShieldUnshield = (
     }
     default:
       throw new Error(
-        'Please choose transaction type Shield or Unshield for this fee calculation.',
+        "Please choose transaction type Shield or Unshield for this fee calculation."
       );
   }
 
@@ -396,19 +397,20 @@ const formattedFeeTokenPrice = (
   networkPrices: NetworkTokenPriceState,
   tokenFeeString: string,
   tokenAddress: string,
-  showExactCurrencyGasPrice: boolean,
+  showExactCurrencyGasPrice: boolean
 ) => {
   const tokenPrices =
     networkPrices.forNetwork[network.name]?.forCurrency[
       AppSettingsService.currency.code
     ];
   if (!isDefined(tokenPrices)) {
-    return 'N/A';
+    return "N/A";
   }
   const tokenPrice = tokenPrices[tokenAddress.toLowerCase()];
   return formatGasFeeForCurrency(
     tokenPrice,
-    Number(tokenFeeString), showExactCurrencyGasPrice,
+    Number(tokenFeeString),
+    showExactCurrencyGasPrice
   );
 };
 
@@ -416,7 +418,7 @@ export const networkGasText = (
   network: Network,
   networkPrices: NetworkTokenPriceState,
   gasDetails: TransactionGasDetails,
-  showExactCurrencyGasPrice: boolean,
+  showExactCurrencyGasPrice: boolean
 ) => {
   const totalGas: bigint = calculateTotalGas(gasDetails);
   const gasAmountString = formatUnits(totalGas, network.baseToken.decimals);
@@ -426,12 +428,12 @@ export const networkGasText = (
     networkPrices,
     gasAmountString,
     network.baseToken.wrappedAddress,
-    showExactCurrencyGasPrice,
+    showExactCurrencyGasPrice
   );
 
   return {
     networkFeeText: `${formatNumberToLocale(
-      roundStringToNDecimals(gasAmountString, 10),
+      roundStringToNDecimals(gasAmountString, 10)
     )} ${network.baseToken.symbol}`,
     networkFeePriceText: priceText,
   };
@@ -444,14 +446,14 @@ export const broadcasterFeeInfoText = (
   selectedBroadcaster: SelectedBroadcaster,
   selectedFeeToken: ERC20Token,
   gasDetails: TransactionGasDetails,
-  showExactCurrencyGasPrice: boolean,
+  showExactCurrencyGasPrice: boolean
 ): Optional<BroadcasterFeeInfo> => {
   if (
     !isDefined(selectedFeeToken) ||
     !isDefined(selectedBroadcaster) ||
     !compareTokenAddress(
       selectedFeeToken.address,
-      selectedBroadcaster.tokenAddress,
+      selectedBroadcaster.tokenAddress
     )
   ) {
     return undefined;
@@ -468,7 +470,7 @@ export const broadcasterFeeInfoText = (
     networkPrices,
     tokenFeeString,
     selectedFeeToken.address,
-    showExactCurrencyGasPrice,
+    showExactCurrencyGasPrice
   );
 
   const subtext = priceText;
@@ -481,12 +483,12 @@ export const broadcasterFeeInfoText = (
   const tokenDisplayName = getTokenDisplayName(
     selectedFeeToken,
     availableWallets,
-    network.name,
+    network.name
   );
 
   return {
     broadcasterFeeText: `${formatNumberToLocale(
-      roundStringToNDecimals(tokenFeeString, 10),
+      roundStringToNDecimals(tokenFeeString, 10)
     )} ${tokenDisplayName}`,
     broadcasterFeeSubtext: subtext,
     broadcasterFeeERC20Amount,

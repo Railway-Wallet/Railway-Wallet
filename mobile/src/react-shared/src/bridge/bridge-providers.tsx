@@ -1,20 +1,20 @@
-import { setRailgunFees } from '@railgun-community/cookbook';
+import { setRailgunFees } from "@railgun-community/cookbook";
 import {
   FeesSerialized,
   LoadProviderResponse,
   NETWORK_CONFIG,
   NetworkName,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import {
   BridgeCallEvent,
   LoadProviderParams,
   ResumeIsolatedPollingProviderForNetworkParams,
-} from '../models/bridge';
-import { ProviderNodeType } from '../models/providers';
-import { setNetworkFees } from '../redux-store/reducers/network-reducer';
-import { AppDispatch, store } from '../redux-store/store';
-import { getNetworkFallbackProviderJsonConfig } from '../utils/networks';
-import { bridgeCall } from './ipc';
+} from "../models/bridge";
+import { ProviderNodeType } from "../models/providers";
+import { setNetworkFees } from "../redux-store/reducers/network-reducer";
+import { AppDispatch, store } from "../redux-store/store";
+import { getNetworkFallbackProviderJsonConfig } from "../utils/networks";
+import { bridgeCall } from "./ipc";
 
 export class ProviderLoader {
   static firstProviderLoaded = false;
@@ -22,23 +22,23 @@ export class ProviderLoader {
 
   static loadEngineProvider = async (
     networkName: NetworkName,
-    dispatch: AppDispatch,
+    dispatch: AppDispatch
   ): Promise<FeesSerialized> => {
     const providerConfig = await getNetworkFallbackProviderJsonConfig(
       networkName,
-      ProviderNodeType.FullNode,
+      ProviderNodeType.FullNode
     );
     if (!providerConfig) {
       const network = NETWORK_CONFIG[networkName];
       throw new Error(
-        `No provider config for network ${network.publicName ?? networkName}`,
+        `No provider config for network ${network.publicName ?? networkName}`
       );
     }
 
     try {
       const remoteConfig = store.getState().remoteConfig.current;
       if (!remoteConfig) {
-        throw new Error('Config not available to load providers.');
+        throw new Error("Config not available to load providers.");
       }
 
       const { feesSerialized } = await bridgeCall<
@@ -53,11 +53,12 @@ export class ProviderLoader {
       dispatch(setNetworkFees(feesSerialized));
       setRailgunFees(
         networkName,
-        BigInt(feesSerialized.shieldFeeV2), BigInt(feesSerialized.unshieldFeeV2),
+        BigInt(feesSerialized.shieldFeeV2),
+        BigInt(feesSerialized.unshieldFeeV2)
       );
       return feesSerialized;
     } catch (cause) {
-      const error = new Error('Failed to load provider.', { cause });
+      const error = new Error("Failed to load provider.", { cause });
       if (!this.firstProviderLoaded) {
         this.firstProviderLoadError = error;
       }
@@ -70,24 +71,25 @@ export class ProviderLoader {
       BridgeCallEvent.UnloadProvider,
       {
         networkName,
-      },
+      }
     );
   };
 
   static async pauseAllBridgePollingProviders() {
-    await bridgeCall<
-      Record<string, never>, void
-    >(BridgeCallEvent.PauseAllPollingProviders, {});
+    await bridgeCall<Record<string, never>, void>(
+      BridgeCallEvent.PauseAllPollingProviders,
+      {}
+    );
   }
 
   static async resumeIsolatedBridgePollingProviderForNetwork(
-    networkName: NetworkName,
+    networkName: NetworkName
   ) {
     await bridgeCall<ResumeIsolatedPollingProviderForNetworkParams, void>(
       BridgeCallEvent.ResumeIsolatedPollingProviderForNetwork,
       {
         networkName,
-      },
+      }
     );
   }
 

@@ -5,21 +5,21 @@ import {
   RailgunERC20Amount,
   RailgunWalletBalanceBucket,
   TXIDVersion,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import {
   ERC20Balance,
   ERC20BalancesSerialized,
   ERC20TokenFullInfo,
-} from './token';
+} from "./token";
 
 export type StoredWallet = {
   id: string;
   name: string;
   railAddress: string;
   railWalletID: string;
-  createdAt: number
-  updatedAt: number
-  originalCreationDate?: number
+  createdAt: number;
+  updatedAt: number;
+  originalCreationDate?: number;
   addedTokens: MapType<ERC20TokenFullInfo[]>;
   supportedNetworkNames: NetworkName[];
   isActive: boolean;
@@ -30,9 +30,9 @@ export type StoredWallet = {
 };
 
 export enum WalletAddSource {
-  CreateWallet = 'CreateWallet',
-  ImportWallet = 'ImportWallet',
-  AddViewOnlyWallet = 'AddViewOnlyWallet',
+  CreateWallet = "CreateWallet",
+  ImportWallet = "ImportWallet",
+  AddViewOnlyWallet = "AddViewOnlyWallet",
 }
 
 export type AvailableWallet = StoredWallet & {
@@ -94,7 +94,7 @@ export type CachedNFTBalance = {
     nftTokenType: NFTTokenType;
     tokenSubID: string;
     amountString: string;
-  }[]
+  }[];
 };
 
 export type RailgunNFTAmountsMapSerialized = Record<

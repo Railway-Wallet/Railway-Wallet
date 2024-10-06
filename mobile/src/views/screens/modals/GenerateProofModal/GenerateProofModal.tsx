@@ -2,13 +2,13 @@ import {
   isDefined,
   NFTAmountRecipient,
   SelectedBroadcaster,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Modal } from 'react-native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-native";
 import {
   ProcessingState,
   ProcessingView,
-} from '@components/views/ProcessingView/ProcessingView';
+} from "@components/views/ProcessingView/ProcessingView";
 import {
   AvailableWallet,
   ERC20Amount,
@@ -17,9 +17,9 @@ import {
   resetProofProgress,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Constants } from '@utils/constants';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Constants } from "@utils/constants";
 
 interface GenerateProofModalProps {
   show: boolean;
@@ -50,10 +50,10 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
   onSuccessClose,
   onFailClose,
 }) => {
-  const { proofProgress } = useReduxSelector('proofProgress');
+  const { proofProgress } = useReduxSelector("proofProgress");
 
   const [processingState, setProcessingState] = useState(
-    ProcessingState.Processing,
+    ProcessingState.Processing
   );
   const [failure, setFailure] = useState<Optional<Error>>(undefined);
 
@@ -71,7 +71,7 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
         setProcessingState(ProcessingState.Success);
         setTimeout(
           () => onSuccessClose(),
-          Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT,
+          Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT
         );
       };
       const fail = (cause: Error) => {
@@ -79,11 +79,11 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
           return;
         }
         triggerHaptic(HapticSurface.NotifyError);
-        setFailure(new Error('Failed to generate proof.', { cause }));
+        setFailure(new Error("Failed to generate proof.", { cause }));
         setProcessingState(ProcessingState.Fail);
         setTimeout(
           () => onFailClose(cause),
-          Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT,
+          Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT
         );
       };
 
@@ -100,16 +100,16 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
         memoText,
         overallBatchMinGasPrice,
         success,
-        fail,
+        fail
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show]);
 
   const processingText =
-    isDefined(proofProgress.status) && proofProgress.status !== ''
+    isDefined(proofProgress.status) && proofProgress.status !== ""
       ? proofProgress.status
-      : 'Generating proof...';
+      : "Generating proof...";
 
   return (
     <Modal
@@ -126,8 +126,8 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
         processingText={processingText}
         successText={`Proof generated successfully.\n\nNext, submit through ${
           publicWalletOverride
-            ? 'the selected wallet'
-            : 'the selected broadcaster'
+            ? "the selected wallet"
+            : "the selected broadcaster"
         }.`}
         failure={failure}
         processingWarning="Please keep Railway open. This may take 10-15 seconds per token."

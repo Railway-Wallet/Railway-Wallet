@@ -1,19 +1,19 @@
 export enum CookbookGeneralRecipeType {
-  UnshieldTransferBaseToken = 'UnshieldTransferBaseToken'
+  UnshieldTransferBaseToken = "UnshieldTransferBaseToken",
 }
 
 export enum CookbookSwapRecipeType {
-  ZeroX = 'ZeroX'
+  ZeroX = "ZeroX",
 }
 
 export enum CookbookFarmRecipeType {
-  Deposit = 'Deposit',
-  Redeem = 'Redeem'
+  Deposit = "Deposit",
+  Redeem = "Redeem",
 }
 
 export enum CookbookLiquidityRecipeType {
-  AddLiquidity = 'AddLiquidity',
-  RemoveLiquidity = 'RemoveLiquidity'
+  AddLiquidity = "AddLiquidity",
+  RemoveLiquidity = "RemoveLiquidity",
 }
 
 export type CookbookRecipeType =

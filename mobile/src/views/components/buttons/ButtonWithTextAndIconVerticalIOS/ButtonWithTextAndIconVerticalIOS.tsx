@@ -1,10 +1,10 @@
-import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
-import { Button } from 'react-native-paper';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+import React from "react";
+import { Text, View, ViewStyle } from "react-native";
+import { Button } from "react-native-paper";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   icon: string;

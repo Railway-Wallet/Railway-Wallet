@@ -1,10 +1,10 @@
-import { NetworkName, sanitizeError } from '@railgun-community/shared-models';
-import { logDevError } from '../../utils/logging';
-import { ProviderService } from '../providers/provider-service';
+import { NetworkName, sanitizeError } from "@railgun-community/shared-models";
+import { logDevError } from "../../utils/logging";
+import { ProviderService } from "../providers/provider-service";
 
 export const getWalletBaseTokenBalance = async (
   networkName: NetworkName,
-  address: string,
+  address: string
 ): Promise<bigint> => {
   try {
     const provider = await ProviderService.getProvider(networkName);

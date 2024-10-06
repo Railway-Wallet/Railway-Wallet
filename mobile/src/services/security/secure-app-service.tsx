@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import { getRandomBytes, SharedConstants, StorageService } from '@react-shared';
-import { Constants } from '@utils/constants';
-import { hashPasswordString } from './hash-service';
+import { isDefined } from "@railgun-community/shared-models";
+import EncryptedStorage from "react-native-encrypted-storage";
+import { getRandomBytes, SharedConstants, StorageService } from "@react-shared";
+import { Constants } from "@utils/constants";
+import { hashPasswordString } from "./hash-service";
 
 export const getEncryptedPin = async (): Promise<string | null> => {
   const pin = await EncryptedStorage.getItem(Constants.PASSWORD_HASH_STORED);
@@ -17,12 +17,12 @@ export const setEncryptedPin = async (pin: string): Promise<string> => {
   await Promise.all([
     EncryptedStorage.setItem(
       Constants.PASSWORD_HASH_STORED,
-      hashPasswordStored,
+      hashPasswordStored
     ),
     EncryptedStorage.setItem(Constants.PASSWORD_SALT, salt),
     StorageService.setItem(
       SharedConstants.NUM_ENTER_PIN_FAILED_ATTEMPTS,
-      String(0),
+      String(0)
     ),
     StorageService.setItem(SharedConstants.PIN_LOCKOUT_TIMESTAMP, String(0)),
   ]);
@@ -63,7 +63,7 @@ export const resetPin = async () => {
     EncryptedStorage.removeItem(Constants.PASSWORD_SALT),
     StorageService.setItem(
       SharedConstants.NUM_ENTER_PIN_FAILED_ATTEMPTS,
-      String(0),
+      String(0)
     ),
     StorageService.setItem(SharedConstants.PIN_LOCKOUT_TIMESTAMP, String(0)),
   ]);
@@ -77,8 +77,6 @@ export const hasBiometricsEnabled = async () => {
 export const setHasBiometricsEnabled = async (enabled: boolean) => {
   await StorageService.setItem(
     Constants.BIOMETRICS_ENABLED,
-    enabled
-      ? Constants.ENABLED_STORAGE_VALUE
-      : Constants.DISABLED_STORAGE_VALUE,
+    enabled ? Constants.ENABLED_STORAGE_VALUE : Constants.DISABLED_STORAGE_VALUE
   );
 };

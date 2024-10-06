@@ -1,15 +1,15 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
 import {
   NetworkStoredSettings,
   SettingsForNetwork,
-} from '../../models/network';
-import { StorageService } from '../storage/storage-service';
+} from "../../models/network";
+import { StorageService } from "../storage/storage-service";
 
 export class NetworkStoredSettingsService {
   static async storeSettingsForNetwork(
     networkName: NetworkName,
-    settings: SettingsForNetwork,
+    settings: SettingsForNetwork
   ) {
     const networkStoredSettings: NetworkStoredSettings =
       await NetworkStoredSettingsService.getAllSettings();
@@ -19,13 +19,13 @@ export class NetworkStoredSettingsService {
     };
     await StorageService.setItem(
       SharedConstants.NETWORK_STORED_SETTINGS,
-      JSON.stringify(networkStoredSettings),
+      JSON.stringify(networkStoredSettings)
     );
   }
 
   static async getAllSettings(): Promise<NetworkStoredSettings> {
     const value = await StorageService.getItem(
-      SharedConstants.NETWORK_STORED_SETTINGS,
+      SharedConstants.NETWORK_STORED_SETTINGS
     );
     if (isDefined(value)) {
       return JSON.parse(value) as NetworkStoredSettings;
@@ -34,7 +34,7 @@ export class NetworkStoredSettingsService {
   }
 
   static async getSettingsForNetwork(
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<SettingsForNetwork> {
     const allSettings = await NetworkStoredSettingsService.getAllSettings();
     const storedSettingsForNetwork: Optional<SettingsForNetwork> =

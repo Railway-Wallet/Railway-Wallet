@@ -1,10 +1,10 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React from 'react';
-import { ResizingCardBalance } from '@components/text/ResizingCardBalance/ResizingCardBalance';
-import { useTotalBalanceCurrency, WalletCardSlideItem } from '@react-shared';
+} from "@railgun-community/shared-models";
+import React from "react";
+import { ResizingCardBalance } from "@components/text/ResizingCardBalance/ResizingCardBalance";
+import { useTotalBalanceCurrency, WalletCardSlideItem } from "@react-shared";
 
 type Props = {
   item: WalletCardSlideItem;
@@ -17,7 +17,7 @@ export const WalletCardSlideBalance: React.FC<Props> = ({
 }) => {
   const { totalBalanceCurrency } = useTotalBalanceCurrency(
     item.isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   return (

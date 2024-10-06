@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     backgroundColor: styleguide.colors.black,
   },
   titleRow: {
-    alignContent: 'flex-start',
+    alignContent: "flex-start",
     marginTop: 12,
   },
   itemRow: {
@@ -28,11 +28,11 @@ export const styles = StyleSheet.create({
   hr: {
     backgroundColor: styleguide.colors.textSecondary,
     height: 1,
-    width: '100%',
+    width: "100%",
     marginLeft: 16,
   },
   footerText: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 12,
     color: styleguide.colors.labelSecondary,
     ...styleguide.typography.caption,

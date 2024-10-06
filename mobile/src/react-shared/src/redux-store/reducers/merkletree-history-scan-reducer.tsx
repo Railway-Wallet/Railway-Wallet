@@ -1,8 +1,8 @@
 import {
   MerkletreeScanStatus,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type SetMerkletreeHistoryScanStatusPayload = {
   merkletreeType: MerkletreeType;
@@ -12,8 +12,8 @@ export type SetMerkletreeHistoryScanStatusPayload = {
 };
 
 export enum MerkletreeType {
-  UTXO = 'UTXO',
-  TXID = 'TXID',
+  UTXO = "UTXO",
+  TXID = "TXID",
 }
 
 export type MerkletreeHistoryScanState = {
@@ -34,12 +34,12 @@ const initialState: MerkletreeHistoryScanState = {
 };
 
 const slice = createSlice({
-  name: 'merkletreeHistoryScan',
+  name: "merkletreeHistoryScan",
   initialState,
   reducers: {
     setMerkletreeHistoryScanStatus(
       state,
-      action: PayloadAction<SetMerkletreeHistoryScanStatusPayload>,
+      action: PayloadAction<SetMerkletreeHistoryScanStatusPayload>
     ) {
       const { networkName, status, progress, merkletreeType } = action.payload;
       state.forNetwork[networkName] ??= { forType: {} };

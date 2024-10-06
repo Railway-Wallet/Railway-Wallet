@@ -1,12 +1,12 @@
-import { BridgeCallEvent, StartRailgunEngineParams } from '../models/bridge';
-import { bridgeCall } from './ipc';
+import { BridgeCallEvent, StartRailgunEngineParams } from "../models/bridge";
+import { bridgeCall } from "./ipc";
 
 export const startRailgunEngine = (
   walletSource: string,
   dbPath: string,
   devMode: boolean,
-  documentsDir: string = '',
-  poiNodeURLs: Optional<string[]>,
+  documentsDir: string = "",
+  poiNodeURLs: Optional<string[]>
 ): Promise<void> => {
   return bridgeCall<StartRailgunEngineParams, void>(
     BridgeCallEvent.StartRailgunEngine,
@@ -16,6 +16,6 @@ export const startRailgunEngine = (
       devMode,
       documentsDir,
       poiNodeURLs,
-    },
+    }
   );
 };

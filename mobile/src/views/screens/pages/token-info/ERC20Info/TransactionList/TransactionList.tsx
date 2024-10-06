@@ -1,10 +1,10 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { TransactionResponse } from 'ethers';
-import { ERC20Token, SavedTransaction } from '@react-shared';
-import { TransactionItem } from './TransactionItem/TransactionItem';
-import { TransactionsMissingTimestampItem } from './TransactionItem/TransactionsMissingTimestampItem';
-import { styles } from './styles';
+import React from "react";
+import { Text, View } from "react-native";
+import { TransactionResponse } from "ethers";
+import { ERC20Token, SavedTransaction } from "@react-shared";
+import { TransactionItem } from "./TransactionItem/TransactionItem";
+import { TransactionsMissingTimestampItem } from "./TransactionItem/TransactionsMissingTimestampItem";
+import { styles } from "./styles";
 
 type Props = {
   transactionsMissingTimestamp: SavedTransaction[];
@@ -13,7 +13,7 @@ type Props = {
   filteredToken?: ERC20Token;
   onCancelTransaction: (
     transaction: SavedTransaction,
-    txResponse: TransactionResponse,
+    txResponse: TransactionResponse
   ) => void;
   generatePOIs?: () => void;
   refreshPOILists?: () => void;

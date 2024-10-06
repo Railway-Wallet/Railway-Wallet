@@ -1,5 +1,5 @@
-import { delay, isDefined } from '@railgun-community/shared-models';
-import { CoingeckoApiEndpoint, getCoingeckoData } from './coingecko-service';
+import { delay, isDefined } from "@railgun-community/shared-models";
+import { CoingeckoApiEndpoint, getCoingeckoData } from "./coingecko-service";
 
 type TokenPrice = {
   price: number;
@@ -15,7 +15,7 @@ type CoingeckoPriceData = {
 export const priceLookup = async (
   coingeckoNetworkId: string,
   tokenAddresses: string[],
-  currency: string,
+  currency: string
 ): Promise<TokenPrice[]> => {
   if (!coingeckoNetworkId) {
     return [];
@@ -35,7 +35,7 @@ export const priceLookup = async (
     const priceResponse = await getCoingeckoData(
       CoingeckoApiEndpoint.PriceLookup,
       coingeckoNetworkId,
-      params,
+      params
     ).catch(() => {
       return undefined;
     });

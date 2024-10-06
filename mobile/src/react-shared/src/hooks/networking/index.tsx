@@ -1,2 +1,2 @@
-export * from './useBroadcasterConnectionStatus';
-export * from './useWakuBroadcasterChainUpdater';
+export * from "./useBroadcasterConnectionStatus";
+export * from "./useWakuBroadcasterChainUpdater";

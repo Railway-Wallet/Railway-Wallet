@@ -1,8 +1,8 @@
-import { Image, ImageSourcePropType } from 'react-native';
+import { Image, ImageSourcePropType } from "react-native";
 
 export const imageWidthFromDesiredHeight = (
   imageSrc: ImageSourcePropType,
-  newHeight: number,
+  newHeight: number
 ): number => {
   const { width: originalWidth, height: originalHeight } =
     Image.resolveAssetSource(imageSrc);
@@ -13,7 +13,7 @@ export const imageWidthFromDesiredHeight = (
 
 export const imageHeightFromDesiredWidth = (
   imageSrc: ImageSourcePropType,
-  newWidth: number,
+  newWidth: number
 ): number => {
   const { width: originalWidth, height: originalHeight } =
     Image.resolveAssetSource(imageSrc);

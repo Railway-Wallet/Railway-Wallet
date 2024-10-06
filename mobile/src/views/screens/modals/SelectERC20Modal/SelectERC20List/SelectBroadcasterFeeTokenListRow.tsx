@@ -1,17 +1,17 @@
 import {
   BroadcasterConnectionStatus,
   isDefined,
-} from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { TokenListRow } from '@components/list/TokenListRow/TokenListRow';
+} from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { TokenListRow } from "@components/list/TokenListRow/TokenListRow";
 import {
   broadcasterSupportsERC20Token,
   ERC20Token,
   useBroadcasterConnectionStatus,
   useReduxSelector,
-} from '@react-shared';
-import { styles } from './styles';
+} from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   useRelayAdaptForBroadcasterFee: boolean;
@@ -30,7 +30,7 @@ export const SelectBroadcasterFeeTokenListRow: React.FC<Props> = ({
   renderRightBalance,
   broadcasterFeeRefreshButtonCount,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const { broadcasterConnectionStatus } = useBroadcasterConnectionStatus();
 
@@ -41,10 +41,10 @@ export const SelectBroadcasterFeeTokenListRow: React.FC<Props> = ({
       return broadcasterSupportsERC20Token(
         network.current.chain,
         token.address,
-        useRelayAdaptForBroadcasterFee,
+        useRelayAdaptForBroadcasterFee
       );
     },
-    [network, useRelayAdaptForBroadcasterFee],
+    [network, useRelayAdaptForBroadcasterFee]
   );
 
   const isDisabled = useCallback(
@@ -52,7 +52,7 @@ export const SelectBroadcasterFeeTokenListRow: React.FC<Props> = ({
       const isSupported = await isSupportedForBroadcasterFees(token);
       return !isSupported;
     },
-    [isSupportedForBroadcasterFees],
+    [isSupportedForBroadcasterFees]
   );
 
   useEffect(() => {
@@ -74,8 +74,8 @@ export const SelectBroadcasterFeeTokenListRow: React.FC<Props> = ({
         !isDefined(broadcasterConnectionStatus) ||
         broadcasterConnectionStatus === BroadcasterConnectionStatus.Searching;
       const disabledText = noBroadcastersFound
-        ? 'No public broadcasters available'
-        : 'Not accepted';
+        ? "No public broadcasters available"
+        : "Not accepted";
       return (
         <View style={styles.rightBalances}>
           <Text style={styles.errorStyle}>{disabledText}</Text>

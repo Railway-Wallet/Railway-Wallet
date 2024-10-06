@@ -2,13 +2,13 @@ import {
   calculateMaximumGas,
   isDefined,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { useEffect, useMemo, useState } from 'react';
+} from "@railgun-community/shared-models";
+import { useEffect, useMemo, useState } from "react";
 
 export const useGasFeeWatcher = (
   gasDetails: Optional<TransactionGasDetails>,
   selectedBroadcasterLocked: boolean,
-  changeThresholdBasisPoints: number,
+  changeThresholdBasisPoints: number
 ) => {
   const [savedMaximumGasThreshold, setSavedMaximumGasThreshold] =
     useState<Optional<bigint>>();

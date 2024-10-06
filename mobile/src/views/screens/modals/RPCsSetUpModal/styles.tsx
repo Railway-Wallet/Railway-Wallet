@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     backgroundColor: styleguide.colors.gray6_50,
   },
   listItemCenter: {
-    maxWidth: '100%',
+    maxWidth: "100%",
   },
   extraItemsTopPadding: {
     paddingTop: 2,
@@ -29,19 +29,19 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.paragraph,
   },
   listRightView: {
-    flexDirection: 'column',
+    flexDirection: "column",
     marginVertical: 10,
     maxWidth: 140,
   },
   listRightViewText: {
     color: styleguide.colors.labelSecondary,
     ...styleguide.typography.paragraph,
-    textAlign: 'right',
+    textAlign: "right",
   },
   listRightViewSubtext: {
     color: styleguide.colors.textSecondary,
     ...styleguide.typography.caption,
-    textAlign: 'right',
+    textAlign: "right",
   },
   continueButton: {
     marginTop: 16,

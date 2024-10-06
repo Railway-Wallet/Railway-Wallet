@@ -1,10 +1,10 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { ERC20Token, SavedTransaction } from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { StyleProp, ViewStyle } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { ERC20Token, SavedTransaction } from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 interface Props {
   pendingApproveTransaction: Optional<SavedTransaction>;
@@ -26,7 +26,7 @@ export const ApproveButton = ({
       icon="check-network-outline"
       title={
         pendingApproveTransaction
-          ? 'Approving token... Please wait.'
+          ? "Approving token... Please wait."
           : approveText
       }
       onPress={() => {

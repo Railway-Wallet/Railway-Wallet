@@ -1,4 +1,4 @@
-import { RecipeOutput } from '@railgun-community/cookbook';
+import { RecipeOutput } from "@railgun-community/cookbook";
 import {
   EVMGasType,
   FeeTokenDetails,
@@ -7,29 +7,29 @@ import {
   NFTAmountRecipient,
   SelectedBroadcaster,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { SharedConstants } from '../../config/shared-constants';
+} from "@railgun-community/shared-models";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { SharedConstants } from "../../config/shared-constants";
 import {
   GetGasEstimateProofRequired,
   GetGasEstimateSelfSigned,
-} from '../../models/callbacks';
-import { GasDetailsBySpeed, GasHistoryPercentile } from '../../models/gas';
-import { NetworkFeeSelection } from '../../models/network';
-import { ERC20AmountRecipient } from '../../models/token';
-import { ProgressService } from '../../services';
-import { promiseTimeout } from '../../utils';
+} from "../../models/callbacks";
+import { GasDetailsBySpeed, GasHistoryPercentile } from "../../models/gas";
+import { NetworkFeeSelection } from "../../models/network";
+import { ERC20AmountRecipient } from "../../models/token";
+import { ProgressService } from "../../services";
+import { promiseTimeout } from "../../utils";
 import {
   broadcasterGasHistoryPercentileForChain,
   convertNetworkFeeSelectionToGasSpeed,
   extractGasValue,
   getGasDetailsBySpeed,
-} from '../../utils/gas-by-speed';
-import { logDev, logDevError } from '../../utils/logging';
-import { networkGasText } from '../../utils/transactions';
-import { generateKey, valuesWithinThresholdBigNumber } from '../../utils/util';
-import { useGasTokenBalanceError } from '../alerts/useGasTokenBalanceError';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../utils/gas-by-speed";
+import { logDev, logDevError } from "../../utils/logging";
+import { networkGasText } from "../../utils/transactions";
+import { generateKey, valuesWithinThresholdBigNumber } from "../../utils/util";
+import { useGasTokenBalanceError } from "../alerts/useGasTokenBalanceError";
+import { useReduxSelector } from "../hooks-redux";
 
 export type GasDetailsMap = Record<NetworkFeeSelection, TransactionGasDetails>;
 
@@ -53,13 +53,13 @@ export const useNetworkFeeGasEstimator = (
   isMounted: () => boolean,
   gasEstimateProgressCallback: (progress: number) => void,
   selectedFeeTokenAddress: string,
-  recipeOutput: Optional<RecipeOutput>,
+  recipeOutput: Optional<RecipeOutput>
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { remoteConfig } = useReduxSelector('remoteConfig');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { remoteConfig } = useReduxSelector("remoteConfig");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const railWalletID = wallets.active?.railWalletID;
 
@@ -68,7 +68,7 @@ export const useNetworkFeeGasEstimator = (
   const progressServiceGasEstimate = useRef<Optional<ProgressService>>();
 
   const [networkFeeSelection, setNetworkFeeSelection] = useState(
-    NetworkFeeSelection.Standard,
+    NetworkFeeSelection.Standard
   );
 
   const [gasDetailsBySpeed, setGasDetailsBySpeed] =
@@ -80,7 +80,7 @@ export const useNetworkFeeGasEstimator = (
 
   const latestGasEstimateID = useRef<Optional<string>>();
   const latestSelectedBroadcasterLocked = useRef<Optional<boolean>>(
-    selectedBroadcasterLocked,
+    selectedBroadcasterLocked
   );
 
   const validGasDetailsForNetworkFeeSelection = useCallback(
@@ -97,7 +97,7 @@ export const useNetworkFeeGasEstimator = (
 
       const evmGasType = getEVMGasTypeForTransaction(
         network.current.name,
-        sendWithPublicWallet,
+        sendWithPublicWallet
       );
 
       switch (feeSelection) {
@@ -169,7 +169,7 @@ export const useNetworkFeeGasEstimator = (
       customGasTransactionDetails.gasPrice,
       customGasTransactionDetails.maxFeePerGas,
       customGasTransactionDetails.maxPriorityFeePerGas,
-    ],
+    ]
   );
 
   const {
@@ -181,19 +181,19 @@ export const useNetworkFeeGasEstimator = (
   } = useMemo(() => {
     return {
       slowerGasDetails: validGasDetailsForNetworkFeeSelection(
-        NetworkFeeSelection.Slower,
+        NetworkFeeSelection.Slower
       ),
       standardGasDetails: validGasDetailsForNetworkFeeSelection(
-        NetworkFeeSelection.Standard,
+        NetworkFeeSelection.Standard
       ),
       fasterGasDetails: validGasDetailsForNetworkFeeSelection(
-        NetworkFeeSelection.Faster,
+        NetworkFeeSelection.Faster
       ),
       aggressiveGasDetails: validGasDetailsForNetworkFeeSelection(
-        NetworkFeeSelection.Aggressive,
+        NetworkFeeSelection.Aggressive
       ),
       customGasDetails: validGasDetailsForNetworkFeeSelection(
-        NetworkFeeSelection.Custom,
+        NetworkFeeSelection.Custom
       ),
     };
   }, [validGasDetailsForNetworkFeeSelection]);
@@ -242,7 +242,7 @@ export const useNetworkFeeGasEstimator = (
 
   const { gasTokenBalanceError } = useGasTokenBalanceError(
     requiresProofGeneration,
-    selectedGasDetails,
+    selectedGasDetails
   );
 
   const activeWallet = wallets.active;
@@ -264,14 +264,14 @@ export const useNetworkFeeGasEstimator = (
     }
     if (activeWallet.isViewOnlyWallet) {
       setGasEstimateError(
-        new Error('This view-only wallet cannot be used for transactions.'),
+        new Error("This view-only wallet cannot be used for transactions.")
       );
       return;
     }
     if (latestSelectedBroadcasterLocked.current ?? false) {
       return;
     }
-    logDev('refreshGasEstimate');
+    logDev("refreshGasEstimate");
     setGasEstimateError(undefined);
 
     const currentGasEstimateID = generateKey();
@@ -286,8 +286,8 @@ export const useNetworkFeeGasEstimator = (
           if (currentGasEstimateID === latestGasEstimateID.current) {
             setGasEstimateError(
               new Error(
-                'Shielded transactions always require proof generation.',
-              ),
+                "Shielded transactions always require proof generation."
+              )
             );
           }
           return;
@@ -319,12 +319,12 @@ export const useNetworkFeeGasEstimator = (
             nftAmountRecipients,
             broadcasterTransactionGasDetailsWithZeroEstimate,
             feeTokenDetails,
-            sendWithPublicWallet,
+            sendWithPublicWallet
           ),
           SharedConstants.GAS_ESTIMATE_TIMEOUT,
           new Error(
-            'Timed out retrieving gas estimate for transaction. Please try again.',
-          ),
+            "Timed out retrieving gas estimate for transaction. Please try again."
+          )
         );
       } else {
         const fromWalletAddress = activeWallet.ethAddress;
@@ -334,12 +334,12 @@ export const useNetworkFeeGasEstimator = (
             networkName,
             fromWalletAddress,
             erc20AmountRecipients,
-            nftAmountRecipients,
+            nftAmountRecipients
           ),
           SharedConstants.GAS_ESTIMATE_TIMEOUT,
           new Error(
-            'Timed out retrieving gas estimate for transaction. Please try again.',
-          ),
+            "Timed out retrieving gas estimate for transaction. Please try again."
+          )
         );
       }
 
@@ -351,11 +351,11 @@ export const useNetworkFeeGasEstimator = (
         10,
         95,
         isShieldedFromAddress ? 14000 : 5000,
-        250,
+        250
       );
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       progressServiceGasEstimate.current.progressSteadily(
-        gasEstimateProgressCallback,
+        gasEstimateProgressCallback
       );
 
       const gasEstimate = await gasEstimatePromise;
@@ -401,28 +401,28 @@ export const useNetworkFeeGasEstimator = (
       }
       try {
         if (!remoteConfig.current) {
-          throw new Error('No remote config for historical gas estimates.');
+          throw new Error("No remote config for historical gas estimates.");
         }
-        logDev('refreshGasFeeData');
+        logDev("refreshGasFeeData");
 
         const { name: networkName } = network.current;
 
         const evmGasType = getEVMGasTypeForTransaction(
           networkName,
-          sendWithPublicWallet,
+          sendWithPublicWallet
         );
 
         if (
           gasDetailsBySpeed &&
           networkFeeSelection === NetworkFeeSelection.Custom
         ) {
-          logDev('Skip updating gas price - custom gas');
+          logDev("Skip updating gas price - custom gas");
           return;
         }
         const gasDetails = await promiseTimeout(
           getGasDetailsBySpeed(evmGasType, networkName),
           SharedConstants.GAS_PRICE_TIMEOUT,
-          new Error('Timed out retrieving current gas price from network.'),
+          new Error("Timed out retrieving current gas price from network.")
         );
 
         if (gasDetailsBySpeed && !forceUseNewData) {
@@ -439,10 +439,10 @@ export const useNetworkFeeGasEstimator = (
             valuesWithinThresholdBigNumber(
               oldCompareValue,
               newCompareValue,
-              SharedConstants.NETWORK_GAS_PRICE_CHANGE_THRESHOLD,
+              SharedConstants.NETWORK_GAS_PRICE_CHANGE_THRESHOLD
             )
           ) {
-            logDev('Skip updating gas price - not significantly changed');
+            logDev("Skip updating gas price - not significantly changed");
             return;
           }
         }
@@ -451,7 +451,7 @@ export const useNetworkFeeGasEstimator = (
           (latestSelectedBroadcasterLocked.current ?? false) &&
           !sendWithPublicWallet
         ) {
-          logDev('Skip updating gas price - broadcaster locked');
+          logDev("Skip updating gas price - broadcaster locked");
           return;
         }
 
@@ -461,7 +461,7 @@ export const useNetworkFeeGasEstimator = (
           throw err;
         }
         if (
-          err.message !== 'Timed out retrieving current gas price from network.'
+          err.message !== "Timed out retrieving current gas price from network."
         ) {
           handleGasError(err);
         }
@@ -474,7 +474,7 @@ export const useNetworkFeeGasEstimator = (
       sendWithPublicWallet,
       gasDetailsBySpeed,
       networkFeeSelection,
-    ],
+    ]
   );
 
   const handleGasError = (cause: Error) => {
@@ -486,7 +486,7 @@ export const useNetworkFeeGasEstimator = (
   }, [selectedBroadcasterLocked]);
 
   useEffect(() => {
-    logDev('clear gas estimate');
+    logDev("clear gas estimate");
     setGasEstimate(undefined);
   }, [
     activeWallet?.id,
@@ -543,19 +543,19 @@ export const useNetworkFeeGasEstimator = (
   const showExactCurrencyGasPrice = false;
   const { networkFeeText, networkFeePriceText } = isDefined(gasEstimateError)
     ? {
-        networkFeeText: 'Error',
-        networkFeePriceText: 'No gas estimate',
+        networkFeeText: "Error",
+        networkFeePriceText: "No gas estimate",
       }
     : selectedGasDetails
     ? networkGasText(
         network.current,
         networkPrices,
         selectedGasDetails,
-        showExactCurrencyGasPrice,
+        showExactCurrencyGasPrice
       )
     : {
         networkFeeText: SharedConstants.ESTIMATING_GAS_FEE_TEXT,
-        networkFeePriceText: 'Please wait',
+        networkFeePriceText: "Please wait",
       };
 
   const resetGasData = () => {
@@ -564,9 +564,7 @@ export const useNetworkFeeGasEstimator = (
     setGasDetailsBySpeed(undefined);
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    refreshGasFeeData(
-      true,
-    );
+    refreshGasFeeData(true);
   };
 
   return {

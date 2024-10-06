@@ -2,21 +2,21 @@ import {
   isDefined,
   Network,
   NetworkName,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import {
   ERC20Token,
   ERC20TokenFullInfo,
   SearchableERC20,
-} from '../../models/token';
-import { FrontendWallet, StoredWallet } from '../../models/wallet';
-import { AppDispatch } from '../../redux-store/store';
+} from "../../models/token";
+import { FrontendWallet, StoredWallet } from "../../models/wallet";
+import { AppDispatch } from "../../redux-store/store";
 import {
   compareTokens,
   createERC20TokenFromSearchableERC20,
   getDefaultAddedTokens,
-} from '../../utils/tokens';
-import { refreshReceivedTransactionWatchers } from '../transactions/transfer-watcher-service';
-import { WalletStorageService } from './wallet-storage-service';
+} from "../../utils/tokens";
+import { refreshReceivedTransactionWatchers } from "../transactions/transfer-watcher-service";
+import { WalletStorageService } from "./wallet-storage-service";
 
 export class WalletTokenService {
   private dispatch: AppDispatch;
@@ -30,14 +30,14 @@ export class WalletTokenService {
   async addERC20TokensToWallet(
     wallet: FrontendWallet,
     searchableERC20s: SearchableERC20[],
-    network: Network,
+    network: Network
   ): Promise<void> {
     const networkName = network.name;
 
     const newERC20Tokens: ERC20TokenFullInfo[] = searchableERC20s.map(
-      searchableERC20 => {
+      (searchableERC20) => {
         return createERC20TokenFromSearchableERC20(searchableERC20);
-      },
+      }
     );
     const updatedWallet = { ...wallet };
     const prevTokens = wallet.addedTokens[networkName] ?? [];
@@ -45,7 +45,7 @@ export class WalletTokenService {
     const filteredNewERC20Tokens: ERC20TokenFullInfo[] = [];
     for (const newToken of newERC20Tokens) {
       const foundTokenInPrevTokens =
-        prevTokens.filter(prevToken => compareTokens(prevToken, newToken))
+        prevTokens.filter((prevToken) => compareTokens(prevToken, newToken))
           .length > 0;
       if (!foundTokenInPrevTokens) {
         filteredNewERC20Tokens.push(newToken);
@@ -68,7 +68,7 @@ export class WalletTokenService {
   async removeTokenFromWallet(
     wallet: FrontendWallet,
     removeToken: ERC20Token,
-    network: Network,
+    network: Network
   ): Promise<void> {
     if (
       !(removeToken.isAddressOnly ?? false) &&
@@ -80,7 +80,7 @@ export class WalletTokenService {
     const networkName = network.name;
 
     const addedTokensWithRemoved = wallet.addedTokens[networkName]?.filter(
-      addedToken => !compareTokens(addedToken, removeToken),
+      (addedToken) => !compareTokens(addedToken, removeToken)
     );
     const updatedWallet: FrontendWallet = {
       ...wallet,
@@ -94,7 +94,7 @@ export class WalletTokenService {
       await refreshReceivedTransactionWatchers(
         updatedWallet,
         network,
-        this.dispatch,
+        this.dispatch
       );
     }
 
@@ -103,7 +103,7 @@ export class WalletTokenService {
 
   private async addDefaultNetworkTokensToWallet(
     wallet: StoredWallet,
-    networkName: NetworkName,
+    networkName: NetworkName
   ) {
     const supportedNetworkNames: NetworkName[] = [
       ...wallet.supportedNetworkNames,
@@ -137,7 +137,7 @@ export class WalletTokenService {
 
   async resetTokensToDefaults(wallet: FrontendWallet) {
     const addedTokens: MapType<ERC20TokenFullInfo[]> = {};
-    wallet.supportedNetworkNames.map(networkName => {
+    wallet.supportedNetworkNames.map((networkName) => {
       if (!Object.values(NetworkName).includes(networkName)) {
         return;
       }

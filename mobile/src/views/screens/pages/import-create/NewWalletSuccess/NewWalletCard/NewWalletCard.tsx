@@ -1,25 +1,25 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
 import {
   Image,
   ImageSourcePropType,
   Text,
   View,
   ViewStyle,
-} from 'react-native';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { RailgunGradient } from '@components/gradient/RailgunGradient';
-import Clipboard from '@react-native-clipboard/clipboard';
+} from "react-native";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { RailgunGradient } from "@components/gradient/RailgunGradient";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   shortenWalletAddress,
   showImmediateToast,
   styleguide,
   ToastType,
   useAppDispatch,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Icon, IconSource } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Icon, IconSource } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   walletType: string;
@@ -58,7 +58,7 @@ export const NewWalletCard: React.FC<Props> = ({
       showImmediateToast({
         message: `${walletType} address copied. Paste elsewhere to share.`,
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 

@@ -1,8 +1,8 @@
-import React from 'react';
-import { Text, TouchableHighlight, View } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+import React from "react";
+import { Text, TouchableHighlight, View } from "react-native";
+import { BlurView } from "@react-native-community/blur";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
   text: string;
@@ -16,13 +16,13 @@ export const SeedPhraseTextBox: React.FC<Props> = ({
   blur = false,
 }) => {
   return (
-    (<TouchableHighlight onPress={onTap}>
+    <TouchableHighlight onPress={onTap}>
       <View style={styles.box}>
         <Text style={styles.text}>{text}</Text>
         {blur && !isAndroid() && (
-            (<BlurView style={styles.blur} blurAmount={6} />)
-          )}
+          <BlurView style={styles.blur} blurAmount={6} />
+        )}
       </View>
-    </TouchableHighlight>)
+    </TouchableHighlight>
   );
 };

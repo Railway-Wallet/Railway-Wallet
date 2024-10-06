@@ -2,19 +2,19 @@ import {
   isDefined,
   Network,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { ButtonTextOnly } from '@components/buttons/ButtonTextOnly/ButtonTextOnly';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { LoadingSwirl } from '@components/loading/LoadingSwirl/LoadingSwirl';
-import { SpinnerCubes } from '@components/loading/SpinnerCubes/SpinnerCubes';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { Button } from "react-native-paper";
+import { ButtonTextOnly } from "@components/buttons/ButtonTextOnly/ButtonTextOnly";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { FullScreenSpinner } from "@components/loading/FullScreenSpinner/FullScreenSpinner";
+import { LoadingSwirl } from "@components/loading/LoadingSwirl/LoadingSwirl";
+import { SpinnerCubes } from "@components/loading/SpinnerCubes/SpinnerCubes";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   CookbookLiquidityRecipeType,
   ERC20Token,
@@ -39,22 +39,22 @@ import {
   useLiquidityTokensSort,
   useReduxSelector,
   useWalletTokenVaultsFilter,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { openInAppBrowserLink } from '@services/util/in-app-browser-service';
-import { Icon } from '@views/components/icons/Icon';
-import { LiquidityListRow } from '@views/components/list/LiquidityListRow/ LiquidityListRow';
-import { TokenListRow } from '@views/components/list/TokenListRow/TokenListRow';
-import { WalletNetworkSelector } from '@views/screens/tabs/WalletsScreen/WalletNetworkSelector/WalletNetworkSelector';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { openInAppBrowserLink } from "@services/util/in-app-browser-service";
+import { Icon } from "@views/components/icons/Icon";
+import { LiquidityListRow } from "@views/components/list/LiquidityListRow/ LiquidityListRow";
+import { TokenListRow } from "@views/components/list/TokenListRow/TokenListRow";
+import { WalletNetworkSelector } from "@views/screens/tabs/WalletsScreen/WalletNetworkSelector/WalletNetworkSelector";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'LiquidityScreen'>;
+  navigation: NavigationProp<DAppsStackParamList, "LiquidityScreen">;
 };
 
 type Action = {
@@ -62,13 +62,13 @@ type Action = {
   value: CookbookLiquidityRecipeType;
 };
 
-const REMOVE_LIQUIDITY_LABEL = 'Remove liquidity';
-const ADD_LIQUIDITY_LABEL = 'Add liquidity';
+const REMOVE_LIQUIDITY_LABEL = "Remove liquidity";
+const ADD_LIQUIDITY_LABEL = "Add liquidity";
 
 export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
   const scrollViewRef = useRef<ScrollView | null>(null);
-  const { wallets } = useReduxSelector('wallets');
-  const { network } = useReduxSelector('network');
+  const { wallets } = useReduxSelector("wallets");
+  const { network } = useReduxSelector("network");
   const activeWallet = wallets.active;
   const networkName = network.current.name;
   const isRailgun = true;
@@ -95,17 +95,17 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
   const { addedLiquidityTokens, supportedLiquidityPairs } =
     useLiquidityPairsForWalletFilter(activeWallet, networkName, isRailgun);
   const { sortedLiquidityPairs } = useLiquidityPairsSort(
     supportedLiquidityPairs,
-    isRailgun,
+    isRailgun
   );
   const { sortedLiquidityTokens } = useLiquidityTokensSort(
     addedLiquidityTokens,
-    isRailgun,
+    isRailgun
   );
   useWalletTokenVaultsFilter(activeWallet, networkName);
   const { pullPrices, pullBalances } = useBalancePriceRefresh(
@@ -115,7 +115,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
         show: true,
         error,
         onDismiss: () => setErrorModal(undefined),
-      }),
+      })
   );
 
   const actions = [
@@ -151,14 +151,14 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
 
   const onSelectFarmAction = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    const buttons = actions.map(a => {
+    const buttons = actions.map((a) => {
       return {
         name: a.label,
         action: () => setSelectedAction(a),
       };
     });
 
-    callActionSheet(showActionSheetWithOptions, 'Filter assets', buttons);
+    callActionSheet(showActionSheetWithOptions, "Filter assets", buttons);
   };
 
   const onSelectNetwork = async (newNetwork: Network) => {
@@ -175,7 +175,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
         newNetwork.name,
         shouldFallbackOnError,
         pullPrices,
-        pullBalances,
+        pullBalances
       );
 
       triggerHaptic(HapticSurface.EditSuccess);
@@ -185,8 +185,8 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
     } catch (cause) {
       setShowLoadingNetworkPublicName(undefined);
       const error = new Error(
-        'Connection error while loading network. Please try again.',
-        { cause },
+        "Connection error while loading network. Please try again.",
+        { cause }
       );
       logDevError(error);
       setErrorModal({
@@ -200,7 +200,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
   const onTapNetworkSelector = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     const networks = getSupportedNetworks();
-    const buttons = networks.map(n => {
+    const buttons = networks.map((n) => {
       return {
         name:
           n.isDevOnlyNetwork === true ? `[DEV] ${n.publicName}` : n.publicName,
@@ -208,7 +208,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
       };
     });
 
-    callActionSheet(showActionSheetWithOptions, 'Select network', buttons);
+    callActionSheet(showActionSheetWithOptions, "Select network", buttons);
   };
 
   const refreshBalancesAndPools = async () => {
@@ -218,7 +218,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
     setIsRefreshing(true);
     await refreshLiquidityData(
       network.current.name,
-      wallets?.active?.addedTokens[network.current.name] ?? [],
+      wallets?.active?.addedTokens[network.current.name] ?? []
     );
 
     await pullBalances();
@@ -228,7 +228,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
   const onSelectRemoveLiquidityERC20 = (token: ERC20Token) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('RemoveLiquidityInitial', {
+    navigation.navigate("RemoveLiquidityInitial", {
       tokenAddress: token.address,
     });
   };
@@ -244,7 +244,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
     const balanceDecimal = getDecimalBalance(BigInt(balance), token.decimals);
     const balanceText = hasBalance
       ? balanceDecimal > 0 && balanceDecimal < 0.0001
-        ? '<' + formatNumberToLocaleWithMinDecimals(0.0001, 4)
+        ? "<" + formatNumberToLocaleWithMinDecimals(0.0001, 4)
         : formatNumberToLocaleWithMinDecimals(balanceDecimal, 4)
       : undefined;
 
@@ -266,7 +266,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
     const tokenName = getTokenDisplayName(
       token,
       wallets.available,
-      networkName,
+      networkName
     );
     return (
       <TokenListRow
@@ -283,14 +283,14 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
   const onSelectAddLiquidityPool = (pool: FrontendLiquidityPair) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('AddLiquidityInitial', {
+    navigation.navigate("AddLiquidityInitial", {
       pool,
     });
   };
 
   const renderAddLiquidityPool = (
     pool: FrontendLiquidityPair,
-    index: number,
+    index: number
   ) => {
     const { tokenA, tokenB } = pool;
     return (
@@ -326,7 +326,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
       return (
         <View>
           {filteredERC20TokensForRemoveLiquidity.map(
-            renderRemoveLiquidityERC20,
+            renderRemoveLiquidityERC20
           )}
         </View>
       );
@@ -399,7 +399,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
                       viewStyle={styles.farmSourceButton}
                       labelStyle={styles.farmSourcesListButtonText}
                     />
-                  ),
+                  )
                 )}
               </View>
             </View>
@@ -411,7 +411,7 @@ export const LiquidityScreen: React.FC<Props> = ({ navigation }) => {
         text={
           isDefined(showLoadingNetworkPublicName)
             ? `Loading ${showLoadingNetworkPublicName} and scanning new transactions`
-            : ''
+            : ""
         }
       />
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}

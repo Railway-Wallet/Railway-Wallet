@@ -1,35 +1,35 @@
 import {
   isDefined,
   WalletCreationType,
-} from '@railgun-community/shared-models';
-import React, { useRef, useState } from 'react';
-import { TextInput, View } from 'react-native';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { TextEntry } from '@components/inputs/TextEntry/TextEntry';
-import { useSetPinWarning } from '@hooks/alerts/useSetPinWarning';
-import { NewWalletStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useRef, useState } from "react";
+import { TextInput, View } from "react-native";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { TextEntry } from "@components/inputs/TextEntry/TextEntry";
+import { useSetPinWarning } from "@hooks/alerts/useSetPinWarning";
+import { NewWalletStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   FrontendWallet,
   SharedConstants,
   validateWalletName,
-} from '@react-shared';
-import { ProcessNewWalletModal } from '@screens/modals/ProcessNewWalletModal/ProcessNewWalletModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { ProcessNewWalletModal } from "@screens/modals/ProcessNewWalletModal/ProcessNewWalletModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 interface AddViewOnlyWalletScreenProps {
-  navigation: NavigationProp<NewWalletStackParamList, 'AddViewOnlyWallet'>;
+  navigation: NavigationProp<NewWalletStackParamList, "AddViewOnlyWallet">;
 }
 
 export const AddViewOnlyWalletScreen: React.FC<
   AddViewOnlyWalletScreenProps
 > = ({ navigation }) => {
-  const [walletName, setWalletName] = useState('');
-  const [shareablePrivateKey, setShareablePrivateKey] = useState('');
+  const [walletName, setWalletName] = useState("");
+  const [shareablePrivateKey, setShareablePrivateKey] = useState("");
   const [hasValidEntries, setHasValidEntries] = useState(false);
   const [showProcessModal, setShowProcessModal] = useState(false);
 
@@ -37,7 +37,7 @@ export const AddViewOnlyWalletScreen: React.FC<
 
   const validateEntries = () => {
     setHasValidEntries(
-      validateWalletName(walletName) && isDefined(shareablePrivateKey),
+      validateWalletName(walletName) && isDefined(shareablePrivateKey)
     );
   };
 
@@ -58,7 +58,7 @@ export const AddViewOnlyWalletScreen: React.FC<
 
   const onSuccess = (wallet: FrontendWallet) => {
     setShowProcessModal(false);
-    navigation.navigate('NewWalletSuccess', {
+    navigation.navigate("NewWalletSuccess", {
       walletCreationType: WalletCreationType.AddViewOnly,
       wallet,
     });
@@ -100,7 +100,7 @@ export const AddViewOnlyWalletScreen: React.FC<
           <TextEntry
             viewStyles={[
               styles.walletNameInput,
-              walletName && walletName !== '' && !hasValidEntries
+              walletName && walletName !== "" && !hasValidEntries
                 ? styles.walletInputError
                 : undefined,
             ]}

@@ -1,4 +1,4 @@
-export const BASE_TOKEN_ADDRESS = '0x00';
+export const BASE_TOKEN_ADDRESS = "0x00";
 
 export type ERC20Balance = {
   isBaseToken: boolean;
@@ -7,8 +7,8 @@ export type ERC20Balance = {
 };
 
 export enum SelectTokenPurpose {
-  Transfer = 'Transfer',
-  BroadcasterFee = 'BroadcasterFee',
+  Transfer = "Transfer",
+  BroadcasterFee = "BroadcasterFee",
 }
 
 export type ERC20Token = ERC20TokenFullInfo | ERC20TokenAddressOnly;
@@ -21,7 +21,7 @@ export type ERC20TokenFullInfo = {
   decimals: number;
   icon?: TokenIconKey;
   iconURL?: string;
-  dateAdded?: number
+  dateAdded?: number;
   isBaseToken?: boolean;
   disableWalletRemoval?: boolean;
 };
@@ -89,31 +89,31 @@ export type SearchableERC20 = {
 export type ERC20BalancesSerialized = MapType<string>;
 
 export enum TokenIconKey {
-  ImageTokenEthKey = 'ImageTokenEthKey',
-  ImageTokenUsdcKey = 'ImageTokenUsdcKey',
-  ImageTokenUSDCeKey = 'ImageTokenUSDCeKey',
-  ImageTokenRailKey = 'ImageTokenRailKey',
-  ImageTokenBnbKey = 'ImageTokenBnbKey',
-  ImageTokenMaticKey = 'ImageTokenMaticKey',
-  ImageTokenWethKey = 'ImageTokenWethKey',
-  ImageTokenWbnbKey = 'ImageTokenWbnbKey',
-  ImageTokenWmaticKey = 'ImageTokenWmaticKey',
-  ImageTokenWbtcKey = 'ImageTokenWbtcKey',
-  ImageTokenDaiKey = 'ImageTokenDaiKey',
-  ImageTokenBusdKey = 'ImageTokenBusdKey',
-  ImageTokenUsdtKey = 'ImageTokenUsdtKey',
+  ImageTokenEthKey = "ImageTokenEthKey",
+  ImageTokenUsdcKey = "ImageTokenUsdcKey",
+  ImageTokenUSDCeKey = "ImageTokenUSDCeKey",
+  ImageTokenRailKey = "ImageTokenRailKey",
+  ImageTokenBnbKey = "ImageTokenBnbKey",
+  ImageTokenMaticKey = "ImageTokenMaticKey",
+  ImageTokenWethKey = "ImageTokenWethKey",
+  ImageTokenWbnbKey = "ImageTokenWbnbKey",
+  ImageTokenWmaticKey = "ImageTokenWmaticKey",
+  ImageTokenWbtcKey = "ImageTokenWbtcKey",
+  ImageTokenDaiKey = "ImageTokenDaiKey",
+  ImageTokenBusdKey = "ImageTokenBusdKey",
+  ImageTokenUsdtKey = "ImageTokenUsdtKey",
 
-  ImageRecipeTokenBeefyKey = 'ImageRecipeTokenBeefyKey',
-  ImageRecipeTokenUniswapKey = 'ImageRecipeTokenUniswapKey',
-  ImageRecipeTokenSushiswapKey = 'ImageRecipeTokenSushiswapKey',
-  ImageRecipeTokenQuickswapKey = 'ImageRecipeTokenQuickswapKey',
-  ImageRecipeTokenPancakeSwapKey = 'ImageRecipeTokenPancakeSwapKey',
+  ImageRecipeTokenBeefyKey = "ImageRecipeTokenBeefyKey",
+  ImageRecipeTokenUniswapKey = "ImageRecipeTokenUniswapKey",
+  ImageRecipeTokenSushiswapKey = "ImageRecipeTokenSushiswapKey",
+  ImageRecipeTokenQuickswapKey = "ImageRecipeTokenQuickswapKey",
+  ImageRecipeTokenPancakeSwapKey = "ImageRecipeTokenPancakeSwapKey",
 }
 
 export const MINTABLE_TEST_TOKEN_ROPSTEN: ERC20TokenFullInfo = {
-  name: 'Test ERC20 Token',
-  symbol: 'TESTERC20',
-  address: '0xAa753fb4e77ea8Adb16200865839ffB1d86BAE5E',
+  name: "Test ERC20 Token",
+  symbol: "TESTERC20",
+  address: "0xAa753fb4e77ea8Adb16200865839ffB1d86BAE5E",
   decimals: 18,
 };
 

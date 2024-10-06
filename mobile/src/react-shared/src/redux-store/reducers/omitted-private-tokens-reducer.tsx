@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SearchableERC20 } from '../../models';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SearchableERC20 } from "../../models";
 
 export type SetShouldShowOmittedPrivateTokensModalPayload = boolean;
 export type SetOmittedPrivateTokensPayload = {
@@ -18,18 +18,18 @@ const initialState = {
 } as OmittedPrivateTokensState;
 
 const slice = createSlice({
-  name: 'omitted-private-tokens',
+  name: "omitted-private-tokens",
   initialState,
   reducers: {
     setShouldShowOmittedPrivateTokensModal(
       state,
-      action: PayloadAction<SetShouldShowOmittedPrivateTokensModalPayload>,
+      action: PayloadAction<SetShouldShowOmittedPrivateTokensModalPayload>
     ) {
       state.shouldShowOmittedPrivateTokensModal = action.payload;
     },
     setOmittedPrivateTokens(
       state,
-      action: PayloadAction<SetOmittedPrivateTokensPayload>,
+      action: PayloadAction<SetOmittedPrivateTokensPayload>
     ) {
       state.shouldShowOmittedPrivateTokensModal =
         action.payload.shouldShowOmittedPrivateTokensModal;

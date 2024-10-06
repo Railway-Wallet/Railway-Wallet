@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -8,6 +8,6 @@ export const styles = StyleSheet.create({
   text: {
     color: styleguide.colors.text(),
     ...styleguide.typography.label,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
 });

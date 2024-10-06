@@ -1,13 +1,13 @@
-import React from 'react';
-import { Dimensions } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
-import { IconNo, styleguide } from '@react-shared';
+import React from "react";
+import { Dimensions } from "react-native";
+import QRCode from "react-native-qrcode-svg";
+import { IconNo, styleguide } from "@react-shared";
 
 const MAX_SIZE = 240;
 
 export const createRailgunQrCode = (value: string) => {
   const totalMargin = 108;
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = Dimensions.get("window").width;
   const size = Math.min(MAX_SIZE, windowWidth - totalMargin);
   const railgunGradient = styleguide.colors.gradients.railgun;
 
@@ -16,7 +16,7 @@ export const createRailgunQrCode = (value: string) => {
       value={value}
       size={size}
       enableLinearGradient={true}
-      gradientDirection={['170']}
+      gradientDirection={["170"]}
       linearGradient={railgunGradient.colors}
     />
   );
@@ -24,12 +24,12 @@ export const createRailgunQrCode = (value: string) => {
 
 export const fadedQrCodePlaceholder = (showErrorIcon: boolean = false) => {
   const totalMargin = 108;
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = Dimensions.get("window").width;
   const size = Math.min(MAX_SIZE, windowWidth - totalMargin);
 
   return (
     <QRCode
-      value={'Invalid address'}
+      value={"Invalid address"}
       size={size}
       color={styleguide.colors.gray7()}
       logo={showErrorIcon ? IconNo() : undefined}

@@ -1,14 +1,14 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { TextEntry } from '@components/inputs/TextEntry/TextEntry';
-import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { useSetActiveWallet } from '@hooks/useSetActiveWallet';
-import { SettingsStackParamList } from '@models/navigation-models';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { TextEntry } from "@components/inputs/TextEntry/TextEntry";
+import { FullScreenSpinner } from "@components/loading/FullScreenSpinner/FullScreenSpinner";
+import { useSetActiveWallet } from "@hooks/useSetActiveWallet";
+import { SettingsStackParamList } from "@models/navigation-models";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   FrontendWallet,
   IconPublic,
@@ -22,23 +22,23 @@ import {
   validateWalletName,
   WalletService,
   WalletStorageService,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { SettingsListHeader } from '@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader';
-import { SettingsListItem } from '@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
-import { promptAlert } from '@services/util/alert-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { SettingsListHeader } from "@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader";
+import { SettingsListItem } from "@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
+import { promptAlert } from "@services/util/alert-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsWalletInfo'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsWalletInfo">;
   route: RouteProp<
-    { params: SettingsStackParamList['SettingsWalletInfo'] },
-    'params'
+    { params: SettingsStackParamList["SettingsWalletInfo"] },
+    "params"
   >;
 };
 
@@ -52,7 +52,7 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
   const walletStorageService = new WalletStorageService(dispatch);
   const walletService = new WalletService(
     dispatch,
-    new WalletSecureServiceReactNative(),
+    new WalletSecureServiceReactNative()
   );
   const updateScreenWallet = (wallet: Optional<FrontendWallet>) => {
     if (wallet) {
@@ -66,20 +66,20 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
   const onTapEditName = () => {
     triggerHaptic(HapticSurface.EditButton);
     promptAlert(
-      'Rename your wallet',
+      "Rename your wallet",
       `${SharedConstants.MAX_LENGTH_WALLET_NAME} character limit`,
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
         {
-          text: 'Update',
+          text: "Update",
           onPress: (name?: string) => updateWalletName(name),
         },
       ],
       undefined,
-      wallet.name,
+      wallet.name
     );
   };
 
@@ -90,51 +90,51 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
       showImmediateToast({
         message: `${addressType} address copied. Paste elsewhere to share.`,
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 
   const onTapShowViewingKey = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('ShowViewingKey', { wallet });
+    navigation.navigate("ShowViewingKey", { wallet });
   };
 
   const onTapShowSeedPhrase = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('ShowSeedPhrase', { wallet });
+    navigation.navigate("ShowSeedPhrase", { wallet });
   };
 
   const onTapDeleteWallet = () => {
     triggerHaptic(HapticSurface.DangerButton);
-    const recoveryMethod = 'seed phrase';
+    const recoveryMethod = "seed phrase";
     Alert.alert(
-      'Delete this wallet?',
+      "Delete this wallet?",
       `This action is permanent. Please document your ${recoveryMethod} in order to recover your funds.`,
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
         {
-          text: 'Delete Wallet',
+          text: "Delete Wallet",
           onPress: finalWarningDeleteWallet,
-          style: 'destructive',
+          style: "destructive",
         },
-      ],
+      ]
     );
   };
 
   const finalWarningDeleteWallet = () => {
     triggerHaptic(HapticSurface.DangerAlert);
-    Alert.alert('FINAL WARNING', 'Permanently delete this wallet?', [
+    Alert.alert("FINAL WARNING", "Permanently delete this wallet?", [
       {
-        text: 'Cancel',
-        style: 'cancel',
+        text: "Cancel",
+        style: "cancel",
       },
       {
-        text: 'Delete Forever',
+        text: "Delete Forever",
         onPress: deleteWallet,
-        style: 'destructive',
+        style: "destructive",
       },
     ]);
   };
@@ -144,13 +144,13 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
       return;
     }
     if (!validateWalletName(newWalletName)) {
-      Alert.alert('Invalid entry', 'Please enter a valid wallet name.');
+      Alert.alert("Invalid entry", "Please enter a valid wallet name.");
       return;
     }
     if (newWalletName.length > SharedConstants.MAX_LENGTH_WALLET_NAME) {
       Alert.alert(
-        'Please try again',
-        `Wallet name is limited to ${SharedConstants.MAX_LENGTH_WALLET_NAME} characters.`,
+        "Please try again",
+        `Wallet name is limited to ${SharedConstants.MAX_LENGTH_WALLET_NAME} characters.`
       );
       return;
     }
@@ -165,7 +165,7 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
       await walletService.removeWallet(wallet.id);
       navigation.goBack();
     } catch (cause) {
-      const error = new Error('Failed to delete wallet', { cause });
+      const error = new Error("Failed to delete wallet", { cause });
       logDevError(error);
       setErrorModal({
         show: true,
@@ -196,10 +196,10 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
             <View style={styles.items}>
               <SettingsListItem
                 title={
-                  wallet.isActive ? 'Wallet is Active' : 'Set as Active Wallet'
+                  wallet.isActive ? "Wallet is Active" : "Set as Active Wallet"
                 }
                 description="Use this wallet for balances and transactions"
-                icon={wallet.isActive ? 'check-bold' : undefined}
+                icon={wallet.isActive ? "check-bold" : undefined}
                 iconColor={styleguide.colors.txGreen()}
                 onTap={selectActiveWallet}
               />
@@ -215,7 +215,7 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
                   value={wallet.name}
                   iconButtons={[
                     {
-                      icon: 'pencil-outline',
+                      icon: "pencil-outline",
                       onTap: onTapEditName,
                     },
                   ]}
@@ -225,7 +225,7 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
             </View>
             <View style={styles.items}>
               <TouchableOpacity
-                onPress={() => onTapCopyAddress(wallet.railAddress, 'RAILGUN')}
+                onPress={() => onTapCopyAddress(wallet.railAddress, "RAILGUN")}
                 activeOpacity={0.8}
               >
                 <TextEntry
@@ -235,9 +235,9 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
                   value={wallet.railAddress}
                   iconButtons={[
                     {
-                      icon: 'content-copy',
+                      icon: "content-copy",
                       onTap: () =>
-                        onTapCopyAddress(wallet.railAddress, 'RAILGUN'),
+                        onTapCopyAddress(wallet.railAddress, "RAILGUN"),
                     },
                   ]}
                   multiline
@@ -248,7 +248,7 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
               {!wallet.isViewOnlyWallet && (
                 <TouchableOpacity
                   onPress={() =>
-                    onTapCopyAddress(wallet.ethAddress, 'Public EVM')
+                    onTapCopyAddress(wallet.ethAddress, "Public EVM")
                   }
                   activeOpacity={0.8}
                 >
@@ -259,9 +259,9 @@ export const SettingsWalletInfoScreen: React.FC<Props> = ({
                     value={wallet.ethAddress}
                     iconButtons={[
                       {
-                        icon: 'content-copy',
+                        icon: "content-copy",
                         onTap: () =>
-                          onTapCopyAddress(wallet.ethAddress, 'Public EVM'),
+                          onTapCopyAddress(wallet.ethAddress, "Public EVM"),
                       },
                     ]}
                     multiline

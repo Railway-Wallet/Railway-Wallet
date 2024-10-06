@@ -2,16 +2,16 @@ import {
   isDefined,
   NFTAmount,
   NFTTokenType,
-} from '@railgun-community/shared-models';
-import { NFTMetadata } from '../models';
-import { store } from '../redux-store/store';
+} from "@railgun-community/shared-models";
+import { NFTMetadata } from "../models";
+import { store } from "../redux-store/store";
 
 const nameForNFTTokenType = (nftTokenType: NFTTokenType) => {
   switch (nftTokenType) {
     case NFTTokenType.ERC721:
-      return 'ERC-721';
+      return "ERC-721";
     case NFTTokenType.ERC1155:
-      return 'ERC-1155';
+      return "ERC-1155";
   }
 };
 
@@ -24,7 +24,7 @@ export const formatTokenSubID = (tokenId: string): string => {
 };
 
 export const getAvailableMetadataForNFT = (
-  nftAmount: NFTAmount,
+  nftAmount: NFTAmount
 ): Optional<NFTMetadata> => {
   const { nftsMetadata } = store.getState();
 
@@ -48,18 +48,18 @@ const formatNFTAmountString = (nftAmount: NFTAmount): Optional<string> => {
 export const getNFTAmountDisplayName = (
   nftAmount: NFTAmount,
   showAmountString = true,
-  skipMetadata = false,
+  skipMetadata = false
 ) => {
   const formattedAmountString = formatNFTAmountString(nftAmount);
   const formattedAmountStringWithSpace =
     isDefined(formattedAmountString) && showAmountString
-      ? formattedAmountString + ' '
-      : '';
+      ? formattedAmountString + " "
+      : "";
 
   if (!skipMetadata) {
     const metadata = getAvailableMetadataForNFT(nftAmount);
     if (metadata) {
-      return `NFT: ${formattedAmountStringWithSpace}${metadata.name ?? ''}`;
+      return `NFT: ${formattedAmountStringWithSpace}${metadata.name ?? ""}`;
     }
   }
   const tokenTypeName = nameForNFTTokenType(nftAmount.nftTokenType);

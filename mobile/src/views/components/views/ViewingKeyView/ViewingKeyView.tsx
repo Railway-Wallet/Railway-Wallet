@@ -1,19 +1,19 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   getRailgunWalletShareableViewingKey,
   showImmediateToast,
   StoredWallet,
   ToastType,
   useAppDispatch,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { openInAppBrowserLink } from '@services/util/in-app-browser-service';
-import { Constants } from '@utils/constants';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { openInAppBrowserLink } from "@services/util/in-app-browser-service";
+import { Constants } from "@utils/constants";
+import { styles } from "./styles";
 
 type Props = {
   wallet: StoredWallet;
@@ -28,14 +28,14 @@ export const ViewingKeyView: React.FC<Props> = ({
   const [blur, setBlur] = useState(true);
 
   const blurredKey =
-    '************************************************************************************************************************************************************************************************************************************************************************************************';
+    "************************************************************************************************************************************************************************************************************************************************************************************************";
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getViewingKey = async () => {
       const shareableViewingKey = await getRailgunWalletShareableViewingKey(
-        wallet.railWalletID,
+        wallet.railWalletID
       );
 
       if (!isDefined(shareableViewingKey)) {
@@ -58,9 +58,9 @@ export const ViewingKeyView: React.FC<Props> = ({
     dispatch(
       showImmediateToast({
         message:
-          'Shareable Private Key copied. Be careful — it can be used to access your transaction history.',
+          "Shareable Private Key copied. Be careful — it can be used to access your transaction history.",
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 
@@ -81,7 +81,7 @@ export const ViewingKeyView: React.FC<Props> = ({
         <Text style={styles.text}>{keyText}</Text>
       </View>
       <Text style={styles.showViewingKeyText} onPress={tapShowHideViewingKey}>
-        {blur ? 'Click to show' : 'Click to hide'}
+        {blur ? "Click to show" : "Click to hide"}
       </Text>
       <View style={styles.bottomButtons}>
         <View style={styles.bottomButtons}>

@@ -6,16 +6,16 @@ import {
   setAuthKey,
   StorageService,
   WalletService,
-} from '@react-shared';
-import { createUpdateSettingsAlert } from '@utils/alerts';
-import { Constants } from '@utils/constants';
-import { WalletSecureServiceReactNative } from '../wallet/wallet-secure-service-react-native';
-import { resetPin } from './secure-app-service';
+} from "@react-shared";
+import { createUpdateSettingsAlert } from "@utils/alerts";
+import { Constants } from "@utils/constants";
+import { WalletSecureServiceReactNative } from "../wallet/wallet-secure-service-react-native";
+import { resetPin } from "./secure-app-service";
 
 export const wipeDevice_DESTRUCTIVE = async (dispatch: AppDispatch) => {
   const walletService = new WalletService(
     dispatch,
-    new WalletSecureServiceReactNative(),
+    new WalletSecureServiceReactNative()
   );
   await walletService.clearAllWallets();
 
@@ -24,7 +24,7 @@ export const wipeDevice_DESTRUCTIVE = async (dispatch: AppDispatch) => {
   const defaultNetworkName = NetworkService.getDefaultNetworkName();
   const feesSerialized = await ProviderLoader.loadEngineProvider(
     defaultNetworkName,
-    dispatch,
+    dispatch
   );
 
   const networkService = new NetworkService(dispatch);

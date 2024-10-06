@@ -1,14 +1,14 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { WideButtonTextOnly } from '@components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { SafeGrayFooter } from '@components/footers/SafeGrayFooter/SafeGrayFooter';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { SearchEntry } from '@components/inputs/SearchEntry/SearchEntry';
-import { AddTokenStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { WideButtonTextOnly } from "@components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { SafeGrayFooter } from "@components/footers/SafeGrayFooter/SafeGrayFooter";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { SearchEntry } from "@components/inputs/SearchEntry/SearchEntry";
+import { AddTokenStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   compareTokens,
   DEFAULT_SEARCH_TOKENS_FOR_NETWORK,
@@ -20,40 +20,40 @@ import {
   useAppDispatch,
   useReduxSelector,
   WalletTokenService,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { AddTokenList } from './AddTokenList/AddTokenList';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { AddTokenList } from "./AddTokenList/AddTokenList";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<AddTokenStackParamList, 'AddTokensScreen'>;
+  navigation: NavigationProp<AddTokenStackParamList, "AddTokensScreen">;
   route: RouteProp<
-    { params: AddTokenStackParamList['AddTokensScreen'] },
-    'params'
+    { params: AddTokenStackParamList["AddTokensScreen"] },
+    "params"
   >;
 };
 
-const NO_TOKENS_TEXT = 'No tokens selected.';
+const NO_TOKENS_TEXT = "No tokens selected.";
 
 export const AddTokensScreen: React.FC<Props> = ({ route, navigation }) => {
   const { params } = route;
   const dispatch = useAppDispatch();
 
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [selectedTokens, setSelectedTokens] = useState<SearchableERC20[]>([]);
   const [selectedTokensText, setSelectedTokensText] =
     useState<string>(NO_TOKENS_TEXT);
   const [searchedTokens, setSearchedTokens] =
     useState<Optional<SearchableERC20[]>>(undefined);
-  const [queryString, setQueryString] = useState('');
+  const [queryString, setQueryString] = useState("");
   const [addingTokens, setAddingTokens] = useState(false);
 
   useEffect(() => {
     if (
       params?.customToken &&
-      !selectedTokens.some(t => compareTokens(t, params.customToken))
+      !selectedTokens.some((t) => compareTokens(t, params.customToken))
     ) {
       const isSelected = false;
       onSelectToken(params.customToken, isSelected);
@@ -63,7 +63,7 @@ export const AddTokensScreen: React.FC<Props> = ({ route, navigation }) => {
 
   useEffect(() => {
     if (isDefined(params?.initialTokenAddress)) {
-      navigation.navigate('AddCustomTokenScreen', {
+      navigation.navigate("AddCustomTokenScreen", {
         initialTokenAddress: params?.initialTokenAddress,
       });
     }
@@ -73,21 +73,21 @@ export const AddTokensScreen: React.FC<Props> = ({ route, navigation }) => {
   const updateQueryString = (value: string) => {
     setQueryString(value);
     const searchTokens: Optional<SearchableERC20[]> =
-      value === '' ? undefined : searchableERC20s(value, network.current.name);
+      value === "" ? undefined : searchableERC20s(value, network.current.name);
     setSearchedTokens(searchTokens);
   };
 
   const updateSelectedTokenText = (tokenList: SearchableERC20[]) => {
-    const tokenSymbols = tokenList.map(t => t.symbol);
+    const tokenSymbols = tokenList.map((t) => t.symbol);
     const selectedTokenText = tokenSymbols.length
-      ? `${tokenSymbols.join(', ')} selected.`
+      ? `${tokenSymbols.join(", ")} selected.`
       : NO_TOKENS_TEXT;
     setSelectedTokensText(selectedTokenText);
   };
 
   const onSelectToken = (token: SearchableERC20, isSelected: boolean) => {
     const newTokenList = isSelected
-      ? selectedTokens.filter(t => t.address !== token.address)
+      ? selectedTokens.filter((t) => t.address !== token.address)
       : [...selectedTokens, token];
 
     triggerHaptic(HapticSurface.SelectItem);
@@ -103,7 +103,7 @@ export const AddTokensScreen: React.FC<Props> = ({ route, navigation }) => {
       await walletTokenService.addERC20TokensToWallet(
         activeWallet,
         selectedTokens,
-        network.current,
+        network.current
       );
       triggerHaptic(HapticSurface.EditSuccess);
       setAddingTokens(false);
@@ -113,7 +113,7 @@ export const AddTokensScreen: React.FC<Props> = ({ route, navigation }) => {
     RailgunTransactionHistorySync.safeSyncTransactionHistory(
       dispatch,
       network.current,
-      getWalletTransactionHistory,
+      getWalletTransactionHistory
     );
 
     navigation.goBack();
@@ -121,7 +121,7 @@ export const AddTokensScreen: React.FC<Props> = ({ route, navigation }) => {
 
   const onPressCustomToken = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('AddCustomTokenScreen');
+    navigation.navigate("AddCustomTokenScreen");
   };
 
   return (

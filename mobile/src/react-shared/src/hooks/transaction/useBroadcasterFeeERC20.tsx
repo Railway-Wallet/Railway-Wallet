@@ -1,36 +1,36 @@
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
-import { findAllBroadcastersForChain } from '../../bridge';
-import { DEFAULT_WALLET_TOKENS_FOR_NETWORK } from '../../models/default-tokens';
-import { ERC20Amount, ERC20Token } from '../../models/token';
-import { AppSettingsService } from '../../services';
-import { getTopTokenForWallet } from '../../services/wallet/wallet-balance-service';
-import { useReduxSelector } from '../hooks-redux';
+import { RailgunWalletBalanceBucket } from "@railgun-community/shared-models";
+import { useEffect, useState } from "react";
+import { findAllBroadcastersForChain } from "../../bridge";
+import { DEFAULT_WALLET_TOKENS_FOR_NETWORK } from "../../models/default-tokens";
+import { ERC20Amount, ERC20Token } from "../../models/token";
+import { AppSettingsService } from "../../services";
+import { getTopTokenForWallet } from "../../services/wallet/wallet-balance-service";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useBroadcasterFeeERC20 = (
   tokenAmounts: ERC20Amount[],
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { erc20BalancesRailgun } = useReduxSelector("erc20BalancesRailgun");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   useEffect(() => {
     const setInitialFeeToken = async () => {
       const broadcasters = await findAllBroadcastersForChain(
         network.current.chain,
-        useRelayAdapt,
+        useRelayAdapt
       );
 
       const feeTokenAddresses =
-        broadcasters?.map(broadcaster => broadcaster.tokenAddress) ?? [];
+        broadcasters?.map((broadcaster) => broadcaster.tokenAddress) ?? [];
       const addedTokens = wallets.active?.addedTokens[network.current.name];
       const skippedTokens: ERC20Token[] = [];
 
       if (addedTokens) {
-        addedTokens.forEach(addedToken => {
+        addedTokens.forEach((addedToken) => {
           if (!feeTokenAddresses.includes(addedToken.address)) {
             skippedTokens.push(addedToken);
           }
@@ -50,12 +50,13 @@ export const useBroadcasterFeeERC20 = (
       const topToken = getTopTokenForWallet(
         wallets.active,
         network.current.name,
-        undefined, railgunWalletBalances,
+        undefined,
+        railgunWalletBalances,
         tokenPrices,
         skippedTokens,
         isRailgun,
         txidVersion.current,
-        balanceBucketFilter,
+        balanceBucketFilter
       );
       const firstSelectedToken = () =>
         tokenAmounts.length ? tokenAmounts[0].token : undefined;
@@ -68,7 +69,7 @@ export const useBroadcasterFeeERC20 = (
         topToken ??
           firstSelectedToken() ??
           firstAddedToken() ??
-          DEFAULT_WALLET_TOKENS_FOR_NETWORK[network.current.name][0],
+          DEFAULT_WALLET_TOKENS_FOR_NETWORK[network.current.name][0]
       );
     };
 
@@ -78,7 +79,7 @@ export const useBroadcasterFeeERC20 = (
   }, [network.current.name, useRelayAdapt]);
 
   const [selectedFeeToken, setSelectedFeeToken] = useState<ERC20Token>(
-    DEFAULT_WALLET_TOKENS_FOR_NETWORK[network.current.name][0],
+    DEFAULT_WALLET_TOKENS_FOR_NETWORK[network.current.name][0]
   );
   const [showBroadcasterFeeERC20Modal, setShowBroadcasterFeeERC20Modal] =
     useState(false);

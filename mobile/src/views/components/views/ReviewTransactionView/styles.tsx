@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -29,15 +29,15 @@ export const styles = StyleSheet.create({
   bottomButtonProofExpirationText: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
     paddingHorizontal: 16,
   },
   bottomBroadcasterName: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
   },
   broadcasterOverrideContainer: {
     marginBottom: 12,
@@ -48,9 +48,9 @@ export const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 12,
     paddingHorizontal: 24,
-    alignSelf: 'center',
-    textAlign: 'left',
-    flexWrap: 'wrap',
+    alignSelf: "center",
+    textAlign: "left",
+    flexWrap: "wrap",
   },
   errorShowMore: {
     color: styleguide.colors.textSecondary,
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     marginRight: 24,
     marginTop: 12,
     marginBottom: 4,
-    textAlign: 'center',
+    textAlign: "center",
   },
   broadcasterFeeWarning: {
     ...styleguide.typography.caption,
@@ -72,9 +72,9 @@ export const styles = StyleSheet.create({
     fontSize: 15,
   },
   advancedOptionsButtonWrapper: {
-    display: 'flex',
-    width: '100%',
-    alignItems: 'flex-end',
+    display: "flex",
+    width: "100%",
+    alignItems: "flex-end",
   },
   advancedOptionsButton: {
     ...styleguide.typography.caption,
@@ -89,9 +89,9 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   gasEstimateProgressBarWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-end",
     paddingRight: 10,
     paddingBottom: 6,
   },
@@ -100,8 +100,8 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.textSecondary,
     ...styleguide.typography.label,
     marginBottom: 12,
-    width: '100%',
-    textAlign: 'right',
+    width: "100%",
+    textAlign: "right",
   },
   settingsItem: {
     borderColor: styleguide.colors.textSecondary,
@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
   disclaimerText: {
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.labelSecondary,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginTop: 12,
   },
   selectSignerTypeButton: {

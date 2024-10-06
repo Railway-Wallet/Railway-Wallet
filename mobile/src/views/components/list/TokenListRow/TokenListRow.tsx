@@ -1,13 +1,13 @@
-import React, { ReactNode } from 'react';
-import { Image } from 'react-native';
+import React, { ReactNode } from "react";
+import { Image } from "react-native";
 import {
   ERC20Token,
   getTokenDisplayHeader,
   imageForToken,
   useReduxSelector,
-} from '@react-shared';
-import { ListRow } from '../ListRow/ListRow';
-import { styles } from './styles';
+} from "@react-shared";
+import { ListRow } from "../ListRow/ListRow";
+import { styles } from "./styles";
 
 type Props = {
   token: ERC20Token;
@@ -32,8 +32,8 @@ export const TokenListRow: React.FC<Props> = ({
   error,
   disabled,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const leftView = () => {
     const icon = imageForToken(token);
@@ -45,7 +45,7 @@ export const TokenListRow: React.FC<Props> = ({
       title={getTokenDisplayHeader(
         token,
         wallets.available,
-        network.current.name,
+        network.current.name
       )}
       description={description}
       defaultNoBorder={defaultNoBorder}

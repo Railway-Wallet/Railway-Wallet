@@ -7,15 +7,15 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React from 'react';
-import { ReviewTransactionView } from '@components/views/ReviewTransactionView/ReviewTransactionView';
-import { TokenStackParamList } from '@models/navigation-models';
+} from "@railgun-community/shared-models";
+import React from "react";
+import { ReviewTransactionView } from "@components/views/ReviewTransactionView/ReviewTransactionView";
+import { TokenStackParamList } from "@models/navigation-models";
 import {
   CommonActions,
   NavigationProp,
   RouteProp,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   AdjustedERC20AmountRecipientGroup,
   AuthenticatedWalletService,
@@ -39,15 +39,15 @@ import {
   updatePOIProofProgressStatus,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { getOrCreateDbEncryptionKey } from '@services/core/db';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
+} from "@react-shared";
+import { getOrCreateDbEncryptionKey } from "@services/core/db";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
 
 type Props = {
-  navigation: NavigationProp<TokenStackParamList, 'UnshieldERC20sConfirm'>;
+  navigation: NavigationProp<TokenStackParamList, "UnshieldERC20sConfirm">;
   route: RouteProp<
-    { params: TokenStackParamList['UnshieldERC20sConfirm'] },
-    'params'
+    { params: TokenStackParamList["UnshieldERC20sConfirm"] },
+    "params"
   >;
 };
 
@@ -55,9 +55,9 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
   navigation,
   route,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const {
     erc20AmountRecipients,
@@ -78,7 +78,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
 
   const walletSecureService = new WalletSecureServiceReactNative();
   const authenticatedWalletService = new AuthenticatedWalletService(
-    getOrCreateDbEncryptionKey(),
+    getOrCreateDbEncryptionKey()
   );
 
   const fromWalletAddress = activeWallet.railAddress;
@@ -86,14 +86,14 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
 
   const relayAdaptUnshieldERC20Amounts: Optional<ERC20Amount[]> =
     isBaseTokenUnshield
-      ? erc20AmountRecipients.map(tokenAmount => ({
+      ? erc20AmountRecipients.map((tokenAmount) => ({
           token: tokenAmount.token,
           amountString: tokenAmount.amountString,
         }))
       : undefined;
 
   const onSuccess = () => {
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate("WalletsScreen"));
   };
 
   const generateProof = async (
@@ -106,15 +106,15 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
     _memoText: Optional<string>,
     overallBatchMinGasPrice: Optional<bigint>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ) => {
     try {
       if (!isDefined(unshieldToOriginShieldTxid)) {
         if (!selectedBroadcaster && !publicWalletOverride) {
-          throw new Error('No public broadcaster selected.');
+          throw new Error("No public broadcaster selected.");
         }
         if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
-          throw new Error('No fee amount selected.');
+          throw new Error("No fee amount selected.");
         }
       }
 
@@ -123,7 +123,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
       const broadcasterFeeERC20AmountRecipient =
         createBroadcasterFeeERC20AmountRecipient(
           selectedBroadcaster,
-          broadcasterFeeERC20Amount,
+          broadcasterFeeERC20Amount
         );
 
       let proofCall;
@@ -137,7 +137,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
           finalERC20AmountRecipients[0],
           broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
-          overallBatchMinGasPrice,
+          overallBatchMinGasPrice
         );
       } else if (isDefined(unshieldToOriginShieldTxid)) {
         proofCall = authenticatedWalletService.generateUnshieldToOriginProof(
@@ -146,7 +146,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
           network.current.name,
           railWalletID,
           finalERC20AmountRecipients,
-          nftAmountRecipients,
+          nftAmountRecipients
         );
       } else {
         proofCall = authenticatedWalletService.generateUnshieldProof(
@@ -157,14 +157,11 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
           nftAmountRecipients,
           broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
-          overallBatchMinGasPrice,
+          overallBatchMinGasPrice
         );
       }
 
-      await Promise.all([
-        proofCall,
-        delay(1000),
-      ]);
+      await Promise.all([proofCall, delay(1000)]);
       success();
     } catch (err) {
       error(err);
@@ -182,17 +179,17 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error, isBroadcasterError?: boolean) => void,
+    error: (err: Error, isBroadcasterError?: boolean) => void
   ): Promise<Optional<string>> => {
     if (!isDefined(unshieldToOriginShieldTxid)) {
       if (!selectedBroadcaster && !publicWalletOverride) {
         error(
-          new Error('No public broadcaster or self broadcast wallet selected.'),
+          new Error("No public broadcaster or self broadcast wallet selected.")
         );
         return;
       }
       if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
-        error(new Error('No gas fee amount found.'));
+        error(new Error("No gas fee amount found."));
         return;
       }
     }
@@ -201,14 +198,14 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
 
     const overallBatchMinGasPrice = getOverallBatchMinGasPrice(
       isDefined(selectedBroadcaster),
-      transactionGasDetails,
+      transactionGasDetails
     );
 
     const toAddresses = finalAdjustedERC20AmountRecipientGroup.outputs.map(
-      output => output.recipientAddress,
+      (output) => output.recipientAddress
     );
     if (await hasBlockedAddress(toAddresses)) {
-      throw new Error('One or more of the recipient addresses is blocked.');
+      throw new Error("One or more of the recipient addresses is blocked.");
     }
 
     let populateTransactionResponse: Optional<RailgunPopulateTransactionResponse>;
@@ -221,7 +218,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
             railWalletID,
             finalAdjustedERC20AmountRecipientGroup.inputs,
             nftAmountRecipients,
-            transactionGasDetails,
+            transactionGasDetails
           ),
           delay(1000),
         ]);
@@ -241,14 +238,14 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
             broadcasterFeeERC20Amount,
             sendWithPublicWallet,
             overallBatchMinGasPrice,
-            transactionGasDetails,
+            transactionGasDetails
           ),
           delay(1000),
         ]);
         populateTransactionResponse = response;
       }
     } catch (cause) {
-      error(new Error('Failed to populate unshield.', { cause }));
+      error(new Error("Failed to populate unshield.", { cause }));
       return;
     }
 
@@ -258,28 +255,28 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
 
       if (isDefined(unshieldToOriginShieldTxid)) {
         if (!wallets.active || wallets.active.isViewOnlyWallet) {
-          throw new Error('Cannot send transaction with this active wallet.');
+          throw new Error("Cannot send transaction with this active wallet.");
         }
         publicWalletOverride = wallets.active;
       }
 
       if (publicWalletOverride) {
         const pKey = await walletSecureService.getWallet0xPKey(
-          publicWalletOverride,
+          publicWalletOverride
         );
         const txResponse = await executeWithoutBroadcaster(
           publicWalletOverride.ethAddress,
           pKey,
           populateTransactionResponse.transaction,
           network.current,
-          customNonce,
+          customNonce
         );
         txHash = txResponse.hash;
         nonce = txResponse.nonce;
       } else if (selectedBroadcaster) {
         if (!isDefined(overallBatchMinGasPrice)) {
           throw new Error(
-            'Broadcaster transaction requires overallBatchMinGasPrice.',
+            "Broadcaster transaction requires overallBatchMinGasPrice."
           );
         }
         const nullifiers = populateTransactionResponse.nullifiers ?? [];
@@ -292,11 +289,12 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
           network.current.chain,
           nullifiers,
           overallBatchMinGasPrice,
-          isBaseTokenUnshield, populateTransactionResponse.preTransactionPOIsPerTxidLeafPerList,
+          isBaseTokenUnshield,
+          populateTransactionResponse.preTransactionPOIsPerTxidLeafPerList
         );
       } else {
         throw new Error(
-          'Must send with public broadcaster or self broadcast wallet',
+          "Must send with public broadcaster or self broadcast wallet"
         );
       }
 
@@ -314,15 +312,16 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
         finalAdjustedERC20AmountRecipientGroup.outputs,
         nftAmountRecipients,
         network.current,
-        !sendWithPublicWallet && !isDefined(unshieldToOriginShieldTxid), isBaseTokenUnshield,
+        !sendWithPublicWallet && !isDefined(unshieldToOriginShieldTxid),
+        isBaseTokenUnshield,
         broadcasterFeeERC20Amount,
         broadcasterRailgunAddress,
-        nonce,
+        nonce
       );
       await refreshNFTsMetadataAfterShieldUnshield(
         dispatch,
         network.current.name,
-        nftAmountRecipients,
+        nftAmountRecipients
       );
 
       const poiRequired = await getPOIRequiredForNetwork(network.current.name);
@@ -333,7 +332,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
             walletID: railWalletID,
             txidVersion: txidVersion.current,
             status: POIProofEventStatusUI.NewTransactionLoading,
-          }),
+          })
         );
       }
 
@@ -342,8 +341,8 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
     } catch (cause) {
       const isBroadcasterError = true;
       error(
-        new Error('Transaction could not be executed', { cause }),
-        isBroadcasterError,
+        new Error("Transaction could not be executed", { cause }),
+        isBroadcasterError
       );
       return undefined;
     }
@@ -358,7 +357,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
     _nftAmountRecipients: NFTAmountRecipient[],
     originalGasDetails: TransactionGasDetails,
     feeTokenDetails: Optional<FeeTokenDetails>,
-    sendWithPublicWallet: boolean,
+    sendWithPublicWallet: boolean
   ) => {
     if (isBaseTokenUnshield) {
       return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldBaseToken(
@@ -370,7 +369,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
         nftAmountRecipients,
         originalGasDetails,
         feeTokenDetails,
-        sendWithPublicWallet,
+        sendWithPublicWallet
       );
     }
     if (isDefined(unshieldToOriginShieldTxid)) {
@@ -380,7 +379,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
         networkName,
         railWalletID,
         erc20AmountRecipients,
-        nftAmountRecipients,
+        nftAmountRecipients
       );
     }
     return authenticatedWalletService.getGasEstimatesForUnprovenUnshield(
@@ -392,12 +391,12 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
       nftAmountRecipients,
       originalGasDetails,
       feeTokenDetails,
-      sendWithPublicWallet,
+      sendWithPublicWallet
     );
   };
 
   const infoCalloutText = `Unshielding tokens into a public ${network.current.publicName} address.`;
-  const processingText = 'Unshielding tokens... \nThis may take a moment.';
+  const processingText = "Unshielding tokens... \nThis may take a moment.";
 
   return (
     <ReviewTransactionView

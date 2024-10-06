@@ -1,8 +1,8 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { styleguide, useReduxSelector } from '@react-shared';
-import { navBarStyles, standardStyles } from './styles';
+import React from "react";
+import { Text, View } from "react-native";
+import { Button } from "react-native-paper";
+import { styleguide, useReduxSelector } from "@react-shared";
+import { navBarStyles, standardStyles } from "./styles";
 
 type Props = {
   onTap: () => void;
@@ -13,7 +13,7 @@ export const WalletNetworkSelector: React.FC<Props> = ({
   onTap,
   isNavBar = false,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const styles = isNavBar ? navBarStyles : standardStyles;
 

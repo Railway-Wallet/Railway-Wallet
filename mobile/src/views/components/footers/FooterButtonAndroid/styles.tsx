@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: '100%',
+    width: "100%",
     shadowColor: styleguide.colors.black,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 1 },

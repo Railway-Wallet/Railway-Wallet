@@ -1,7 +1,7 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { ReactNode } from 'react';
-import { TextInput, View } from 'react-native';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { ReactNode } from "react";
+import { TextInput, View } from "react-native";
+import { styles } from "./styles";
 
 type Props = {
   numEntryString: string;
@@ -21,7 +21,7 @@ export const ERC20EntryAmountButtonRow: React.FC<Props> = ({
   autoFocus = true,
 }) => {
   const handleOnChange = (text: string) => {
-    const cleanText = text.replace(',', '.');
+    const cleanText = text.replace(",", ".");
     updateAmount?.(cleanText);
   };
 

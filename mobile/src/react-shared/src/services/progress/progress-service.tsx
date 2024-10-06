@@ -1,4 +1,4 @@
-import { delay } from '../../utils/promises';
+import { delay } from "../../utils/promises";
 
 export class ProgressService {
   private startValue: number;
@@ -11,7 +11,7 @@ export class ProgressService {
     startValue: number,
     endValue: number,
     totalMsec: number,
-    delayMsec: number,
+    delayMsec: number
   ) {
     this.startValue = startValue;
     this.endValue = endValue;
@@ -19,7 +19,10 @@ export class ProgressService {
     this.delayMsec = delayMsec;
   }
 
-  async progressSteadily(progressCallback: (progress: number) => void, iteration = 0) {
+  async progressSteadily(
+    progressCallback: (progress: number) => void,
+    iteration = 0
+  ) {
     if (this.stopped) {
       return;
     }

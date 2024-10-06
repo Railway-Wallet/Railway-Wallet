@@ -1,27 +1,27 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Animated, Dimensions, Modal, Text, View } from 'react-native';
-import { SwirlBackground } from '@components/images/SwirlBackground/SwirlBackground';
-import { PinEntryDots } from '@components/inputs/PinEntryDots/PinEntryDots';
-import { PinEntryPanel } from '@components/inputs/PinEntryPanel/PinEntryPanel';
-import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { useNavigation } from '@react-navigation/native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Animated, Dimensions, Modal, Text, View } from "react-native";
+import { SwirlBackground } from "@components/images/SwirlBackground/SwirlBackground";
+import { PinEntryDots } from "@components/inputs/PinEntryDots/PinEntryDots";
+import { PinEntryPanel } from "@components/inputs/PinEntryPanel/PinEntryPanel";
+import { FullScreenSpinner } from "@components/loading/FullScreenSpinner/FullScreenSpinner";
+import { useNavigation } from "@react-navigation/native";
 import {
   ImageSwirl,
   lockoutTimeText,
   logDev,
   useAppDispatch,
   usePinLockout,
-} from '@react-shared';
+} from "@react-shared";
 import {
   compareEncryptedPin,
   getEncryptedPin,
-} from '@services/security/secure-app-service';
-import { wipeDevice_DESTRUCTIVE } from '@services/security/wipe-device-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Constants } from '@utils/constants';
-import { imageHeightFromDesiredWidth } from '@utils/image-utils';
-import { styles } from './styles';
+} from "@services/security/secure-app-service";
+import { wipeDevice_DESTRUCTIVE } from "@services/security/wipe-device-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Constants } from "@utils/constants";
+import { imageHeightFromDesiredWidth } from "@utils/image-utils";
+import { styles } from "./styles";
 
 type Props = {
   show: boolean;
@@ -40,7 +40,7 @@ export const EnterPinModal: React.FC<Props> = ({
   const navigation = useNavigation();
   const shakeAnimation = new Animated.Value(0);
 
-  const [enteredPin, setEnteredPin] = useState('');
+  const [enteredPin, setEnteredPin] = useState("");
   const [error, setError] = useState<Optional<Error>>();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -67,7 +67,7 @@ export const EnterPinModal: React.FC<Props> = ({
     const submitIfNecessary = async () => {
       const storedPin = await getEncryptedPin();
       if (!isDefined(storedPin)) {
-        return authorize('');
+        return authorize("");
       }
       if (enteredPin.length < PIN_LENGTH) {
         return;
@@ -90,7 +90,7 @@ export const EnterPinModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (show) {
-      setEnteredPin('');
+      setEnteredPin("");
     }
   }, [show]);
 
@@ -102,8 +102,8 @@ export const EnterPinModal: React.FC<Props> = ({
     if (secondsUntilLockoutExpiration > 0) {
       setError(
         new Error(
-          lockoutTimeText(secondsUntilLockoutExpiration, numFailedAttempts),
-        ),
+          lockoutTimeText(secondsUntilLockoutExpiration, numFailedAttempts)
+        )
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,8 +111,8 @@ export const EnterPinModal: React.FC<Props> = ({
 
   const incorrectPin = () => {
     setTimeout(async () => {
-      setEnteredPin('');
-      setError(new Error('Incorrect PIN.'));
+      setEnteredPin("");
+      setError(new Error("Incorrect PIN."));
       await addFailedPinAttempt();
     }, 250);
     shakePinWrapper();
@@ -165,7 +165,7 @@ export const EnterPinModal: React.FC<Props> = ({
     setEnteredPin(enteredPin.slice(0, -1));
   };
 
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = Dimensions.get("window").width;
   const swirlWidth = windowWidth * 0.8;
   const swirlHeight = imageHeightFromDesiredWidth(ImageSwirl(), swirlWidth);
 

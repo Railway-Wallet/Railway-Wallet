@@ -6,21 +6,21 @@ import {
   NetworkName,
   sanitizeError,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { ContractTransaction, TransactionResponse, Wallet } from 'ethers';
-import { minBigInt } from '../../utils/big-numbers';
-import { hasBlockedAddress } from '../../utils/blocked-address';
-import { logDev, logDevError } from '../../utils/logging';
-import { stringifySafe } from '../../utils/stringify';
-import { NonPayableOverrides } from '../contract/typechain/common';
-import { ProviderService } from '../providers/provider-service';
-import { NonceStorageService } from '../wallet/nonce-storage-service';
+} from "@railgun-community/shared-models";
+import { ContractTransaction, TransactionResponse, Wallet } from "ethers";
+import { minBigInt } from "../../utils/big-numbers";
+import { hasBlockedAddress } from "../../utils/blocked-address";
+import { logDev, logDevError } from "../../utils/logging";
+import { stringifySafe } from "../../utils/stringify";
+import { NonPayableOverrides } from "../contract/typechain/common";
+import { ProviderService } from "../providers/provider-service";
+import { NonceStorageService } from "../wallet/nonce-storage-service";
 
 const setTransactionOptions = (
   transaction: ContractTransaction,
   gasDetails?: TransactionGasDetails,
   customNonce?: number,
-  overrideGasLimitForCancel?: bigint,
+  overrideGasLimitForCancel?: bigint
 ): NonPayableOverrides => {
   if (gasDetails) {
     transaction.gasLimit =
@@ -53,7 +53,7 @@ export const executeTransaction = async (
   transaction: ContractTransaction,
   gasDetails?: TransactionGasDetails,
   customNonce?: number,
-  overrideGasLimitForCancel?: bigint,
+  overrideGasLimitForCancel?: bigint
 ): Promise<TransactionResponse> => {
   try {
     const provider = await ProviderService.getProvider(networkName);
@@ -63,7 +63,7 @@ export const executeTransaction = async (
       transaction,
       gasDetails,
       customNonce,
-      overrideGasLimitForCancel,
+      overrideGasLimitForCancel
     );
 
     if (
@@ -72,14 +72,14 @@ export const executeTransaction = async (
     ) {
       transaction.maxPriorityFeePerGas = minBigInt(
         BigInt(transaction.maxPriorityFeePerGas),
-        BigInt(transaction.maxFeePerGas),
+        BigInt(transaction.maxFeePerGas)
       );
     }
     logDev(
-      'Submit (any) public tx',
+      "Submit (any) public tx",
       `wallet ${wallet.address}`,
-      `nonce ${transaction.nonce ?? 'auto'}`,
-      `details ${stringifySafe(transaction)}`,
+      `nonce ${transaction.nonce ?? "auto"}`,
+      `details ${stringifySafe(transaction)}`
     );
 
     const fromOrToBlocked = await hasBlockedAddress([
@@ -87,7 +87,7 @@ export const executeTransaction = async (
       transaction.to,
     ]);
     if (fromOrToBlocked) {
-      throw new Error('Blocked address.');
+      throw new Error("Blocked address.");
     }
 
     const txResponse = await wallet.sendTransaction(transaction);
@@ -96,7 +96,7 @@ export const executeTransaction = async (
     await nonceStorageService.storeLastTransactionNonce(
       wallet.address,
       networkName,
-      txResponse.nonce,
+      txResponse.nonce
     );
     return txResponse;
   } catch (err) {
@@ -113,7 +113,7 @@ export const executeWithoutBroadcaster = async (
   pKey: string,
   transaction: ContractTransaction,
   network: Network,
-  customNonce: Optional<number>,
+  customNonce: Optional<number>
 ): Promise<TransactionResponse> => {
   const provider = await ProviderService.getProvider(network.name);
   const nonceStorageService = new NonceStorageService();
@@ -121,7 +121,7 @@ export const executeWithoutBroadcaster = async (
     provider,
     fromWalletAddress,
     network.name,
-    customNonce,
+    customNonce
   );
 
   transaction.nonce = nonce;

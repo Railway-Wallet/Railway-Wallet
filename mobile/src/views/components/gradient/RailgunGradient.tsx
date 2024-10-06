@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { styleguide } from '@react-shared';
+import React from "react";
+import { StyleProp, ViewStyle } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import { styleguide } from "@react-shared";
 
 export type GradientStyle = {
   colors: string[];

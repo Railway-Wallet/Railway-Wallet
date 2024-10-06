@@ -1,9 +1,9 @@
 import {
   MerkletreeScanStatus,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useMemo, useState } from 'react';
-import { View } from 'react-native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useMemo, useState } from "react";
+import { View } from "react-native";
 import {
   AppSettingsService,
   createERC20TokenBalance,
@@ -16,11 +16,11 @@ import {
   tokenBalancesForWalletAndState,
   useAddedTokenSearch,
   useReduxSelector,
-} from '@react-shared';
-import { ERC20TokenListHeader } from './ERC20TokenListHeader/ERC20TokenListHeader';
-import { ERC20TokenListLoading } from './ERC20TokenListLoading/ERC20TokenListLoading';
-import { ERC20TokenListRow } from './ERC20TokenListRow/ERC20TokenListRow';
-import { styles } from './styles';
+} from "@react-shared";
+import { ERC20TokenListHeader } from "./ERC20TokenListHeader/ERC20TokenListHeader";
+import { ERC20TokenListLoading } from "./ERC20TokenListLoading/ERC20TokenListLoading";
+import { ERC20TokenListRow } from "./ERC20TokenListRow/ERC20TokenListRow";
+import { styles } from "./styles";
 
 type Props = {
   isRailgun: boolean;
@@ -45,14 +45,14 @@ export const ERC20TokenList: React.FC<Props> = ({
   tokenSearchText,
   balanceBucketFilter,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
-  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
-  const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
-  const { txidVersion } = useReduxSelector('txidVersion');
-  const { discreetMode } = useReduxSelector('discreetMode');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { erc20BalancesNetwork } = useReduxSelector("erc20BalancesNetwork");
+  const { erc20BalancesRailgun } = useReduxSelector("erc20BalancesRailgun");
+  const { merkletreeHistoryScan } = useReduxSelector("merkletreeHistoryScan");
+  const { txidVersion } = useReduxSelector("txidVersion");
+  const { discreetMode } = useReduxSelector("discreetMode");
 
   const [ERC20TokenBalances, setERC20TokenBalances] = useState<
     ERC20TokenBalance[]
@@ -96,7 +96,7 @@ export const ERC20TokenList: React.FC<Props> = ({
       activeWallet,
       railgunWalletBalances,
       currentTxidVersion,
-      isRailgun,
+      isRailgun
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -113,17 +113,17 @@ export const ERC20TokenList: React.FC<Props> = ({
       railgunWalletBalances,
       isRailgun,
       currentTxidVersion,
-      balanceBucketFilter,
+      balanceBucketFilter
     );
 
-    const balances = tokens.map(token =>
+    const balances = tokens.map((token) =>
       createERC20TokenBalance(
         activeWallet,
         token,
         tokenBalances,
         tokenPrices,
-        isRailgun,
-      ),
+        isRailgun
+      )
     );
     const sortedERC20TokenBalances = sortTokensByBalance(balances);
     setERC20TokenBalances(sortedERC20TokenBalances);
@@ -150,7 +150,7 @@ export const ERC20TokenList: React.FC<Props> = ({
         onSelect={() => onSelectToken(tokenBalance.token)}
         tokenBalance={tokenBalance}
         hasPendingBalance={tokensPendingBalances.includes(
-          tokenBalance.token.address,
+          tokenBalance.token.address
         )}
       />
     );
@@ -169,13 +169,13 @@ export const ERC20TokenList: React.FC<Props> = ({
       />
       {railgunBalancesUpdating && isRailgun && (
         <ERC20TokenListLoading
-          title={'RAILGUN balances updating'}
+          title={"RAILGUN balances updating"}
           progress={balanceScanProgress}
         />
       )}
       {!railgunBalancesUpdating && txidsUpdating && isRailgun && (
         <ERC20TokenListLoading
-          title={'RAILGUN TXIDs updating'}
+          title={"RAILGUN TXIDs updating"}
           progress={txidScanProgress}
         />
       )}

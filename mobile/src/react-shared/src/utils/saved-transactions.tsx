@@ -8,9 +8,9 @@ import {
   removeUndefineds,
   TransactionHistoryItemCategory,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { ReactConfig } from '../config';
-import { ERC20Amount, ERC20Token } from '../models/token';
+} from "@railgun-community/shared-models";
+import { ReactConfig } from "../config";
+import { ERC20Amount, ERC20Token } from "../models/token";
 import {
   ReceiveERC20Amount,
   ReceiveNFTAmountRecipient,
@@ -18,33 +18,33 @@ import {
   TransactionAction,
   TransactionStatus,
   TransferRecipientERC20Amount,
-} from '../models/transaction';
-import { AvailableWallet, FrontendWallet } from '../models/wallet';
-import { store } from '../redux-store/store';
-import { findKnownWalletName, isRailgunAddress } from './address';
-import { getNFTAmountDisplayName } from './nft';
+} from "../models/transaction";
+import { AvailableWallet, FrontendWallet } from "../models/wallet";
+import { store } from "../redux-store/store";
+import { findKnownWalletName, isRailgunAddress } from "./address";
+import { getNFTAmountDisplayName } from "./nft";
 import {
   compareTokens,
   getTokenDisplayName,
   isWrappedBaseTokenForNetwork,
-} from './tokens';
+} from "./tokens";
 import {
   formatUnitFromHexStringToLocale,
   isNonSpendableBucket,
   shortenWalletAddress,
-} from './util';
-import { getVaultDisplayName } from './vaults-util';
-import { isRailgunWalletAddress } from './wallets';
-import { styleguide } from '../styles/styleguide';
+} from "./util";
+import { getVaultDisplayName } from "./vaults-util";
+import { isRailgunWalletAddress } from "./wallets";
+import { styleguide } from "../styles/styleguide";
 
-const FEES_TITLE = 'Transaction fees';
+const FEES_TITLE = "Transaction fees";
 
-const RELAY_ADAPT_NAME = 'RAILGUN Relay Adapt contract';
+const RELAY_ADAPT_NAME = "RAILGUN Relay Adapt contract";
 
 const getAmountStringSerialized = (tokenAmountSerialized: ERC20Amount) => {
   return formatUnitFromHexStringToLocale(
     tokenAmountSerialized.amountString,
-    tokenAmountSerialized.token.decimals,
+    tokenAmountSerialized.token.decimals
   );
 };
 
@@ -67,14 +67,14 @@ const matchWalletAddresses = (address: string, wallet: FrontendWallet) => {
 
 const compareTransactionFromWalletAddress = (
   tx: SavedTransaction,
-  wallet: FrontendWallet,
+  wallet: FrontendWallet
 ): boolean => {
   return matchWalletAddresses(tx.walletAddress, wallet);
 };
 
 const findMatchTransactionTokenRecipientAddress = (
   tokenAmount: TransferRecipientERC20Amount | NFTAmountRecipient,
-  wallet: FrontendWallet,
+  wallet: FrontendWallet
 ) => {
   if (
     isDefined(tokenAmount.recipientAddress) &&
@@ -88,7 +88,7 @@ const findMatchTransactionTokenRecipientAddress = (
 const compareTransactionToWalletAddress = (
   tx: SavedTransaction,
   tokenAmount: TransferRecipientERC20Amount | NFTAmountRecipient,
-  wallet: Optional<FrontendWallet>,
+  wallet: Optional<FrontendWallet>
 ): boolean => {
   if (!wallet) {
     return false;
@@ -107,7 +107,7 @@ const compareTransactionToWalletAddress = (
 
 export const transactionIncludesAnyWalletAddress = (
   tx: SavedTransaction,
-  wallet?: FrontendWallet,
+  wallet?: FrontendWallet
 ): boolean => {
   if (!wallet) {
     return false;
@@ -117,14 +117,14 @@ export const transactionIncludesAnyWalletAddress = (
     return true;
   }
   if (
-    tx.tokenAmounts.find(tokenAmount => {
+    tx.tokenAmounts.find((tokenAmount) => {
       return compareTransactionToWalletAddress(tx, tokenAmount, wallet);
     })
   ) {
     return true;
   }
   if (
-    tx.nftAmountRecipients?.find(nftAmountRecipient => {
+    tx.nftAmountRecipients?.find((nftAmountRecipient) => {
       return compareTransactionToWalletAddress(tx, nftAmountRecipient, wallet);
     })
   ) {
@@ -137,14 +137,14 @@ export const transactionIncludesAnyWalletAddress = (
 const getWalletNameForAddress = (
   networkName: NetworkName,
   address: string,
-  showFullAddress = false,
+  showFullAddress = false
 ) => {
   const { wallets, savedAddresses } = store.getState();
   const knownWalletName = findKnownWalletName(
     address,
     wallets.available,
     wallets.viewOnly,
-    savedAddresses.current,
+    savedAddresses.current
   );
   if (isDefined(knownWalletName)) {
     return knownWalletName;
@@ -157,41 +157,41 @@ const getWalletNameForAddress = (
 
 const getWalletNameForNFTTransaction = (
   transaction: SavedTransaction,
-  nftAmountRecipient: NFTAmountRecipient,
+  nftAmountRecipient: NFTAmountRecipient
 ) => {
   const walletName = getWalletNameForTransaction(
     transaction,
     nftAmountRecipient.recipientAddress,
-    undefined,
+    undefined
   );
-  return walletName ?? 'Unknown Wallet';
+  return walletName ?? "Unknown Wallet";
 };
 
 const getWalletNameForERC20Transaction = (
   transaction: SavedTransaction,
-  erc20Amount: Optional<TransferRecipientERC20Amount>,
+  erc20Amount: Optional<TransferRecipientERC20Amount>
 ) => {
   const walletName = getWalletNameForTransaction(
     transaction,
     erc20Amount?.recipientAddress,
-    erc20Amount?.externalUnresolvedToWalletAddress,
+    erc20Amount?.externalUnresolvedToWalletAddress
   );
-  return walletName ?? 'Unknown Wallet';
+  return walletName ?? "Unknown Wallet";
 };
 
 const getWalletNameForTransaction = (
   transaction: SavedTransaction,
   recipientAddress: Optional<string>,
-  externalUnresolvedToWalletAddress: Optional<string>,
+  externalUnresolvedToWalletAddress: Optional<string>
 ): Optional<string> => {
   const { wallets, savedAddresses } = store.getState();
-  const address = transaction.toWalletAddress ?? recipientAddress ?? '';
+  const address = transaction.toWalletAddress ?? recipientAddress ?? "";
 
   const knownWalletName = findKnownWalletName(
     address,
     wallets.available,
     wallets.viewOnly,
-    savedAddresses.current,
+    savedAddresses.current
   );
   if (isDefined(knownWalletName)) {
     return knownWalletName;
@@ -205,7 +205,7 @@ const getWalletNameForTransaction = (
     transaction.externalUnresolvedToWalletAddress;
   const parentheticalUnresolvedAddress = isDefined(unresolvedAddress)
     ? ` (${unresolvedAddress})`
-    : '';
+    : "";
 
   return `${shortenWalletAddress(address)}${parentheticalUnresolvedAddress}`;
 };
@@ -215,20 +215,20 @@ export const singleERC20TransactionText = (
   transaction: SavedTransaction,
   availableWallets: AvailableWallet[],
   activeWallet?: FrontendWallet,
-  isSyncedReceive: boolean = false,
+  isSyncedReceive: boolean = false
 ): Optional<string> => {
   const { token } = erc20Amount;
   const networkName = transaction.network;
   const tokenName = getTokenDisplayName(
     token,
     availableWallets,
-    transaction.network,
+    transaction.network
   );
   const amount = getAmountStringSerialized(erc20Amount);
   switch (transaction.action) {
     case TransactionAction.approve: {
       return `Approve ${tokenName} for ${
-        transaction.spenderName ?? 'Unknown Spender'
+        transaction.spenderName ?? "Unknown Spender"
       }.`;
     }
     case TransactionAction.send: {
@@ -236,13 +236,13 @@ export const singleERC20TransactionText = (
         compareTransactionToWalletAddress(
           transaction,
           erc20Amount,
-          activeWallet,
+          activeWallet
         )
       ) {
         const senderAddress = transaction.walletAddress;
         const senderWalletName = getWalletNameForAddress(
           networkName,
-          senderAddress,
+          senderAddress
         );
 
         return `You received ${amount} ${tokenName} from ${senderWalletName}.`;
@@ -250,16 +250,16 @@ export const singleERC20TransactionText = (
 
       const walletName = getWalletNameForERC20Transaction(
         transaction,
-        erc20Amount,
+        erc20Amount
       );
 
       return `Send ${amount} ${tokenName} ${
-        transaction.isPrivate ? 'privately ' : ''
+        transaction.isPrivate ? "privately " : ""
       }to ${walletName}.`;
     }
     case TransactionAction.receive: {
       return `You received ${amount} ${tokenName}${
-        transaction.isPrivate ? ' into your private balance' : ''
+        transaction.isPrivate ? " into your private balance" : ""
       }.`;
     }
     case TransactionAction.shield: {
@@ -267,13 +267,13 @@ export const singleERC20TransactionText = (
         compareTransactionToWalletAddress(
           transaction,
           erc20Amount,
-          activeWallet,
+          activeWallet
         )
       ) {
         const senderAddress = transaction.walletAddress;
         const senderWalletName = getWalletNameForAddress(
           networkName,
-          senderAddress,
+          senderAddress
         );
 
         return `You received a shield of ${amount} ${tokenName} from ${senderWalletName}.`;
@@ -281,14 +281,14 @@ export const singleERC20TransactionText = (
 
       const walletName = getWalletNameForERC20Transaction(
         transaction,
-        erc20Amount,
+        erc20Amount
       );
       return `Shield ${amount} ${tokenName} into ${walletName}.`;
     }
     case TransactionAction.unshield: {
       const walletName = getWalletNameForERC20Transaction(
         transaction,
-        erc20Amount,
+        erc20Amount
       );
       return `Unshield ${amount} ${tokenName} into ${walletName}.`;
     }
@@ -297,7 +297,7 @@ export const singleERC20TransactionText = (
     }
     case TransactionAction.cancel: {
       return `Cancel transaction: ${
-        transaction.cancelTransactionID ?? 'Unknown'
+        transaction.cancelTransactionID ?? "Unknown"
       }.`;
     }
     case TransactionAction.swap: {
@@ -305,33 +305,33 @@ export const singleERC20TransactionText = (
       const buyTokenAmount = transaction.swapBuyTokenAmount;
       const swapDestinationAddress = transaction.toWalletAddress;
       if (!sellTokenAmount || !buyTokenAmount) {
-        return 'Unknown Swap transaction.';
+        return "Unknown Swap transaction.";
       }
       const sellAmountString = getAmountStringSerialized(sellTokenAmount);
       const buyAmountString = getAmountStringSerialized(buyTokenAmount);
-      let swapDestinationText = '';
+      let swapDestinationText = "";
       if (isDefined(swapDestinationAddress)) {
         const isRailgunDestinationAddress = isRailgunAddress(
-          swapDestinationAddress,
+          swapDestinationAddress
         );
         const swapDestinationWalletName = getWalletNameForAddress(
           networkName,
-          swapDestinationAddress,
+          swapDestinationAddress
         );
         swapDestinationText = ` and ${
-          isRailgunDestinationAddress ? 'shield' : 'transfer'
+          isRailgunDestinationAddress ? "shield" : "transfer"
         } to ${swapDestinationWalletName}`;
       }
       return `Swap ${sellAmountString} ${getTokenDisplayName(
         sellTokenAmount.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       )} for ${buyAmountString}${transactionSlippageValueConfirmedMarker(
-        transaction,
+        transaction
       )} ${getTokenDisplayName(
         buyTokenAmount.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       )}${swapDestinationText}.`;
     }
     case TransactionAction.farmDeposit: {
@@ -343,18 +343,18 @@ export const singleERC20TransactionText = (
       const nameDepositToken = getTokenDisplayName(
         depositToken.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       const nameVaultToken = getTokenDisplayName(
         vaultERC20.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       if (isDefined(vault)) {
         return `You deposited ${amountDepositToken} ${nameDepositToken} into ${
           vault?.name
         } (${getVaultDisplayName(
-          vault?.type,
+          vault?.type
         )}) and received ${amountVaultToken} ${nameVaultToken}.`;
       }
 
@@ -369,18 +369,18 @@ export const singleERC20TransactionText = (
       const nameRedeemToken = getTokenDisplayName(
         redeemERC20.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       const nameVaultToken = getTokenDisplayName(
         vaultERC20.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       if (isDefined(vault)) {
         return `You redeemed ${amountRedeemToken} ${nameRedeemToken} from ${
           vault?.name
         } (${getVaultDisplayName(
-          vault?.type,
+          vault?.type
         )}) and received ${amountVaultToken} ${nameVaultToken}.`;
       }
       return `You redeemed ${amountRedeemToken} ${nameRedeemToken}.`;
@@ -397,23 +397,23 @@ export const singleERC20TransactionText = (
       const nameDepositTokenA = getTokenDisplayName(
         depositTokenA.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       const nameDepositTokenB = getTokenDisplayName(
         depositTokenB.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       const namePairToken = getTokenDisplayName(
         pairToken.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
 
       return `You added liquidity to ${
-        pool?.name ?? 'N/A pool'
+        pool?.name ?? "N/A pool"
       } of ${amountDepositTokenA} ${nameDepositTokenA} and ${amountDepositTokenB} ${nameDepositTokenB} and received ${amountPairToken}${transactionSlippageValueConfirmedMarker(
-        transaction,
+        transaction
       )} ${namePairToken}.`;
     }
     case TransactionAction.removeLiquidity: {
@@ -428,25 +428,25 @@ export const singleERC20TransactionText = (
       const namePairToken = getTokenDisplayName(
         pairToken.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       const nameTokenA = getTokenDisplayName(
         tokenA.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
       const nameTokenB = getTokenDisplayName(
         tokenB.token,
         availableWallets,
-        transaction.network,
+        transaction.network
       );
 
       return `You removed liquidity from ${
-        pool?.name ?? 'N/A pool'
+        pool?.name ?? "N/A pool"
       } of ${amountPairToken} ${namePairToken} for ${amountTokenA}${transactionSlippageValueConfirmedMarker(
-        transaction,
+        transaction
       )} ${nameTokenA} and ${amountTokenB}${transactionSlippageValueConfirmedMarker(
-        transaction,
+        transaction
       )} ${nameTokenB}.`;
     }
     case TransactionAction.synced: {
@@ -460,7 +460,7 @@ export const singleERC20TransactionText = (
           const senderWalletName = getWalletNameForAddress(
             networkName,
             senderAddress,
-            true,
+            true
           );
           return isSyncedShield
             ? `You received a shield of ${amount} ${tokenName} from ${senderWalletName}.`
@@ -476,7 +476,7 @@ export const singleERC20TransactionText = (
       if (isDefined(recipientAddress)) {
         const walletName = getWalletNameForAddress(
           networkName,
-          recipientAddress,
+          recipientAddress
         );
         if (isRailgunWalletAddress(recipientAddress)) {
           return `You sent ${amount} ${tokenName} privately to ${walletName}.`;
@@ -490,9 +490,9 @@ export const singleERC20TransactionText = (
 };
 
 const transactionSlippageValueConfirmedMarker = (
-  transaction: SavedTransaction,
+  transaction: SavedTransaction
 ) => {
-  return transaction.confirmedSwapValue === true ? '' : '*';
+  return transaction.confirmedSwapValue === true ? "" : "*";
 };
 
 export const getSavedTransactionTXIDVersion = (tx: SavedTransaction) => {
@@ -503,7 +503,7 @@ export const singleNFTTransactionText = (
   nftAmountRecipient: NFTAmountRecipient | ReceiveNFTAmountRecipient,
   transaction: SavedTransaction,
   activeWallet?: FrontendWallet,
-  isSyncedReceive?: boolean,
+  isSyncedReceive?: boolean
 ): Optional<string> => {
   const nftAmountDisplayName = getNFTAmountDisplayName(nftAmountRecipient);
   const networkName = transaction.network;
@@ -511,7 +511,7 @@ export const singleNFTTransactionText = (
   switch (transaction.action) {
     case TransactionAction.approve: {
       return `Approve NFT collection ${nftAmountRecipient.nftAddress} for ${
-        transaction.spenderName ?? 'Unknown Spender'
+        transaction.spenderName ?? "Unknown Spender"
       }.`;
     }
     case TransactionAction.send: {
@@ -519,13 +519,13 @@ export const singleNFTTransactionText = (
         compareTransactionToWalletAddress(
           transaction,
           nftAmountRecipient,
-          activeWallet,
+          activeWallet
         )
       ) {
         const senderAddress = transaction.walletAddress;
         const senderWalletName = getWalletNameForAddress(
           networkName,
-          senderAddress,
+          senderAddress
         );
 
         return `You received ${nftAmountDisplayName} from ${senderWalletName}.`;
@@ -533,29 +533,29 @@ export const singleNFTTransactionText = (
 
       const walletName = getWalletNameForNFTTransaction(
         transaction,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
 
       return `Send ${nftAmountDisplayName} ${
-        transaction.isPrivate ? 'privately ' : ''
+        transaction.isPrivate ? "privately " : ""
       }to ${walletName}.`;
     }
     case TransactionAction.receive: {
       return `You received ${nftAmountDisplayName} ${
-        transaction.isPrivate ? ' into your private balance' : ''
+        transaction.isPrivate ? " into your private balance" : ""
       }.`;
     }
     case TransactionAction.shield: {
       const walletName = getWalletNameForNFTTransaction(
         transaction,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
       return `Shield ${nftAmountDisplayName} into ${walletName}.`;
     }
     case TransactionAction.unshield: {
       const walletName = getWalletNameForNFTTransaction(
         transaction,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
       return `Unshield ${nftAmountDisplayName} into ${walletName}.`;
     }
@@ -568,7 +568,7 @@ export const singleNFTTransactionText = (
           const senderWalletName = getWalletNameForAddress(
             networkName,
             senderAddress,
-            showFullAddress,
+            showFullAddress
           );
           return `You received ${nftAmountDisplayName} privately from ${senderWalletName}.`;
         } else {
@@ -579,7 +579,7 @@ export const singleNFTTransactionText = (
       if (recipientAddress) {
         const walletName = getWalletNameForAddress(
           networkName,
-          recipientAddress,
+          recipientAddress
         );
         if (isRailgunWalletAddress(recipientAddress)) {
           return `You sent ${nftAmountDisplayName} privately to ${walletName}.`;
@@ -597,7 +597,7 @@ export const singleNFTTransactionText = (
     case TransactionAction.addLiquidity:
     case TransactionAction.removeLiquidity:
     case TransactionAction.swap:
-      return 'Unknown NFT transaction.';
+      return "Unknown NFT transaction.";
   }
 };
 
@@ -607,7 +607,7 @@ export const transactionText = (
   network: Network,
   activeWallet: Optional<FrontendWallet>,
   availableWallets: AvailableWallet[],
-  filteredToken?: ERC20Token,
+  filteredToken?: ERC20Token
 ): string => {
   switch (transaction.action) {
     case TransactionAction.swap:
@@ -620,7 +620,7 @@ export const transactionText = (
         transaction.tokenAmounts[0],
         transaction,
         availableWallets,
-        activeWallet,
+        activeWallet
       ) as string;
     case TransactionAction.approve:
     case TransactionAction.send:
@@ -636,7 +636,7 @@ export const transactionText = (
         network,
         activeWallet,
         availableWallets,
-        filteredToken,
+        filteredToken
       );
     case TransactionAction.synced: {
       const syncedReceiveERC20Amounts = transaction.syncedReceiveTokenAmounts;
@@ -650,7 +650,8 @@ export const transactionText = (
         network,
         activeWallet,
         availableWallets,
-        undefined, false,
+        undefined,
+        false
       )} ${
         syncedReceiveERC20Amounts
           ? joinedTokenAmountTransactionTexts(
@@ -661,16 +662,17 @@ export const transactionText = (
               network,
               activeWallet,
               availableWallets,
-              undefined, true,
+              undefined,
+              true
             )
-          : ''
+          : ""
       }`;
     }
   }
 };
 
 export const transactionSyncedHistoryDescription = (
-  transaction: SavedTransaction,
+  transaction: SavedTransaction
 ): Optional<string> => {
   if (!isDefined(transaction.syncedHistoryVersion)) {
     return undefined;
@@ -697,7 +699,7 @@ const joinedTokenAmountTransactionTexts = (
   activeWallet: Optional<FrontendWallet>,
   availableWallets: AvailableWallet[],
   filteredToken?: ERC20Token,
-  isSyncedReceive?: boolean,
+  isSyncedReceive?: boolean
 ): string => {
   const erc20TransactionTexts = erc20TokenAmountTransactionTexts(
     transaction,
@@ -707,15 +709,15 @@ const joinedTokenAmountTransactionTexts = (
     activeWallet,
     availableWallets,
     filteredToken,
-    isSyncedReceive,
+    isSyncedReceive
   );
   const nftTransactionTexts = nftAmountTransactionTexts(
     transaction,
     nftAmountRecipients,
     activeWallet,
-    isSyncedReceive,
+    isSyncedReceive
   );
-  return [...erc20TransactionTexts, ...nftTransactionTexts].join(' ');
+  return [...erc20TransactionTexts, ...nftTransactionTexts].join(" ");
 };
 
 const erc20TokenAmountTransactionTexts = (
@@ -726,15 +728,15 @@ const erc20TokenAmountTransactionTexts = (
   activeWallet: Optional<FrontendWallet>,
   availableWallets: AvailableWallet[],
   filteredToken?: ERC20Token,
-  isSyncedReceive?: boolean,
+  isSyncedReceive?: boolean
 ): string[] => {
   const filteredTokenTexts = removeUndefineds(
     erc20Amounts
-      .filter(erc20Amount => {
+      .filter((erc20Amount) => {
         if (filteredToken) {
           const areTokensEqual = compareTokens(
             filteredToken,
-            erc20Amount.token,
+            erc20Amount.token
           );
 
           const showBaseTokenShield =
@@ -754,15 +756,15 @@ const erc20TokenAmountTransactionTexts = (
 
         return true;
       })
-      .map(erc20Amount =>
+      .map((erc20Amount) =>
         singleERC20TransactionText(
           erc20Amount,
           transaction,
           availableWallets,
           activeWallet,
-          isSyncedReceive,
-        ),
-      ),
+          isSyncedReceive
+        )
+      )
   );
   return filteredTokenTexts;
 };
@@ -771,20 +773,20 @@ const nftAmountTransactionTexts = (
   transaction: SavedTransaction,
   nftAmountRecipients: Optional<NFTAmountRecipient[]>,
   activeWallet: Optional<FrontendWallet>,
-  isSyncedReceive?: boolean,
+  isSyncedReceive?: boolean
 ): string[] => {
   if (!nftAmountRecipients) {
     return [];
   }
   const filteredTokenTexts = removeUndefineds(
-    nftAmountRecipients.map(nftAmountRecipient =>
+    nftAmountRecipients.map((nftAmountRecipient) =>
       singleNFTTransactionText(
         nftAmountRecipient,
         transaction,
         activeWallet,
-        isSyncedReceive,
-      ),
-    ),
+        isSyncedReceive
+      )
+    )
   );
   return filteredTokenTexts;
 };
@@ -792,7 +794,7 @@ const nftAmountTransactionTexts = (
 export const railgunFeeTransactionText = (
   transaction: SavedTransaction,
   availableWallets: Optional<AvailableWallet[]>,
-  filteredToken?: ERC20Token,
+  filteredToken?: ERC20Token
 ): Optional<string> => {
   if (!transaction.railFeeTokenAmounts) {
     return undefined;
@@ -801,20 +803,20 @@ export const railgunFeeTransactionText = (
     return swapRailgunFeeText(transaction, availableWallets);
   }
   const filteredTokenTexts = removeUndefineds(
-    transaction.railFeeTokenAmounts.map(tokenAmount =>
+    transaction.railFeeTokenAmounts.map((tokenAmount) =>
       railgunFeeText(
         transaction,
         tokenAmount,
         filteredToken,
         availableWallets,
-        transaction.action,
-      ),
-    ),
+        transaction.action
+      )
+    )
   );
   if (!filteredTokenTexts.length) {
     return undefined;
   }
-  return `${FEES_TITLE}: ${filteredTokenTexts.join(', ')}.`;
+  return `${FEES_TITLE}: ${filteredTokenTexts.join(", ")}.`;
 };
 
 export const txidVersionTransactionText = (transaction: SavedTransaction) => {
@@ -835,15 +837,15 @@ export const txidVersionTransactionText = (transaction: SavedTransaction) => {
 export const textForTXIDVersion = (txidVersion: TXIDVersion) => {
   switch (txidVersion) {
     case TXIDVersion.V2_PoseidonMerkle:
-      return 'V2 balances';
+      return "V2 balances";
     case TXIDVersion.V3_PoseidonMerkle:
-      return 'V3 balances';
+      return "V3 balances";
   }
 };
 
 const swapRailgunFeeText = (
   transaction: SavedTransaction,
-  availableWallets: Optional<AvailableWallet[]>,
+  availableWallets: Optional<AvailableWallet[]>
 ) => {
   if (
     !transaction.railFeeTokenAmounts ||
@@ -854,30 +856,36 @@ const swapRailgunFeeText = (
   const sellFeeText = railgunFeeText(
     transaction,
     transaction.railFeeTokenAmounts[0],
-    undefined, availableWallets,
-    TransactionAction.unshield,
+    undefined,
+    availableWallets,
+    TransactionAction.unshield
   );
   const buyFeeText = railgunFeeText(
     transaction,
     transaction.railFeeTokenAmounts[1],
-    undefined, availableWallets,
-    TransactionAction.shield,
+    undefined,
+    availableWallets,
+    TransactionAction.shield
   );
-  return `${FEES_TITLE}: ${sellFeeText ?? 'No sell fee'}, ${
-    buyFeeText ?? 'No buy fee'
+  return `${FEES_TITLE}: ${sellFeeText ?? "No sell fee"}, ${
+    buyFeeText ?? "No buy fee"
   }.`;
 };
 
 const isReceiveOnlyTransaction = (transaction: SavedTransaction) => {
-  return (transaction.action === TransactionAction.receive || (transaction.action === TransactionAction.synced && transaction.syncedCategory ===
-    TransactionHistoryItemCategory.TransferReceiveERC20s));
+  return (
+    transaction.action === TransactionAction.receive ||
+    (transaction.action === TransactionAction.synced &&
+      transaction.syncedCategory ===
+        TransactionHistoryItemCategory.TransferReceiveERC20s)
+  );
 };
 
 export const getGasFeeText = (
   network: Network,
   transaction: SavedTransaction,
   gasFeeString?: string,
-  broadcasterFee?: string,
+  broadcasterFee?: string
 ) => {
   if (
     !isDefined(gasFeeString) ||
@@ -889,7 +897,7 @@ export const getGasFeeText = (
   }
   const fee = formatUnitFromHexStringToLocale(
     gasFeeString,
-    network.baseToken.decimals,
+    network.baseToken.decimals
   );
 
   return `${fee} ${network.baseToken.symbol}`;
@@ -898,7 +906,7 @@ export const getGasFeeText = (
 export const broadcasterFeeTransactionText = (
   transaction: SavedTransaction,
   activeWallet: FrontendWallet,
-  availableWallets: AvailableWallet[],
+  availableWallets: AvailableWallet[]
 ): Optional<string> => {
   if (transaction.walletAddress !== activeWallet.railAddress) {
     return undefined;
@@ -909,7 +917,7 @@ export const broadcasterFeeTransactionText = (
   return broadcasterFeeText(
     transaction.broadcasterFeeTokenAmount,
     availableWallets,
-    transaction.network,
+    transaction.network
   );
 };
 
@@ -918,7 +926,7 @@ const railgunFeeText = (
   tokenAmount: ERC20Amount,
   filteredToken: Optional<ERC20Token>,
   availableWallets: Optional<AvailableWallet[]>,
-  transactionAction: TransactionAction,
+  transactionAction: TransactionAction
 ): Optional<string> => {
   const { token } = tokenAmount;
   if (filteredToken) {
@@ -932,7 +940,7 @@ const railgunFeeText = (
     const showBaseTokenUnshieldFee =
       isWrappedBaseTokenForNetwork(
         token,
-        NETWORK_CONFIG[transaction.network],
+        NETWORK_CONFIG[transaction.network]
       ) &&
       (transaction.isBaseTokenDepositWithdraw ?? false) &&
       transactionAction === TransactionAction.unshield;
@@ -965,7 +973,7 @@ const railgunFeeText = (
       return `${amount} ${getTokenDisplayName(
         token,
         availableWallets,
-        transaction.network,
+        transaction.network
       )}`;
   }
 };
@@ -976,29 +984,29 @@ export const transactionTitle = (transaction: SavedTransaction) => {
     isDefined(transaction.balanceBucket) &&
     isNonSpendableBucket(transaction.balanceBucket);
   if (isReceivedPOIPending || isSpentPOIPending) {
-    return 'PRIVATE POI PENDING';
+    return "PRIVATE POI PENDING";
   }
 
   if (transaction.action === TransactionAction.synced) {
-    return 'SYNCED';
+    return "SYNCED";
   }
 
   switch (transaction.status) {
     case TransactionStatus.completed:
-      return 'COMPLETED';
+      return "COMPLETED";
     case TransactionStatus.failed:
-      return 'FAILED';
+      return "FAILED";
     case TransactionStatus.pending:
-      return 'PENDING';
+      return "PENDING";
     case TransactionStatus.cancelled:
-      return 'CANCELLED';
+      return "CANCELLED";
     case TransactionStatus.timedOut:
-      return 'TIMED OUT';
+      return "TIMED OUT";
   }
 };
 
 export const transactionStatusIconColor = (
-  transaction: SavedTransaction,
+  transaction: SavedTransaction
 ): string => {
   const isPendingSpentPOI = transaction.pendingSpentPOI ?? false;
   if (isPendingSpentPOI) {
@@ -1027,27 +1035,27 @@ export const transactionStatusIconColor = (
 export const broadcasterFeeText = (
   tokenAmount: ERC20Amount,
   availableWallets: Optional<AvailableWallet[]>,
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Optional<string> => {
   const amount = getAmountStringSerialized(tokenAmount);
   return `Gas fee (via broadcaster): ${amount} ${getTokenDisplayName(
     tokenAmount.token,
     availableWallets,
-    networkName,
+    networkName
   )}.`;
 };
 
 export const hasPendingPublicTransaction = (
   visibleTransactions: SavedTransaction[],
-  walletAddress: string,
+  walletAddress: string
 ): boolean => {
   return isDefined(
     visibleTransactions.find(
-      tx =>
+      (tx) =>
         tx.status === TransactionStatus.pending &&
         isDefined(tx.publicExecutionWalletAddress) &&
-        compareAddresses(tx.publicExecutionWalletAddress, walletAddress),
-    ),
+        compareAddresses(tx.publicExecutionWalletAddress, walletAddress)
+    )
   );
 };
 
@@ -1056,14 +1064,14 @@ export const isPrivateTx = (tx: SavedTransaction): boolean => {
 };
 
 export const canCancelTransaction = (
-  transaction: SavedTransaction,
+  transaction: SavedTransaction
 ): boolean => {
   const isPending = transaction.status === TransactionStatus.pending;
   return isPending && isDefined(transaction.publicExecutionWalletAddress);
 };
 
 export const canMarkAsFailedTransaction = (
-  transaction: SavedTransaction,
+  transaction: SavedTransaction
 ): boolean => {
   const isPending = transaction.status === TransactionStatus.pending;
   if (!isPending || (transaction.cancelling ?? false)) {
@@ -1077,7 +1085,7 @@ export const canMarkAsFailedTransaction = (
 };
 
 export const transactionShouldNavigateToPrivateBalance = (
-  tx: SavedTransaction,
+  tx: SavedTransaction
 ): boolean => {
   switch (tx.action) {
     case TransactionAction.shield:

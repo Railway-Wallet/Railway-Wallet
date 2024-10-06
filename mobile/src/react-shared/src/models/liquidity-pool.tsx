@@ -1,4 +1,4 @@
-import { UniswapV2Fork } from '@railgun-community/cookbook';
+import { UniswapV2Fork } from "@railgun-community/cookbook";
 
 export type LiquidityV2PoolSerialized = {
   name: string;

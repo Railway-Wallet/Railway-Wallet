@@ -1,10 +1,10 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { styleguide } from '@react-shared';
-import { Constants } from '@utils/constants';
-import { styles } from './styles';
+import React from "react";
+import { View } from "react-native";
+import { Button } from "react-native-paper";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { styleguide } from "@react-shared";
+import { Constants } from "@utils/constants";
+import { styles } from "./styles";
 
 type Props = {
   enteredPinLength: number;

@@ -2,15 +2,15 @@ import {
   isDefined,
   NFTAmountRecipient,
   RailgunERC20Recipient,
-} from '@railgun-community/shared-models';
-import React, { useRef, useState } from 'react';
-import { DAppsStackParamList } from '@models/navigation-models';
+} from "@railgun-community/shared-models";
+import React, { useRef, useState } from "react";
+import { DAppsStackParamList } from "@models/navigation-models";
 import {
   CommonActions,
   NavigationProp,
   RouteProp,
   StackActions,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   compareERC20AmountArrays,
   createERC20TokenFromRecipeERC20Info,
@@ -29,15 +29,15 @@ import {
   useReduxSelector,
   useRemoveLiquidityRecipe,
   useUpdatingERC20Amount,
-} from '@react-shared';
-import { RecipeLoadingView } from '@views/components/views/RecipeLoadingView/RecipeLoadingView';
-import { CrossContractReviewTransactionView } from '@views/components/views/ReviewTransactionView/CrossContractReviewTransactionView';
+} from "@react-shared";
+import { RecipeLoadingView } from "@views/components/views/RecipeLoadingView/RecipeLoadingView";
+import { CrossContractReviewTransactionView } from "@views/components/views/ReviewTransactionView/CrossContractReviewTransactionView";
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'RemoveLiquidityConfirm'>;
+  navigation: NavigationProp<DAppsStackParamList, "RemoveLiquidityConfirm">;
   route: RouteProp<
-    { params: DAppsStackParamList['RemoveLiquidityConfirm'] },
-    'params'
+    { params: DAppsStackParamList["RemoveLiquidityConfirm"] },
+    "params"
   >;
 };
 export const RemoveLiquidityConfirm: React.FC<Props> = ({
@@ -46,15 +46,15 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
 }) => {
   const { liquidityPool, tokenAmount } = route.params;
   const dispatch = useAppDispatch();
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const activeWallet = wallets.active;
   const relayAdaptUnshieldNFTAmountsRef = useRef<NFTAmountRecipient[]>([]);
   const relayAdaptShieldNFTRecipientsRef = useRef<NFTAmountRecipient[]>([]);
   const [slippagePercent, setSlippagePercent] = useState(
-    SharedConstants.DEFAULT_SLIPPAGE_PRIVATE_TXS,
+    SharedConstants.DEFAULT_SLIPPAGE_PRIVATE_TXS
   );
 
   const {
@@ -91,17 +91,17 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
   const { unshieldERC20AmountAdjusted: unshieldAdjustedTokenAmountLP } =
     useAdjustedRecipeUnshieldERC20Amount(
       amountRecipientTokenLP,
-      currentBroadcasterFeeTokenAmount,
+      currentBroadcasterFeeTokenAmount
     );
   const unshieldERC20AmountRecipientLP =
     unshieldAdjustedTokenAmountLP ?? amountRecipientTokenLP;
   const relayAdaptUnshieldERC20Amounts: ERC20Amount[] = useMemoCustomCompare(
     [unshieldERC20AmountRecipientLP],
-    compareERC20AmountArrays,
+    compareERC20AmountArrays
   );
 
   const { mountTimerCompleted } = useMountTimer(
-    SharedConstants.RECIPE_LOADING_VIEW_MIN_DISPLAY_TIME,
+    SharedConstants.RECIPE_LOADING_VIEW_MIN_DISPLAY_TIME
   );
 
   if (!activeWallet || activeWallet.isViewOnlyWallet) {
@@ -125,12 +125,12 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
 
   const railgunAddress = activeWallet.railAddress;
   const feeERC20Amounts: ERC20Amount[] =
-    recipeOutput.feeERC20AmountRecipients.map(feeERC20Amount => {
+    recipeOutput.feeERC20AmountRecipients.map((feeERC20Amount) => {
       return {
         token: createERC20TokenFromRecipeERC20Info(
           activeWallet,
           network.current.name,
-          feeERC20Amount,
+          feeERC20Amount
         ),
         amountString: feeERC20Amount.amount.toString(),
       };
@@ -167,7 +167,7 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
       recipientAddress: recipient,
     }));
   const receivedTokenAMinimumAmount: Optional<ERC20Amount> = isDefined(
-    tokenAMinimum,
+    tokenAMinimum
   )
     ? {
         token: receivedTokenA,
@@ -175,7 +175,7 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
       }
     : undefined;
   const receivedTokenBMinimumAmount: Optional<ERC20Amount> = isDefined(
-    tokenBMinimum,
+    tokenBMinimum
   )
     ? {
         token: receivedTokenB,
@@ -194,7 +194,7 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
     publicExecutionWalletAddress: Optional<string>,
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ) => {
     const transactionService = new SavedTransactionService(dispatch);
     await transactionService.saveLiquidityTransaction(
@@ -207,23 +207,26 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
       [unshieldERC20AmountRecipientLP],
       receivedERC20AmountRecipients,
       network.current,
-      !sendWithPublicWallet, true, true, feeERC20Amounts,
+      !sendWithPublicWallet,
+      true,
+      true,
+      feeERC20Amounts,
       broadcasterFeeERC20Amount,
       broadcasterRailgunAddress,
-      nonce,
+      nonce
     );
   };
 
   const onSuccess = () => {
     navigation.dispatch(StackActions.pop(2));
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate("WalletsScreen"));
   };
 
   const handleSlippagePercent = (percent: number) => {
     setSlippagePercent(percent);
   };
 
-  const confirmButtonText = 'Confirm';
+  const confirmButtonText = "Confirm";
   const infoCalloutText = `Removing liquidity from ${liquidityPool.name} and redeeming ${liquidityPool.pairTokenSymbol} tokens.`;
   const processingText = `Removing liquidity from ${liquidityPool.name}...`;
 

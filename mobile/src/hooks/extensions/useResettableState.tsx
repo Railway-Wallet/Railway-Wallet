@@ -4,11 +4,11 @@ import {
   SetStateAction,
   useEffect,
   useState,
-} from 'react';
+} from "react";
 
 export const useResettableState = <S,>(
   initialState: S | (() => S),
-  deps: DependencyList,
+  deps: DependencyList
 ): [S, Dispatch<SetStateAction<S>>] => {
   const [item, setItem] = useState(initialState);
 

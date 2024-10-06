@@ -1,1 +1,1 @@
-export * from './alchemy-nft';
+export * from "./alchemy-nft";

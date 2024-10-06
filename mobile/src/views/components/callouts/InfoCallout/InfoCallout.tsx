@@ -1,16 +1,16 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { RailgunGradient } from '@components/gradient/RailgunGradient';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import { RailgunGradient } from "@components/gradient/RailgunGradient";
 import {
   CalloutType,
   IconPublic,
   IconShielded,
   styleguide,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Icon, IconSource } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Icon, IconSource } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   type: CalloutType;
@@ -35,18 +35,18 @@ export const InfoCallout: React.FC<Props> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
 
-  let icon: IconSource = 'information-outline';
+  let icon: IconSource = "information-outline";
   switch (type) {
     case CalloutType.Info: {
-      icon = 'information-outline';
+      icon = "information-outline";
       break;
     }
     case CalloutType.Help: {
-      icon = 'help-circle-outline';
+      icon = "help-circle-outline";
       break;
     }
     case CalloutType.Warning: {
-      icon = 'alert-octagram';
+      icon = "alert-octagram";
       break;
     }
     case CalloutType.Secure: {
@@ -58,11 +58,11 @@ export const InfoCallout: React.FC<Props> = ({
       break;
     }
     case CalloutType.Unlock: {
-      icon = 'lock-open-outline';
+      icon = "lock-open-outline";
       break;
     }
     case CalloutType.Create: {
-      icon = 'plus';
+      icon = "plus";
       break;
     }
   }

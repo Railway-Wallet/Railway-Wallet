@@ -1,55 +1,55 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { WideButtonTextOnly } from '@components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { ModalTextEntryInput } from '@components/inputs/ModalTextEntryInput/ModalTextEntryInput';
-import { SelectNetworkFeeStackParamList } from '@models/navigation-models';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { WideButtonTextOnly } from "@components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { ModalTextEntryInput } from "@components/inputs/ModalTextEntryInput/ModalTextEntryInput";
+import { SelectNetworkFeeStackParamList } from "@models/navigation-models";
 import {
   NavigationProp,
   RouteProp,
   StackActions,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   getDecimalBalanceString,
   logDevError,
   stringEntryToBigInt,
   styleguide,
   useReduxSelector,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { ErrorDetailsModal } from '../../ErrorDetailsModal/ErrorDetailsModal';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { ErrorDetailsModal } from "../../ErrorDetailsModal/ErrorDetailsModal";
+import { styles } from "./styles";
 
 type Props = {
   navigation: NavigationProp<
     SelectNetworkFeeStackParamList,
-    'CustomNetworkFeeType2Screen'
+    "CustomNetworkFeeType2Screen"
   >;
   route: RouteProp<
-    { params: SelectNetworkFeeStackParamList['CustomNetworkFeeType2Screen'] },
-    'params'
+    { params: SelectNetworkFeeStackParamList["CustomNetworkFeeType2Screen"] },
+    "params"
   >;
 };
 
 export const CustomNetworkFeeType2Screen = ({ navigation, route }: Props) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const { onDismiss, defaultGasDetails } = route.params;
 
   const defaultMaxFeeString = getDecimalBalanceString(
     defaultGasDetails.maxFeePerGas,
-    9,
+    9
   );
   const defaultMaxPriorityFeeString = getDecimalBalanceString(
     defaultGasDetails.maxPriorityFeePerGas,
-    9,
+    9
   );
 
   const [maxFeeEntry, setMaxFeeEntry] = useState(defaultMaxFeeString);
   const [maxPriorityFeeEntry, setMaxPriorityFeeEntry] = useState(
-    defaultMaxPriorityFeeString,
+    defaultMaxPriorityFeeString
   );
   const [hasValidMaxFeeEntry, setHasValidMaxFeeEntry] = useState(true);
   const [hasValidMaxPriorityFeeEntry, setHasValidMaxPriorityFeeEntry] =
@@ -69,8 +69,8 @@ export const CustomNetworkFeeType2Screen = ({ navigation, route }: Props) => {
   if (decimals !== 18) {
     logDevError(
       new Error(
-        'Base token must have 18 decimals to select custom network fee.',
-      ),
+        "Base token must have 18 decimals to select custom network fee."
+      )
     );
     return null;
   }
@@ -89,7 +89,7 @@ export const CustomNetworkFeeType2Screen = ({ navigation, route }: Props) => {
 
     if (!validateMaxPriorityFeeLessThanMaxFee(maxFee, maxPriorityFee)) {
       triggerHaptic(HapticSurface.NotifyError);
-      setError(new Error('Max base fee must exceed priority fee.'));
+      setError(new Error("Max base fee must exceed priority fee."));
       return;
     }
 
@@ -109,7 +109,7 @@ export const CustomNetworkFeeType2Screen = ({ navigation, route }: Props) => {
 
   const validateMaxPriorityFeeLessThanMaxFee = (
     maxFee: bigint,
-    maxPriorityFee: bigint,
+    maxPriorityFee: bigint
   ) => {
     return maxFee >= maxPriorityFee;
   };
@@ -162,7 +162,7 @@ export const CustomNetworkFeeType2Screen = ({ navigation, route }: Props) => {
         {isDefined(error) && (
           <>
             <Text style={styles.errorText}>
-              {error.message}{' '}
+              {error.message}{" "}
               <Text
                 style={styles.errorShowMore}
                 onPress={openErrorDetailsModal}

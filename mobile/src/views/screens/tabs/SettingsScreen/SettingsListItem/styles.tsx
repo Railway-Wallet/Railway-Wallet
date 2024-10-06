@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   rowWrapper: {
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   titleContainerStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   titleStyle: {
     color: styleguide.colors.text(),
@@ -29,6 +29,6 @@ export const styles = StyleSheet.create({
     paddingRight: 16,
   },
   rightIconWrapper: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

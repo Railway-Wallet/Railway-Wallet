@@ -1,31 +1,31 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   listItemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 8,
     marginVertical: 6,
   },
   leftViewContainer: {
     marginRight: 8,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   centerAndRightViewContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   centerViewContainer: {
     flexShrink: 1,
-    maxWidth: '75%',
-    minWidth: '40%',
+    maxWidth: "75%",
+    minWidth: "40%",
     paddingLeft: 8,
   },
   rightViewContainer: {
-    justifyContent: 'center',
+    justifyContent: "center",
     flexShrink: 1,
     marginLeft: 8,
   },

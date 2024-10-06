@@ -6,13 +6,13 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useRef } from 'react';
-import { Text } from 'react-native';
-import { ReviewTransactionView } from '@components/views/ReviewTransactionView/ReviewTransactionView';
-import { TokenStackParamList } from '@models/navigation-models';
-import { StackActions } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+} from "@railgun-community/shared-models";
+import React, { useRef } from "react";
+import { Text } from "react-native";
+import { ReviewTransactionView } from "@components/views/ReviewTransactionView/ReviewTransactionView";
+import { TokenStackParamList } from "@models/navigation-models";
+import { StackActions } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   AdjustedERC20AmountRecipientGroup,
   AvailableWallet,
@@ -26,20 +26,20 @@ import {
   TransactionType,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
 
 type Props = NativeStackScreenProps<
   TokenStackParamList,
-  'CancelTransactionConfirm'
+  "CancelTransactionConfirm"
 > & {};
 
 export const CancelTransactionConfirm: React.FC<Props> = ({
   navigation,
   route,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const { transaction, txResponse } = route.params;
   const dispatch = useAppDispatch();
@@ -56,14 +56,15 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
   if (!isDefined(txResponse)) {
     return (
       // eslint-disable-next-line react-native/no-inline-styles
-      (<Text style={{ margin: 24 }}>Nothing to cancel. Transaction not found.
-              </Text>)
+      <Text style={{ margin: 24 }}>
+        Nothing to cancel. Transaction not found.
+      </Text>
     );
   }
 
   const tokenAmount: ERC20Amount = {
     token: gasToken,
-    amountString: '0',
+    amountString: "0",
   };
 
   const toWalletAddress = transaction.publicExecutionWalletAddress;
@@ -79,9 +80,10 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
   if (toWalletAddress !== activeWallet.ethAddress) {
     return (
       // eslint-disable-next-line react-native/no-inline-styles
-      (<Text style={{ margin: 24 }}>Must cancel with public wallet active: {toWalletAddress}. This is
-                currently not possible in Railway wallet.
-              </Text>)
+      <Text style={{ margin: 24 }}>
+        Must cancel with public wallet active: {toWalletAddress}. This is
+        currently not possible in Railway wallet.
+      </Text>
     );
   }
 
@@ -89,7 +91,7 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
 
   const erc20AmountRecipient: ERC20AmountRecipient = {
     token: gasToken,
-    amountString: '0',
+    amountString: "0",
     recipientAddress: toWalletAddress,
     externalUnresolvedToWalletAddress: undefined,
   };
@@ -113,7 +115,7 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ): Promise<Optional<string>> => {
     try {
       const walletSecureService = new WalletSecureServiceReactNative();
@@ -126,7 +128,7 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
           finalAdjustedERC20AmountRecipientGroup.inputs[0],
           transactionGasDetails,
           txResponse.nonce,
-          getGasLimitOverrideForCancel(),
+          getGasLimitOverrideForCancel()
         ),
         delay(500),
       ]);
@@ -140,12 +142,12 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
         originalTokenAmounts,
         network.current,
         originalTransactionID,
-        newTxResponse.nonce,
+        newTxResponse.nonce
       );
       success();
       return newTransactionID;
     } catch (cause) {
-      error(new Error('Failed to cancel transaction', { cause }));
+      error(new Error("Failed to cancel transaction", { cause }));
       return undefined;
     }
   };
@@ -154,16 +156,16 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
     _txidVersion: TXIDVersion,
     networkName: NetworkName,
     fromWalletAddress: string,
-    erc20Amounts: ERC20Amount[],
+    erc20Amounts: ERC20Amount[]
   ): Promise<bigint> => {
     if (erc20Amounts.length !== 1) {
-      throw new Error('Can only send to one recipient.');
+      throw new Error("Can only send to one recipient.");
     }
     return getERC20TransferGasEstimate(
       networkName,
       toWalletAddress,
       fromWalletAddress,
-      erc20Amounts[0],
+      erc20Amounts[0]
     );
   };
 
@@ -172,7 +174,7 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
       ? `Max base fee must exceed original transaction by 30% to be accepted by the network. Priority fee must exceed original by 10%.`
       : `Gas price must exceed original transaction by 30% to be accepted by the network.`;
   const infoCalloutText = `Cancelling ${network.current.shortPublicName} transaction: ${txResponse.nonce}. ${txCancelGasText}`;
-  const processingText = 'Submitting cancellation...';
+  const processingText = "Submitting cancellation...";
 
   return (
     <ReviewTransactionView

@@ -1,27 +1,27 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { ImageBackground, View } from 'react-native';
-import { ImageCardBackground } from '@assets/img/ImagesMobile';
-import { TokenStackParamList } from '@models/navigation-models';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { ImageBackground, View } from "react-native";
+import { ImageCardBackground } from "@assets/img/ImagesMobile";
+import { TokenStackParamList } from "@models/navigation-models";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import {
   ERC20AmountRecipient,
   ERC20Token,
   usePOIRequiredForCurrentNetwork,
   useReduxSelector,
   WalletCardSlideItem,
-} from '@react-shared';
-import { WalletCardSlideButtons } from '@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlideButtons/WalletCardSlideButtons';
-import { WalletCardSlideFooter } from '@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlideFooter/WalletCardSlideFooter';
-import { WalletCardSlideName } from '@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlideName/WalletCardSlideName';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { PendingBalancesModal } from '@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal';
-import { POIPendingBalanceCallout } from '@views/screens/tabs/WalletsScreen/POIPendingBalanceCallout/POIPendingBalanceCallout';
-import { ERC20CardBalance } from './ERC20CardBalance/ERC20CardBalance';
-import { styles } from './styles';
+} from "@react-shared";
+import { WalletCardSlideButtons } from "@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlideButtons/WalletCardSlideButtons";
+import { WalletCardSlideFooter } from "@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlideFooter/WalletCardSlideFooter";
+import { WalletCardSlideName } from "@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlideName/WalletCardSlideName";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { PendingBalancesModal } from "@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal";
+import { POIPendingBalanceCallout } from "@views/screens/tabs/WalletsScreen/POIPendingBalanceCallout/POIPendingBalanceCallout";
+import { ERC20CardBalance } from "./ERC20CardBalance/ERC20CardBalance";
+import { styles } from "./styles";
 
 type Props = {
   token: ERC20Token;
@@ -54,8 +54,8 @@ export const ERC20Card: React.FC<Props> = ({
   onActionMintTokens,
   balanceBucketFilter,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
   const navigation = useNavigation();
   const { poiRequired } = usePOIRequiredForCurrentNetwork();
   const [showPendingBalancesModal, setShowPendingBalancesModal] =
@@ -68,7 +68,7 @@ export const ERC20Card: React.FC<Props> = ({
     isRailgun || (isDefined(activeWallet) && activeWallet.isViewOnlyWallet)
       ? {
           walletAddress: activeWallet?.railAddress,
-          walletName: activeWallet?.name ?? 'RAILGUN',
+          walletName: activeWallet?.name ?? "RAILGUN",
           isRailgun: true,
         }
       : {
@@ -79,10 +79,10 @@ export const ERC20Card: React.FC<Props> = ({
 
   const navigateUnshieldToOrigin = (
     originalShieldTxid: string,
-    erc20AmountRecipients: ERC20AmountRecipient[],
+    erc20AmountRecipients: ERC20AmountRecipient[]
   ) => {
     setShowPendingBalancesModal(false);
-    const params: TokenStackParamList['UnshieldERC20sConfirm'] = {
+    const params: TokenStackParamList["UnshieldERC20sConfirm"] = {
       erc20AmountRecipients: erc20AmountRecipients,
       isBaseTokenUnshield: false,
       nftAmountRecipients: [],
@@ -90,10 +90,10 @@ export const ERC20Card: React.FC<Props> = ({
       unshieldToOriginShieldTxid: originalShieldTxid,
     };
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'UnshieldERC20sConfirm',
+      CommonActions.navigate("Token", {
+        screen: "UnshieldERC20sConfirm",
         params,
-      }),
+      })
     );
   };
 
@@ -107,7 +107,7 @@ export const ERC20Card: React.FC<Props> = ({
           <View style={styles.backgroundOverlay} />
           <WalletCardSlideName
             slideIsActive={true}
-            walletName={isRailgun ? 'Private balance' : `Public balance`}
+            walletName={isRailgun ? "Private balance" : `Public balance`}
           />
           <ERC20CardBalance
             item={item}

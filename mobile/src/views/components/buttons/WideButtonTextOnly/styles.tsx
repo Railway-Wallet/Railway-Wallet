@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   buttonView: {
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     height: 46,
   },
   buttonText: {
-    textTransform: 'none',
+    textTransform: "none",
     ...styleguide.typography.caption,
   },
   disabledButtonText: {

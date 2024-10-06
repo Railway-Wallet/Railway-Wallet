@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
   },
   spacer: {
     height: 24,
-    width: '100%',
+    width: "100%",
   },
   horizontalLine: {
     height: 1,
-    width: '100%',
+    width: "100%",
     marginLeft: 16,
     backgroundColor: styleguide.colors.inputBorder,
   },
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   errorText: {
     ...styleguide.typography.label,
     color: styleguide.colors.error(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
   },
 });

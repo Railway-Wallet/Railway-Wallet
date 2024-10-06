@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { ERC20Amount } from '../../models/token';
-import { compareERC20Amounts } from '../../utils/tokens';
+import { useState } from "react";
+import { ERC20Amount } from "../../models/token";
+import { compareERC20Amounts } from "../../utils/tokens";
 
 export const useUpdatingERC20Amount = (initialValue?: ERC20Amount) => {
   const [currentERC20Amount, setCurrentERC20Amount] =

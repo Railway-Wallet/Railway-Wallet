@@ -1,27 +1,27 @@
-import React from 'react';
-import { Alert, ScrollView, Text, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+import React from "react";
+import { Alert, ScrollView, Text, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   BlockedBroadcasterService,
   shortenWalletAddress,
   styleguide,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { SettingsListHeader } from '@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader';
-import { SettingsListItem } from '@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { SettingsListHeader } from "@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader";
+import { SettingsListItem } from "@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsBroadcasters'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsBroadcasters">;
 };
 
 export const SettingsBroadcastersScreen: React.FC<Props> = () => {
-  const { broadcasterBlocklist } = useReduxSelector('broadcasterBlocklist');
+  const { broadcasterBlocklist } = useReduxSelector("broadcasterBlocklist");
 
   const dispatch = useAppDispatch();
 
@@ -33,18 +33,18 @@ export const SettingsBroadcastersScreen: React.FC<Props> = () => {
   const promptRemoveBlockedBroadcaster = (pubKey: string) => {
     triggerHaptic(HapticSurface.NavigationButton);
     Alert.alert(
-      'Unblock broadcaster?',
+      "Unblock broadcaster?",
       `Address: ${shortenWalletAddress(pubKey)}.`,
       [
         {
-          text: 'Unblock',
+          text: "Unblock",
           onPress: () => unblockBroadcaster(pubKey),
         },
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
-      ],
+      ]
     );
   };
 
@@ -53,7 +53,7 @@ export const SettingsBroadcastersScreen: React.FC<Props> = () => {
   return (
     <>
       <AppHeader
-        title={'Public Broadcasters'}
+        title={"Public Broadcasters"}
         backgroundColor={styleguide.colors.headerBackground}
         headerLeft={<HeaderBackButton label="Settings" />}
         isModal={false}
@@ -79,16 +79,16 @@ export const SettingsBroadcastersScreen: React.FC<Props> = () => {
                   <SettingsListItem
                     key={index}
                     title={shortenWalletAddress(
-                      blockedBroadcaster.railgunAddress,
+                      blockedBroadcaster.railgunAddress
                     )}
                     icon="minus-circle"
                     onTap={() =>
                       promptRemoveBlockedBroadcaster(
-                        blockedBroadcaster.railgunAddress,
+                        blockedBroadcaster.railgunAddress
                       )
                     }
                   />
-                ),
+                )
               )}
             </View>
           </View>

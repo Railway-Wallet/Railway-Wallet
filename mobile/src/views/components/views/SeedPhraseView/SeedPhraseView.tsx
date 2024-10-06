@@ -1,20 +1,20 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   showImmediateToast,
   StoredWallet,
   styleguide,
   ToastType,
   useAppDispatch,
-} from '@react-shared';
-import { ShowSeedPhraseQRCodeModal } from '@screens/modals/ShowSeedPhraseQRCodeModal/ShowSeedPhraseQRCodeModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
-import { SeedPhraseTextBox } from './SeedPhraseTextBox/SeedPhraseTextBox';
-import { styles } from './styles';
+} from "@react-shared";
+import { ShowSeedPhraseQRCodeModal } from "@screens/modals/ShowSeedPhraseQRCodeModal/ShowSeedPhraseQRCodeModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
+import { SeedPhraseTextBox } from "./SeedPhraseTextBox/SeedPhraseTextBox";
+import { styles } from "./styles";
 
 type Props = {
   wallet: StoredWallet;
@@ -36,7 +36,7 @@ export const SeedPhraseView: React.FC<Props> = ({
     useState<boolean>(false);
   const [mnemonicWords, setMnemonicWords] = useState<string[]>([]);
   const [blurredMnemonicWords, setBlurredMnemonicWords] = useState<string[]>(
-    [],
+    []
   );
   const [blur, setBlur] = useState(blurSeedPhrase);
 
@@ -47,11 +47,11 @@ export const SeedPhraseView: React.FC<Props> = ({
       setIsLoadingMnemonic?.(true);
       const walletSecureService = new WalletSecureServiceReactNative();
       const secureMnemonic = await walletSecureService.getWalletMnemonic(
-        wallet,
+        wallet
       );
-      const secureMnemonicWords = secureMnemonic.split(' ');
+      const secureMnemonicWords = secureMnemonic.split(" ");
       const blurredMnemonicWords: string[] = [];
-      secureMnemonicWords.forEach(() => blurredMnemonicWords.push('*****'));
+      secureMnemonicWords.forEach(() => blurredMnemonicWords.push("*****"));
       setBlurredMnemonicWords(blurredMnemonicWords);
       setMnemonic(secureMnemonic);
       setMnemonicWords(secureMnemonicWords);
@@ -75,9 +75,9 @@ export const SeedPhraseView: React.FC<Props> = ({
     dispatch(
       showImmediateToast({
         message:
-          'Seed phrase copied. Be careful - it can be used to access your account.',
+          "Seed phrase copied. Be careful - it can be used to access your account.",
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 
@@ -92,7 +92,7 @@ export const SeedPhraseView: React.FC<Props> = ({
       <View style={styles.spinnerContainer}>
         <ActivityIndicator size="large" color={styleguide.colors.white} />
         <Text style={styles.loadingLabel}>
-          {'Loading encrypted wallet and seed phrase…'}
+          {"Loading encrypted wallet and seed phrase…"}
         </Text>
       </View>
     );
@@ -120,7 +120,7 @@ export const SeedPhraseView: React.FC<Props> = ({
             style={styles.showSeedPhraseText}
             onPress={tapShowHideSeedPhrase}
           >
-            {blur ? 'Click to show' : 'Click to hide'}
+            {blur ? "Click to show" : "Click to hide"}
           </Text>
         )}
         <View style={styles.bottomButtons}>

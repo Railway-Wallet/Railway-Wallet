@@ -2,21 +2,21 @@ import {
   NFTAmountRecipient,
   SelectedBroadcaster,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Modal } from 'react-native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-native";
 import {
   ProcessingState,
   ProcessingView,
-} from '@components/views/ProcessingView/ProcessingView';
+} from "@components/views/ProcessingView/ProcessingView";
 import {
   AdjustedERC20AmountRecipientGroup,
   AvailableWallet,
   ERC20Amount,
   PerformTransactionType,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Constants } from '@utils/constants';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Constants } from "@utils/constants";
 
 interface ProcessTransactionModalProps {
   finalAdjustedERC20AmountRecipientGroup: AdjustedERC20AmountRecipientGroup;
@@ -58,7 +58,7 @@ export const ProcessTransactionModal: React.FC<
   show,
 }) => {
   const [processingState, setProcessingState] = useState(
-    ProcessingState.Processing,
+    ProcessingState.Processing
   );
   const [failure, setFailure] = useState<Optional<Error>>(undefined);
 
@@ -69,21 +69,21 @@ export const ProcessTransactionModal: React.FC<
         setProcessingState(ProcessingState.Success);
         setTimeout(
           () => onSuccessClose(),
-          Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT,
+          Constants.PROCESSING_CLOSE_SCREEN_SUCCESS_TIMEOUT
         );
       };
       const error = (cause: Error, isBroadcasterError?: boolean) => {
         triggerHaptic(HapticSurface.NotifyError);
-        setFailure(new Error('Failed to process transaction.', { cause }));
+        setFailure(new Error("Failed to process transaction.", { cause }));
         setProcessingState(ProcessingState.Fail);
         setTimeout(
           () => onFailClose(cause, isBroadcasterError),
-          Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT,
+          Constants.PROCESSING_CLOSE_SCREEN_ERROR_TIMEOUT
         );
       };
 
       if (!transactionGasDetails) {
-        error(new Error('No gas details for this transaction.'));
+        error(new Error("No gas details for this transaction."));
         return;
       }
 
@@ -99,7 +99,7 @@ export const ProcessTransactionModal: React.FC<
         showSenderAddressToRecipient,
         memoText,
         success,
-        error,
+        error
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,7 +121,7 @@ export const ProcessTransactionModal: React.FC<
         successText={successText}
         failure={failure}
         processingWarning={
-          showKeepAppOpenText ? 'Please keep the app open' : ''
+          showKeepAppOpenText ? "Please keep the app open" : ""
         }
         onPressSuccessView={onSuccessClose}
         onPressFailView={onFailClose}

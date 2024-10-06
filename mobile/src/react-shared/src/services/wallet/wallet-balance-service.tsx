@@ -8,17 +8,17 @@ import {
   RailgunWalletBalanceBucket,
   removeUndefineds,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { ReactConfig } from '../../config';
-import { SharedConstants } from '../../config/shared-constants';
-import { DEFAULT_WALLET_TOKENS_FOR_NETWORK } from '../../models/default-tokens';
-import { NFTAmountAndMetadata } from '../../models/nft';
+} from "@railgun-community/shared-models";
+import { ReactConfig } from "../../config";
+import { SharedConstants } from "../../config/shared-constants";
+import { DEFAULT_WALLET_TOKENS_FOR_NETWORK } from "../../models/default-tokens";
+import { NFTAmountAndMetadata } from "../../models/nft";
 import {
   ERC20Balance,
   ERC20BalancesSerialized,
   ERC20Token,
   ERC20TokenBalance,
-} from '../../models/token';
+} from "../../models/token";
 import {
   AvailableWallet,
   CachedERC20Balance,
@@ -31,34 +31,34 @@ import {
   RailgunNFTAmountsMap,
   RailgunTXIDBalanceMap,
   RailgunTXIDVersionNFTAmountMap,
-} from '../../models/wallet';
+} from "../../models/wallet";
 import {
   NetworkWalletBalances,
   NetworkWalletBalanceState,
   resetERC20BalancesNetwork,
   updateERC20BalancesNetwork,
-} from '../../redux-store/reducers/erc20-balance-reducer-network';
+} from "../../redux-store/reducers/erc20-balance-reducer-network";
 import {
   RailgunWalletBalances,
   RailgunWalletBalanceState,
   resetERC20BalancesRailgun,
   updateERC20BalancesRailgun,
   UpdateRailgunTokenBalancesPayload,
-} from '../../redux-store/reducers/erc20-balance-reducer-railgun';
-import { TokenPrices } from '../../redux-store/reducers/network-price-reducer';
+} from "../../redux-store/reducers/erc20-balance-reducer-railgun";
+import { TokenPrices } from "../../redux-store/reducers/network-price-reducer";
 import {
   resetNFTBalancesNetwork,
   updateNFTBalancesNetwork,
   UpdateNFTBalancesPayload,
-} from '../../redux-store/reducers/nft-balance-reducer-network';
+} from "../../redux-store/reducers/nft-balance-reducer-network";
 import {
   resetNFTBalancesRailgun,
   updateNFTBalancesRailgun,
   UpdateRailgunNFTBalancesPayload,
-} from '../../redux-store/reducers/nft-balance-reducer-railgun';
-import { addNFTsMetadata } from '../../redux-store/reducers/nfts-metadata-reducer';
-import { AppDispatch, store } from '../../redux-store/store';
-import { logDevError } from '../../utils';
+} from "../../redux-store/reducers/nft-balance-reducer-railgun";
+import { addNFTsMetadata } from "../../redux-store/reducers/nfts-metadata-reducer";
+import { AppDispatch, store } from "../../redux-store/store";
+import { logDevError } from "../../utils";
 import {
   compareTokenAddress,
   isWrappedBaseTokenForNetwork,
@@ -66,16 +66,16 @@ import {
   tokenAddressForPrices,
   tokenFoundInList,
   zeroRailShieldedBalance,
-} from '../../utils/tokens';
-import { getDecimalBalanceCurrency } from '../../utils/util';
-import { walletsForRailgunWalletID } from '../../utils/wallets';
+} from "../../utils/tokens";
+import { getDecimalBalanceCurrency } from "../../utils/util";
+import { walletsForRailgunWalletID } from "../../utils/wallets";
 import {
   getNFTsAndMetadata,
   pullOwnedNFTMetadata,
-} from '../api/alchemy/alchemy-nft';
-import { StorageService } from '../storage/storage-service';
-import { getERC20Balance } from '../token/erc20';
-import { OmittedPrivateTokensService } from '../token/omitted-private-tokens-service';
+} from "../api/alchemy/alchemy-nft";
+import { StorageService } from "../storage/storage-service";
+import { getERC20Balance } from "../token/erc20";
+import { OmittedPrivateTokensService } from "../token/omitted-private-tokens-service";
 
 export type RailShieldedTokenBalance = {
   tokenAddress: string;
@@ -89,7 +89,7 @@ const emptyTokensList: ERC20Token[] = [];
 
 export const getERC20TokensForNetwork = (
   wallet: Optional<FrontendWallet>,
-  networkName: NetworkName,
+  networkName: NetworkName
 ): ERC20Token[] => {
   if (!wallet) {
     return DEFAULT_WALLET_TOKENS_FOR_NETWORK[networkName] ?? emptyTokensList;
@@ -104,10 +104,10 @@ export const getERC20TokensForNetwork = (
 
 const getUniqueTokensForWalletsAndNetwork = (
   wallets: FrontendWallet[],
-  networkName: NetworkName,
+  networkName: NetworkName
 ): ERC20Token[] => {
   const allTokens = wallets
-    .map(w => getERC20TokensForNetwork(w, networkName))
+    .map((w) => getERC20TokensForNetwork(w, networkName))
     .flat();
   const uniqueTokens: ERC20Token[] = [];
   const uniqueTokenAddresses: string[] = [];
@@ -127,23 +127,23 @@ const getUniqueTokensForWalletsAndNetwork = (
 
 export const getWrappedTokenForNetwork = (
   wallet: Optional<FrontendWallet>,
-  network: Network,
+  network: Network
 ): Optional<ERC20Token> => {
   const tokens = getERC20TokensForNetwork(wallet, network.name);
-  return tokens.find(token => isWrappedBaseTokenForNetwork(token, network));
+  return tokens.find((token) => isWrappedBaseTokenForNetwork(token, network));
 };
 
 export const getBaseTokenForNetwork = (
   wallet: Optional<FrontendWallet>,
-  network: Network,
+  network: Network
 ): Optional<ERC20Token> => {
   const tokens = getERC20TokensForNetwork(wallet, network.name);
-  return tokens.find(token => token.isBaseToken);
+  return tokens.find((token) => token.isBaseToken);
 };
 
 export const pullActiveWalletBalancesForNetwork = (
   dispatch: AppDispatch,
-  network: Network,
+  network: Network
 ) => {
   const { wallets } = store.getState();
   return pullWalletBalancesNetwork(dispatch, wallets.active, network);
@@ -152,7 +152,7 @@ export const pullActiveWalletBalancesForNetwork = (
 const pullERC20BalancesNetwork = async (
   dispatch: AppDispatch,
   wallet: AvailableWallet,
-  network: Network,
+  network: Network
 ) => {
   const networkName = network.name;
   const walletTokens = getERC20TokensForNetwork(wallet, networkName);
@@ -174,7 +174,7 @@ const pullERC20BalancesNetwork = async (
         tokenAddress: token.address,
         balanceString: balance.toString(),
       };
-    },
+    }
   );
   const tokenBalancesRemoveNulls: ERC20Balance[] =
     removeUndefineds(tokenBalances);
@@ -184,14 +184,14 @@ const pullERC20BalancesNetwork = async (
       networkName,
       walletID: wallet.id,
       updatedTokenBalances: tokenBalancesRemoveNulls,
-    }),
+    })
   );
 };
 
 export const pullNFTBalancesNetwork = async (
   dispatch: AppDispatch,
   wallet: AvailableWallet,
-  network: Network,
+  network: Network
 ): Promise<void> => {
   if (!ReactConfig.ENABLE_NFTS) {
     return;
@@ -200,7 +200,7 @@ export const pullNFTBalancesNetwork = async (
   try {
     const nftAmountsAndMetadata = await pullOwnedNFTMetadata(
       network.name,
-      wallet.ethAddress,
+      wallet.ethAddress
     );
     if (!nftAmountsAndMetadata) {
       return;
@@ -211,7 +211,7 @@ export const pullNFTBalancesNetwork = async (
         networkName: network.name,
         walletID: wallet.id,
         nftAmounts: nftAmountsAndMetadata.map(({ nftAmount }) => nftAmount),
-      }),
+      })
     );
 
     dispatch(addNFTsMetadata(nftAmountsAndMetadata));
@@ -223,7 +223,7 @@ export const pullNFTBalancesNetwork = async (
 export const pullWalletBalancesNetwork = async (
   dispatch: AppDispatch,
   wallet: Optional<FrontendWallet>,
-  network: Network,
+  network: Network
 ) => {
   if (!wallet) {
     return;
@@ -245,7 +245,7 @@ export const pullWalletBalancesNetwork = async (
 export const pullWalletNFTsNetwork = async (
   dispatch: AppDispatch,
   wallet: Optional<FrontendWallet>,
-  network: Network,
+  network: Network
 ) => {
   if (!wallet) {
     return;
@@ -269,7 +269,7 @@ export const updateWalletBalancesRailgun = async (
   chain: Chain,
   railWalletID: string,
   erc20BalancesRailgunMap: RailgunERC20AmountMap,
-  nftAmountsMap: RailgunNFTAmountsMap,
+  nftAmountsMap: RailgunNFTAmountsMap
 ) => {
   const { network, wallets } = store.getState();
   if (!compareChains(chain, network.current.chain)) {
@@ -284,7 +284,7 @@ export const updateWalletBalancesRailgun = async (
   const networkName = network.current.name;
   const walletTokens = getUniqueTokensForWalletsAndNetwork(
     filteredWallets,
-    networkName,
+    networkName
   );
 
   const formattedBalanceMap: RailgunERC20BalanceMap = {};
@@ -292,30 +292,28 @@ export const updateWalletBalancesRailgun = async (
   const txidVersions = Object.keys(erc20BalancesRailgunMap) as TXIDVersion[];
   for (const txidVersion of txidVersions) {
     const txidBalanceBucketBuckets = erc20BalancesRailgunMap[txidVersion];
-    if (!txidBalanceBucketBuckets)
-      continue;
+    if (!txidBalanceBucketBuckets) continue;
 
     const balanceBuckets = Object.keys(
-      txidBalanceBucketBuckets,
+      txidBalanceBucketBuckets
     ) as RailgunWalletBalanceBucket[];
     for (const balanceBucket of balanceBuckets) {
       const erc20Amounts = txidBalanceBucketBuckets[balanceBucket];
-      if (!isDefined(erc20Amounts))
-        continue;
+      if (!isDefined(erc20Amounts)) continue;
 
       const erc20AmountsFiltered = erc20Amounts;
-      const tokenBalances: ERC20Balance[] = walletTokens.map(token => {
+      const tokenBalances: ERC20Balance[] = walletTokens.map((token) => {
         if (token.isBaseToken ?? false) {
           return zeroRailShieldedBalance(token);
         }
 
         const erc20AmountsIndex = erc20AmountsFiltered.findIndex(
-          shieldedBalance => {
+          (shieldedBalance) => {
             return compareTokenAddress(
               shieldedBalance.tokenAddress,
-              token.address,
+              token.address
             );
-          },
+          }
         );
 
         if (erc20AmountsIndex >= 0) {
@@ -338,18 +336,18 @@ export const updateWalletBalancesRailgun = async (
         erc20AmountsFiltered.length > 0
       ) {
         const omittedPrivateTokensService = new OmittedPrivateTokensService(
-          dispatch,
+          dispatch
         );
 
         const omittedPrivateTokens =
           await omittedPrivateTokensService.getOmittedPrivateTokensFromRailgunERC20Amounts(
             erc20AmountsFiltered,
             wallets.available,
-            network,
+            network
           );
 
         await omittedPrivateTokensService.handleFoundOmittedPrivateTokens(
-          omittedPrivateTokens,
+          omittedPrivateTokens
         );
       }
 
@@ -369,7 +367,7 @@ export const updateWalletBalancesRailgun = async (
       networkName,
       walletID: railWalletID,
       newBalanceBucketMap: formattedBalanceMap,
-    }),
+    })
   );
 
   if (ReactConfig.ENABLE_NFTS) {
@@ -378,12 +376,12 @@ export const updateWalletBalancesRailgun = async (
         networkName,
         walletID: railWalletID,
         newTXIDBalanceBucketNFTAmountsMap: nftAmountsMap,
-      }),
+      })
     );
 
     const newNFTsAndMetadata = await getNewNFTsAndMetadataFromRailgunNFTs(
       networkName,
-      nftAmountsMap,
+      nftAmountsMap
     );
     if (!newNFTsAndMetadata) {
       return;
@@ -395,7 +393,7 @@ export const updateWalletBalancesRailgun = async (
 
 const getNewNFTsAndMetadataFromRailgunNFTs = async (
   networkName: NetworkName,
-  nftAmountsMap: RailgunNFTAmountsMap,
+  nftAmountsMap: RailgunNFTAmountsMap
 ): Promise<Optional<NFTAmountAndMetadata[]>> => {
   let nftAmounts: NFTAmount[] = [];
 
@@ -405,7 +403,7 @@ const getNewNFTsAndMetadataFromRailgunNFTs = async (
     if (!txidBalanceBucketBuckets) continue;
 
     const balanceBuckets = Object.keys(
-      txidBalanceBucketBuckets,
+      txidBalanceBucketBuckets
     ) as RailgunWalletBalanceBucket[];
     for (const balanceBucket of balanceBuckets) {
       const addNFTAmounts = txidBalanceBucketBuckets[balanceBucket];
@@ -416,7 +414,7 @@ const getNewNFTsAndMetadataFromRailgunNFTs = async (
 
   const existingNFTMetadata = store.getState().nftsMetadata;
 
-  const newNFTs = nftAmounts.filter(nftAmount => {
+  const newNFTs = nftAmounts.filter((nftAmount) => {
     const existingMetadataForNFT =
       existingNFTMetadata.forNFT[nftAmount.nftAddress];
     return (
@@ -437,13 +435,13 @@ const getNewNFTsAndMetadataFromRailgunNFTs = async (
 const refreshNFTsMetadata = async (
   dispatch: AppDispatch,
   networkName: NetworkName,
-  nftAmounts: NFTAmount[],
+  nftAmounts: NFTAmount[]
 ): Promise<void> => {
   const refreshCache = true;
   const nftAmountsAndMetadata = await getNFTsAndMetadata(
     networkName,
     nftAmounts,
-    refreshCache,
+    refreshCache
   );
   if (!nftAmountsAndMetadata) {
     return;
@@ -455,7 +453,7 @@ const refreshNFTsMetadata = async (
 export const refreshNFTsMetadataAfterShieldUnshield = async (
   dispatch: AppDispatch,
   networkName: NetworkName,
-  nftAmounts: NFTAmount[],
+  nftAmounts: NFTAmount[]
 ): Promise<void> => {
   if (!shouldRefreshNFTMetadataAfterShieldUnshield(networkName, nftAmounts)) {
     return;
@@ -465,12 +463,12 @@ export const refreshNFTsMetadataAfterShieldUnshield = async (
 
 const shouldRefreshNFTMetadataAfterShieldUnshield = (
   networkName: NetworkName,
-  nftAmounts: NFTAmount[],
+  nftAmounts: NFTAmount[]
 ) => {
   if (
     networkName === NetworkName.Ethereum &&
     nftAmounts
-      .map(nftAmount => nftAmount.nftAddress.toLowerCase())
+      .map((nftAmount) => nftAmount.nftAddress.toLowerCase())
       .includes(SharedConstants.RAILGUN_CAT_COLLECTION_NFT_ADDRESS_LOWERCASE)
   ) {
     return true;
@@ -493,21 +491,21 @@ export const loadBalancesFromCache = async (dispatch: AppDispatch) => {
     nftBalancesRailgunString,
   ] = await Promise.all([
     StorageService.getItem(SharedConstants.CACHED_BALANCES),
-    StorageService.getItem(SharedConstants.CACHED_BALANCES + '_RAILGUN'),
+    StorageService.getItem(SharedConstants.CACHED_BALANCES + "_RAILGUN"),
     StorageService.getItem(SharedConstants.CACHED_NFT_BALANCES),
-    StorageService.getItem(SharedConstants.CACHED_NFT_BALANCES + '_RAILGUN'),
+    StorageService.getItem(SharedConstants.CACHED_NFT_BALANCES + "_RAILGUN"),
   ]);
 
   if (isDefined(erc20BalancesNetworkString)) {
     const erc20Balances = JSON.parse(
-      erc20BalancesNetworkString,
+      erc20BalancesNetworkString
     ) as CachedERC20Balance;
     dispatch(updateERC20BalancesNetwork(erc20Balances));
   }
 
   if (isDefined(erc20BalancesRailgunString)) {
     const erc20Balances = JSON.parse(
-      erc20BalancesRailgunString,
+      erc20BalancesRailgunString
     ) as RailgunCachedERC20Balance;
 
     const payload: UpdateRailgunTokenBalancesPayload = {
@@ -528,7 +526,7 @@ export const loadBalancesFromCache = async (dispatch: AppDispatch) => {
 
   if (isDefined(nftBalancesRailgunString)) {
     const nftBalance = JSON.parse(
-      nftBalancesRailgunString,
+      nftBalancesRailgunString
     ) as RailgunCachedNFTAmounts;
 
     const payload: UpdateRailgunNFTBalancesPayload = {
@@ -542,7 +540,7 @@ export const loadBalancesFromCache = async (dispatch: AppDispatch) => {
 };
 
 const getNFTBalancesPayloadFromCachedBalance = (
-  cachedBalance: CachedNFTBalance,
+  cachedBalance: CachedNFTBalance
 ): UpdateNFTBalancesPayload => {
   return {
     networkName: cachedBalance.networkName,
@@ -554,14 +552,14 @@ const getNFTBalancesPayloadFromCachedBalance = (
 const getDecimalBalanceCurrencyFromMaps = (
   token: ERC20Token,
   tokenBalances: ERC20BalancesSerialized,
-  tokenPrices: TokenPrices,
+  tokenPrices: TokenPrices
 ): number => {
   if (!isDefined(tokenBalances) || !isDefined(tokenPrices)) {
     return 0;
   }
   const tokenAddressBalances = tokenAddressForBalances(
     token.address,
-    token.isBaseToken,
+    token.isBaseToken
   );
   const tokenBalance = tokenBalances[tokenAddressBalances];
 
@@ -579,14 +577,14 @@ const getDecimalBalanceCurrencyFromMaps = (
 export const getTotalBalanceCurrency = (
   tokens: ERC20Token[],
   tokenBalances: ERC20BalancesSerialized,
-  tokenPrices: TokenPrices,
+  tokenPrices: TokenPrices
 ): number => {
   let totalBalance = 0;
   for (const token of tokens) {
     const totalDecimal = getDecimalBalanceCurrencyFromMaps(
       token,
       tokenBalances,
-      tokenPrices,
+      tokenPrices
     );
     totalBalance += totalDecimal;
   }
@@ -597,7 +595,7 @@ export const calculateTokenBalance = (
   wallet: Optional<FrontendWallet>,
   token: Optional<ERC20Token>,
   tokenBalancesSerialized: ERC20BalancesSerialized,
-  isRailgun: boolean,
+  isRailgun: boolean
 ): Optional<bigint> => {
   if (!wallet) {
     return 0n;
@@ -614,7 +612,7 @@ export const calculateTokenBalance = (
 
   const tokenAddressBalances = tokenAddressForBalances(
     token.address,
-    token.isBaseToken,
+    token.isBaseToken
   );
   const tokenBalanceSerialized = tokenBalancesSerialized[tokenAddressBalances];
   if (!isDefined(tokenBalanceSerialized)) {
@@ -628,13 +626,13 @@ export const createERC20TokenBalance = (
   token: ERC20Token,
   tokenBalances: ERC20BalancesSerialized,
   tokenPrices: Optional<TokenPrices>,
-  isRailgun: boolean,
+  isRailgun: boolean
 ): ERC20TokenBalance => {
   const balance = calculateTokenBalance(
     wallet,
     token,
     tokenBalances,
-    isRailgun,
+    isRailgun
   );
   const balanceCurrency = calculateBalanceCurrency(token, balance, tokenPrices);
   const tokenAddressPrices = tokenAddressForPrices(token);
@@ -652,7 +650,7 @@ export const createERC20TokenBalance = (
 export const calculateBalanceCurrency = (
   token: ERC20Token,
   tokenBalance: Optional<bigint>,
-  tokenPrices: Optional<TokenPrices>,
+  tokenPrices: Optional<TokenPrices>
 ): Optional<number> => {
   if (!isDefined(tokenBalance)) {
     return undefined;
@@ -669,7 +667,7 @@ export const calculateBalanceCurrency = (
 };
 
 export const sortTokensByBalance = (
-  walletTokenBalances: ERC20TokenBalance[],
+  walletTokenBalances: ERC20TokenBalance[]
 ): ERC20TokenBalance[] => {
   const sortedERC20TokenBalances = walletTokenBalances.sort((a, b) => {
     const aBalanceCurrency = a.balanceCurrency;
@@ -705,7 +703,7 @@ export const getTopTokenForWallet = (
   skipTokens: ERC20Token[],
   isRailgun: boolean,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): Optional<ERC20Token> => {
   if (!wallet) {
     return;
@@ -717,7 +715,7 @@ export const getTopTokenForWallet = (
     railgunWalletBalances,
     isRailgun,
     txidVersion,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
   const tokens = wallet.addedTokens[networkName] ?? [];
   const walletTokenBalances: ERC20TokenBalance[] = [];
@@ -736,8 +734,8 @@ export const getTopTokenForWallet = (
         token,
         tokenBalances,
         tokenPrices,
-        isRailgun,
-      ),
+        isRailgun
+      )
     );
   }
 
@@ -750,14 +748,14 @@ export const getTopTokenForWallet = (
 };
 
 const hasBalances = (tokenBalances: ERC20BalancesSerialized) => {
-  return Object.values(tokenBalances).some(balance => {
+  return Object.values(tokenBalances).some((balance) => {
     return isDefined(balance) && BigInt(balance) > 0;
   });
 };
 
 const hasBalancesNetwork = (
   networkWalletBalanceState: NetworkWalletBalanceState,
-  networkName: NetworkName,
+  networkName: NetworkName
 ) => {
   const networkWalletBalances =
     networkWalletBalanceState.forNetwork[networkName];
@@ -789,7 +787,7 @@ const hasBalancesRailgun = (
   networkWalletBalanceState: RailgunWalletBalanceState,
   networkName: NetworkName,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ) => {
   const networkWalletBalances =
     networkWalletBalanceState.forNetwork[networkName];
@@ -804,7 +802,7 @@ const hasBalancesRailgun = (
   let foundBalances = false;
 
   for (const tokenBalancesMap of Object.values(
-    networkWalletBalances.forWallet,
+    networkWalletBalances.forWallet
   )) {
     if (!isDefined(tokenBalancesMap)) {
       continue;
@@ -813,7 +811,7 @@ const hasBalancesRailgun = (
     const tokenBalances = getRailgunBalancesFromTXIDBalanceMap(
       tokenBalancesMap,
       txidVersion,
-      balanceBucketFilter,
+      balanceBucketFilter
     );
 
     if (hasBalances(tokenBalances)) {
@@ -833,21 +831,21 @@ const hasBalancesForNetwork = (networkName: NetworkName) => {
 const hasBalancesForRailgun = (
   networkName: NetworkName,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ) => {
   const { erc20BalancesRailgun } = store.getState();
   return hasBalancesRailgun(
     erc20BalancesRailgun,
     networkName,
     txidVersion,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 };
 
 export const hasBalancesForNetworkOrRailgun = (
   networkName: NetworkName,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): boolean => {
   return (
     hasBalancesForNetwork(networkName) ||
@@ -861,14 +859,14 @@ export const tokenBalancesForWalletAndState = (
   railgunWalletBalances: Optional<RailgunWalletBalances>,
   isRailgun: boolean,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): ERC20BalancesSerialized => {
   if (isRailgun) {
     return tokenBalancesForWalletAndStateRailgun(
       wallet,
       railgunWalletBalances,
       txidVersion,
-      balanceBucketFilter,
+      balanceBucketFilter
     );
   } else {
     return tokenBalancesForWalletAndStateNetwork(wallet, networkWalletBalances);
@@ -877,7 +875,7 @@ export const tokenBalancesForWalletAndState = (
 
 const tokenBalancesForWalletAndStateNetwork = (
   wallet: Optional<FrontendWallet>,
-  networkWalletBalances: Optional<NetworkWalletBalances>,
+  networkWalletBalances: Optional<NetworkWalletBalances>
 ): ERC20BalancesSerialized => {
   let tokenBalances: Optional<ERC20BalancesSerialized>;
   if (isDefined(wallet)) {
@@ -890,7 +888,7 @@ const tokenBalancesForWalletAndStateRailgun = (
   wallet: Optional<FrontendWallet>,
   railgunWalletBalances: Optional<RailgunWalletBalances>,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): ERC20BalancesSerialized => {
   let tokenBalances: Optional<ERC20BalancesSerialized>;
   if (isDefined(wallet)) {
@@ -901,7 +899,7 @@ const tokenBalancesForWalletAndStateRailgun = (
       tokenBalances = getRailgunBalancesFromTXIDBalanceMap(
         tokenBalancesMap,
         txidVersion,
-        balanceBucketFilter,
+        balanceBucketFilter
       );
     }
   }
@@ -911,7 +909,7 @@ const tokenBalancesForWalletAndStateRailgun = (
 export const getRailgunBalancesFromTXIDBalanceMap = (
   balanceMap: RailgunTXIDBalanceMap,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): ERC20BalancesSerialized => {
   let tokenBalances: ERC20BalancesSerialized = {};
 
@@ -925,8 +923,7 @@ export const getRailgunBalancesFromTXIDBalanceMap = (
         ...erc20Amounts,
       };
     } else {
-      // eslint-disable-next-line no-loop-func
-      arrayOfTokenAddresses.forEach(tokenAddress => {
+      arrayOfTokenAddresses.forEach((tokenAddress) => {
         const existingBalance = tokenBalances[tokenAddress];
         const newBalance = erc20Amounts?.[tokenAddress];
 
@@ -952,7 +949,7 @@ export const getRailgunBalancesFromTXIDBalanceMap = (
 export const getRailgunNFTAmountsFromTXIDBalanceMap = (
   nftAmountsMap: RailgunTXIDVersionNFTAmountMap,
   txidVersion: TXIDVersion,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): NFTAmount[] => {
   let nftAmounts: NFTAmount[] = [];
 

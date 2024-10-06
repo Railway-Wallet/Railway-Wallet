@@ -1,28 +1,28 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { ERC20Token, SearchableERC20 } from '../../models/token';
-import { AppSettingsService } from '../../services';
-import { formatNumberToLocaleWithMinDecimals } from '../../utils';
-import { isNonSpendableBucket } from '../../utils/util';
-import { useTotalBalanceCurrency } from '../balances';
-import { useReduxSelector } from '../hooks-redux';
+} from "@railgun-community/shared-models";
+import { ERC20Token, SearchableERC20 } from "../../models/token";
+import { AppSettingsService } from "../../services";
+import { formatNumberToLocaleWithMinDecimals } from "../../utils";
+import { isNonSpendableBucket } from "../../utils/util";
+import { useTotalBalanceCurrency } from "../balances";
+import { useReduxSelector } from "../hooks-redux";
 
 export const usePendingBalancePriceLabel = (
   isRailgun: boolean,
-  token?: ERC20Token | SearchableERC20,
+  token?: ERC20Token | SearchableERC20
 ) => {
   let pendingBalancePriceLabel: Optional<string>;
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const { totalBalanceCurrency: pendingBalanceCurrency } =
     useTotalBalanceCurrency(
       isRailgun,
-      Object.values(RailgunWalletBalanceBucket).filter(bucket =>
-        isNonSpendableBucket(bucket),
+      Object.values(RailgunWalletBalanceBucket).filter((bucket) =>
+        isNonSpendableBucket(bucket)
       ),
-      token,
+      token
     );
 
   if (

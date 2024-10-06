@@ -1,6 +1,6 @@
-import React from 'react';
-import { Image, ImageRequireSource, ImageURISource } from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from "react";
+import { Image, ImageRequireSource, ImageURISource } from "react-native";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export type IconSource =
   | string
@@ -16,7 +16,7 @@ type Props = {
 
 export const Icon: React.FC<Props> = ({ source, size, color }) => {
   const isImageSource = (iconSource: IconSource) =>
-    typeof iconSource !== 'string';
+    typeof iconSource !== "string";
 
   if (isImageSource(source)) {
     return (
@@ -26,7 +26,7 @@ export const Icon: React.FC<Props> = ({ source, size, color }) => {
         style={{
           width: size,
           height: size,
-          resizeMode: 'contain',
+          resizeMode: "contain",
           tintColor: color,
         }}
       />

@@ -1,4 +1,4 @@
-import { ERC20Amount } from './token';
+import { ERC20Amount } from "./token";
 
 export type BroadcasterFeeInfo = {
   broadcasterFeeText: string;

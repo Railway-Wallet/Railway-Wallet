@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { CARD_PADDING } from '@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlide/styles';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { CARD_PADDING } from "@screens/tabs/WalletsScreen/WalletCardSlides/WalletCardSlide/styles";
 
 export const styles = StyleSheet.create({
   balanceText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 48,
     marginHorizontal: CARD_PADDING,
     paddingHorizontal: 16,

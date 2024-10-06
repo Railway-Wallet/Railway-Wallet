@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   buttonView: {
@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
   },
   buttonContent: {
     height: 46,
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
   },
   buttonIcon: {
     fontSize: 20,
   },
   buttonText: {
-    textTransform: 'none',
+    textTransform: "none",
     ...styleguide.typography.caption,
   },
   disabledButtonText: {

@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   reviewSection: {
@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   walletNameIconWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
     marginLeft: 2,
   },
@@ -26,15 +26,15 @@ export const styles = StyleSheet.create({
   },
   tokenRowWithFee: {
     marginBottom: 4,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   tokenRow: {
     marginBottom: 14,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   tokenText: {
     ...styleguide.typography.heading3,
@@ -57,8 +57,8 @@ export const styles = StyleSheet.create({
   },
   includedFeeRow: {
     paddingLeft: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   includedFeeText: {
     ...styleguide.typography.labelSmall,
@@ -132,7 +132,7 @@ export const styles = StyleSheet.create({
   tokenIcon: {
     width: 32,
     height: 32,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 15,
   },
 });

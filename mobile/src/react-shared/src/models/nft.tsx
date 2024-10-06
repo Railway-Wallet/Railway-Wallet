@@ -1,10 +1,10 @@
-import { NFTAmount } from '@railgun-community/shared-models';
+import { NFTAmount } from "@railgun-community/shared-models";
 
 export enum NFTVerificationStatus {
-  Verified = 'Verified',
-  Approved = 'Approved',
-  Unknown = 'Unknown',
-  Spam = 'Spam',
+  Verified = "Verified",
+  Approved = "Approved",
+  Unknown = "Unknown",
+  Spam = "Spam",
 }
 
 export type NFTMetadata = {

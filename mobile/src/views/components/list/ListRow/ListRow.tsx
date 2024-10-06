@@ -1,9 +1,9 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { ReactNode } from 'react';
-import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
-import { ListItem } from '@components/list/ListItem/ListItem';
-import { styleguide } from '@react-shared';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { ReactNode } from "react";
+import { StyleProp, TextStyle, View, ViewStyle } from "react-native";
+import { ListItem } from "@components/list/ListItem/ListItem";
+import { styleguide } from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   title: string | ReactNode;

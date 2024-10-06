@@ -3,21 +3,21 @@ import {
   RecipeERC20Amount,
   RecipeERC20Info,
   SwapQuoteData,
-} from '@railgun-community/cookbook';
-import { delay } from '@railgun-community/shared-models';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ERC20Amount, ERC20Token } from '../../models/token';
-import { logDevError } from '../../utils';
-import { generateKey, getSlippageBasisPoints } from '../../utils/util';
-import { useReduxSelector } from '../hooks-redux';
+} from "@railgun-community/cookbook";
+import { delay } from "@railgun-community/shared-models";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ERC20Amount, ERC20Token } from "../../models/token";
+import { logDevError } from "../../utils";
+import { generateKey, getSlippageBasisPoints } from "../../utils/util";
+import { useReduxSelector } from "../hooks-redux";
 
 export const usePublicSwapQuote = (
   sellERC20Amount: Optional<ERC20Amount>,
   buyERC20: Optional<ERC20Token>,
   slippagePercentage: number,
-  getSwapQuote: GetSwapQuote,
+  getSwapQuote: GetSwapQuote
 ) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const [quote, setQuote] = useState<Optional<SwapQuoteData>>();
   const [quoteError, setQuoteError] = useState<Optional<Error>>();
@@ -26,7 +26,7 @@ export const usePublicSwapQuote = (
   const latestQuoteID = useRef<Optional<string>>();
   const slippageBasisPoints = useMemo(
     () => getSlippageBasisPoints(slippagePercentage),
-    [slippagePercentage],
+    [slippagePercentage]
   );
 
   const getQuote = useCallback(
@@ -72,7 +72,7 @@ export const usePublicSwapQuote = (
           setIsLoadingQuote(false);
         }
       } catch (err) {
-        const error = new Error('Error getting swap quote', { cause: err });
+        const error = new Error("Error getting swap quote", { cause: err });
         logDevError(error);
         if (currentQuoteID === latestQuoteID.current) {
           setQuote(undefined);
@@ -88,7 +88,7 @@ export const usePublicSwapQuote = (
       sellERC20Amount?.token,
       sellERC20Amount?.amountString,
       slippageBasisPoints,
-    ],
+    ]
   );
 
   useEffect(() => {

@@ -8,14 +8,14 @@ import {
   POI_SHIELD_PENDING_SEC_TEXT,
   RailgunWalletBalanceBucket,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { SavedTransaction } from '../models/transaction';
-import { FrontendWallet } from '../models/wallet';
-import { RailgunWalletBalances } from '../redux-store/reducers/erc20-balance-reducer-railgun';
-import { tokenBalancesForWalletAndState } from '../services/wallet/wallet-balance-service';
-import { networkForName } from './networks';
-import { isNonSpendableBucket } from './util';
-import { styleguide } from '../styles/styleguide';
+} from "@railgun-community/shared-models";
+import { SavedTransaction } from "../models/transaction";
+import { FrontendWallet } from "../models/wallet";
+import { RailgunWalletBalances } from "../redux-store/reducers/erc20-balance-reducer-railgun";
+import { tokenBalancesForWalletAndState } from "../services/wallet/wallet-balance-service";
+import { networkForName } from "./networks";
+import { isNonSpendableBucket } from "./util";
+import { styleguide } from "../styles/styleguide";
 
 export const getShieldingPOIDisclaimerMessage = (network: Network) => {
   const validationTimeText =
@@ -72,18 +72,19 @@ export const getTokensPendingBalances = (
   activeWallet: Optional<FrontendWallet>,
   railgunWalletBalances: Optional<RailgunWalletBalances>,
   currentTxidVersion: TXIDVersion,
-  isRailgun: boolean,
+  isRailgun: boolean
 ): string[] => {
   if (!isRailgun) return [];
 
   const nonSpendableBalances = tokenBalancesForWalletAndState(
     activeWallet,
-    undefined, railgunWalletBalances,
+    undefined,
+    railgunWalletBalances,
     isRailgun,
     currentTxidVersion,
-    Object.values(RailgunWalletBalanceBucket).filter(bucket =>
-      isNonSpendableBucket(bucket),
-    ),
+    Object.values(RailgunWalletBalanceBucket).filter((bucket) =>
+      isNonSpendableBucket(bucket)
+    )
   );
 
   const nonZeroBalances = Object.entries(nonSpendableBalances)
@@ -92,15 +93,15 @@ export const getTokensPendingBalances = (
       value,
     }))
     .filter(
-      tokenBalance =>
-        isDefined(tokenBalance.value) && BigInt(tokenBalance.value) > 0n,
+      (tokenBalance) =>
+        isDefined(tokenBalance.value) && BigInt(tokenBalance.value) > 0n
     );
 
-  return nonZeroBalances.map(b => b.key);
+  return nonZeroBalances.map((b) => b.key);
 };
 
 export const getWaitTimeForShieldPending = (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Optional<number> => {
   const network = networkForName(networkName);
 
@@ -122,14 +123,14 @@ export const getMaxShieldPendingTimeText = (network: Network) => {
     pendingTimeSec = POI_SHIELD_PENDING_SEC_TEST_NET;
   }
 
-  let timeStr = '';
+  let timeStr = "";
   if (pendingTimeSec < 60) {
     timeStr = `${Math.round(pendingTimeSec)} seconds`;
   } else if (pendingTimeSec < 60 * 60) {
     timeStr = `${Math.round(pendingTimeSec / 60)} minutes`;
   } else {
     const roundedTime = Math.round(pendingTimeSec / (60 * 60));
-    const hourStr = roundedTime === 1 ? 'hour' : 'hours';
+    const hourStr = roundedTime === 1 ? "hour" : "hours";
     timeStr = `${roundedTime} ${hourStr}`;
   }
 
@@ -137,29 +138,29 @@ export const getMaxShieldPendingTimeText = (network: Network) => {
 };
 
 export const formatBalanceBucketStatus = (
-  balanceBucket: RailgunWalletBalanceBucket,
+  balanceBucket: RailgunWalletBalanceBucket
 ): string => {
   switch (balanceBucket) {
     case RailgunWalletBalanceBucket.ShieldPending:
-      return 'Shield Pending';
+      return "Shield Pending";
     case RailgunWalletBalanceBucket.ProofSubmitted:
-      return 'Proof Submitted';
+      return "Proof Submitted";
     case RailgunWalletBalanceBucket.MissingExternalPOI:
-      return 'Missing External POI';
+      return "Missing External POI";
     case RailgunWalletBalanceBucket.MissingInternalPOI:
-      return 'Missing Internal POI';
+      return "Missing Internal POI";
     case RailgunWalletBalanceBucket.ShieldBlocked:
-      return 'Shield Restricted';
+      return "Shield Restricted";
     case RailgunWalletBalanceBucket.Spendable:
-      return 'Spendable';
+      return "Spendable";
     case RailgunWalletBalanceBucket.Spent:
-      return 'Spent';
+      return "Spent";
   }
 };
 
 export const getShieldPendingCompleteText = (
   txTimestamp: number,
-  network: Network,
+  network: Network
 ): string => {
   const now = Date.now() / 1000;
   const txSecAgo = now - txTimestamp;
@@ -171,9 +172,9 @@ export const getShieldPendingCompleteText = (
 
   const secLeft = pendingTimeSec - txSecAgo;
 
-  let timeStr = '';
+  let timeStr = "";
   if (secLeft <= 0) {
-    return 'Will be available soon';
+    return "Will be available soon";
   } else if (secLeft < 60) {
     timeStr = `${Math.round(secLeft)}s`;
   } else if (secLeft < 60 * 60) {
@@ -187,13 +188,13 @@ export const getShieldPendingCompleteText = (
 export const getTransactionPOIStatusInfoText = (
   balanceBucket: RailgunWalletBalanceBucket,
   transaction: SavedTransaction,
-  network: Network,
+  network: Network
 ): Optional<string> => {
   switch (balanceBucket) {
     case RailgunWalletBalanceBucket.ShieldPending:
       return getShieldPendingCompleteText(transaction.timestamp, network);
     case RailgunWalletBalanceBucket.ProofSubmitted:
-      return 'Private Proof of Innocence will begin shortly.';
+      return "Private Proof of Innocence will begin shortly.";
     case RailgunWalletBalanceBucket.MissingExternalPOI: {
       const poiLaunchTimestamp = network.poi?.launchTimestamp;
       const transactionIsBeforePOILaunch =
@@ -202,15 +203,15 @@ export const getTransactionPOIStatusInfoText = (
           transaction.timestamp < poiLaunchTimestamp);
 
       if (transactionIsBeforePOILaunch) {
-        return 'This transaction occurred before Private Proof of Innocence launched on this network. Please wait. Your wallet will make these funds spendable within a few minutes.';
+        return "This transaction occurred before Private Proof of Innocence launched on this network. Please wait. Your wallet will make these funds spendable within a few minutes.";
       }
 
-      return 'Please request Private Proof of Innocence from sender. Your sender may simply open Railway Wallet to kick off Private POI generation.';
+      return "Please request Private Proof of Innocence from sender. Your sender may simply open Railway Wallet to kick off Private POI generation.";
     }
     case RailgunWalletBalanceBucket.MissingInternalPOI:
-      return 'This transaction includes a change output. Please wait. Your wallet will make these funds spendable within a few minutes.';
+      return "This transaction includes a change output. Please wait. Your wallet will make these funds spendable within a few minutes.";
     case RailgunWalletBalanceBucket.ShieldBlocked:
-      return 'This shield transaction was blocked for use in RAILGUN. You can safely unshield the tokens to the origin address. Public broadcaster functionality will be disabled.';
+      return "This shield transaction was blocked for use in RAILGUN. You can safely unshield the tokens to the origin address. Public broadcaster functionality will be disabled.";
     case RailgunWalletBalanceBucket.Spendable:
     case RailgunWalletBalanceBucket.Spent:
       return undefined;
@@ -218,7 +219,7 @@ export const getTransactionPOIStatusInfoText = (
 };
 
 export const getTransactionPOIStatusColor = (
-  balanceBucket: RailgunWalletBalanceBucket,
+  balanceBucket: RailgunWalletBalanceBucket
 ) => {
   switch (balanceBucket) {
     case RailgunWalletBalanceBucket.Spendable:

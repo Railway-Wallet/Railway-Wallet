@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleProp, Text, ViewStyle } from 'react-native';
-import { Button } from 'react-native-paper';
-import { styleguide } from '@react-shared';
-import { styles } from './styles';
+import React from "react";
+import { StyleProp, Text, ViewStyle } from "react-native";
+import { Button } from "react-native-paper";
+import { styleguide } from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   icon: string;

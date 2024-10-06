@@ -1,16 +1,16 @@
-import { LiquidityV2Pool, UniswapV2Fork } from '@railgun-community/cookbook';
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
+import { LiquidityV2Pool, UniswapV2Fork } from "@railgun-community/cookbook";
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { useMemo } from "react";
 import {
   compareTokenAddress,
   convertSerializedToLiquidityPool,
-} from '../../utils';
-import { useReduxSelector } from '../hooks-redux';
-import { FrontendLiquidityPair } from './useLiquidityPairsForWalletFilter';
+} from "../../utils";
+import { useReduxSelector } from "../hooks-redux";
+import { FrontendLiquidityPair } from "./useLiquidityPairsForWalletFilter";
 
 const liquidityPoolDataSorter = (
   a: LiquidityV2Pool,
-  b: LiquidityV2Pool,
+  b: LiquidityV2Pool
 ): number => {
   if (
     a.uniswapV2Fork === UniswapV2Fork.Uniswap &&
@@ -28,9 +28,9 @@ const liquidityPoolDataSorter = (
 
 export const useLiquidityPoolsForPairFilter = (
   liquidityPair: FrontendLiquidityPair,
-  networkName: NetworkName,
+  networkName: NetworkName
 ) => {
-  const { liquidity } = useReduxSelector('liquidity');
+  const { liquidity } = useReduxSelector("liquidity");
   const liquidityPoolsForNetwork = liquidity.forNetwork[networkName]?.allPools;
 
   const tokenAddressA = liquidityPair.tokenA.address;
@@ -48,9 +48,9 @@ export const useLiquidityPoolsForPairFilter = (
     liquidityPoolList = liquidityPoolsForNetwork
       .map(convertSerializedToLiquidityPool)
       .filter(
-        lp =>
+        (lp) =>
           compareTokenAddress(lp.tokenAddressA, tokenAddressA) &&
-          compareTokenAddress(lp.tokenAddressB, tokenAddressB),
+          compareTokenAddress(lp.tokenAddressB, tokenAddressB)
       );
 
     liquidityPoolList.sort(liquidityPoolDataSorter);

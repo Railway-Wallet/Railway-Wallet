@@ -1,13 +1,13 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Modal } from 'react-native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Modal } from "react-native";
 import {
   SearchableERC20,
   useAppDispatch,
   useReduxSelector,
   WalletTokenService,
-} from '@react-shared';
-import { AddCustomTokenView } from '../../../components/views/AddCustomTokenView/AddCustomTokenView';
+} from "@react-shared";
+import { AddCustomTokenView } from "../../../components/views/AddCustomTokenView/AddCustomTokenView";
 
 type Props = {
   show: boolean;
@@ -25,8 +25,8 @@ export const AddCustomTokenModal: React.FC<Props> = ({
   onSuccessAddedToken,
 }) => {
   const dispatch = useAppDispatch();
-  const { wallets } = useReduxSelector('wallets');
-  const { network } = useReduxSelector('network');
+  const { wallets } = useReduxSelector("wallets");
+  const { network } = useReduxSelector("network");
 
   const [isAddingToken, setIsAddingToken] = useState(false);
 
@@ -38,7 +38,7 @@ export const AddCustomTokenModal: React.FC<Props> = ({
       await walletTokenService.addERC20TokensToWallet(
         activeWallet,
         [token],
-        network.current,
+        network.current
       );
       setIsAddingToken(false);
       onSuccessAddedToken?.(token.address);

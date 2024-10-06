@@ -1,2 +1,2 @@
-export * from './useProof';
-export * from './useValidateNumEntry';
+export * from "./useProof";
+export * from "./useValidateNumEntry";

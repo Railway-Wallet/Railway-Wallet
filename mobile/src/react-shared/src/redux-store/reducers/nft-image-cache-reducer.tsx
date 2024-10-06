@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type NFTImageSrc = {
   imageURL: string;
@@ -10,7 +10,7 @@ export type NFTsImageCacheState = MapType<string>;
 const initialState = {} as NFTsImageCacheState;
 
 const slice = createSlice({
-  name: 'nft-image-cache',
+  name: "nft-image-cache",
   initialState,
   reducers: {
     cacheNFTImages(state, action: PayloadAction<NFTImageSrc[]>) {

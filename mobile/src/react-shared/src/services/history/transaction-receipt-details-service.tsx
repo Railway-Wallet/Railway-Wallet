@@ -1,11 +1,11 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { Provider, TransactionReceipt } from 'ethers';
-import { ProviderNodeType } from '../../models';
-import { TransactionReceiptDetails } from '../../models/transaction';
-import { store } from '../../redux-store/store';
-import { logDevError } from '../../utils/logging';
-import { ProviderService } from '../providers/provider-service';
-import { TransactionReceiptDetailsCache } from './transaction-receipt-details-cache';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { Provider, TransactionReceipt } from "ethers";
+import { ProviderNodeType } from "../../models";
+import { TransactionReceiptDetails } from "../../models/transaction";
+import { store } from "../../redux-store/store";
+import { logDevError } from "../../utils/logging";
+import { ProviderService } from "../providers/provider-service";
+import { TransactionReceiptDetailsCache } from "./transaction-receipt-details-cache";
 
 export class TransactionReceiptDetailsService {
   private transactionReceiptDetailsCache: TransactionReceiptDetailsCache;
@@ -20,11 +20,11 @@ export class TransactionReceiptDetailsService {
 
   private getTransactionReceiptDetailsFromCompletedTransaction = (
     networkName: NetworkName,
-    txid: string,
+    txid: string
   ): Optional<TransactionReceiptDetails> => {
     const { savedTransactions } = store.getState();
     const transaction = savedTransactions.forNetwork[networkName]?.find(
-      tx => tx.id === txid,
+      (tx) => tx.id === txid
     );
     if (
       transaction &&
@@ -41,23 +41,23 @@ export class TransactionReceiptDetailsService {
 
   async getTransactionReceiptDetails(
     networkName: NetworkName,
-    txid: string,
+    txid: string
   ): Promise<Optional<TransactionReceiptDetails>> {
     const fullNodeProvider = await ProviderService.getProvider(
       networkName,
-      ProviderNodeType.FullNode,
+      ProviderNodeType.FullNode
     );
     return this.getTransactionReceiptDetailsWithProvider(
       networkName,
       txid,
-      fullNodeProvider,
+      fullNodeProvider
     );
   }
 
   private async getTransactionReceiptDetailsWithProvider(
     networkName: NetworkName,
     txid: string,
-    provider: Provider,
+    provider: Provider
   ): Promise<Optional<TransactionReceiptDetails>> {
     try {
       const cachedReceiptDetails =
@@ -69,12 +69,12 @@ export class TransactionReceiptDetailsService {
       const completedTransactionReceiptDetails =
         this.getTransactionReceiptDetailsFromCompletedTransaction(
           networkName,
-          txid,
+          txid
         );
       if (completedTransactionReceiptDetails) {
         await this.transactionReceiptDetailsCache.store(
           txid,
-          completedTransactionReceiptDetails,
+          completedTransactionReceiptDetails
         );
         return completedTransactionReceiptDetails;
       }
@@ -82,14 +82,14 @@ export class TransactionReceiptDetailsService {
       const txReceipt = await provider.getTransactionReceipt(txid);
       if (!txReceipt) {
         throw new Error(
-          `Transaction receipt not found for ${txid} on network ${networkName}`,
+          `Transaction receipt not found for ${txid} on network ${networkName}`
         );
       }
 
       const blockNumber = txReceipt.blockNumber;
       const block = await provider.getBlock(blockNumber);
       if (block == null) {
-        throw new Error('Block not found');
+        throw new Error("Block not found");
       }
 
       const gasFee = TransactionReceiptDetailsService.getGasFee(txReceipt);
@@ -99,14 +99,14 @@ export class TransactionReceiptDetailsService {
       };
       await this.transactionReceiptDetailsCache.store(
         txid,
-        transactionsReceiptDetails,
+        transactionsReceiptDetails
       );
       return transactionsReceiptDetails;
     } catch (err) {
       logDevError(
-        new Error('Error getting transaction receipt', {
+        new Error("Error getting transaction receipt", {
           cause: err,
-        }),
+        })
       );
 
       if (!(err instanceof Error)) {

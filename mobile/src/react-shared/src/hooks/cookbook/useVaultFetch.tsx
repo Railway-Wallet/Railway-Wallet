@@ -1,19 +1,19 @@
-import { BeefyAPI } from '@railgun-community/cookbook';
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
-import { SharedConstants } from '../../config';
-import { Vault } from '../../models/vault';
+import { BeefyAPI } from "@railgun-community/cookbook";
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { useEffect, useState } from "react";
+import { SharedConstants } from "../../config";
+import { Vault } from "../../models/vault";
 import {
   DepositVaultsState,
   updateVaults,
-} from '../../redux-store/reducers/vaults-reducer';
-import { logDevError } from '../../utils';
-import { fetchBeefyVaults } from '../../utils/vaults-util';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
+} from "../../redux-store/reducers/vaults-reducer";
+import { logDevError } from "../../utils";
+import { fetchBeefyVaults } from "../../utils/vaults-util";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
 
 export const useVaultFetch = () => {
-  const { network } = useReduxSelector('network');
-  const { vaults } = useReduxSelector('vaults');
+  const { network } = useReduxSelector("network");
+  const { vaults } = useReduxSelector("vaults");
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [vaultFetchError, setVaultFetchError] =
@@ -21,7 +21,7 @@ export const useVaultFetch = () => {
 
   const refreshVaultData = async (
     networkName: NetworkName,
-    skipCache: boolean,
+    skipCache: boolean
   ) => {
     setVaultFetchError(undefined);
     if (!BeefyAPI.supportsNetwork(networkName)) {
@@ -55,7 +55,7 @@ export const useVaultFetch = () => {
         redeemVaultForTokenMap[v.redeemERC20Address.toLowerCase()] = v;
       }
 
-      Object.values(depositVaultsForTokenMap).forEach(tokenVaults => {
+      Object.values(depositVaultsForTokenMap).forEach((tokenVaults) => {
         tokenVaults?.list.sort((v1, v2) => v2.apy - v1.apy);
       });
 
@@ -64,10 +64,10 @@ export const useVaultFetch = () => {
           networkName,
           depositVaultsForTokenMap,
           redeemVaultForTokenMap,
-        }),
+        })
       );
     } catch (err) {
-      const error = new Error('Error refreshing vault data', {
+      const error = new Error("Error refreshing vault data", {
         cause: err,
       });
       logDevError(error);
@@ -85,10 +85,7 @@ export const useVaultFetch = () => {
     const isStale = timeSinceUpdateMs > thresholdMs;
 
     if (isStale) {
-      await refreshVaultData(
-        networkName,
-        false,
-      );
+      await refreshVaultData(networkName, false);
     }
   };
 

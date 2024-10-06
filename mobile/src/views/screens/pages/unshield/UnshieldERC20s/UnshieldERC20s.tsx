@@ -1,17 +1,17 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
-import { Alert, AlertButton, TextInput } from 'react-native';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { ERC20AmountsNumPadView } from '@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView';
-import { useRecipientAddress } from '@hooks/inputs/useRecipientAddress';
-import { TokenStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
+import { Alert, AlertButton, TextInput } from "react-native";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { ERC20AmountsNumPadView } from "@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView";
+import { useRecipientAddress } from "@hooks/inputs/useRecipientAddress";
+import { TokenStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   ERC20Amount,
   getTokenDisplayNameShort,
@@ -21,18 +21,18 @@ import {
   TransactionType,
   useReduxSelector,
   WalletAddressType,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { validateWalletAddress } from '@utils/validation';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { validateWalletAddress } from "@utils/validation";
 
 type Props = {
-  navigation: NavigationProp<TokenStackParamList, 'UnshieldERC20s'>;
-  route: RouteProp<{ params: TokenStackParamList['UnshieldERC20s'] }, 'params'>;
+  navigation: NavigationProp<TokenStackParamList, "UnshieldERC20s">;
+  route: RouteProp<{ params: TokenStackParamList["UnshieldERC20s"] }, "params">;
 };
 
 export const UnshieldERC20s: React.FC<Props> = ({ navigation, route }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const { token: navigationToken } = route.params;
 
@@ -48,19 +48,19 @@ export const UnshieldERC20s: React.FC<Props> = ({ navigation, route }) => {
   useEffect(() => {
     const checkUnshieldDisclaimer = async () => {
       const hasSeen = await StorageService.getItem(
-        SharedConstants.HAS_SEEN_UNSHIELD_DESTINATION_DISCLAIMER,
+        SharedConstants.HAS_SEEN_UNSHIELD_DESTINATION_DISCLAIMER
       );
 
       if (!isDefined(hasSeen)) {
         Alert.alert(
           `Careful!`,
-          'Unshielding directly to an exchange or broker may result in loss of funds. Only unshield to a self-custodial wallet first before sending on to an exchange or broker.',
+          "Unshielding directly to an exchange or broker may result in loss of funds. Only unshield to a self-custodial wallet first before sending on to an exchange or broker."
         );
 
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         StorageService.setItem(
           SharedConstants.HAS_SEEN_UNSHIELD_DESTINATION_DISCLAIMER,
-          '1',
+          "1"
         );
       }
     };
@@ -71,21 +71,24 @@ export const UnshieldERC20s: React.FC<Props> = ({ navigation, route }) => {
 
   const { hasValidRecipient, erc20AmountRecipients, recipientInput } =
     useRecipientAddress(
-      undefined, undefined, erc20Amounts,
-      [], transactionType,
+      undefined,
+      undefined,
+      erc20Amounts,
+      [],
+      transactionType,
       walletAddressType,
-      validateWalletAddress,
+      validateWalletAddress
     );
 
   const onTapNext = () => {
     if (!hasValidRecipient) {
-      Alert.alert('Please enter a valid address');
+      Alert.alert("Please enter a valid address");
       return;
     }
 
     const showBaseTokenUnshieldOptions = hasOnlyWrappedBaseToken(
       erc20Amounts,
-      network.current,
+      network.current
     );
     if (showBaseTokenUnshieldOptions) {
       goToNextUnshieldBaseToken();
@@ -111,17 +114,17 @@ export const UnshieldERC20s: React.FC<Props> = ({ navigation, route }) => {
       `Unshield ${getTokenDisplayNameShort(
         erc20Amounts[0].token,
         wallets.available,
-        network.current.name,
+        network.current.name
       )}`,
       `You may unshield this wrapped token to ${network.current.baseToken.symbol} or ${network.current.baseToken.wrappedSymbol}.`,
-      buttons,
+      buttons
     );
   };
 
   const navigateNext = (isBaseTokenUnshield: boolean) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('UnshieldERC20sConfirm', {
+    navigation.navigate("UnshieldERC20sConfirm", {
       erc20AmountRecipients: erc20AmountRecipients,
       isBaseTokenUnshield,
       nftAmountRecipients: [],

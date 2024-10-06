@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   hr: {
     backgroundColor: styleguide.colors.textSecondary,
     height: 1,
-    width: '100%',
+    width: "100%",
     marginLeft: 16,
   },
   placeholderText: {
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.paragraph,
   },
   bold: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   androidBottomPadding: {
     height: 56,

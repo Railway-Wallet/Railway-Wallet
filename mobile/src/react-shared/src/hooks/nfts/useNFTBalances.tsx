@@ -2,12 +2,12 @@ import {
   NFTAmount,
   NFTTokenType,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { FrontendWallet } from '../../models/wallet';
-import { NFTBalanceState } from '../../redux-store/reducers/nft-balance-reducer-network';
-import { RailgunNFTBalanceState } from '../../redux-store/reducers/nft-balance-reducer-railgun';
-import { getRailgunNFTAmountsFromTXIDBalanceMap } from '../../services/wallet/wallet-balance-service';
-import { useReduxSelector } from '../hooks-redux';
+} from "@railgun-community/shared-models";
+import { FrontendWallet } from "../../models/wallet";
+import { NFTBalanceState } from "../../redux-store/reducers/nft-balance-reducer-network";
+import { RailgunNFTBalanceState } from "../../redux-store/reducers/nft-balance-reducer-railgun";
+import { getRailgunNFTAmountsFromTXIDBalanceMap } from "../../services/wallet/wallet-balance-service";
+import { useReduxSelector } from "../hooks-redux";
 
 export type NFTData = {
   public: Optional<NFTAmount[]>;
@@ -18,12 +18,12 @@ const SUPPORTED_NFT_TOKEN_TYPES: NFTTokenType[] = [NFTTokenType.ERC721];
 
 export const useNFTBalances = (
   wallet: Optional<FrontendWallet>,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ): { nftBalances: Optional<NFTData> } => {
-  const { network } = useReduxSelector('network');
-  const { nftBalancesNetwork } = useReduxSelector('nftBalancesNetwork');
-  const { nftBalancesRailgun } = useReduxSelector('nftBalancesRailgun');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { nftBalancesNetwork } = useReduxSelector("nftBalancesNetwork");
+  const { nftBalancesRailgun } = useReduxSelector("nftBalancesRailgun");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   if (!wallet) {
     return { nftBalances: undefined };
@@ -31,18 +31,18 @@ export const useNFTBalances = (
 
   const nftsForBalances = (
     balances: NFTBalanceState,
-    balancesID: string,
+    balancesID: string
   ): Optional<NFTAmount[]> => {
     return balances.forNetwork[network.current.name]?.forWallet[
       balancesID
-    ]?.filter(nft => {
+    ]?.filter((nft) => {
       return SUPPORTED_NFT_TOKEN_TYPES.includes(nft.nftTokenType);
     });
   };
 
   const nftsForBalancesRailgun = (
     balances: RailgunNFTBalanceState,
-    balancesID: string,
+    balancesID: string
   ): Optional<NFTAmount[]> => {
     let nftAmounts: NFTAmount[] = [];
 
@@ -53,10 +53,10 @@ export const useNFTBalances = (
       nftAmounts = getRailgunNFTAmountsFromTXIDBalanceMap(
         nftAmountsMap,
         txidVersion.current,
-        balanceBucketFilter,
+        balanceBucketFilter
       );
     }
-    return nftAmounts.filter(nft => {
+    return nftAmounts.filter((nft) => {
       return SUPPORTED_NFT_TOKEN_TYPES.includes(nft.nftTokenType);
     });
   };

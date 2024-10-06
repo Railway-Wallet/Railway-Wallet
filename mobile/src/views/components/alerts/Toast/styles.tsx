@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   toastContainer: {
-    width: '100%',
+    width: "100%",
   },
   toastOuterContent: {
     margin: 8,
@@ -18,14 +18,14 @@ export const styles = StyleSheet.create({
     backgroundColor: styleguide.colors.gray6_50,
   },
   textIconWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   textSubtextWrapper: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
     marginHorizontal: 16,
   },
   messageText: {

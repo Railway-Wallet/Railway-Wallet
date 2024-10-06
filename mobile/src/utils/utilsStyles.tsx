@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   footerView: {
@@ -11,6 +11,6 @@ export const styles = StyleSheet.create({
   },
   submitButtonText: {
     ...styleguide.typography.label,
-    textTransform: 'none',
+    textTransform: "none",
   },
 });

@@ -1,31 +1,31 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isTightWidth } from '@services/util/screen-dimensions-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isTightWidth } from "@services/util/screen-dimensions-service";
 
 export const styles = StyleSheet.create({
   footer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
     paddingHorizontal: 8,
     marginTop: 24,
     height: 52,
-    width: '100%',
-    overflow: 'hidden',
+    width: "100%",
+    overflow: "hidden",
   },
   footerRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
   },
   footerIconText: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignContent: "center",
     paddingLeft: 4,
     flexGrow: 1,
   },
@@ -33,12 +33,12 @@ export const styles = StyleSheet.create({
     maxWidth: 20,
     maxHeight: 22,
     marginRight: 12,
-    overflow: 'visible',
-    alignSelf: 'center',
+    overflow: "visible",
+    alignSelf: "center",
   },
   footerText: {
     ...styleguide.typography.caption,
-    alignSelf: 'center',
+    alignSelf: "center",
     maxWidth: isTightWidth() ? 108 : 128,
     lineHeight: 16,
     fontSize: 14,

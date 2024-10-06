@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type TempNotification = {
   id: string;
@@ -15,12 +15,12 @@ const initialState = {
 } as TempNotificationState;
 
 const slice = createSlice({
-  name: 'temp-notification',
+  name: "temp-notification",
   initialState,
   reducers: {
     setTempNotification(
       state,
-      action: PayloadAction<Optional<TempNotification>>,
+      action: PayloadAction<Optional<TempNotification>>
     ) {
       state.current = action.payload;
     },

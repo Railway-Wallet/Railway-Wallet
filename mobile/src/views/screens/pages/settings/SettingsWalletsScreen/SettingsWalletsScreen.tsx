@@ -1,13 +1,13 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { HeaderIconButton } from '@components/headers/headerSideComponents/HeaderIconButton/HeaderIconButton';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { HeaderIconButton } from "@components/headers/headerSideComponents/HeaderIconButton/HeaderIconButton";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   FrontendWallet,
   SavedAddress,
@@ -16,45 +16,45 @@ import {
   styleguide,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { SettingsListHeader } from '@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader';
-import { SettingsListItem } from '@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { SettingsListHeader } from "@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader";
+import { SettingsListItem } from "@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsWallets'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsWallets">;
 };
 
 export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
-  const { wallets } = useReduxSelector('wallets');
-  const { savedAddresses } = useReduxSelector('savedAddresses');
+  const { wallets } = useReduxSelector("wallets");
+  const { savedAddresses } = useReduxSelector("savedAddresses");
 
   const { showActionSheetWithOptions } = useActionSheet();
   const dispatch = useAppDispatch();
 
   const onTapCreateWallet = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    callActionSheet(showActionSheetWithOptions, 'Add wallet', [
+    callActionSheet(showActionSheetWithOptions, "Add wallet", [
       {
-        name: 'Create new wallet',
+        name: "Create new wallet",
         action: () => {
-          (navigation as any).navigate('NewWallet', { screen: 'CreateWallet' });
+          (navigation as any).navigate("NewWallet", { screen: "CreateWallet" });
         },
       },
       {
-        name: 'Import existing wallet',
+        name: "Import existing wallet",
         action: () => {
-          (navigation as any).navigate('NewWallet', { screen: 'ImportWallet' });
+          (navigation as any).navigate("NewWallet", { screen: "ImportWallet" });
         },
       },
       {
-        name: 'Add view-only wallet',
+        name: "Add view-only wallet",
         action: () => {
-          (navigation as any).navigate('NewWallet', {
-            screen: 'AddViewOnlyWallet',
+          (navigation as any).navigate("NewWallet", {
+            screen: "AddViewOnlyWallet",
           });
         },
       },
@@ -72,7 +72,7 @@ export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
 
   const onSelectWallet = (wallet: FrontendWallet) => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('SettingsWalletInfo', { wallet });
+    navigation.navigate("SettingsWalletInfo", { wallet });
   };
 
   const walletItem = (wallet: FrontendWallet, index: number) => {
@@ -82,7 +82,7 @@ export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
       <View key={index} style={styles.walletItemContainer}>
         <SettingsListItem
           title={wallet.name}
-          titleIcon={wallet.isActive ? 'check-bold' : undefined}
+          titleIcon={wallet.isActive ? "check-bold" : undefined}
           description={walletDescription(wallet)}
           icon="chevron-right"
           onTap={() => onSelectWallet(wallet)}
@@ -93,7 +93,7 @@ export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const savedAddressItem = (savedAddress: SavedAddress, index: number) => {
-    let addressShortened: string = '';
+    let addressShortened: string = "";
     if (isDefined(savedAddress.ethAddress)) {
       addressShortened = shortenWalletAddress(savedAddress.ethAddress);
     }
@@ -122,13 +122,13 @@ export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
       }`,
       [
         {
-          name: 'Delete saved address',
+          name: "Delete saved address",
           action: async () => {
             const savedAddressService = new SavedAddressService(dispatch);
             await savedAddressService.delete(savedAddress);
           },
         },
-      ],
+      ]
     );
   };
 
@@ -152,10 +152,10 @@ export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
             <View style={styles.items}>{allWallets.map(walletItem)}</View>
             {!allWallets.length && (
               <Text style={styles.placeholderText}>
-                Press{' '}
+                Press{" "}
                 <Text style={styles.bold} onPress={onTapCreateWallet}>
-                  {isAndroid() ? 'New Wallet' : '+'}
-                </Text>{' '}
+                  {isAndroid() ? "New Wallet" : "+"}
+                </Text>{" "}
                 to add a new wallet.
               </Text>
             )}
@@ -165,7 +165,7 @@ export const SettingsWalletsScreen: React.FC<Props> = ({ navigation }) => {
               <SettingsListHeader title="Saved addresses" />
               <View style={styles.items}>
                 {savedAddresses.current.map((savedAddress, index) =>
-                  savedAddressItem(savedAddress, index),
+                  savedAddressItem(savedAddress, index)
                 )}
               </View>
             </View>

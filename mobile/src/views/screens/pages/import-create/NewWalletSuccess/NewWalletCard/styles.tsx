@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const CARD_PADDING = 16;
 
@@ -14,11 +14,11 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   headerBackground: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 16,
   },
@@ -26,19 +26,19 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.heading3,
     color: styleguide.colors.text(),
     marginLeft: 16,
-    position: 'relative',
+    position: "relative",
     bottom: isAndroid() ? 0 : 1,
   },
   bottomSection: {
     padding: 16,
   },
   addressQrWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   button: {
     backgroundColor: styleguide.colors.gray(),
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   fieldName: {
     ...styleguide.typography.label,
     color: styleguide.colors.gray8(),
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   field: {
     marginTop: 12,
@@ -61,9 +61,9 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.white,
   },
   logoWrapper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
   },
   logo: {
     marginTop: 16,

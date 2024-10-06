@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemList: {
     flex: 1,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   noTxItem: {
-    textAlign: 'center',
+    textAlign: "center",
     paddingHorizontal: 16,
     paddingVertical: 32,
     color: styleguide.colors.labelSecondary,

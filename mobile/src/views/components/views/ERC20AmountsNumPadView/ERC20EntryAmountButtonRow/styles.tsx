@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   input: {
     ...styleguide.typography.heading2,
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexShrink: 1,
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 28,
     color: styleguide.colors.text(),
     marginHorizontal: 12,

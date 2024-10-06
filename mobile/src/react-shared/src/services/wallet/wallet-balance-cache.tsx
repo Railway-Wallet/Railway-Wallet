@@ -4,13 +4,13 @@ import {
   NFTAmount,
   RailgunWalletBalanceBucket,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
+} from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
 import {
   BASE_TOKEN_ADDRESS,
   ERC20Balance,
   ERC20BalancesSerialized,
-} from '../../models/token';
+} from "../../models/token";
 import {
   CachedERC20Balance,
   CachedNFTBalance,
@@ -20,13 +20,13 @@ import {
   RailgunNFTAmountsMap,
   RailgunTXIDBalanceMap,
   RailgunTXIDVersionNFTAmountMap,
-} from '../../models/wallet';
-import { StorageService } from '../storage/storage-service';
+} from "../../models/wallet";
+import { StorageService } from "../storage/storage-service";
 
 export const cacheERC20Balances = async (
   networkName: NetworkName,
   walletID: string,
-  erc20Balances: ERC20BalancesSerialized,
+  erc20Balances: ERC20BalancesSerialized
 ): Promise<void> => {
   const tokenAddresses = Object.keys(erc20Balances);
   const formattedTokenBalances: ERC20Balance[] = [];
@@ -34,7 +34,7 @@ export const cacheERC20Balances = async (
     const isBaseToken = tokenAddress === BASE_TOKEN_ADDRESS;
     formattedTokenBalances.push({
       tokenAddress,
-      balanceString: erc20Balances[tokenAddress] ?? '0',
+      balanceString: erc20Balances[tokenAddress] ?? "0",
       isBaseToken,
     });
   }
@@ -53,7 +53,7 @@ export const cacheERC20Balances = async (
 export const cacheERC20BalancesRailgun = async (
   networkName: NetworkName,
   walletID: string,
-  erc20BalancesMap: RailgunTXIDBalanceMap,
+  erc20BalancesMap: RailgunTXIDBalanceMap
 ): Promise<void> => {
   const formattedBalanceMap: RailgunERC20BalanceMap = {};
 
@@ -61,13 +61,12 @@ export const cacheERC20BalancesRailgun = async (
   for (const txidVersion of txidVersions) {
     const txidBalanceBucketBuckets = erc20BalancesMap[txidVersion];
     const balanceBuckets = Object.keys(
-      txidBalanceBucketBuckets,
+      txidBalanceBucketBuckets
     ) as RailgunWalletBalanceBucket[];
 
     for (const balanceBucket of balanceBuckets) {
       const erc20Balances = txidBalanceBucketBuckets[balanceBucket];
-      if (!erc20Balances)
-        continue;
+      if (!erc20Balances) continue;
 
       const tokenAddresses = Object.keys(erc20Balances);
 
@@ -78,7 +77,7 @@ export const cacheERC20BalancesRailgun = async (
 
         tokenBalances.push({
           tokenAddress,
-          balanceString: erc20Balances[tokenAddress] ?? '0',
+          balanceString: erc20Balances[tokenAddress] ?? "0",
           isBaseToken,
         });
       }
@@ -94,7 +93,7 @@ export const cacheERC20BalancesRailgun = async (
     }
   }
 
-  const storageKey = SharedConstants.CACHED_BALANCES + '_RAILGUN_V2';
+  const storageKey = SharedConstants.CACHED_BALANCES + "_RAILGUN_V2";
 
   const cachedBalance: RailgunCachedERC20Balance = {
     networkName,
@@ -108,7 +107,7 @@ export const cacheERC20BalancesRailgun = async (
 export const cacheNFTBalances = async (
   networkName: NetworkName,
   walletID: string,
-  nftAmounts: NFTAmount[],
+  nftAmounts: NFTAmount[]
 ): Promise<void> => {
   const storageKey = SharedConstants.CACHED_NFT_BALANCES;
 
@@ -123,7 +122,7 @@ export const cacheNFTBalances = async (
 export const cacheNFTBalancesRailgun = async (
   networkName: NetworkName,
   walletID: string,
-  nftAmountsTXIDVersionMap: RailgunTXIDVersionNFTAmountMap,
+  nftAmountsTXIDVersionMap: RailgunTXIDVersionNFTAmountMap
 ): Promise<void> => {
   const formattedNFTAmountsMap: RailgunNFTAmountsMap = {};
 
@@ -142,7 +141,7 @@ export const cacheNFTBalancesRailgun = async (
 
     const txidBalanceBucketBuckets = nftAmountsTXIDVersionMap[txidVersion];
     const balanceBuckets = Object.keys(
-      txidBalanceBucketBuckets,
+      txidBalanceBucketBuckets
     ) as RailgunWalletBalanceBucket[];
 
     for (const balanceBucket of balanceBuckets) {
@@ -155,7 +154,7 @@ export const cacheNFTBalancesRailgun = async (
     }
   }
 
-  const storageKey = SharedConstants.CACHED_NFT_BALANCES + '_RAILGUN_V2';
+  const storageKey = SharedConstants.CACHED_NFT_BALANCES + "_RAILGUN_V2";
 
   const cachedBalance: RailgunCachedNFTAmounts = {
     networkName,

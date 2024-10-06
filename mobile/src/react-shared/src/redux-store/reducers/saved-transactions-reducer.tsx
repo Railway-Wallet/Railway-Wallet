@@ -1,6 +1,6 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SavedTransaction } from '../../models/transaction';
+import { NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SavedTransaction } from "../../models/transaction";
 
 type SetTransactionsPayload = {
   networkName: NetworkName;
@@ -28,7 +28,7 @@ const initialState = {
 } as SavedTransactionsState;
 
 const slice = createSlice({
-  name: 'transactions',
+  name: "transactions",
   initialState,
   reducers: {
     setTransactions(state, action: PayloadAction<SetTransactionsPayload>) {
@@ -42,12 +42,12 @@ const slice = createSlice({
     },
     removeTransactionByID(
       state,
-      action: PayloadAction<RemoveTransactionPayload>,
+      action: PayloadAction<RemoveTransactionPayload>
     ) {
       const { id, networkName } = action.payload;
       state.forNetwork[networkName] = (
         state.forNetwork[networkName] ?? []
-      ).filter(t => t.id !== id);
+      ).filter((t) => t.id !== id);
     },
     updateTransaction(state, action: PayloadAction<UpdateTransactionPayload>) {
       const { transaction, networkName } = action.payload;

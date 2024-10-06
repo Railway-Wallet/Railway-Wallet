@@ -1,10 +1,10 @@
-import { isDefined, TXIDVersion } from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal, Text, View } from 'react-native';
+import { isDefined, TXIDVersion } from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Modal, Text, View } from "react-native";
 import {
   AlertProps,
   GenericAlert,
-} from '@components/alerts/GenericAlert/GenericAlert';
+} from "@components/alerts/GenericAlert/GenericAlert";
 import {
   closeShieldPOICountdownToast,
   formatTimeToText,
@@ -18,18 +18,18 @@ import {
   useAppDispatch,
   useBalancePriceRefresh,
   useReduxSelector,
-} from '@react-shared';
-import { openExternalLinkAlert } from '@services/util/alert-service';
-import { createPOIDisclaimerAlert } from '@utils/alerts';
-import { ButtonTextOnly } from '@views/components/buttons/ButtonTextOnly/ButtonTextOnly';
-import { styles } from './styles';
+} from "@react-shared";
+import { openExternalLinkAlert } from "@services/util/alert-service";
+import { createPOIDisclaimerAlert } from "@utils/alerts";
+import { ButtonTextOnly } from "@views/components/buttons/ButtonTextOnly/ButtonTextOnly";
+import { styles } from "./styles";
 
 export const ShieldPOICountdownModal = () => {
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { remoteConfig } = useReduxSelector("remoteConfig");
   const {
     shieldPOICountdownToast: { isOpen, tx },
-  } = useReduxSelector('shieldPOICountdownToast');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  } = useReduxSelector("shieldPOICountdownToast");
+  const { txidVersion } = useReduxSelector("txidVersion");
   const dispatch = useAppDispatch();
 
   const [timeLeft, setTimeLeft] = useState(0);
@@ -37,7 +37,7 @@ export const ShieldPOICountdownModal = () => {
 
   const { pullBalances } = useBalancePriceRefresh(
     refreshRailgunBalances,
-    () => {},
+    () => {}
   );
 
   const handleCloseModal = useCallback(async () => {
@@ -56,16 +56,16 @@ export const ShieldPOICountdownModal = () => {
   const waitTimeForNetwork = useMemo(
     () =>
       isDefined(tx) ? getWaitTimeForShieldPending(tx.networkName) ?? 0 : 0,
-    [tx],
+    [tx]
   );
-  const shortTX = isDefined(tx) ? shortenTokenAddress(tx.id) : '';
+  const shortTX = isDefined(tx) ? shortenTokenAddress(tx.id) : "";
 
   useEffect(() => {
     const calculateTimeLeft = () => {
       if (isDefined(tx)) {
         const timestampInSeconds = tx.timestamp + waitTimeForNetwork;
         const differenceInSeconds = Math.floor(
-          timestampInSeconds - Date.now() / 1000,
+          timestampInSeconds - Date.now() / 1000
         );
         setTimeLeft(differenceInSeconds);
       } else {
@@ -103,11 +103,11 @@ export const ShieldPOICountdownModal = () => {
 
     if (network) {
       createPOIDisclaimerAlert(
-        'Shielding',
+        "Shielding",
         getShieldingPOIDisclaimerMessage(network),
         setAlert,
         dispatch,
-        remoteConfig?.current?.poiDocumentation,
+        remoteConfig?.current?.poiDocumentation
       );
     }
   };
@@ -132,7 +132,7 @@ export const ShieldPOICountdownModal = () => {
           <View style={styles.countdownContainer}>
             <Text style={styles.countdownEst}>Est.</Text>
             <Text style={styles.countdown}>{`${formatTimeToText(
-              timeLeft,
+              timeLeft
             )}`}</Text>
           </View>
           <Text style={styles.disclaimerText}>

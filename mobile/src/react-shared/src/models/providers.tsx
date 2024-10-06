@@ -1,4 +1,4 @@
 export enum ProviderNodeType {
-  FullNode = 'FullNode',
-  ArchiveNode = 'ArchiveNode',
+  FullNode = "FullNode",
+  ArchiveNode = "ArchiveNode",
 }

@@ -3,18 +3,18 @@ import {
   isDefined,
   POIProofEventStatus,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Modal,
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Bar as ProgressBar } from 'react-native-progress';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import Clipboard from '@react-native-clipboard/clipboard';
+} from "react-native";
+import { Bar as ProgressBar } from "react-native-progress";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   generateAllPOIsForWallet,
   IconShielded,
@@ -29,16 +29,16 @@ import {
   useBalancePriceRefresh,
   usePOIProofStatus,
   useReduxSelector,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { ButtonTextOnly } from '@views/components/buttons/ButtonTextOnly/ButtonTextOnly';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { ButtonTextOnly } from "@views/components/buttons/ButtonTextOnly/ButtonTextOnly";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   showPOIModalInfo: boolean;
@@ -49,9 +49,9 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
   const { poiProofProgressStatus, shouldShowAllProofsCompleted } =
     usePOIProofStatus();
   const dispatch = useAppDispatch();
-  const { wallets } = useReduxSelector('wallets');
-  const { network } = useReduxSelector('network');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { wallets } = useReduxSelector("wallets");
+  const { network } = useReduxSelector("network");
+  const { txidVersion } = useReduxSelector("txidVersion");
   const railWalletID = wallets.active?.railWalletID;
   const networkShortPublicName = network.current.shortPublicName;
 
@@ -74,7 +74,7 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
         show: true,
         error,
         onDismiss: () => setErrorModal(undefined),
-      }),
+      })
   );
 
   useEffect(() => {
@@ -104,9 +104,9 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
   const progress = poiProofProgressStatus?.progress ?? 0;
   const totalPOIs = poiProofProgressStatus?.totalCount ?? 0;
   const currentPOIIndex = poiProofProgressStatus?.index ?? 0;
-  const txid = poiProofProgressStatus?.txid ?? 'none';
-  const listKey = poiProofProgressStatus?.listKey ?? 'none';
-  const railgunTXID = poiProofProgressStatus?.railgunTxid ?? 'none';
+  const txid = poiProofProgressStatus?.txid ?? "none";
+  const listKey = poiProofProgressStatus?.listKey ?? "none";
+  const railgunTXID = poiProofProgressStatus?.railgunTxid ?? "none";
   const currentPOI = isDefined(poiProofProgressStatus?.index)
     ? currentPOIIndex + 1
     : 0;
@@ -126,7 +126,7 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
       await generateAllPOIsForWallet(network.current.name, railWalletID);
       setLoadingTryAgain(false);
     } catch (cause) {
-      logDevError(new Error('Retry generate POIs failed', { cause }));
+      logDevError(new Error("Retry generate POIs failed", { cause }));
       setLoadingTryAgain(false);
     }
   };
@@ -141,7 +141,7 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
             color={styleguide.colors.txGreen()}
           />
           <Text style={styles.title}>
-            {'Private Proof of Innocence completed'}
+            {"Private Proof of Innocence completed"}
           </Text>
         </View>
       );
@@ -154,12 +154,12 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
             <ActivityIndicator />
             <Text style={styles.title}>
               {newTrxProcessing
-                ? 'Waiting to trigger...'
-                : 'Loading next batch...'}
+                ? "Waiting to trigger..."
+                : "Loading next batch..."}
             </Text>
           </View>
           <Text style={styles.warningText}>
-            {'Do not close the app while processing'}
+            {"Do not close the app while processing"}
           </Text>
         </>
       );
@@ -172,14 +172,14 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
         <>
           <View style={styles.progressContainer}>
             <Icon
-              source={'alert-circle-outline'}
+              source={"alert-circle-outline"}
               size={22}
               color={styleguide.colors.danger}
             />
             <Text style={styles.title}>{progressText}</Text>
           </View>
           <Text style={[styles.text, styles.errorText]}>
-            {errMessage}{' '}
+            {errMessage}{" "}
             <Text style={styles.errorShowMore} onPress={openErrorDetailsModal}>
               (show more)
             </Text>
@@ -214,7 +214,7 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
           />
         </View>
         <Text style={styles.warningText}>
-          {'Do not close the app while processing'}
+          {"Do not close the app while processing"}
         </Text>
       </>
     );
@@ -223,13 +223,13 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
   const handleCopyData = () => {
     triggerHaptic(HapticSurface.ClipboardCopy);
     Clipboard.setString(
-      `List Key: ${listKey} / Railgun TXID: ${railgunTXID} / ${network.current.shortPublicName} TXID: ${txid}`,
+      `List Key: ${listKey} / Railgun TXID: ${railgunTXID} / ${network.current.shortPublicName} TXID: ${txid}`
     );
     dispatch(
       showImmediateToast({
         message: `Transaction info copied to clipboard.`,
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 
@@ -273,7 +273,7 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
               </TouchableOpacity>
               <Text style={styles.warningText}>
                 {
-                  'Private Proof of Innocence is an intense operation. If you have many proofs to generate, we recommend using the desktop app, which will prove much faster.'
+                  "Private Proof of Innocence is an intense operation. If you have many proofs to generate, we recommend using the desktop app, which will prove much faster."
                 }
               </Text>
             </>

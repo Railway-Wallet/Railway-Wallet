@@ -1,11 +1,11 @@
 import {
   calculateGasPrice,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 
 export const getOverallBatchMinGasPrice = (
   isBroadcasterTransaction: boolean,
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Optional<bigint> => {
   if (!isBroadcasterTransaction) {
     return undefined;

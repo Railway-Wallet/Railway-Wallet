@@ -4,8 +4,8 @@ import {
   PreTransactionPOIsPerTxidLeafPerList,
   SelectedBroadcaster,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { BridgeCallEvent } from '../models';
+} from "@railgun-community/shared-models";
+import { BridgeCallEvent } from "../models";
 import {
   BroadcasterActionData,
   BroadcasterBroadcastTransactionParams,
@@ -18,15 +18,15 @@ import {
   BroadcasterSetChainParams,
   BroadcasterStartParams,
   BroadcasterSupportsERC20TokenParams,
-} from '../models/bridge';
-import { bridgeCall } from './ipc';
+} from "../models/bridge";
+import { bridgeCall } from "./ipc";
 
 export const startWakuBroadcasterClient = async (
   chain: Chain,
   pubSubTopic: string,
   additionalDirectPeers: Optional<string[]>,
   peerDiscoveryTimeout: Optional<number>,
-  poiActiveListKeys: string[],
+  poiActiveListKeys: string[]
 ): Promise<void> => {
   await bridgeCall<BroadcasterStartParams, BroadcasterActionData>(
     BridgeCallEvent.BroadcasterStart,
@@ -36,37 +36,38 @@ export const startWakuBroadcasterClient = async (
       additionalDirectPeers,
       peerDiscoveryTimeout,
       poiActiveListKeys,
-    },
+    }
   );
 };
 
 export const tryReconnectWakuBroadcasterClient = async (): Promise<void> => {
-  await bridgeCall<
-    Record<string, never>, BroadcasterActionData
-  >(BridgeCallEvent.BroadcasterTryReconnect, {});
+  await bridgeCall<Record<string, never>, BroadcasterActionData>(
+    BridgeCallEvent.BroadcasterTryReconnect,
+    {}
+  );
 };
 
 export const setBroadcasterAddressFilters = async (
   allowlist: Optional<string[]>,
-  blocklist: Optional<string[]>,
+  blocklist: Optional<string[]>
 ): Promise<void> => {
   await bridgeCall<BroadcasterSetAddressFiltersParams, void>(
     BridgeCallEvent.BroadcasterSetAddressFilters,
-    { allowlist, blocklist },
+    { allowlist, blocklist }
   );
 };
 
 export const setBroadcasterChain = async (chain: Chain): Promise<void> => {
   await bridgeCall<BroadcasterSetChainParams, void>(
     BridgeCallEvent.BroadcasterSetChain,
-    { chain },
+    { chain }
   );
 };
 
 export const findBestBroadcaster = async (
   chain: Chain,
   tokenAddress: string,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ): Promise<Optional<SelectedBroadcaster>> => {
   const selectedBroadcaster = await bridgeCall<
     BroadcasterFindBestBroadcasterParams,
@@ -82,7 +83,7 @@ export const findBestBroadcaster = async (
 export const findRandomBroadcaster = async (
   chain: Chain,
   tokenAddress: string,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ): Promise<Optional<SelectedBroadcaster>> => {
   const selectedBroadcaster = await bridgeCall<
     BroadcasterFindRandomBroadcasterForTokenParams,
@@ -99,7 +100,7 @@ export const findRandomBroadcaster = async (
 export const findAllBroadcastersForToken = async (
   chain: Chain,
   tokenAddress: string,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ): Promise<Optional<SelectedBroadcaster[]>> => {
   const selectedBroadcasters = await bridgeCall<
     BroadcasterFindAllBroadcastersForTokenParams,
@@ -114,7 +115,7 @@ export const findAllBroadcastersForToken = async (
 
 export const findAllBroadcastersForChain = async (
   chain: Chain,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ): Promise<Optional<SelectedBroadcaster[]>> => {
   const selectedBroadcasters = await bridgeCall<
     BroadcasterFindAllBroadcastersForChainParams,
@@ -127,30 +128,34 @@ export const findAllBroadcastersForChain = async (
 };
 
 export const getBroadcasterMeshPeerCount = async (): Promise<number> => {
-  const meshPeerCount = await bridgeCall<
-    Record<string, never>, number
-  >(BridgeCallEvent.BroadcasterGetMeshPeerCount, {});
+  const meshPeerCount = await bridgeCall<Record<string, never>, number>(
+    BridgeCallEvent.BroadcasterGetMeshPeerCount,
+    {}
+  );
   return meshPeerCount;
 };
 
 export const getBroadcasterPubSubPeerCount = async (): Promise<number> => {
-  const peerCount = await bridgeCall<
-    Record<string, never>, number
-  >(BridgeCallEvent.BroadcasterGetPubSubPeerCount, {});
+  const peerCount = await bridgeCall<Record<string, never>, number>(
+    BridgeCallEvent.BroadcasterGetPubSubPeerCount,
+    {}
+  );
   return peerCount;
 };
 
 export const getBroadcasterFilterPeerCount = async (): Promise<number> => {
-  const peerCount = await bridgeCall<
-    Record<string, never>, number
-  >(BridgeCallEvent.BroadcasterGetFilterPeerCount, {});
+  const peerCount = await bridgeCall<Record<string, never>, number>(
+    BridgeCallEvent.BroadcasterGetFilterPeerCount,
+    {}
+  );
   return peerCount;
 };
 
 export const getBroadcasterLightPushPeerCount = async (): Promise<number> => {
-  const peerCount = await bridgeCall<
-    Record<string, never>, number
-  >(BridgeCallEvent.BroadcasterGetLightPushPeerCount, {});
+  const peerCount = await bridgeCall<Record<string, never>, number>(
+    BridgeCallEvent.BroadcasterGetLightPushPeerCount,
+    {}
+  );
   return peerCount;
 };
 
@@ -164,7 +169,7 @@ export const broadcastTransaction = async (
   nullifiers: string[],
   overallBatchMinGasPrice: bigint,
   useRelayAdapt: boolean,
-  preTransactionPOIsPerTxidLeafPerList: PreTransactionPOIsPerTxidLeafPerList,
+  preTransactionPOIsPerTxidLeafPerList: PreTransactionPOIsPerTxidLeafPerList
 ): Promise<string> => {
   const response = await bridgeCall<
     BroadcasterBroadcastTransactionParams,
@@ -185,7 +190,7 @@ export const broadcastTransaction = async (
     throw response.error;
   }
   if (!isDefined(response.txHash)) {
-    throw new Error('No transaction ID captured from successful broadcast.');
+    throw new Error("No transaction ID captured from successful broadcast.");
   }
   return response.txHash;
 };
@@ -193,7 +198,7 @@ export const broadcastTransaction = async (
 export const broadcasterSupportsERC20Token = async (
   chain: Chain,
   tokenAddress: string,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ): Promise<boolean> => {
   const supportsToken = await bridgeCall<
     BroadcasterSupportsERC20TokenParams,

@@ -1,13 +1,13 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     marginTop: 10,
     marginBottom: 15,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   spinner: {},
   text: {

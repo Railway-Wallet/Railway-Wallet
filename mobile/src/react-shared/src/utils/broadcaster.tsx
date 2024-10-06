@@ -1,14 +1,14 @@
 import {
   CachedTokenFee,
   SelectedBroadcaster,
-} from '@railgun-community/shared-models';
-import { SharedConstants } from '../config';
-import { valuesWithinThresholdBigNumber } from './util';
+} from "@railgun-community/shared-models";
+import { SharedConstants } from "../config";
+import { valuesWithinThresholdBigNumber } from "./util";
 
 const FEE_REFRESH_BEFORE_EXPIRATION_BUFFER = 20000;
 const FEE_EXPIRATION_MINIMUM_MSEC = 40000;
 
-export const DEFAULT_BROADCASTER_IDENTIFIER = 'default';
+export const DEFAULT_BROADCASTER_IDENTIFIER = "default";
 
 const isCachedFeeAboutToExpire = (cachedFee: CachedTokenFee) => {
   const feeReplacementCutoff =
@@ -21,7 +21,7 @@ const isCachedFeeAboutToExpire = (cachedFee: CachedTokenFee) => {
 
 export const shouldReplaceCurrentBroadcaster = (
   newBroadcaster: SelectedBroadcaster,
-  currentBroadcaster: Optional<SelectedBroadcaster>,
+  currentBroadcaster: Optional<SelectedBroadcaster>
 ) => {
   let feesChangedSignificantly = true;
   if (currentBroadcaster) {
@@ -33,7 +33,7 @@ export const shouldReplaceCurrentBroadcaster = (
       !valuesWithinThresholdBigNumber(
         oldFee,
         newFee,
-        SharedConstants.BROADCASTER_FEE_CHANGE_THRESHOLD,
+        SharedConstants.BROADCASTER_FEE_CHANGE_THRESHOLD
       );
   }
 
@@ -59,7 +59,7 @@ export const sortBroadcasters = (broadcasters?: SelectedBroadcaster[]) => {
     const tokenFeeDiff = parseInt(
       (
         BigInt(a.tokenFee.feePerUnitGas) - BigInt(b.tokenFee.feePerUnitGas)
-      ).toString(),
+      ).toString()
     );
     const reliability = b.tokenFee.reliability - a.tokenFee.reliability;
 
@@ -80,18 +80,18 @@ export const sortBroadcasters = (broadcasters?: SelectedBroadcaster[]) => {
 
 export const renderBroadcasterReliability = (reliability: number) => {
   if (reliability > 0.8) {
-    return '🟢';
+    return "🟢";
   }
   if (reliability > 0.5) {
-    return '🟡';
+    return "🟡";
   }
   if (reliability > 0.3) {
-    return '🟠';
+    return "🟠";
   }
 
   if (reliability > 0) {
-    return '🔴';
+    return "🔴";
   }
 
-  return '⚪️';
+  return "⚪️";
 };

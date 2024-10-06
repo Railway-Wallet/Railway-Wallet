@@ -1,28 +1,28 @@
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import { useCallback, useMemo } from 'react';
-import { ERC20Amount, ERC20Token } from '../../models/token';
-import { TransactionType } from '../../models/transaction';
-import { AppSettingsService } from '../../services/settings/app-settings-service';
+import { RailgunWalletBalanceBucket } from "@railgun-community/shared-models";
+import { useCallback, useMemo } from "react";
+import { ERC20Amount, ERC20Token } from "../../models/token";
+import { TransactionType } from "../../models/transaction";
+import { AppSettingsService } from "../../services/settings/app-settings-service";
 import {
   getBaseTokenForNetwork,
   getTopTokenForWallet,
   getWrappedTokenForNetwork,
-} from '../../services/wallet/wallet-balance-service';
-import { compareTokens, tokenFoundInList } from '../../utils/tokens';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../services/wallet/wallet-balance-service";
+import { compareTokens, tokenFoundInList } from "../../utils/tokens";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useTopPickERC20 = (
   transactionType: TransactionType,
   navigationToken: Optional<ERC20Token>,
   useRailgunBalances: boolean,
-  erc20Amounts: ERC20Amount[],
+  erc20Amounts: ERC20Amount[]
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
-  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { erc20BalancesRailgun } = useReduxSelector("erc20BalancesRailgun");
+  const { erc20BalancesNetwork } = useReduxSelector("erc20BalancesNetwork");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const activeWallet = wallets.active;
 
@@ -46,7 +46,7 @@ export const useTopPickERC20 = (
       }
       return false;
     },
-    [erc20Amounts],
+    [erc20Amounts]
   );
 
   const topPickToken = useMemo(() => {
@@ -57,17 +57,17 @@ export const useTopPickERC20 = (
     const baseToken = getBaseTokenForNetwork(activeWallet, network.current);
     const wrappedBaseToken = getWrappedTokenForNetwork(
       activeWallet,
-      network.current,
+      network.current
     );
 
-    const skippedTokens = erc20Amounts.map(ta => ta.token);
+    const skippedTokens = erc20Amounts.map((ta) => ta.token);
     if (transactionType === TransactionType.Unshield && baseToken) {
       skippedTokens.push(baseToken);
     }
     if (
       erc20Amounts.length > 0 &&
       [TransactionType.Shield, TransactionType.Unshield].includes(
-        transactionType,
+        transactionType
       )
     ) {
       if (transactionType === TransactionType.Shield && baseToken) {
@@ -91,7 +91,7 @@ export const useTopPickERC20 = (
       skippedTokens,
       isRailgun,
       currentTxidVersion,
-      balanceBucketFilter,
+      balanceBucketFilter
     );
     if (topToken && !tokenAlreadySelected(topToken)) {
       return topToken;

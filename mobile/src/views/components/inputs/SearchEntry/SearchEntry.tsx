@@ -1,8 +1,8 @@
-import React from 'react';
-import { TextStyle, ViewStyle } from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import { styleguide } from '@react-shared';
-import { styles } from './styles';
+import React from "react";
+import { TextStyle, ViewStyle } from "react-native";
+import { Searchbar } from "react-native-paper";
+import { styleguide } from "@react-shared";
+import { styles } from "./styles";
 
 interface SearchProps {
   value: string;
@@ -15,7 +15,7 @@ interface SearchProps {
 export const SearchEntry: React.FC<SearchProps> = ({
   value,
   onUpdateQuery,
-  placeholder = 'Search',
+  placeholder = "Search",
   viewStyle = {},
   inputStyle = {},
 }) => {

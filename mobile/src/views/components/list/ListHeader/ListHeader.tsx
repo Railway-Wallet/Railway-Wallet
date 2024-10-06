@@ -1,9 +1,9 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { Text, View } from 'react-native';
-import { styleguide } from '@react-shared';
-import { Icon, IconSource } from '@views/components/icons/Icon';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { Text, View } from "react-native";
+import { styleguide } from "@react-shared";
+import { Icon, IconSource } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   text: string;

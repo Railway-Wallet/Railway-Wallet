@@ -1,12 +1,12 @@
-import { isDefined } from '@railgun-community/shared-models';
+import { isDefined } from "@railgun-community/shared-models";
 import React, {
   MutableRefObject,
   useCallback,
   useEffect,
   useState,
-} from 'react';
-import { TextInput } from 'react-native';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+} from "react";
+import { TextInput } from "react-native";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 import {
   AddressResolverStatus,
   ResolvedAddressType,
@@ -18,17 +18,17 @@ import {
   useReduxSelector,
   useSavedAddresses,
   WalletAddressType,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { ScanQRCodeModal } from '@screens/modals/ScanQRCodeModal/ScanQRCodeModal';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { showSaveAddressPrompt } from '@services/util/alert-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { TextEntry } from '../TextEntry/TextEntry';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { ScanQRCodeModal } from "@screens/modals/ScanQRCodeModal/ScanQRCodeModal";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { showSaveAddressPrompt } from "@services/util/alert-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { TextEntry } from "../TextEntry/TextEntry";
+import { styles } from "./styles";
 
 type ActionSheetOption = {
   name: string;
@@ -39,7 +39,7 @@ type Props = {
   initialAddress?: string;
   setAddresses: (
     address: string,
-    externalUnresolvedToWalletAddress: Optional<string>,
+    externalUnresolvedToWalletAddress: Optional<string>
   ) => void;
   hasValidRecipient: boolean;
   isValidatingRecipient: boolean;
@@ -58,13 +58,13 @@ export const RecipientAddressInput: React.FC<Props> = ({
   isValidatingRecipient,
 }) => {
   const dispatch = useAppDispatch();
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
   const { showActionSheetWithOptions } = useActionSheet();
 
   const isRailgunAddress = walletAddressType === WalletAddressType.Railgun;
   let placeholder: string;
 
-  const [addressText, setAddressText] = useState<string>(initialAddress ?? '');
+  const [addressText, setAddressText] = useState<string>(initialAddress ?? "");
   const [showScanQRCodeModal, setShowScanQRCodeModal] = useState(false);
   const [errorModal, setErrorModal] =
     useState<Optional<ErrorDetailsModalProps>>(undefined);
@@ -98,7 +98,7 @@ export const RecipientAddressInput: React.FC<Props> = ({
     }, [addressResolverStatus, addressText, resolvedAddressType]);
 
   useEffect(() => {
-    setAddresses(resolvedAddress ?? '', getExternalUnresolvedToWalletAddress());
+    setAddresses(resolvedAddress ?? "", getExternalUnresolvedToWalletAddress());
   }, [
     addressResolverStatus,
     addressText,
@@ -142,7 +142,7 @@ export const RecipientAddressInput: React.FC<Props> = ({
     addressText,
     transactionType,
     setAddressText,
-    saveAddressError,
+    saveAddressError
   );
 
   const onTapSaveWallet = () => {
@@ -154,7 +154,7 @@ export const RecipientAddressInput: React.FC<Props> = ({
         : WalletAddressType.ExternalResolved;
 
     showSaveAddressPrompt((name: string) =>
-      saveWalletAddress(addressText, name, savedWalletAddressType),
+      saveWalletAddress(addressText, name, savedWalletAddressType)
     );
   };
 
@@ -171,7 +171,7 @@ export const RecipientAddressInput: React.FC<Props> = ({
       isRailgunAddress
         ? `Shielded wallets`
         : `${network.current.publicName} wallets`,
-      [...availableWalletOptions, ...savedAddressOptions],
+      [...availableWalletOptions, ...savedAddressOptions]
     );
   };
 
@@ -192,7 +192,7 @@ export const RecipientAddressInput: React.FC<Props> = ({
 
   const labelText = () => {
     if (addressResolverStatus === AddressResolverStatus.Resolving) {
-      return 'Resolving...';
+      return "Resolving...";
     }
     if (
       isDefined(resolvedAddress) &&
@@ -203,7 +203,7 @@ export const RecipientAddressInput: React.FC<Props> = ({
     if (isDefined(knownWalletName)) {
       return knownWalletName;
     }
-    return isRailgunAddress ? 'Shielded wallet' : 'Public wallet';
+    return isRailgunAddress ? "Shielded wallet" : "Public wallet";
   };
 
   const invalidResolvedRecipient =
@@ -217,49 +217,51 @@ export const RecipientAddressInput: React.FC<Props> = ({
     addressResolverStatus === AddressResolverStatus.Error ||
     invalidResolvedRecipient;
 
-  return (<>
-    <ScanQRCodeModal
-      show={showScanQRCodeModal}
-      onDismiss={onDismissQRCodeModal}
-    />
-    <TextEntry
-      viewStyles={[
-        styles.addressInput,
-        hasError ? styles.addressInputError : undefined,
-      ]}
-      label={labelText()}
-      value={addressText}
-      onChangeText={setAddressText}
-      autoCapitalize="none"
-      multiline
-      placeholder={placeholder}
-      iconButtons={[
-        {
-          icon: 'content-save-outline',
-          onTap: onTapSaveWallet,
-          disabled:
-            !hasValidRecipient ||
-            addressResolverStatus === AddressResolverStatus.Error ||
-            !shouldEnableSaveWallet,
-        },
-        { icon: 'qrcode-scan', onTap: onTapQrCode },
-        {
-          icon: 'wallet-outline',
-          onTap: onTapWallets,
-          disabled: !hasWalletOptions,
-        },
-      ]}
-      autoComplete="off"
-      labelIcon={
-        addressText.length && hasValidRecipient ? 'check-bold' : undefined
-      }
-      labelIconColor={styleguide.colors.txGreen()}
-      labelIconSize={18}
-      reference={addressEntryRef}
-      textContentType="none"
-      onFocus={() => setAddressFocused(true)}
-      onBlur={() => setAddressFocused(false)}
-    />
-    {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-  </>);
+  return (
+    <>
+      <ScanQRCodeModal
+        show={showScanQRCodeModal}
+        onDismiss={onDismissQRCodeModal}
+      />
+      <TextEntry
+        viewStyles={[
+          styles.addressInput,
+          hasError ? styles.addressInputError : undefined,
+        ]}
+        label={labelText()}
+        value={addressText}
+        onChangeText={setAddressText}
+        autoCapitalize="none"
+        multiline
+        placeholder={placeholder}
+        iconButtons={[
+          {
+            icon: "content-save-outline",
+            onTap: onTapSaveWallet,
+            disabled:
+              !hasValidRecipient ||
+              addressResolverStatus === AddressResolverStatus.Error ||
+              !shouldEnableSaveWallet,
+          },
+          { icon: "qrcode-scan", onTap: onTapQrCode },
+          {
+            icon: "wallet-outline",
+            onTap: onTapWallets,
+            disabled: !hasWalletOptions,
+          },
+        ]}
+        autoComplete="off"
+        labelIcon={
+          addressText.length && hasValidRecipient ? "check-bold" : undefined
+        }
+        labelIconColor={styleguide.colors.txGreen()}
+        labelIconSize={18}
+        reference={addressEntryRef}
+        textContentType="none"
+        onFocus={() => setAddressFocused(true)}
+        onBlur={() => setAddressFocused(false)}
+      />
+      {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
+    </>
+  );
 };

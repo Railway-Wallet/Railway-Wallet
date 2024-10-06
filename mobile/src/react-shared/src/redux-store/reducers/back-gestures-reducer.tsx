@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type BackGesturesState = {
   enabled: boolean;
@@ -9,7 +9,7 @@ const initialState = {
 } as BackGesturesState;
 
 const slice = createSlice({
-  name: 'backGestures',
+  name: "backGestures",
   initialState,
   reducers: {
     setBackGesturesEnabled(state, action: PayloadAction<boolean>) {

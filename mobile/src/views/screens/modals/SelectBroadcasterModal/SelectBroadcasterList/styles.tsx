@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   contentContainer: {
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   placeholder: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
-    textAlign: 'center',
+    textAlign: "center",
     margin: 18,
   },
   iconContainer: {

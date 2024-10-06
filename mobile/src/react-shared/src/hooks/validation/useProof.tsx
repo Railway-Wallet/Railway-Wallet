@@ -2,17 +2,17 @@ import {
   isDefined,
   NFTAmountRecipient,
   SelectedBroadcaster,
-} from '@railgun-community/shared-models';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ReactConfig } from '../../config/react-config';
-import { SharedConstants } from '../../config/shared-constants';
-import { ValidateProvedTransactionType } from '../../models/proof';
-import { ERC20Amount, ERC20AmountRecipient } from '../../models/token';
-import { TransactionType } from '../../models/transaction';
-import { logDev } from '../../utils/logging';
-import { createBroadcasterFeeERC20AmountRecipient } from '../../utils/tokens';
-import { getProofTypeFromTransactionType } from '../../utils/transactions';
-import { useReduxSelector } from '../hooks-redux';
+} from "@railgun-community/shared-models";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ReactConfig } from "../../config/react-config";
+import { SharedConstants } from "../../config/shared-constants";
+import { ValidateProvedTransactionType } from "../../models/proof";
+import { ERC20Amount, ERC20AmountRecipient } from "../../models/token";
+import { TransactionType } from "../../models/transaction";
+import { logDev } from "../../utils/logging";
+import { createBroadcasterFeeERC20AmountRecipient } from "../../utils/tokens";
+import { getProofTypeFromTransactionType } from "../../utils/transactions";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useProof = (
   transactionType: TransactionType,
@@ -29,10 +29,10 @@ export const useProof = (
   setError: (err: Error) => void,
   lockBroadcaster: (shouldLock: boolean) => void,
   proofTimerExpired: () => void,
-  validateProvedTransaction: ValidateProvedTransactionType,
+  validateProvedTransaction: ValidateProvedTransactionType
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [proofExpirationSeconds, setProofExpirationSeconds] =
     useState<Optional<number>>(undefined);
@@ -44,7 +44,7 @@ export const useProof = (
   const timer = useRef<ReturnType<typeof setTimeout>>();
 
   const invalidateProof = useCallback(() => {
-    logDev('Invalidate proof.');
+    logDev("Invalidate proof.");
     setShowGenerateProofModal(false);
     lockBroadcaster(false);
     setHasValidProof(false);
@@ -78,16 +78,16 @@ export const useProof = (
             ? undefined
             : createBroadcasterFeeERC20AmountRecipient(
                 selectedBroadcaster,
-                broadcasterFeeERC20Amount,
+                broadcasterFeeERC20Amount
               ),
           sendWithPublicWallet,
-          overallBatchMinGasPrice,
+          overallBatchMinGasPrice
         );
       } catch (cause) {
         if (!(cause instanceof Error)) {
           throw cause;
         }
-        setError(new Error('Proof failed validation checks.', { cause }));
+        setError(new Error("Proof failed validation checks.", { cause }));
         invalidateProof();
       }
     };

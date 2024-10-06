@@ -5,11 +5,11 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useRef } from 'react';
-import { ReviewTransactionView } from '@components/views/ReviewTransactionView/ReviewTransactionView';
-import { TokenStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useRef } from "react";
+import { ReviewTransactionView } from "@components/views/ReviewTransactionView/ReviewTransactionView";
+import { TokenStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   AdjustedERC20AmountRecipientGroup,
   AvailableWallet,
@@ -21,20 +21,20 @@ import {
   SavedTransactionService,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
 
 type Props = {
-  navigation: NavigationProp<TokenStackParamList, 'ApproveTokenConfirm'>;
+  navigation: NavigationProp<TokenStackParamList, "ApproveTokenConfirm">;
   route: RouteProp<
-    { params: TokenStackParamList['ApproveTokenConfirm'] },
-    'params'
+    { params: TokenStackParamList["ApproveTokenConfirm"] },
+    "params"
   >;
 };
 
 export const ApproveTokenConfirm: React.FC<Props> = ({ navigation, route }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const {
     spender,
@@ -73,11 +73,11 @@ export const ApproveTokenConfirm: React.FC<Props> = ({ navigation, route }) => {
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ): Promise<Optional<string>> => {
     try {
       if (finalAdjustedERC20AmountRecipientGroup.inputs.length !== 1) {
-        throw new Error('Can only approve one token.');
+        throw new Error("Can only approve one token.");
       }
       const walletSecureService = new WalletSecureServiceReactNative();
       const pKey = await walletSecureService.getWallet0xPKey(activeWallet);
@@ -88,7 +88,7 @@ export const ApproveTokenConfirm: React.FC<Props> = ({ navigation, route }) => {
           spender,
           finalAdjustedERC20AmountRecipientGroup.inputs[0],
           transactionGasDetails,
-          customNonce,
+          customNonce
         ),
         delay(1000),
       ]);
@@ -97,15 +97,16 @@ export const ApproveTokenConfirm: React.FC<Props> = ({ navigation, route }) => {
         txResponse.hash,
         fromWalletAddress,
         finalAdjustedERC20AmountRecipientGroup.inputs,
-        [], network.current,
+        [],
+        network.current,
         spender,
         spenderName,
-        txResponse.nonce,
+        txResponse.nonce
       );
       success();
       return txResponse.hash;
     } catch (cause) {
-      error(new Error('Failed to execute ERC20 approval', { cause }));
+      error(new Error("Failed to execute ERC20 approval", { cause }));
       return undefined;
     }
   };
@@ -114,20 +115,20 @@ export const ApproveTokenConfirm: React.FC<Props> = ({ navigation, route }) => {
     _txidVersion: TXIDVersion,
     networkName: NetworkName,
     fromWalletAddress: string,
-    erc20Amounts: ERC20Amount[],
+    erc20Amounts: ERC20Amount[]
   ): Promise<bigint> => {
     if (erc20Amounts.length !== 1) {
-      throw new Error('Can only approve one token.');
+      throw new Error("Can only approve one token.");
     }
     return getERC20ApprovalGasEstimate(
       networkName,
       spender,
       fromWalletAddress,
-      erc20Amounts[0],
+      erc20Amounts[0]
     );
   };
 
-  const processingText = 'Approving token...';
+  const processingText = "Approving token...";
 
   return (
     <ReviewTransactionView

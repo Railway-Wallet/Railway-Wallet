@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   horizontalLine: {
     height: 1,
-    width: '100%',
+    width: "100%",
     marginLeft: 16,
     backgroundColor: styleguide.colors.inputBorder,
   },

@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export const useMemoCustomCompare = <T,>(
   next: T,
-  compare: (prev: T, next: T) => boolean,
+  compare: (prev: T, next: T) => boolean
 ): T => {
   const previousRef = useRef<T>(next);
   const previous = previousRef.current;

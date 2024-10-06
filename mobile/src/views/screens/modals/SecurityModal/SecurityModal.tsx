@@ -1,7 +1,7 @@
-import React from 'react';
-import { Modal } from 'react-native';
-import { SecurityView } from '@components/views/SecurityView.tsx/SecurityView';
-import { useModalInteractionManager } from '@hooks/navigation/useModalInteractionManager';
+import React from "react";
+import { Modal } from "react-native";
+import { SecurityView } from "@components/views/SecurityView.tsx/SecurityView";
+import { useModalInteractionManager } from "@hooks/navigation/useModalInteractionManager";
 
 type Props = {
   show: boolean;
@@ -10,7 +10,7 @@ type Props = {
 export const SecurityModal: React.FC<Props> = ({ show }) => {
   const { onModalInteractionDismiss } = useModalInteractionManager(show);
   return (
-    (<Modal
+    <Modal
       animationType="fade"
       presentationStyle="overFullScreen"
       visible={show}
@@ -18,6 +18,6 @@ export const SecurityModal: React.FC<Props> = ({ show }) => {
       onDismiss={onModalInteractionDismiss}
     >
       <SecurityView />
-    </Modal>)
+    </Modal>
   );
 };

@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   alertBackground: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
     backgroundColor: styleguide.colors.gray(0.8),
-    height: '100%',
+    height: "100%",
     padding: 16,
   },
   alertContainer: {
@@ -19,12 +19,12 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
     borderWidth: 1,
     borderColor: styleguide.colors.gray9(),
-    maxHeight: '80%',
+    maxHeight: "80%",
   },
   titleText: {
     ...styleguide.typography.heading4,
     color: styleguide.colors.text(),
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 16,
   },
   messageText: {
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   },
   submitButtonText: {
     ...styleguide.typography.label,
-    textTransform: 'none',
+    textTransform: "none",
   },
   scrollViewContainer: {
     marginBottom: 12,

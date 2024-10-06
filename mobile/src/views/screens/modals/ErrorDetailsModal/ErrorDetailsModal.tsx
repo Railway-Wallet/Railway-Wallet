@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Platform, Text, TouchableOpacity, View } from 'react-native';
-import VersionNumber from 'react-native-version-number';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import Clipboard from '@react-native-clipboard/clipboard';
+import React, { useEffect, useState } from "react";
+import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
+import VersionNumber from "react-native-version-number";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   showImmediateToast,
   styleguide,
   ToastType,
   useAppDispatch,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { getPlatformDevice } from '@services/util/platform-os-service';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { getPlatformDevice } from "@services/util/platform-os-service";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 export type ErrorDetailsModalProps = {
   show: boolean;
@@ -50,9 +50,9 @@ export const ErrorDetailsModal: React.FC<ErrorDetailsModalProps> = ({
     Clipboard.setString(message);
     dispatch(
       showImmediateToast({
-        message: 'Error message copied.',
+        message: "Error message copied.",
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 

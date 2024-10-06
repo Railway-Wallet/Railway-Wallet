@@ -1,11 +1,11 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useRef } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useRef } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import {
   GradientStyle,
   RailgunGradient,
-} from '@components/gradient/RailgunGradient';
-import { useNavigation } from '@react-navigation/native';
+} from "@components/gradient/RailgunGradient";
+import { useNavigation } from "@react-navigation/native";
 import {
   dismissAsyncToast,
   getNetworkFrontendConfig,
@@ -16,11 +16,11 @@ import {
   ToastAction,
   ToastType,
   useAppDispatch,
-} from '@react-shared';
-import { AnimatedWrapper } from '@services/animation/AnimatedWrapper';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@react-shared";
+import { AnimatedWrapper } from "@services/animation/AnimatedWrapper";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type ToastProps = ShowToastProps & {
   isImmediate: boolean;
@@ -139,13 +139,13 @@ export const Toast: React.FC<ToastProps> = ({
     }
     switch (toastType) {
       case ToastType.Success:
-        return 'check-bold';
+        return "check-bold";
       case ToastType.Error:
-        return 'alert-circle-outline';
+        return "alert-circle-outline";
       case ToastType.Info:
-        return 'information-outline';
+        return "information-outline";
       case ToastType.Copy:
-        return 'content-copy';
+        return "content-copy";
     }
   };
 
@@ -167,7 +167,7 @@ export const Toast: React.FC<ToastProps> = ({
   }
 
   return (
-    (<View style={styles.toastContainer}>
+    <View style={styles.toastContainer}>
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.8}
@@ -206,6 +206,6 @@ export const Toast: React.FC<ToastProps> = ({
           </View>
         </AnimatedWrapper.View>
       </TouchableOpacity>
-    </View>)
+    </View>
   );
 };

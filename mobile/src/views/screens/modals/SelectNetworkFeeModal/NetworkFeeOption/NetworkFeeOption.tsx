@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { ListRow } from '@components/list/ListRow/ListRow';
+import React, { ReactNode } from "react";
+import { ListRow } from "@components/list/ListRow/ListRow";
 
 type Props = {
   title: string;

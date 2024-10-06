@@ -1,14 +1,14 @@
-import React from 'react';
-import { View } from 'react-native';
-import { RecoveryType } from '@models/RecoveryType';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { AppStatus, styleguide } from '@react-shared';
-import { SecurityModal } from '@screens/modals/SecurityModal/SecurityModal';
-import { AppErrorScreen } from '@screens/pages/app-error-view/AppErrorScreen/AppErrorScreen';
-import { AppReadyView } from './AppReadyView';
-import { AppRecoveryView } from './AppRecoveryView';
-import { navigationRef } from './Navigation';
-import { styles } from './styles';
+import React from "react";
+import { View } from "react-native";
+import { RecoveryType } from "@models/RecoveryType";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { AppStatus, styleguide } from "@react-shared";
+import { SecurityModal } from "@screens/modals/SecurityModal/SecurityModal";
+import { AppErrorScreen } from "@screens/pages/app-error-view/AppErrorScreen/AppErrorScreen";
+import { AppReadyView } from "./AppReadyView";
+import { AppRecoveryView } from "./AppRecoveryView";
+import { navigationRef } from "./Navigation";
+import { styles } from "./styles";
 
 type Props = {
   appStatus: AppStatus;

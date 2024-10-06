@@ -1,23 +1,23 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
-import { logDevError } from '../../utils/logging';
-import { StorageService } from '../storage/storage-service';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
+import { logDevError } from "../../utils/logging";
+import { StorageService } from "../storage/storage-service";
 
 export class ERC20TokenDecimalsCache {
   private static getStorageKey = (
     networkName: NetworkName,
-    tokenAddress: string,
+    tokenAddress: string
   ) => {
     return `${SharedConstants.ERC20_DECIMALS}|${networkName}|${tokenAddress}`;
   };
 
   static getCached = async (
     networkName: NetworkName,
-    tokenAddress: string,
+    tokenAddress: string
   ): Promise<Optional<bigint>> => {
     try {
       const storedDecimals = await StorageService.getItem(
-        this.getStorageKey(networkName, tokenAddress),
+        this.getStorageKey(networkName, tokenAddress)
       );
       if (isDefined(storedDecimals)) {
         return BigInt(storedDecimals);
@@ -32,20 +32,20 @@ export class ERC20TokenDecimalsCache {
   static store = async (
     networkName: NetworkName,
     tokenAddress: string,
-    decimals: bigint,
+    decimals: bigint
   ): Promise<void> => {
     await StorageService.setItem(
       this.getStorageKey(networkName, tokenAddress),
-      decimals.toString(),
+      decimals.toString()
     );
   };
 
   static clear = async (
     networkName: NetworkName,
-    tokenAddress: string,
+    tokenAddress: string
   ): Promise<void> => {
     await StorageService.removeItem(
-      this.getStorageKey(networkName, tokenAddress),
+      this.getStorageKey(networkName, tokenAddress)
     );
   };
 }

@@ -1,6 +1,6 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
-import { StorageService } from '../storage';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
+import { StorageService } from "../storage";
 
 type NFTImageSrc = {
   imageURL: string;
@@ -11,14 +11,14 @@ export class NFTImageCache {
   static async cacheImageSrc(
     networkName: NetworkName,
     imageURL: string,
-    src: string,
+    src: string
   ): Promise<void> {
     await this.cacheNFTImages(networkName, [{ imageURL, src }]);
   }
 
   static async getCachedSrc(
     networkName: NetworkName,
-    imageURL: string,
+    imageURL: string
   ): Promise<Optional<string>> {
     const cache = await this.getCachedImages(networkName);
     return cache[imageURL];
@@ -29,7 +29,7 @@ export class NFTImageCache {
   }
 
   private static async getCachedImages(
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<MapType<string>> {
     const key = this.imageCacheKey(networkName);
     const value = await StorageService.getItem(key);
@@ -41,7 +41,7 @@ export class NFTImageCache {
 
   private static async cacheNFTImages(
     networkName: NetworkName,
-    nftImageSrcs: NFTImageSrc[],
+    nftImageSrcs: NFTImageSrc[]
   ): Promise<void> {
     const cache = await this.getCachedImages(networkName);
     nftImageSrcs.forEach(({ imageURL, src }) => {
@@ -49,7 +49,7 @@ export class NFTImageCache {
     });
     await StorageService.setItem(
       this.imageCacheKey(networkName),
-      JSON.stringify(cache),
+      JSON.stringify(cache)
     );
   }
 }

@@ -2,65 +2,65 @@ import {
   isDefined,
   Network,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { AvailableWallet } from '../../models';
+} from "@railgun-community/shared-models";
+import { AvailableWallet } from "../../models";
 import {
   ERC20TokenAddressOnly,
   ERC20TokenFullInfo,
   SearchableERC20,
   TokenIconKey,
-} from '../../models/token';
-import { WalletsState } from '../../redux-store';
-import { logDevError } from '../../utils/logging';
-import { compareTokens, findMatchingAddedToken } from '../../utils/tokens';
-import { getCoingeckoTokenDetails } from '../api/coingecko/coingecko-token';
-import { getERC20Decimals } from './erc20';
-import ArbCoins from './exports/arb_coins.json';
-import ArbGoerliCoins from './exports/arb_goerli_coins.json';
-import BSCCoins from './exports/bsc_coins.json';
-import EthereumCoins from './exports/ethereum_coins.json';
-import GoerliCoins from './exports/goerli_coins.json';
-import PolygonCoins from './exports/polygon_coins.json';
-import rebaseTokenList from './exports/rebase_token_address_list.json';
-import RopstenCoins from './exports/ropsten_coins.json';
+} from "../../models/token";
+import { WalletsState } from "../../redux-store";
+import { logDevError } from "../../utils/logging";
+import { compareTokens, findMatchingAddedToken } from "../../utils/tokens";
+import { getCoingeckoTokenDetails } from "../api/coingecko/coingecko-token";
+import { getERC20Decimals } from "./erc20";
+import ArbCoins from "./exports/arb_coins.json";
+import ArbGoerliCoins from "./exports/arb_goerli_coins.json";
+import BSCCoins from "./exports/bsc_coins.json";
+import EthereumCoins from "./exports/ethereum_coins.json";
+import GoerliCoins from "./exports/goerli_coins.json";
+import PolygonCoins from "./exports/polygon_coins.json";
+import rebaseTokenList from "./exports/rebase_token_address_list.json";
+import RopstenCoins from "./exports/ropsten_coins.json";
 
 export const loadSearchableERC20s = (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): SearchableERC20[] => {
   let coinsArr: SearchableERC20[];
 
   switch (networkName) {
-  case NetworkName.Ethereum:
-    coinsArr = EthereumCoins;
-    break;
-  case NetworkName.EthereumRopsten_DEPRECATED:
-    coinsArr = RopstenCoins;
-    break;
-  case NetworkName.EthereumGoerli_DEPRECATED:
-    coinsArr = GoerliCoins;
-    break;
-  case NetworkName.EthereumSepolia:
-    coinsArr = [];
-    break;
-  case NetworkName.BNBChain:
-    coinsArr = BSCCoins;
-    break;
-  case NetworkName.PolygonAmoy:
-  case NetworkName.Polygon:
-    coinsArr = PolygonCoins;
-    break;
-  case NetworkName.Arbitrum:
-    coinsArr = ArbCoins;
-    break;
-  case NetworkName.PolygonMumbai_DEPRECATED:
-    coinsArr = [];
-    break;
-  case NetworkName.ArbitrumGoerli_DEPRECATED:
-    coinsArr = ArbGoerliCoins;
-    break;
-  case NetworkName.Hardhat:
-    coinsArr = [];
-    break;
+    case NetworkName.Ethereum:
+      coinsArr = EthereumCoins;
+      break;
+    case NetworkName.EthereumRopsten_DEPRECATED:
+      coinsArr = RopstenCoins;
+      break;
+    case NetworkName.EthereumGoerli_DEPRECATED:
+      coinsArr = GoerliCoins;
+      break;
+    case NetworkName.EthereumSepolia:
+      coinsArr = [];
+      break;
+    case NetworkName.BNBChain:
+      coinsArr = BSCCoins;
+      break;
+    case NetworkName.PolygonAmoy:
+    case NetworkName.Polygon:
+      coinsArr = PolygonCoins;
+      break;
+    case NetworkName.Arbitrum:
+      coinsArr = ArbCoins;
+      break;
+    case NetworkName.PolygonMumbai_DEPRECATED:
+      coinsArr = [];
+      break;
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
+      coinsArr = ArbGoerliCoins;
+      break;
+    case NetworkName.Hardhat:
+      coinsArr = [];
+      break;
   }
 
   return coinsArr;
@@ -68,7 +68,7 @@ export const loadSearchableERC20s = (
 
 export const searchableERC20s = (
   query: string,
-  networkName: NetworkName,
+  networkName: NetworkName
 ): SearchableERC20[] => {
   const coinsArray = loadSearchableERC20s(networkName);
   const queryFormatted = query.toLowerCase();
@@ -92,13 +92,13 @@ export const isRebaseToken = (address: string) => {
 
 export const getERC20TokenDetails = async (
   contractAddress: string,
-  network: Network,
+  network: Network
 ): Promise<SearchableERC20> => {
   const address = contractAddress.toLocaleLowerCase();
   const decimals = Number(await getERC20Decimals(network.name, address));
 
-  let name = '';
-  let symbol = '';
+  let name = "";
+  let symbol = "";
   let logoURI;
 
   try {
@@ -111,7 +111,7 @@ export const getERC20TokenDetails = async (
   }
 
   const searchableERC20: SearchableERC20 = {
-    searchStr: '',
+    searchStr: "",
     address,
     name,
     symbol,
@@ -129,11 +129,11 @@ export const validateCustomTokenFields = (
   symbol: string,
   decimals: string,
   icon: Optional<TokenIconKey>,
-  logoURI: Optional<string>,
+  logoURI: Optional<string>
 ): Optional<SearchableERC20> => {
   const address = contractAddress.toLowerCase();
   if (isRebaseToken(address)) {
-    throw new Error('You may not shield rebase tokens into RAILGUN.');
+    throw new Error("You may not shield rebase tokens into RAILGUN.");
   }
 
   if (isDefined(foundToken)) {
@@ -141,13 +141,13 @@ export const validateCustomTokenFields = (
   }
 
   if (!hasValidTokenContract) {
-    throw new Error('Token contract is invalid.');
+    throw new Error("Token contract is invalid.");
   }
-  if (name === '' || symbol === '') {
-    throw new Error('Please complete all fields.');
+  if (name === "" || symbol === "") {
+    throw new Error("Please complete all fields.");
   }
-  if (decimals === '' || isNaN(Number(decimals))) {
-    throw new Error('Token contract is invalid for this network.');
+  if (decimals === "" || isNaN(Number(decimals))) {
+    throw new Error("Token contract is invalid for this network.");
   }
 
   const searchableERC20: SearchableERC20 = {
@@ -165,12 +165,12 @@ export const validateCustomTokenFields = (
 export const getFullERC20TokenInfo = async (
   token: ERC20TokenAddressOnly,
   availableWallets: Optional<AvailableWallet[]>,
-  network: Network,
+  network: Network
 ) => {
   const walletMatch = findMatchingAddedToken(
     token,
     availableWallets,
-    network.name,
+    network.name
   );
   if (walletMatch) {
     const searchableERC20: SearchableERC20 = {
@@ -191,7 +191,7 @@ export const getFullERC20TokenInfo = async (
 
 export const getAddedTokensFromAllWallets = (
   availableWallets: AvailableWallet[],
-  networkName: NetworkName,
+  networkName: NetworkName
 ) => {
   const addedTokensFromAllWallets = [];
 
@@ -201,7 +201,7 @@ export const getAddedTokensFromAllWallets = (
 
     for (const token of addedTokens) {
       const alreadyAddedToken = addedTokensFromAllWallets.find(
-        t => t.address === token.address,
+        (t) => t.address === token.address
       );
       if (!isDefined(alreadyAddedToken)) {
         addedTokensFromAllWallets.push(token);
@@ -214,23 +214,23 @@ export const getAddedTokensFromAllWallets = (
 
 export const getAddedTokensFromNotActiveWallets = (
   wallets: WalletsState,
-  networkName: NetworkName,
+  networkName: NetworkName
 ): SearchableERC20[] => {
   const alreadyAddedTokens = getAddedTokensFromAllWallets(
     wallets.available,
-    networkName,
+    networkName
   );
 
   const tokensNotAddedInActiveWallet = alreadyAddedTokens.filter(
-    token =>
+    (token) =>
       !isDefined(
-        wallets.active?.addedTokens[networkName]?.find(t =>
-          compareTokens(t, token),
-        ),
-      ),
+        wallets.active?.addedTokens[networkName]?.find((t) =>
+          compareTokens(t, token)
+        )
+      )
   );
 
-  const searchableTokens = tokensNotAddedInActiveWallet.map(token => {
+  const searchableTokens = tokensNotAddedInActiveWallet.map((token) => {
     const searchableERC20: SearchableERC20 = {
       ...token,
       searchStr: `${token.name.toLowerCase()}|${token.symbol.toLocaleLowerCase()}`,

@@ -1,16 +1,16 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { useMemo } from "react";
 import {
   compareTokenAddress,
   convertSerializedToLiquidityPool,
-} from '../../utils';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../utils";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useLiquidityPoolForAddressFilter = (
   poolAddress: Optional<string>,
-  networkName: NetworkName,
+  networkName: NetworkName
 ) => {
-  const { liquidity } = useReduxSelector('liquidity');
+  const { liquidity } = useReduxSelector("liquidity");
   const liquidityPoolsForNetwork = liquidity.forNetwork[networkName]?.allPools;
 
   const { liquidityPool } = useMemo(() => {
@@ -22,7 +22,7 @@ export const useLiquidityPoolForAddressFilter = (
 
     const filteredLiquidityPool = liquidityPoolsForNetwork
       .map(convertSerializedToLiquidityPool)
-      .find(lp => compareTokenAddress(lp.pairAddress, poolAddress));
+      .find((lp) => compareTokenAddress(lp.pairAddress, poolAddress));
 
     return {
       liquidityPool: filteredLiquidityPool,

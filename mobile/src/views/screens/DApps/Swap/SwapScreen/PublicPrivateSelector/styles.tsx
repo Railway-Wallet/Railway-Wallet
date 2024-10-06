@@ -1,23 +1,23 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   buttonWrapper: {
     marginRight: 16,
     borderRadius: 4,
     marginTop: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     maxWidth: 120,
   },
   buttonText: {
     ...styleguide.typography.caption,
-    textTransform: 'none',
+    textTransform: "none",
     lineHeight: 14,
   },
   buttonContent: {
     height: 32,
-    width: '100%',
+    width: "100%",
   },
   buttonStyle: {
     backgroundColor: styleguide.colors.black,

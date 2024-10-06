@@ -1,13 +1,13 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Toast } from '@components/alerts/Toast/Toast';
-import { useReduxSelector } from '@react-shared';
-import { styles } from './styles';
+import React from "react";
+import { View } from "react-native";
+import { Toast } from "@components/alerts/Toast/Toast";
+import { useReduxSelector } from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {};
 
 export const ToastWrapperView: React.FC<Props> = () => {
-  const { toast } = useReduxSelector('toast');
+  const { toast } = useReduxSelector("toast");
 
   return (
     <View style={styles.toastsWrapper}>

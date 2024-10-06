@@ -1,7 +1,7 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppSettingsService } from '../../services/settings/app-settings-service';
-import { logDevRedux } from '../../utils/logging';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppSettingsService } from "../../services/settings/app-settings-service";
+import { logDevRedux } from "../../utils/logging";
 
 export type UpdatedTokenPrice = {
   tokenAddress: string;
@@ -28,7 +28,7 @@ const initialState = {
 } as NetworkTokenPriceState;
 
 const slice = createSlice({
-  name: 'network-prices',
+  name: "network-prices",
   initialState,
   reducers: {
     updateTokenPrices(state, action: PayloadAction<UpdateTokenPricesPayload>) {

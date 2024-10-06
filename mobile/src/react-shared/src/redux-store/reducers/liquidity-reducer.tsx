@@ -1,8 +1,8 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LiquidityV2PoolSerialized } from '../../models/liquidity-pool';
-import { compareTokenAddress } from '../../utils';
-import { logDevRedux } from '../../utils/logging';
+import { NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { LiquidityV2PoolSerialized } from "../../models/liquidity-pool";
+import { compareTokenAddress } from "../../utils";
+import { logDevRedux } from "../../utils/logging";
 
 export type NetworkLiquidityPoolsPayload = {
   networkName: NetworkName;
@@ -28,12 +28,12 @@ const initialState = {
 } as NetworkLiquidityState;
 
 const slice = createSlice({
-  name: 'liquidity',
+  name: "liquidity",
   initialState,
   reducers: {
     updateLiquidityPools(
       state,
-      action: PayloadAction<NetworkLiquidityPoolsPayload>,
+      action: PayloadAction<NetworkLiquidityPoolsPayload>
     ) {
       const { networkName, liquidityPools } = action.payload;
 
@@ -47,7 +47,7 @@ const slice = createSlice({
     },
     updateLiquidityPool(
       state,
-      action: PayloadAction<UpdateLiqudityPoolPayload>,
+      action: PayloadAction<UpdateLiqudityPoolPayload>
     ) {
       const { networkName, liquidityPool: updatedLiquidityPool } =
         action.payload;
@@ -60,11 +60,8 @@ const slice = createSlice({
       };
 
       const filteredPoolList = networkLiquidityState.allPools.filter(
-        lp =>
-          !compareTokenAddress(
-            lp.pairAddress,
-            updatedLiquidityPool.pairAddress,
-          ),
+        (lp) =>
+          !compareTokenAddress(lp.pairAddress, updatedLiquidityPool.pairAddress)
       );
 
       state.forNetwork[networkName] = {

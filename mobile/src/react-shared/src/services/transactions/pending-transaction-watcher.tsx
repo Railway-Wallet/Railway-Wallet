@@ -5,48 +5,48 @@ import {
   RailgunWalletBalanceBucket,
   TransactionReceiptLog,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { TransactionReceipt } from 'ethers';
-import { getPOIRequiredForNetwork } from '../../bridge/bridge-poi';
-import { SharedConstants } from '../../config/shared-constants';
-import { ToastType } from '../../models/toast';
-import { ERC20Amount } from '../../models/token';
+} from "@railgun-community/shared-models";
+import { TransactionReceipt } from "ethers";
+import { getPOIRequiredForNetwork } from "../../bridge/bridge-poi";
+import { SharedConstants } from "../../config/shared-constants";
+import { ToastType } from "../../models/toast";
+import { ERC20Amount } from "../../models/token";
 import {
   SavedTransaction,
   TransactionAction,
   TransactionStatus,
-} from '../../models/transaction';
-import { openShieldPOICountdownToast } from '../../redux-store';
-import { setTransactions } from '../../redux-store/reducers/saved-transactions-reducer';
-import { enqueueAsyncToast } from '../../redux-store/reducers/toast-reducer';
-import { AppDispatch } from '../../redux-store/store';
-import { logDev, logDevError } from '../../utils/logging';
-import { poll } from '../../utils/promises';
+} from "../../models/transaction";
+import { openShieldPOICountdownToast } from "../../redux-store";
+import { setTransactions } from "../../redux-store/reducers/saved-transactions-reducer";
+import { enqueueAsyncToast } from "../../redux-store/reducers/toast-reducer";
+import { AppDispatch } from "../../redux-store/store";
+import { logDev, logDevError } from "../../utils/logging";
+import { poll } from "../../utils/promises";
 import {
   getSavedTransactionTXIDVersion,
   transactionShouldNavigateToPrivateBalance,
-} from '../../utils/saved-transactions';
-import { stringifySafe } from '../../utils/stringify';
-import { createNavigateToTokenInfoActionData } from '../../utils/tokens';
-import { findTokenTransferAmountFromReceipt } from '../../utils/tx-receipt-parser';
+} from "../../utils/saved-transactions";
+import { stringifySafe } from "../../utils/stringify";
+import { createNavigateToTokenInfoActionData } from "../../utils/tokens";
+import { findTokenTransferAmountFromReceipt } from "../../utils/tx-receipt-parser";
 import {
   capitalize,
   generateKey,
   shortenWalletAddress,
-} from '../../utils/util';
-import { SavedTransactionStore } from '../history/saved-transaction-store';
-import { TransactionReceiptDetailsService } from '../history/transaction-receipt-details-service';
-import { ProviderService } from '../providers/provider-service';
-import { pullActiveWalletBalancesForNetwork } from '../wallet/wallet-balance-service';
-import { storeShieldCountdownTx } from './poi-shield-countdown';
+} from "../../utils/util";
+import { SavedTransactionStore } from "../history/saved-transaction-store";
+import { TransactionReceiptDetailsService } from "../history/transaction-receipt-details-service";
+import { ProviderService } from "../providers/provider-service";
+import { pullActiveWalletBalancesForNetwork } from "../wallet/wallet-balance-service";
+import { storeShieldCountdownTx } from "./poi-shield-countdown";
 
 type RelayAdaptErrorGetter = (
   txidVersion: TXIDVersion,
-  receiptLogs: TransactionReceiptLog[],
+  receiptLogs: TransactionReceiptLog[]
 ) => Promise<Optional<string>>;
 type ScanRailgunHistoryTrigger = (
   chain: Chain,
-  railgunWalletIdFilter: Optional<string[]>,
+  railgunWalletIdFilter: Optional<string[]>
 ) => Promise<void>;
 
 type TxWatcherDataStore = MapType<MapType<string>>;
@@ -64,7 +64,7 @@ export class PendingTransactionWatcher {
   static start(
     dispatch: AppDispatch,
     getRelayAdaptTransactionError: RelayAdaptErrorGetter,
-    scanRailgunHistoryTrigger: ScanRailgunHistoryTrigger,
+    scanRailgunHistoryTrigger: ScanRailgunHistoryTrigger
   ) {
     this.dispatch = dispatch;
     this.getRelayAdaptTransactionError = getRelayAdaptTransactionError;
@@ -77,7 +77,7 @@ export class PendingTransactionWatcher {
 
     const savedTransactionStore = new SavedTransactionStore(this.dispatch);
     const transactions = await savedTransactionStore.fetchTransactions(
-      networkName,
+      networkName
     );
     this.dispatch(setTransactions({ networkName, transactions }));
 
@@ -86,7 +86,7 @@ export class PendingTransactionWatcher {
 
   static watchPendingTransactions(
     transactions: SavedTransaction[],
-    network: Network,
+    network: Network
   ) {
     this.removeAllWatchingTransactions(network);
     this.invalidateAllPolls(network);
@@ -107,12 +107,12 @@ export class PendingTransactionWatcher {
   private static async pollForPendingTransaction(
     network: Network,
     txHash: string,
-    timeoutMinutes: number,
+    timeoutMinutes: number
   ): Promise<TransactionReceipt> {
     this.ongoingPollIds[network.name] ??= {};
     const ongoingPollIdsForNetwork = this.ongoingPollIds[network.name];
     if (!isDefined(ongoingPollIdsForNetwork)) {
-      throw new Error('Poll ID data store not initialized.');
+      throw new Error("Poll ID data store not initialized.");
     }
 
     const pollId = generateKey();
@@ -128,7 +128,7 @@ export class PendingTransactionWatcher {
         logDev(`[TransactionWatcher] Polling... Tx hash: ${txHash}`);
         const provider = await ProviderService.getProvider(networkName);
         logDev(
-          `[TransactionWatcher] Polling... Found provider. Tx hash: ${txHash}`,
+          `[TransactionWatcher] Polling... Found provider. Tx hash: ${txHash}`
         );
         if (provider == null) {
           return undefined;
@@ -139,15 +139,17 @@ export class PendingTransactionWatcher {
         }
         logDev(
           `[TransactionWatcher] Polling... Tx receipt response returned. Tx hash: ${txHash}. Tx receipt: ${stringifySafe(
-            txRes,
-          )}`,
+            txRes
+          )}`
         );
         return txRes;
       },
       (result: Optional<TransactionReceipt>) =>
-        isDefined(result) || !isDefined(this.watchingTransactionHashes[network.name]?.[txHash]) ||
-        !isDefined(ongoingPollIdsForNetwork[pollId]), pollRetryDelayMsec,
-      pollAttempts,
+        isDefined(result) ||
+        !isDefined(this.watchingTransactionHashes[network.name]?.[txHash]) ||
+        !isDefined(ongoingPollIdsForNetwork[pollId]),
+      pollRetryDelayMsec,
+      pollAttempts
     );
 
     if (!isDefined(ongoingPollIdsForNetwork[pollId])) {
@@ -157,7 +159,7 @@ export class PendingTransactionWatcher {
     this.invalidatePoll(pollId, network);
 
     if (!txReceipt) {
-      throw new Error('Tx receipt watcher timed out.');
+      throw new Error("Tx receipt watcher timed out.");
     }
 
     return txReceipt;
@@ -165,11 +167,11 @@ export class PendingTransactionWatcher {
 
   static async watchPendingTransaction(
     network: Network,
-    tx: SavedTransaction,
+    tx: SavedTransaction
   ): Promise<void> {
     if (!this.isStarted) {
       throw new Error(
-        '[TransactionWatcher] TransactionWatcher needs to be started.',
+        "[TransactionWatcher] TransactionWatcher needs to be started."
       );
     }
 
@@ -177,16 +179,16 @@ export class PendingTransactionWatcher {
     const watchingTransactionHashesForNetwork =
       this.watchingTransactionHashes[network.name];
     if (!isDefined(watchingTransactionHashesForNetwork)) {
-      throw new Error('Tx hash data store not initialized.');
+      throw new Error("Tx hash data store not initialized.");
     }
 
     const txHash = tx.id;
     logDev(
-      `[TransactionWatcher] Starting transaction watcher. Tx hash: ${txHash}`,
+      `[TransactionWatcher] Starting transaction watcher. Tx hash: ${txHash}`
     );
     if (isDefined(watchingTransactionHashesForNetwork[txHash])) {
       logDev(
-        `[TransactionWatcher] Already watching transaction. Returning early. Tx hash: ${txHash}`,
+        `[TransactionWatcher] Already watching transaction. Returning early. Tx hash: ${txHash}`
       );
       return;
     }
@@ -201,7 +203,7 @@ export class PendingTransactionWatcher {
       txReceipt = await this.pollForPendingTransaction(
         network,
         txHash,
-        timeoutMinutes,
+        timeoutMinutes
       );
     } catch (error) {
       if (
@@ -211,8 +213,8 @@ export class PendingTransactionWatcher {
         logDevError(
           new Error(
             `[TransactionWatcher] Poller was invalidated. Tx hash: ${txHash}`,
-            { cause: error },
-          ),
+            { cause: error }
+          )
         );
         return;
       }
@@ -220,7 +222,7 @@ export class PendingTransactionWatcher {
       logDevError(
         new Error(`Error watching pending transaction: ${txHash}`, {
           cause: error,
-        }),
+        })
       );
       this.removeFromWatchingTransactions(txHash, network);
 
@@ -230,22 +232,22 @@ export class PendingTransactionWatcher {
       }
 
       logDev(
-        `[TransactionWatcher] Retrying transaction watcher. Tx hash: ${txHash}`,
+        `[TransactionWatcher] Retrying transaction watcher. Tx hash: ${txHash}`
       );
       return this.watchPendingTransaction(network, tx);
     }
 
     if (!isDefined(watchingTransactionHashesForNetwork[txHash])) {
       logDev(
-        `[TransactionWatcher] Poller returned successfully, but we are no longer watching this transaction. Tx hash: ${txHash}`,
+        `[TransactionWatcher] Poller returned successfully, but we are no longer watching this transaction. Tx hash: ${txHash}`
       );
       return;
     }
 
     logDev(
       `[TransactionWatcher] Poller found tx receipt. Tx hash: ${txHash}. Tx receipt: ${stringifySafe(
-        txReceipt,
-      )}`,
+        txReceipt
+      )}`
     );
 
     try {
@@ -254,14 +256,14 @@ export class PendingTransactionWatcher {
         tx,
         txHash,
         txReceipt,
-        tx.nonce,
+        tx.nonce
       );
     } catch (err) {
       const error = new Error(
         `[TransactionWatcher] Transaction watcher error`,
         {
           cause: err,
-        },
+        }
       );
 
       logDevError(error);
@@ -271,7 +273,7 @@ export class PendingTransactionWatcher {
         throw err;
       }
 
-      if (err.message.toLowerCase().includes('transaction failed')) {
+      if (err.message.toLowerCase().includes("transaction failed")) {
         return this.transactionFailed(network, tx, txHash);
       }
       throw error;
@@ -280,20 +282,22 @@ export class PendingTransactionWatcher {
 
   private static validateRelayAdaptTransaction(
     tx: SavedTransaction,
-    txReceipt: TransactionReceipt,
+    txReceipt: TransactionReceipt
   ): Promise<Optional<string>> {
     if (!(tx.needsRelayAdaptSuccessCheck ?? false)) {
       return Promise.resolve(undefined);
     }
 
-    const txReceiptLogs: TransactionReceiptLog[] = txReceipt.logs.map(log => ({
-      topics: log.topics as string[],
-      data: log.data,
-    }));
+    const txReceiptLogs: TransactionReceiptLog[] = txReceipt.logs.map(
+      (log) => ({
+        topics: log.topics as string[],
+        data: log.data,
+      })
+    );
 
     return this.getRelayAdaptTransactionError(
       getSavedTransactionTXIDVersion(tx),
-      txReceiptLogs,
+      txReceiptLogs
     );
   }
 
@@ -302,14 +306,14 @@ export class PendingTransactionWatcher {
     tx: SavedTransaction,
     txHash: string,
     txReceipt: TransactionReceipt,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ) {
     logDev(
-      `[TransactionWatcher] Handling finished transaction. Tx hash: ${txHash}`,
+      `[TransactionWatcher] Handling finished transaction. Tx hash: ${txHash}`
     );
     if (!isDefined(this.watchingTransactionHashes[network.name]?.[txHash])) {
       logDev(
-        `[TransactionWatcher] No longer watching this transaction. Tx hash: ${txHash}`,
+        `[TransactionWatcher] No longer watching this transaction. Tx hash: ${txHash}`
       );
       return;
     }
@@ -319,9 +323,7 @@ export class PendingTransactionWatcher {
 
     if (txReceipt.status !== 1) {
       logDevError(
-        new Error(
-          `[TransactionWatcher] Transaction failed. Tx hash: ${txHash}`,
-        ),
+        new Error(`[TransactionWatcher] Transaction failed. Tx hash: ${txHash}`)
       );
       return this.transactionFailed(network, tx, txHash);
     }
@@ -329,26 +331,26 @@ export class PendingTransactionWatcher {
     let updatedSwapBuyTokenAmount: Optional<ERC20Amount>;
     if (tx.action === TransactionAction.swap && tx.swapBuyTokenAmount) {
       logDev(
-        `[TransactionWatcher] Finding token transfer amount from receipt... Tx hash: ${txHash}`,
+        `[TransactionWatcher] Finding token transfer amount from receipt... Tx hash: ${txHash}`
       );
       updatedSwapBuyTokenAmount = await findTokenTransferAmountFromReceipt(
         txReceipt,
         tx.swapBuyTokenAmount,
         tx.walletAddress,
-        tx.isPrivate,
+        tx.isPrivate
       );
     }
 
     logDev(
-      `[TransactionWatcher] Validating relay adapt transaction... Tx hash: ${txHash}`,
+      `[TransactionWatcher] Validating relay adapt transaction... Tx hash: ${txHash}`
     );
     const relayAdaptError = await this.validateRelayAdaptTransaction(
       tx,
-      txReceipt,
+      txReceipt
     );
     if (isDefined(relayAdaptError)) {
       logDev(
-        `[TransactionWatcher] Transaction succeeded, but validation failed: ${txHash}`,
+        `[TransactionWatcher] Transaction succeeded, but validation failed: ${txHash}`
       );
       const timedOut = false;
       return this.transactionFailed(
@@ -356,12 +358,12 @@ export class PendingTransactionWatcher {
         tx,
         txHash,
         timedOut,
-        relayAdaptError,
+        relayAdaptError
       );
     }
 
     logDev(
-      `[TransactionWatcher] Transaction succeeded. Pulling balanaces Tx hash: ${txHash}`,
+      `[TransactionWatcher] Transaction succeeded. Pulling balanaces Tx hash: ${txHash}`
     );
 
     await Promise.all([
@@ -371,7 +373,7 @@ export class PendingTransactionWatcher {
     ]);
 
     const toastSubtext = `${network.publicName} | ${shortenWalletAddress(
-      tx.walletAddress,
+      tx.walletAddress
     )}`;
     const firstToken = tx.tokenAmounts.length
       ? tx.tokenAmounts[0].token
@@ -383,7 +385,7 @@ export class PendingTransactionWatcher {
           networkName,
           firstToken,
           isRailgun,
-          [RailgunWalletBalanceBucket.Spendable],
+          [RailgunWalletBalanceBucket.Spendable]
         )
       : undefined;
 
@@ -398,13 +400,13 @@ export class PendingTransactionWatcher {
       this.dispatch(
         enqueueAsyncToast({
           message: `Transaction${
-            isDefined(nonce) ? ` ${nonce}` : ''
+            isDefined(nonce) ? ` ${nonce}` : ""
           } cancelled.`,
           subtext: toastSubtext,
           type: ToastType.Error,
           networkName,
           actionData: toastActionData,
-        }),
+        })
       );
 
       const gasFee = TransactionReceiptDetailsService.getGasFee(txReceipt);
@@ -413,7 +415,7 @@ export class PendingTransactionWatcher {
         tx.cancelTransactionID,
         networkName,
         TransactionStatus.cancelled,
-        gasFee,
+        gasFee
       );
 
       await savedTransactionStore.updateTransactionStatus(
@@ -421,8 +423,9 @@ export class PendingTransactionWatcher {
         networkName,
         TransactionStatus.completed,
         gasFee,
-        undefined, isCancelling,
-        updatedSwapBuyTokenAmount,
+        undefined,
+        isCancelling,
+        updatedSwapBuyTokenAmount
       );
       return;
     }
@@ -431,13 +434,13 @@ export class PendingTransactionWatcher {
         message: tx.sentViaBroadcaster
           ? `Success: ${capitalize(tx.action)} through Broadcaster.`
           : `Success: ${capitalize(tx.action)} transaction${
-              isDefined(nonce) ? `: ${nonce}` : ''
+              isDefined(nonce) ? `: ${nonce}` : ""
             }.`,
         subtext: toastSubtext,
         type: ToastType.Success,
         networkName: networkName,
         actionData: toastActionData,
-      }),
+      })
     );
 
     if (tx.action === TransactionAction.shield) {
@@ -456,7 +459,7 @@ export class PendingTransactionWatcher {
     }
 
     logDev(
-      `[TransactionWatcher] Updating successful transaction status. Tx hash: ${txHash}`,
+      `[TransactionWatcher] Updating successful transaction status. Tx hash: ${txHash}`
     );
 
     const gasFee = TransactionReceiptDetailsService.getGasFee(txReceipt);
@@ -466,8 +469,9 @@ export class PendingTransactionWatcher {
       networkName,
       TransactionStatus.completed,
       gasFee,
-      undefined, isCancelling,
-      updatedSwapBuyTokenAmount,
+      undefined,
+      isCancelling,
+      updatedSwapBuyTokenAmount
     );
   }
 
@@ -476,7 +480,7 @@ export class PendingTransactionWatcher {
     tx: SavedTransaction,
     txHash: string,
     timedOut: boolean = false,
-    failedErrorMessage?: string,
+    failedErrorMessage?: string
   ) {
     logDev(`Transaction failed: ${txHash}`);
 
@@ -489,18 +493,18 @@ export class PendingTransactionWatcher {
     const nonce = tx.nonce;
     let message = isDefined(nonce)
       ? `Transaction ${nonce} failed`
-      : 'Transaction failed';
+      : "Transaction failed";
     if (timedOut) {
       message = isDefined(nonce)
         ? `Transaction ${nonce} timed out`
-        : 'Transaction timed out';
+        : "Transaction timed out";
     }
 
     this.dispatch(
       enqueueAsyncToast({
         message,
         subtext: `${network.publicName} | ${shortenWalletAddress(
-          tx.walletAddress,
+          tx.walletAddress
         )}`,
         type: ToastType.Error,
         actionData: firstToken
@@ -508,10 +512,10 @@ export class PendingTransactionWatcher {
               network.name,
               firstToken,
               isRailgun,
-              [RailgunWalletBalanceBucket.Spendable],
+              [RailgunWalletBalanceBucket.Spendable]
             )
           : undefined,
-      }),
+      })
     );
 
     const savedTransactionStore = new SavedTransactionStore(this.dispatch);
@@ -521,13 +525,13 @@ export class PendingTransactionWatcher {
       tx.walletAddress,
       undefined,
       timedOut,
-      failedErrorMessage,
+      failedErrorMessage
     );
   }
 
   private static removeFromWatchingTransactions(
     txHash: string,
-    network: Network,
+    network: Network
   ) {
     delete this.watchingTransactionHashes[network.name]?.[txHash];
   }

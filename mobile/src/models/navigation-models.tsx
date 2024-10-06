@@ -3,7 +3,7 @@ import {
   RecipeOutput,
   SwapQuoteData,
   SwapRecipe,
-} from '@railgun-community/cookbook';
+} from "@railgun-community/cookbook";
 import {
   Network,
   NFTAmountRecipient,
@@ -14,9 +14,9 @@ import {
   TransactionGasDetailsType1,
   TransactionGasDetailsType2,
   WalletCreationType,
-} from '@railgun-community/shared-models';
-import { LiquidityV2PoolSerialized } from 'react-shared/src/models/liquidity-pool';
-import { TransactionResponse } from 'ethers';
+} from "@railgun-community/shared-models";
+import { LiquidityV2PoolSerialized } from "react-shared/src/models/liquidity-pool";
+import { TransactionResponse } from "ethers";
 import {
   CookbookFarmRecipeType,
   CookbookSwapRecipeType,
@@ -32,7 +32,7 @@ import {
   StoredWallet,
   TransactionType,
   Vault,
-} from '@react-shared';
+} from "@react-shared";
 
 export type WalletsStackParamList = {
   Wallets: undefined;
@@ -130,7 +130,7 @@ export type DAppsStackParamList = DAppsParams & {
     originalSlippagePercentage: number;
     originalQuote: SwapQuoteData;
     returnBackFromCompletedOrder: () => void;
-  }
+  };
   SwapPrivateConfirm: {
     swapRecipeType: CookbookSwapRecipeType;
     originalRecipe: SwapRecipe;
@@ -145,7 +145,7 @@ export type DAppsStackParamList = DAppsParams & {
   FarmVaultInitial: {
     currentToken: ERC20Token;
     cookbookFarmRecipeType: CookbookFarmRecipeType;
-  }
+  };
   FarmVaultConfirm: {
     selectedTokenAmount: ERC20Amount;
     selectedVault: Vault;
@@ -155,7 +155,7 @@ export type DAppsStackParamList = DAppsParams & {
   AddLiquidityInitial: {
     pool: FrontendLiquidityPair;
     initialTokenAmount?: ERC20Amount;
-  }
+  };
   AddLiquidityConfirm: {
     selectedPoolSerialized: LiquidityV2PoolSerialized;
     tokenAmountA: ERC20Amount;
@@ -243,7 +243,7 @@ export type SelectNetworkFeeStackParamList = {
   SelectNetworkFeeModal: {
     onDismiss: (
       networkFeeSelection?: NetworkFeeSelection,
-      customGasTransactionDetails?: CustomGasTransactionDetails,
+      customGasTransactionDetails?: CustomGasTransactionDetails
     ) => void;
     currentOption: NetworkFeeSelection;
     gasDetailsMap: Optional<Record<NetworkFeeSelection, TransactionGasDetails>>;
@@ -259,7 +259,7 @@ export type SelectNetworkFeeStackParamList = {
   CustomNetworkFeeType2Screen: {
     onDismiss: (
       customMaxFeePerGas?: bigint,
-      customMaxPriorityFeePerGas?: bigint,
+      customMaxPriorityFeePerGas?: bigint
     ) => void;
     defaultGasDetails: TransactionGasDetailsType2;
   };
@@ -288,6 +288,6 @@ export type NewWalletStackParamList = {
 };
 
 type RecoverySeedPhraseStackParamList = {
-  screen: 'ShowSeedPhrase' | 'ShowViewingKey';
+  screen: "ShowSeedPhrase" | "ShowViewingKey";
   params: ShowSeedPhraseData;
 };

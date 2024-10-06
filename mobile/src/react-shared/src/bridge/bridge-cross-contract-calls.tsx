@@ -10,34 +10,34 @@ import {
   TransactionGasDetails,
   TransactionReceiptLog,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { ContractTransaction } from 'ethers';
+} from "@railgun-community/shared-models";
+import { ContractTransaction } from "ethers";
 import {
   BridgeCallEvent,
   GasEstimateForUnprovenCrossContractCallsParams,
   GenerateCrossContractCallsProofParams,
   GetRelayAdaptTransactionErrorParams,
   PopulateCrossContractCallsParams,
-} from '../models/bridge';
-import { ERC20Amount, ERC20AmountRecipient } from '../models/token';
+} from "../models/bridge";
+import { ERC20Amount, ERC20AmountRecipient } from "../models/token";
 import {
   createRailgunERC20AmountRecipient,
   createRailgunERC20Amounts,
   createRailgunNFTAmountRecipients,
   createRailgunNFTAmounts,
-} from '../utils/tokens';
-import { bridgeCall } from './ipc';
+} from "../utils/tokens";
+import { bridgeCall } from "./ipc";
 
 export const getRelayAdaptTransactionError = (
   txidVersion: TXIDVersion,
-  receiptLogs: TransactionReceiptLog[],
+  receiptLogs: TransactionReceiptLog[]
 ): Promise<Optional<string>> => {
   return bridgeCall<GetRelayAdaptTransactionErrorParams, Optional<string>>(
     BridgeCallEvent.GetRelayAdaptTransactionError,
     {
       txidVersion,
       receiptLogs,
-    },
+    }
   );
 };
 
@@ -53,18 +53,18 @@ export const populateCrossContractCalls = (
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
-    relayAdaptUnshieldERC20Amounts,
+    relayAdaptUnshieldERC20Amounts
   );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
   const relayAdaptUnshieldNFTAmountsRailgun = createRailgunNFTAmounts(
-    relayAdaptUnshieldNFTAmounts,
+    relayAdaptUnshieldNFTAmounts
   );
   const relayAdaptShieldNFTRecipientsRailgun = createRailgunNFTAmountRecipients(
-    relayAdaptShieldNFTRecipients,
+    relayAdaptShieldNFTRecipients
   );
 
   return bridgeCall<
@@ -100,22 +100,22 @@ export const generateCrossContractCallsProof = (
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
-  minGasLimit: Optional<bigint>,
+  minGasLimit: Optional<bigint>
 ): Promise<void> => {
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
-    relayAdaptUnshieldERC20Amounts,
+    relayAdaptUnshieldERC20Amounts
   );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
   const relayAdaptUnshieldNFTAmountsRailgun = createRailgunNFTAmounts(
-    relayAdaptUnshieldNFTAmounts,
+    relayAdaptUnshieldNFTAmounts
   );
   const relayAdaptShieldNFTRecipientsRailgun = createRailgunNFTAmountRecipients(
-    relayAdaptShieldNFTRecipients,
+    relayAdaptShieldNFTRecipients
   );
 
   if (!isDefined(minGasLimit)) {
-    throw new Error('Cross contract call requires minGasLimit parameter.');
+    throw new Error("Cross contract call requires minGasLimit parameter.");
   }
 
   return bridgeCall<GenerateCrossContractCallsProofParams, void>(
@@ -135,7 +135,7 @@ export const generateCrossContractCallsProof = (
       sendWithPublicWallet,
       overallBatchMinGasPrice,
       minGasLimit,
-    },
+    }
   );
 };
 
@@ -152,16 +152,16 @@ export const gasEstimateForUnprovenCrossContractCalls = async (
   originalGasDetails: TransactionGasDetails,
   feeTokenDetails: Optional<FeeTokenDetails>,
   sendWithPublicWallet: boolean,
-  minGasLimit: bigint,
+  minGasLimit: bigint
 ): Promise<bigint> => {
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
-    relayAdaptUnshieldERC20Amounts,
+    relayAdaptUnshieldERC20Amounts
   );
   const relayAdaptUnshieldNFTAmountsRailgun = createRailgunNFTAmounts(
-    relayAdaptUnshieldNFTAmounts,
+    relayAdaptUnshieldNFTAmounts
   );
   const relayAdaptShieldNFTRecipientsRailgun = createRailgunNFTAmountRecipients(
-    relayAdaptShieldNFTRecipients,
+    relayAdaptShieldNFTRecipients
   );
 
   const { gasEstimate } = await bridgeCall<

@@ -3,31 +3,31 @@ import {
   Network,
   RailgunWalletBalanceBucket,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
   StatusBar,
   View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   AlertProps,
   GenericAlert,
-} from '@components/alerts/GenericAlert/GenericAlert';
-import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { TabHeaderText } from '@components/text/TabHeaderText/TabHeaderText';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { useSetPinWarning } from '@hooks/alerts/useSetPinWarning';
-import { useDisableBackGesture } from '@hooks/navigation/useDisableBackGesture';
-import { useSetActiveWallet } from '@hooks/useSetActiveWallet';
+} from "@components/alerts/GenericAlert/GenericAlert";
+import { FullScreenSpinner } from "@components/loading/FullScreenSpinner/FullScreenSpinner";
+import { TabHeaderText } from "@components/text/TabHeaderText/TabHeaderText";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useSetPinWarning } from "@hooks/alerts/useSetPinWarning";
+import { useDisableBackGesture } from "@hooks/navigation/useDisableBackGesture";
+import { useSetActiveWallet } from "@hooks/useSetActiveWallet";
 import {
   TokenStackParamList,
   WalletsStackParamList,
-} from '@models/navigation-models';
-import { CommonActions, NavigationProp } from '@react-navigation/native';
+} from "@models/navigation-models";
+import { CommonActions, NavigationProp } from "@react-navigation/native";
 import {
   ERC20AmountRecipient,
   ERC20Token,
@@ -49,39 +49,39 @@ import {
   usePOIRequiredForCurrentNetwork,
   useReduxSelector,
   useTempNotification,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { SelectWalletModal } from '@screens/modals/SelectWalletModal/SelectWalletModal';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { PendingBalancesModal } from '@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal';
-import { RPCsSetUpModal } from '@views/screens/modals/RPCsSetUpModal/RPCsSetUpModal';
-import { ERC20TokenList } from './ERC20TokenList/ERC20TokenList';
-import { POIPendingBalanceCallout } from './POIPendingBalanceCallout/POIPendingBalanceCallout';
-import { WalletCardSlides } from './WalletCardSlides/WalletCardSlides';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { SelectWalletModal } from "@screens/modals/SelectWalletModal/SelectWalletModal";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { PendingBalancesModal } from "@views/screens/modals/POIBalanceBucketModal/PendingBalancesModal";
+import { RPCsSetUpModal } from "@views/screens/modals/RPCsSetUpModal/RPCsSetUpModal";
+import { ERC20TokenList } from "./ERC20TokenList/ERC20TokenList";
+import { POIPendingBalanceCallout } from "./POIPendingBalanceCallout/POIPendingBalanceCallout";
+import { WalletCardSlides } from "./WalletCardSlides/WalletCardSlides";
 import {
   calculateFloatingHeaderOpacityFromPageContentOffset,
   WalletFloatingHeader,
-} from './WalletFloatingHeader/WalletFloatingHeader';
-import { WalletInfoCallout } from './WalletInfoCallout/WalletInfoCallout';
-import { WalletNetworkSelector } from './WalletNetworkSelector/WalletNetworkSelector';
-import { WalletSwirlBackground } from './WalletSwirlBackground/WalletSwirlBackground';
-import { styles } from './styles';
+} from "./WalletFloatingHeader/WalletFloatingHeader";
+import { WalletInfoCallout } from "./WalletInfoCallout/WalletInfoCallout";
+import { WalletNetworkSelector } from "./WalletNetworkSelector/WalletNetworkSelector";
+import { WalletSwirlBackground } from "./WalletSwirlBackground/WalletSwirlBackground";
+import { styles } from "./styles";
 
 interface WalletsScreenProps {
-  navigation: NavigationProp<WalletsStackParamList, 'Wallets'>;
+  navigation: NavigationProp<WalletsStackParamList, "Wallets">;
 }
 
 export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
-  StatusBar.setBarStyle('light-content');
+  StatusBar.setBarStyle("light-content");
 
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
-  const { tempNotification } = useReduxSelector('tempNotification');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
+  const { tempNotification } = useReduxSelector("tempNotification");
   const { setActiveWallet, isLoading } = useSetActiveWallet();
   const { poiRequired } = usePOIRequiredForCurrentNetwork();
 
@@ -113,7 +113,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
         show: true,
         error,
         onDismiss: () => setErrorModal(undefined),
-      }),
+      })
   );
 
   const requireFunds = true;
@@ -129,11 +129,11 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
   useEffect(() => {
     const checkShouldShowSetRPCsSetUpModal = async () => {
       const rpcSetUpKey =
-        SharedConstants.HAS_SEEN_RPC_SET_UP + '_' + network.current.name;
+        SharedConstants.HAS_SEEN_RPC_SET_UP + "_" + network.current.name;
       const hasSeen = await StorageService.getItem(rpcSetUpKey);
       if (!isDefined(hasSeen)) {
         setShowRPCsSetUpModal(true);
-        await StorageService.setItem(rpcSetUpKey, '1');
+        await StorageService.setItem(rpcSetUpKey, "1");
       }
     };
 
@@ -170,7 +170,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
         newNetwork.name,
         shouldFallbackOnError,
         pullPrices,
-        pullBalances,
+        pullBalances
       );
 
       triggerHaptic(HapticSurface.EditSuccess);
@@ -179,8 +179,8 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
       setShowLoadingNetworkPublicName(undefined);
     } catch (cause) {
       const error = new Error(
-        'Connection error while loading network. Please try again.',
-        { cause },
+        "Connection error while loading network. Please try again.",
+        { cause }
       );
       logDevError(error);
       setShowLoadingNetworkPublicName(undefined);
@@ -195,7 +195,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
   const onTapNetworkSelector = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     const networks = getSupportedNetworks();
-    const buttons = networks.map(n => {
+    const buttons = networks.map((n) => {
       return {
         name:
           n.isDevOnlyNetwork === true ? `[DEV] ${n.publicName}` : n.publicName,
@@ -203,14 +203,14 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
       };
     });
 
-    callActionSheet(showActionSheetWithOptions, 'Select network', buttons);
+    callActionSheet(showActionSheetWithOptions, "Select network", buttons);
   };
 
   const onActionCreateWallet = () => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('NewWallet', { screen: 'CreateWallet' }),
+      CommonActions.navigate("NewWallet", { screen: "CreateWallet" })
     );
   };
 
@@ -218,7 +218,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('NewWallet', { screen: 'ImportWallet' }),
+      CommonActions.navigate("NewWallet", { screen: "ImportWallet" })
     );
   };
 
@@ -226,10 +226,10 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'UnshieldERC20s',
+      CommonActions.navigate("Token", {
+        screen: "UnshieldERC20s",
         params: {},
-      }),
+      })
     );
   };
 
@@ -237,10 +237,10 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'ShieldToken',
+      CommonActions.navigate("Token", {
+        screen: "ShieldToken",
         params: {},
-      }),
+      })
     );
   };
 
@@ -248,15 +248,15 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'MintTokensConfirm',
+      CommonActions.navigate("Token", {
+        screen: "MintTokensConfirm",
         params: {
           tokenAmount: {
             token: MINTABLE_TEST_TOKEN_ROPSTEN,
             amount: 10n ** 21n,
           },
         },
-      }),
+      })
     );
   };
 
@@ -264,12 +264,12 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'SendERC20s',
+      CommonActions.navigate("Token", {
+        screen: "SendERC20s",
         params: {
           isRailgun: isRailgunOverride,
         },
-      }),
+      })
     );
   };
 
@@ -277,12 +277,12 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'ReceiveToken',
+      CommonActions.navigate("Token", {
+        screen: "ReceiveToken",
         params: {
           isRailgun: isRailgunOverride,
         },
-      }),
+      })
     );
   };
 
@@ -291,18 +291,18 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
 
     if ([...wallets.available, ...wallets.viewOnly].length === 0) {
       dispatch(
-        showImmediateToast({ message: 'Please create a wallet first.' }),
+        showImmediateToast({ message: "Please create a wallet first." })
       );
       return;
     }
     if (!wallets.active) {
       dispatch(
-        showImmediateToast({ message: 'Please select an active wallet.' }),
+        showImmediateToast({ message: "Please select an active wallet." })
       );
       return;
     }
 
-    navigation.dispatch(CommonActions.navigate('AddTokens'));
+    navigation.dispatch(CommonActions.navigate("AddTokens"));
   };
 
   const onEnableDiscreetMode = () => {
@@ -316,7 +316,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
   const onSelectToken = (token: ERC20Token) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('TokenInfo', {
+    navigation.navigate("TokenInfo", {
       token,
       isRailgun: isRailgunOverride,
       balanceBucketFilter,
@@ -362,10 +362,10 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
 
   const navigateUnshieldToOrigin = (
     originalShieldTxid: string,
-    erc20AmountRecipients: ERC20AmountRecipient[],
+    erc20AmountRecipients: ERC20AmountRecipient[]
   ) => {
     setShowPendingBalancesModal(false);
-    const params: TokenStackParamList['UnshieldERC20sConfirm'] = {
+    const params: TokenStackParamList["UnshieldERC20sConfirm"] = {
       erc20AmountRecipients: erc20AmountRecipients,
       isBaseTokenUnshield: false,
       nftAmountRecipients: [],
@@ -373,10 +373,10 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
       unshieldToOriginShieldTxid: originalShieldTxid,
     };
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'UnshieldERC20sConfirm',
+      CommonActions.navigate("Token", {
+        screen: "UnshieldERC20sConfirm",
         params,
-      }),
+      })
     );
   };
 
@@ -401,7 +401,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
         selectedWallet={wallets.active}
         onDismiss={selectActiveWallet}
       />
-      <SafeAreaView style={styles.tabWrapper} edges={['right', 'top', 'left']}>
+      <SafeAreaView style={styles.tabWrapper} edges={["right", "top", "left"]}>
         <WalletSwirlBackground animate={isRefreshing} />
         <ScrollView
           style={styles.scrollView}
@@ -467,7 +467,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
         text={
           isDefined(showLoadingNetworkPublicName)
             ? `Loading ${showLoadingNetworkPublicName} and scanning new transactions`
-            : ''
+            : ""
         }
       />
       <GenericAlert {...alert} />

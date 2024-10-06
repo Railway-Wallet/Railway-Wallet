@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   rowWrapper: {
     marginHorizontal: 16,
   },
   centerStyle: {
-    maxWidth: '100%',
+    maxWidth: "100%",
     flex: 1,
   },
   selectedWrapper: {
@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.label,
   },
   dAppIconWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     paddingLeft: 6,
     paddingRight: 8,
   },
@@ -38,17 +38,17 @@ export const styles = StyleSheet.create({
     height: 48,
     backgroundColor: styleguide.colors.gray5(0.6),
     borderRadius: 6,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderWidth: 1,
-    borderStyle: 'solid',
-    alignItems: 'center',
+    borderStyle: "solid",
+    alignItems: "center",
     borderColor: styleguide.colors.buttonBorder,
   },
   dAppImage: {
     width: 32,
     height: 32,
     padding: 4,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginHorizontal: 12,
     borderRadius: 15,
     backgroundColor: styleguide.colors.gray5(),

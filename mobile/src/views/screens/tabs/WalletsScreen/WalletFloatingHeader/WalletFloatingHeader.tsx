@@ -1,7 +1,7 @@
-import React from 'react';
-import { FloatingHeader } from '@components/headers/FloatingHeader/FloatingHeader';
-import { easeInCubic, styleguide } from '@react-shared';
-import { WalletNetworkSelector } from '../WalletNetworkSelector/WalletNetworkSelector';
+import React from "react";
+import { FloatingHeader } from "@components/headers/FloatingHeader/FloatingHeader";
+import { easeInCubic, styleguide } from "@react-shared";
+import { WalletNetworkSelector } from "../WalletNetworkSelector/WalletNetworkSelector";
 
 type Props = {
   opacity: number;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const calculateFloatingHeaderOpacityFromPageContentOffset = (
-  pageContentOffset: number,
+  pageContentOffset: number
 ) => {
   let offset = pageContentOffset - 5;
 

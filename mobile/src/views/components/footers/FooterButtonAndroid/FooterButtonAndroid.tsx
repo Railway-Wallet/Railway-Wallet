@@ -1,8 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
-import { WideButtonTextOnly } from '@components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+import React from "react";
+import { View } from "react-native";
+import { WideButtonTextOnly } from "@components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
   buttonTitle: string;

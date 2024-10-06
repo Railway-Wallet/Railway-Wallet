@@ -1,4 +1,4 @@
-import * as fs from 'react-native-fs';
+import * as fs from "react-native-fs";
 
 export const fileExists = (path: string) => {
   try {

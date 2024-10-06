@@ -1,34 +1,34 @@
-import { BeefyAPI, BeefyVaultData } from '@railgun-community/cookbook';
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { AvailableWallet, FrontendWallet, TransactionType } from '../models';
-import { CookbookFarmRecipeType } from '../models/cookbook';
-import { ERC20Token, TokenIconKey } from '../models/token';
-import { Vault, VaultType } from '../models/vault';
-import { getTokenDisplayName } from './tokens';
+import { BeefyAPI, BeefyVaultData } from "@railgun-community/cookbook";
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { AvailableWallet, FrontendWallet, TransactionType } from "../models";
+import { CookbookFarmRecipeType } from "../models/cookbook";
+import { ERC20Token, TokenIconKey } from "../models/token";
+import { Vault, VaultType } from "../models/vault";
+import { getTokenDisplayName } from "./tokens";
 import {
   formatNumberToLocale,
   formatUnitFromHexStringToLocale,
   roundToNDecimals,
-} from './util';
+} from "./util";
 
 export const getVaultDisplayName = (vaultType: VaultType) => {
   switch (vaultType) {
     case VaultType.Beefy:
-      return 'Beefy Vault';
+      return "Beefy Vault";
   }
 };
 
 const getVaultAssetsButtonDisplayName = (vaultType: VaultType) => {
   switch (vaultType) {
     case VaultType.Beefy:
-      return 'Beefy Vaults';
+      return "Beefy Vaults";
   }
 };
 
 const getVaultAssetsUrl = (vaultType: VaultType) => {
   switch (vaultType) {
     case VaultType.Beefy:
-      return 'https://app.beefy.finance';
+      return "https://app.beefy.finance";
   }
 };
 
@@ -40,10 +40,10 @@ const reverseVaultRate = (vault: Vault): bigint => {
 
 export const getVaultExchangeRateDisplayText = (
   vault: Optional<Vault>,
-  transactionType: TransactionType,
+  transactionType: TransactionType
 ) => {
   if (!isDefined(vault)) {
-    return 'N/A';
+    return "N/A";
   }
   const isFarmDeposit = transactionType === TransactionType.FarmDeposit;
   const vaultRate = isFarmDeposit
@@ -51,10 +51,10 @@ export const getVaultExchangeRateDisplayText = (
     : BigInt(vault.vaultRate);
   const exchangeRate = formatUnitFromHexStringToLocale(
     vaultRate,
-    vault.redeemERC20Decimals,
+    vault.redeemERC20Decimals
   );
   const exchangeRateText = formatNumberToLocale(
-    roundToNDecimals(Number(exchangeRate), 8),
+    roundToNDecimals(Number(exchangeRate), 8)
   );
   return `1 ${
     isFarmDeposit ? vault.depositERC20Symbol : vault.redeemERC20Symbol
@@ -68,14 +68,14 @@ export const getFarmActionTitle = (
   cookbookFarmRecipeType: Optional<CookbookFarmRecipeType>,
   availableWallets: Optional<AvailableWallet[]>,
   vault: Optional<Vault>,
-  erc20: Optional<ERC20Token>,
+  erc20: Optional<ERC20Token>
 ) => {
   const isFarmDeposit =
     cookbookFarmRecipeType === CookbookFarmRecipeType.Deposit;
   const vaultDisplayName = vault ? getVaultDisplayName(vault.type) : undefined;
   const title = isFarmDeposit
-    ? `${vaultDisplayName ?? 'Farm'} deposit`
-    : `${vaultDisplayName ?? 'Farm'} redeem`;
+    ? `${vaultDisplayName ?? "Farm"} deposit`
+    : `${vaultDisplayName ?? "Farm"} redeem`;
 
   return erc20
     ? `${title}: ${getTokenDisplayName(erc20, availableWallets, networkName)}`
@@ -84,7 +84,7 @@ export const getFarmActionTitle = (
 
 export const getVaultMoreInfoLink = (vault: Vault) => {
   if (!isDefined(vault.id)) {
-    return 'Unknown URL';
+    return "Unknown URL";
   }
   switch (vault.type) {
     case VaultType.Beefy:
@@ -129,20 +129,20 @@ const beefyVaultToFrontendVault = (beefyVault: BeefyVaultData): Vault => {
 
 export const fetchVaultInfo = async (
   vault: Vault,
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Promise<Vault> => {
   let updatedVault: Vault;
 
   switch (vault.type) {
     case VaultType.Beefy:
       if (!isDefined(vault.id)) {
-        throw new Error('No ID for Beefy vault.');
+        throw new Error("No ID for Beefy vault.");
       }
 
       // eslint-disable-next-line no-case-declarations
       const beefyVault = await BeefyAPI.getBeefyVaultForID(
         vault.id,
-        networkName,
+        networkName
       );
       updatedVault = beefyVaultToFrontendVault(beefyVault);
   }
@@ -152,12 +152,12 @@ export const fetchVaultInfo = async (
 
 export const fetchBeefyVaults = async (
   networkName: NetworkName,
-  skipCache: boolean,
+  skipCache: boolean
 ): Promise<Vault[]> => {
   const beefyVaultData = await BeefyAPI.getFilteredBeefyVaults(
     networkName,
     skipCache,
-    false,
+    false
   );
   return beefyVaultData.map(beefyVaultToFrontendVault);
 };

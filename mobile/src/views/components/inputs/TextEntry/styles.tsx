@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -8,18 +8,18 @@ export const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 0,
     paddingBottom: isAndroid() ? 0 : 12,
-    width: '100%',
+    width: "100%",
   },
   topWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   icons: {
     marginRight: 4,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   label: {
     color: styleguide.colors.labelSecondary,

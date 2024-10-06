@@ -1,16 +1,16 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { ERC20AmountsNumPadView } from '@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { ERC20AmountsNumPadView } from "@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   CalloutType,
   ERC20Amount,
@@ -21,18 +21,18 @@ import {
   useGetLiquidityTokensToAdd,
   useLiquidityPoolForAddressFilter,
   useReduxSelector,
-} from '@react-shared';
-import { AddCustomTokenModal } from '@screens/modals/AddCustomTokenModal/AddCustomTokenModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { sharedStyles } from '../sharedStyles';
+} from "@react-shared";
+import { AddCustomTokenModal } from "@screens/modals/AddCustomTokenModal/AddCustomTokenModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { sharedStyles } from "../sharedStyles";
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'RemoveLiquidityInitial'>;
+  navigation: NavigationProp<DAppsStackParamList, "RemoveLiquidityInitial">;
   route: RouteProp<
-    { params: DAppsStackParamList['RemoveLiquidityInitial'] },
-    'params'
+    { params: DAppsStackParamList["RemoveLiquidityInitial"] },
+    "params"
   >;
 };
 
@@ -40,24 +40,24 @@ export const RemoveLiquidityInitial: React.FC<Props> = ({
   route,
   navigation,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
   const { tokenAddress, initialTokenAmount } = route.params;
   const networkName = network.current.name;
   const isRailgun = true;
 
   const { liquidityPool } = useLiquidityPoolForAddressFilter(
     tokenAddress,
-    networkName,
+    networkName
   );
   const { tokensToAdd } = useGetLiquidityTokensToAdd(liquidityPool);
   const { currentTokenToAdd, onTokenAddSuccess } =
     useAddMultipleTokens(tokensToAdd);
 
   const [erc20Amounts, setERC20Amounts] = useState<ERC20Amount[]>(
-    isDefined(initialTokenAmount) ? [initialTokenAmount] : [],
+    isDefined(initialTokenAmount) ? [initialTokenAmount] : []
   );
   const [showAmountEntry, setShowAmountEntry] = useState(
-    !isDefined(initialTokenAmount),
+    !isDefined(initialTokenAmount)
   );
   const [showAddTokenModal, setShowAddTokenModal] = useState(false);
 
@@ -67,7 +67,7 @@ export const RemoveLiquidityInitial: React.FC<Props> = ({
     }
 
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('RemoveLiquidityConfirm', {
+    navigation.navigate("RemoveLiquidityConfirm", {
       tokenAmount: erc20Amounts[0],
       liquidityPool,
     });

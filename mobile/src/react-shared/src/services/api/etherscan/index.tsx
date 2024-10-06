@@ -1,1 +1,1 @@
-export * from './transaction-scan-lookup';
+export * from "./transaction-scan-lookup";

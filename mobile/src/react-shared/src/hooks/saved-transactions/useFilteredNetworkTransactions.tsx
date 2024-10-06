@@ -1,22 +1,22 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useMemo, useState } from 'react';
-import { getChainTxidsStillPendingSpentPOIs } from '../../bridge/bridge-poi';
-import { getWalletTransactionHistory } from '../../bridge/bridge-wallets';
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useMemo, useState } from "react";
+import { getChainTxidsStillPendingSpentPOIs } from "../../bridge/bridge-poi";
+import { getWalletTransactionHistory } from "../../bridge/bridge-wallets";
 import {
   NonSpendableTransaction,
   SavedTransaction,
-} from '../../models/transaction';
-import { RailgunTransactionHistoryService } from '../../services/history/railgun-transaction-history-service';
-import { transactionIncludesAnyWalletAddress } from '../../utils/saved-transactions';
-import { dedupeByParam } from '../../utils/util';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
-import { usePOIProofStatus } from '../poi/usePOIProofStatus';
+} from "../../models/transaction";
+import { RailgunTransactionHistoryService } from "../../services/history/railgun-transaction-history-service";
+import { transactionIncludesAnyWalletAddress } from "../../utils/saved-transactions";
+import { dedupeByParam } from "../../utils/util";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
+import { usePOIProofStatus } from "../poi/usePOIProofStatus";
 
 export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { savedTransactions } = useReduxSelector('savedTransactions');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { savedTransactions } = useReduxSelector("savedTransactions");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const [nonSpendableTransactions, setNonSpendableTransactions] = useState<
     NonSpendableTransaction[]
@@ -31,10 +31,10 @@ export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
 
   const unformattedTransactions: SavedTransaction[] = useMemo(() => {
     const unfilteredTxs = savedTransactionsForNetwork ?? [];
-    const filteredTxs = unfilteredTxs.filter(tx => {
+    const filteredTxs = unfilteredTxs.filter((tx) => {
       return transactionIncludesAnyWalletAddress(tx, wallets.active);
     });
-    const dedupedTxs = dedupeByParam(filteredTxs, 'id');
+    const dedupedTxs = dedupeByParam(filteredTxs, "id");
     return dedupedTxs;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallets.active?.id, network.current.name, savedTransactionsForNetwork]);
@@ -46,13 +46,13 @@ export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
     const railgunTransactions = await getWalletTransactionHistory(
       network.current.chain,
       wallets.active.railWalletID,
-      0,
+      0
     );
     const txItems = await txHistoryService.getNonPOITransactions(
       network.current.name,
       wallets.active,
       wallets.available,
-      railgunTransactions,
+      railgunTransactions
     );
 
     setNonSpendableTransactions(txItems);
@@ -64,7 +64,7 @@ export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
     const txidList = await getChainTxidsStillPendingSpentPOIs(
       txidVersion.current,
       network.current.name,
-      wallets.active.railWalletID,
+      wallets.active.railWalletID
     );
 
     setPendingSpentPoiTxidList(txidList);
@@ -99,13 +99,13 @@ export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
   ]);
 
   const networkTransactions: SavedTransaction[] = useMemo(() => {
-    return unformattedTransactions.map(transaction => {
+    return unformattedTransactions.map((transaction) => {
       let finalTx = transaction;
 
       if (POIRequired) {
         const nonSpendableTransaction = nonSpendableTransactions.find(
-          nonSpendableTransaction =>
-            nonSpendableTransaction.transaction.id === transaction.id,
+          (nonSpendableTransaction) =>
+            nonSpendableTransaction.transaction.id === transaction.id
         );
 
         if (nonSpendableTransaction) {
@@ -116,9 +116,9 @@ export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
         }
 
         const pendingSpentTxid = pendingSpentPoiTxidList.find(
-          pendingSpentTxid =>
+          (pendingSpentTxid) =>
             `0x${pendingSpentTxid.toLowerCase()}` ===
-            transaction.id.toLowerCase(),
+            transaction.id.toLowerCase()
         );
 
         if (isDefined(pendingSpentTxid)) {
@@ -131,7 +131,6 @@ export const useFilteredNetworkTransactions = (POIRequired: boolean) => {
 
       return finalTx;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     unformattedTransactions,
     nonSpendableTransactions,

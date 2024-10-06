@@ -1,11 +1,11 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { Modal, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { QRCodeCardView } from '@components/views/QRCodeCardView/QRCodeCardView';
-import { CalloutType, styleguide } from '@react-shared';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { Modal, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { QRCodeCardView } from "@components/views/QRCodeCardView/QRCodeCardView";
+import { CalloutType, styleguide } from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   show: boolean;

@@ -1,20 +1,20 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { Platform } from 'react-native';
+import { isDefined } from "@railgun-community/shared-models";
+import { Platform } from "react-native";
 
-type PlatformOS = 'ios' | 'android' | 'windows' | 'macos' | 'web';
+type PlatformOS = "ios" | "android" | "windows" | "macos" | "web";
 
 export const getPlatformDevice = (platformOS: PlatformOS): string => {
   switch (platformOS) {
-    case 'android':
-      return 'Android';
-    case 'ios':
-      return 'iOS';
-    case 'web':
-      return 'Web';
-    case 'macos':
-      return 'MacOS';
-    case 'windows':
-      return 'Windows';
+    case "android":
+      return "Android";
+    case "ios":
+      return "iOS";
+    case "web":
+      return "Web";
+    case "macos":
+      return "MacOS";
+    case "windows":
+      return "Windows";
   }
 };
 
@@ -23,7 +23,7 @@ export const isAndroid = (): boolean => {
   if (isDefined(isAndroidCached)) {
     return isAndroidCached;
   }
-  isAndroidCached = Platform.OS === 'android';
+  isAndroidCached = Platform.OS === "android";
   return isAndroidCached;
 };
 
@@ -32,6 +32,6 @@ export const isIOS = (): boolean => {
   if (isDefined(isIOSCached)) {
     return isIOSCached;
   }
-  isIOSCached = Platform.OS === 'ios';
+  isIOSCached = Platform.OS === "ios";
   return isIOSCached;
 };

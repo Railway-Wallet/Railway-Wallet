@@ -1,4 +1,4 @@
-import { NetworkName, TXIDVersion } from '@railgun-community/shared-models';
+import { NetworkName, TXIDVersion } from "@railgun-community/shared-models";
 import {
   BridgeCallEvent,
   GeneratePOIsForWalletAndRailgunTxidParams,
@@ -12,13 +12,13 @@ import {
   RefreshSpentPOIsForWalletParams,
   TXOsReceivedPOIStatusInfo,
   TXOsSpentPOIStatusInfo,
-} from '../models/bridge';
-import { bridgeCall } from './ipc';
+} from "../models/bridge";
+import { bridgeCall } from "./ipc";
 
 export const getTXOsReceivedPOIStatusInfoForWallet = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
-  railWalletID: string,
+  railWalletID: string
 ): Promise<TXOsReceivedPOIStatusInfo[]> => {
   return bridgeCall<
     GetTXOsReceivedPOIStatusInfoForWalletParams,
@@ -33,7 +33,7 @@ export const getTXOsReceivedPOIStatusInfoForWallet = (
 export const getTXOsSpentPOIStatusInfoForWallet = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
-  railWalletID: string,
+  railWalletID: string
 ): Promise<TXOsSpentPOIStatusInfo[]> => {
   return bridgeCall<
     GetTXOsSpentPOIStatusInfoForWalletParams,
@@ -46,20 +46,20 @@ export const getTXOsSpentPOIStatusInfoForWallet = (
 };
 
 export const getPOIRequiredForNetwork = (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): Promise<boolean> => {
   return bridgeCall<GetPOIRequiredForNetworkParams, boolean>(
     BridgeCallEvent.GetPOIRequiredForNetwork,
     {
       networkName,
-    },
+    }
   );
 };
 
 export const getChainTxidsStillPendingSpentPOIs = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
-  railWalletID: string,
+  railWalletID: string
 ): Promise<string[]> => {
   return bridgeCall<GetChainTxidsStillPendingSpentPOIsParams, string[]>(
     BridgeCallEvent.GetChainTxidsStillPendingSpentPOIs,
@@ -67,14 +67,14 @@ export const getChainTxidsStillPendingSpentPOIs = (
       txidVersion,
       networkName,
       railWalletID,
-    },
+    }
   );
 };
 
 export const getSpendableReceivedChainTxids = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
-  railWalletID: string,
+  railWalletID: string
 ): Promise<string[]> => {
   return bridgeCall<GetSpendableReceivedChainTxidsParams, string[]>(
     BridgeCallEvent.GetSpendableReceivedChainTxids,
@@ -82,7 +82,7 @@ export const getSpendableReceivedChainTxids = (
       txidVersion,
       networkName,
       railWalletID,
-    },
+    }
   );
 };
 
@@ -90,7 +90,7 @@ export const generatePOIsForWalletAndRailgunTxid = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
   railWalletID: string,
-  railgunTxid: string,
+  railgunTxid: string
 ): Promise<void> => {
   return bridgeCall<GeneratePOIsForWalletAndRailgunTxidParams, void>(
     BridgeCallEvent.GeneratePOIsForWalletAndRailgunTxid,
@@ -99,27 +99,27 @@ export const generatePOIsForWalletAndRailgunTxid = (
       networkName,
       railWalletID,
       railgunTxid,
-    },
+    }
   );
 };
 
 export const generateAllPOIsForWallet = (
   networkName: NetworkName,
-  railWalletID: string,
+  railWalletID: string
 ): Promise<void> => {
   return bridgeCall<GeneratePOIsForWalletParams, void>(
     BridgeCallEvent.GeneratePOIsForWallet,
     {
       networkName,
       railWalletID,
-    },
+    }
   );
 };
 
 export const refreshReceivePOIsForWallet = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
-  railWalletID: string,
+  railWalletID: string
 ): Promise<void> => {
   return bridgeCall<RefreshReceivePOIsForWalletParams, void>(
     BridgeCallEvent.RefreshReceivePOIsForWallet,
@@ -127,7 +127,7 @@ export const refreshReceivePOIsForWallet = (
       txidVersion,
       networkName,
       railWalletID,
-    },
+    }
   );
 };
 
@@ -135,7 +135,7 @@ export const refreshSpentPOIsForWallet = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
   railWalletID: string,
-  railgunTxid?: string,
+  railgunTxid?: string
 ): Promise<void> => {
   return bridgeCall<RefreshSpentPOIsForWalletParams, void>(
     BridgeCallEvent.RefreshSpentPOIsForWallet,
@@ -144,6 +144,6 @@ export const refreshSpentPOIsForWallet = (
       networkName,
       railWalletID,
       railgunTxid,
-    },
+    }
   );
 };

@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   hr: {
     backgroundColor: styleguide.colors.textSecondary,
     height: 1,
-    width: '100%',
+    width: "100%",
     marginLeft: 16,
   },
   backupWarningText: {

@@ -1,16 +1,16 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import React from "react";
+import { Text, View } from "react-native";
+import { Button } from "react-native-paper";
 import {
   GradientStyle,
   RailgunGradient,
-} from '@components/gradient/RailgunGradient';
+} from "@components/gradient/RailgunGradient";
 import {
   getNetworkFrontendConfig,
   styleguide,
   useReduxSelector,
-} from '@react-shared';
-import { styles } from './styles';
+} from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   isRailgun: boolean;
@@ -21,7 +21,7 @@ export const PublicPrivateSelector: React.FC<Props> = ({
   onTap,
   isRailgun,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const frontendConfig = getNetworkFrontendConfig(network.current.name);
 
@@ -42,7 +42,7 @@ export const PublicPrivateSelector: React.FC<Props> = ({
           contentStyle={styles.buttonContent}
         >
           <Text style={styles.buttonText}>
-            {isRailgun ? 'Private' : 'Public'}
+            {isRailgun ? "Private" : "Public"}
           </Text>
         </Button>
       </RailgunGradient>

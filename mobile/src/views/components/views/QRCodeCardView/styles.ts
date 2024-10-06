@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   infoCallout: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     margin: 16,
     marginBottom: 32,
     backgroundColor: styleguide.colors.gray(),
-    alignItems: 'center',
+    alignItems: "center",
     padding: 16,
     paddingBottom: 0,
     borderColor: styleguide.colors.gray4(),
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   titleText: {
     color: styleguide.colors.text(),
     ...styleguide.typography.heading3,
-    textAlign: 'center',
+    textAlign: "center",
   },
   qrCodeWrapper: {
     margin: 24,
@@ -32,17 +32,17 @@ export const styles = StyleSheet.create({
   addressText: {
     color: styleguide.colors.labelSecondary,
     ...styleguide.typography.caption,
-    textAlign: 'center',
+    textAlign: "center",
     paddingHorizontal: 24,
     marginTop: 8,
     marginBottom: 24,
   },
   buttonsWrapper: {
     marginBottom: 28,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
   },
   button: {
     backgroundColor: styleguide.colors.gray6(0.72),

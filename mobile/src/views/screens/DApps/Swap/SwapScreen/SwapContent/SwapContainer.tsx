@@ -1,12 +1,12 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { DependencyList, useEffect, useState } from 'react';
-import { Text } from 'react-native';
-import { ButtonTextOnly } from '@components/buttons/ButtonTextOnly/ButtonTextOnly';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { DependencyList, useEffect, useState } from "react";
+import { Text } from "react-native";
+import { ButtonTextOnly } from "@components/buttons/ButtonTextOnly/ButtonTextOnly";
 import {
   CommonActions,
   NavigationProp,
   StackActions,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   ERC20Amount,
   ERC20Token,
@@ -16,25 +16,25 @@ import {
   useRemoteConfigNetworkError,
   useTopPickSwapERC20s,
   validERC20Amount,
-} from '@react-shared';
-import { ErrorDetailsModal } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { useResettableState } from '../../../../../../hooks/extensions/useResettableState';
-import { DAppsStackParamList } from '../../../../../../models/navigation-models';
+} from "@react-shared";
+import { ErrorDetailsModal } from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { useResettableState } from "../../../../../../hooks/extensions/useResettableState";
+import { DAppsStackParamList } from "../../../../../../models/navigation-models";
 import {
   HapticSurface,
   triggerHaptic,
-} from '../../../../../../services/util/haptic-service';
+} from "../../../../../../services/util/haptic-service";
 import {
   SwapSettings,
   SwapSettingsModal,
-} from '../../SwapSettingsModal/SwapSettingsModal';
-import { SwapContentProps } from './SharedSwapContent';
-import { ZeroXPrivateSwapContent } from './ZeroXPrivateSwapContent';
-import { ZeroXPublicSwapContent } from './ZeroXPublicSwapContent';
-import { styles } from './styles';
+} from "../../SwapSettingsModal/SwapSettingsModal";
+import { SwapContentProps } from "./SharedSwapContent";
+import { ZeroXPrivateSwapContent } from "./ZeroXPrivateSwapContent";
+import { ZeroXPublicSwapContent } from "./ZeroXPublicSwapContent";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'Swap'>;
+  navigation: NavigationProp<DAppsStackParamList, "Swap">;
   navigationToken: Optional<ERC20Token>;
   isRailgun: boolean;
 };
@@ -44,15 +44,15 @@ export const SwapContainer: React.FC<Props> = ({
   navigationToken,
   isRailgun,
 }: Props) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [resetCount, setResetCount] = useState(0);
   const resetDeps: DependencyList = [network, navigationToken, resetCount];
 
   const { topPickSellToken, topPickBuyToken } = useTopPickSwapERC20s(
     isRailgun,
-    navigationToken,
+    navigationToken
   );
 
   const [currentSellERC20, setCurrentSellERC20] = useResettableState<
@@ -63,26 +63,26 @@ export const SwapContainer: React.FC<Props> = ({
   >(topPickBuyToken, resetDeps);
 
   const [sellTokenEntryString, setSellTokenEntryString] = useResettableState(
-    '',
-    resetDeps,
+    "",
+    resetDeps
   );
 
   const [showAmountEntry, setShowAmountEntry] = useResettableState(
     true,
-    resetDeps,
+    resetDeps
   );
   const [hasValidSellAmount, setHasValidSellAmount] = useResettableState(
     false,
-    resetDeps,
+    resetDeps
   );
 
   const [showSwapSettings, setShowSwapSettings] = useResettableState(
     false,
-    resetDeps,
+    resetDeps
   );
   const [showErrorDetailsModal, setShowErrorDetailsModal] = useResettableState(
     false,
-    resetDeps,
+    resetDeps
   );
 
   const [slippagePercentageOverride, setSlippagePercentageOverride] =
@@ -106,7 +106,7 @@ export const SwapContainer: React.FC<Props> = ({
   useEffect(() => {
     setCurrentSellERC20(topPickSellToken);
     setCurrentBuyERC20(topPickBuyToken);
-    setSellTokenEntryString('');
+    setSellTokenEntryString("");
     setShowAmountEntry(true);
     setHasValidSellAmount(false);
     setShowSwapSettings(false);
@@ -116,7 +116,7 @@ export const SwapContainer: React.FC<Props> = ({
 
   let validSellERC20Amount: Optional<ERC20Amount> = validERC20Amount(
     sellTokenEntryString,
-    currentSellERC20,
+    currentSellERC20
   );
   if (
     validSellERC20Amount &&
@@ -128,18 +128,18 @@ export const SwapContainer: React.FC<Props> = ({
   const activeWallet = wallets.active;
 
   const activeWalletError = !activeWallet
-    ? new Error('Please connect a wallet.')
+    ? new Error("Please connect a wallet.")
     : undefined;
 
   const { remoteConfigNetworkError } = useRemoteConfigNetworkError(
     TransactionType.Swap,
     isRailgun,
-    isRailgun,
+    isRailgun
   );
 
   const returnBackFromCompletedOrder = () => {
     navigation.dispatch(StackActions.pop(1));
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate("WalletsScreen"));
     setResetCount(resetCount + 1);
   };
 

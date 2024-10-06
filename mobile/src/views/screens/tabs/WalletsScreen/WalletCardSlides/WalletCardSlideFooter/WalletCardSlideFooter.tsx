@@ -1,10 +1,10 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
+import React from "react";
+import { Text, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
 import {
   GradientStyle,
   RailgunGradient,
-} from '@components/gradient/RailgunGradient';
+} from "@components/gradient/RailgunGradient";
 import {
   getNetworkFrontendConfig,
   IconPublic,
@@ -12,10 +12,10 @@ import {
   styleguide,
   useReduxSelector,
   WalletCardSlideItem,
-} from '@react-shared';
-import { isTightWidth } from '@services/util/screen-dimensions-service';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "@react-shared";
+import { isTightWidth } from "@services/util/screen-dimensions-service";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   item: WalletCardSlideItem;
@@ -28,15 +28,15 @@ export const WalletCardSlideFooter: React.FC<Props> = ({
   onActionShieldTokens,
   onActionUnshieldERC20s,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const textIconColor = styleguide.colors.text();
 
   const networkName = item.isRailgun
-    ? 'RAILGUN'
+    ? "RAILGUN"
     : network.current.shortPublicName;
-  const shieldedStatus = item.isRailgun ? 'shielded' : 'public';
+  const shieldedStatus = item.isRailgun ? "shielded" : "public";
 
   const iconTextView = () => {
     return (
@@ -53,7 +53,7 @@ export const WalletCardSlideFooter: React.FC<Props> = ({
           style={[styles.footerText, { color: textIconColor }]}
         >
           {networkName} assets are {shieldedStatus}
-          {'.'}
+          {"."}
         </Text>
       </View>
     );
@@ -64,7 +64,7 @@ export const WalletCardSlideFooter: React.FC<Props> = ({
       ? onActionUnshieldERC20s
       : onActionShieldTokens;
     const icon = item.isRailgun ? IconPublic() : IconShielded();
-    const title = item.isRailgun ? 'Unshield' : 'Shield';
+    const title = item.isRailgun ? "Unshield" : "Shield";
 
     return (
       <ButtonWithTextAndIcon

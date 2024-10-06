@@ -3,26 +3,26 @@ import {
   RecipeERC20Amount,
   RecipeInput,
   RecipeOutput,
-} from '@railgun-community/cookbook';
-import { delay, NFTAmount } from '@railgun-community/shared-models';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ERC20Amount } from '../../models';
-import { generateKey, logDevError } from '../../utils';
+} from "@railgun-community/cookbook";
+import { delay, NFTAmount } from "@railgun-community/shared-models";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ERC20Amount } from "../../models";
+import { generateKey, logDevError } from "../../utils";
 import {
   compareERC20AmountArrays,
   compareNFTAmountArrays,
   createRailgunNFTAmounts,
-} from '../../utils/tokens';
-import { useReduxSelector } from '../hooks-redux';
-import { useMemoCustomCompare } from '../react-extensions';
+} from "../../utils/tokens";
+import { useReduxSelector } from "../hooks-redux";
+import { useMemoCustomCompare } from "../react-extensions";
 
 export const useRecipe = <T extends Recipe>(
   recipe: Optional<T>,
   unshieldERC20Amounts: ERC20Amount[],
-  unshieldNFTAmounts: NFTAmount[],
+  unshieldNFTAmounts: NFTAmount[]
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [currentRecipe, setCurrentRecipe] = useState<Optional<T>>();
   const [recipeOutput, setRecipeOutput] = useState<Optional<RecipeOutput>>();
@@ -34,23 +34,23 @@ export const useRecipe = <T extends Recipe>(
 
   const relayAdaptUnshieldERC20Amounts: ERC20Amount[] = useMemoCustomCompare(
     unshieldERC20Amounts,
-    compareERC20AmountArrays,
+    compareERC20AmountArrays
   );
   const relayAdaptUnshieldNFTAmounts: NFTAmount[] = useMemoCustomCompare(
     unshieldNFTAmounts,
-    compareNFTAmountArrays,
+    compareNFTAmountArrays
   );
 
   const recipeInput: RecipeInput = useMemo(() => {
     const erc20Amounts: RecipeERC20Amount[] =
-      relayAdaptUnshieldERC20Amounts.map(erc20Amount => ({
+      relayAdaptUnshieldERC20Amounts.map((erc20Amount) => ({
         tokenAddress: erc20Amount.token.address,
         decimals: BigInt(erc20Amount.token.decimals),
         isBaseToken: erc20Amount.token.isBaseToken,
         amount: BigInt(erc20Amount.amountString),
       }));
     const recipeInput: RecipeInput = {
-      railgunAddress: wallets.active?.railAddress ?? 'No Active Wallet',
+      railgunAddress: wallets.active?.railAddress ?? "No Active Wallet",
       networkName: network.current.name,
       erc20Amounts,
       nfts: createRailgunNFTAmounts(relayAdaptUnshieldNFTAmounts),
@@ -88,7 +88,7 @@ export const useRecipe = <T extends Recipe>(
         }
         setIsLoadingRecipeOutput(false);
       } catch (err) {
-        const error = new Error('Error updating recipe output', {
+        const error = new Error("Error updating recipe output", {
           cause: err,
         });
         logDevError(error);

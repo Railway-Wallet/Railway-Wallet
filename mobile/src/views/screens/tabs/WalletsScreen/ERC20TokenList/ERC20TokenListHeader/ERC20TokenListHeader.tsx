@@ -1,10 +1,10 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
-import { ListHeader } from '@components/list/ListHeader/ListHeader';
-import { SpinnerCubes } from '@components/loading/SpinnerCubes/SpinnerCubes';
-import { IconPublic, IconShielded, styleguide } from '@react-shared';
-import { styles } from './styles';
+import React from "react";
+import { View } from "react-native";
+import { Button, IconButton } from "react-native-paper";
+import { ListHeader } from "@components/list/ListHeader/ListHeader";
+import { SpinnerCubes } from "@components/loading/SpinnerCubes/SpinnerCubes";
+import { IconPublic, IconShielded, styleguide } from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   isRailgun: boolean;
@@ -25,7 +25,7 @@ export const ERC20TokenListHeader: React.FC<Props> = ({
   onDisableDiscreetMode,
   discreet,
 }) => {
-  const title = isRailgun ? 'Shielded Tokens' : 'Public Tokens';
+  const title = isRailgun ? "Shielded Tokens" : "Public Tokens";
 
   return (
     <ListHeader
@@ -39,7 +39,7 @@ export const ERC20TokenListHeader: React.FC<Props> = ({
             labelStyle={styles.discreetButtonText}
             compact
           >
-            {discreet ? '***' : '123'}
+            {discreet ? "***" : "123"}
           </Button>
           {isRefreshing ? (
             <View style={[styles.addButton, styles.spinner]}>

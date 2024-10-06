@@ -2,18 +2,18 @@ import {
   EVMGasType,
   isDefined,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { SelectNetworkFeeStackParamList } from '@models/navigation-models';
+} from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { SelectNetworkFeeStackParamList } from "@models/navigation-models";
 import {
   NavigationProp,
   RouteProp,
   StackActions,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   broadcasterFeeInfoText,
   CustomGasTransactionDetails,
@@ -22,19 +22,19 @@ import {
   networkGasText,
   styleguide,
   useReduxSelector,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { NetworkFeeOption } from './NetworkFeeOption/NetworkFeeOption';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { NetworkFeeOption } from "./NetworkFeeOption/NetworkFeeOption";
+import { styles } from "./styles";
 
 type Props = {
   navigation: NavigationProp<
     SelectNetworkFeeStackParamList,
-    'SelectNetworkFeeModal'
+    "SelectNetworkFeeModal"
   >;
   route: RouteProp<
-    { params: SelectNetworkFeeStackParamList['SelectNetworkFeeModal'] },
-    'params'
+    { params: SelectNetworkFeeStackParamList["SelectNetworkFeeModal"] },
+    "params"
   >;
 };
 
@@ -42,9 +42,9 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
   route,
   navigation,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
 
   const {
     onDismiss,
@@ -59,7 +59,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
   const [selectedOption, setSelectedOption] = useState(currentOption);
 
   const [customGasPrice, setCustomGasPrice] = useState<Optional<bigint>>(
-    defaultCustomGasTransactionDetails.gasPrice,
+    defaultCustomGasTransactionDetails.gasPrice
   );
   const [customMaxFeePerGas, setCustomMaxFeePerGas] = useState<
     Optional<bigint>
@@ -91,7 +91,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
 
     if (isBroadcasterTransaction) {
       if (!selectedBroadcaster) {
-        logDev('Requires selected broadcaster to choose network fee.');
+        logDev("Requires selected broadcaster to choose network fee.");
         return null;
       }
       const broadcasterFeeInfo = broadcasterFeeInfoText(
@@ -101,20 +101,20 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
         selectedBroadcaster,
         selectedFeeToken,
         gasDetails,
-        showExactCurrencyGasPrice,
+        showExactCurrencyGasPrice
       );
       gasTextFormatted = {
         networkFeeText:
-          broadcasterFeeInfo?.broadcasterFeeText ?? 'Updating gas fee',
+          broadcasterFeeInfo?.broadcasterFeeText ?? "Updating gas fee",
         networkFeePriceText:
-          broadcasterFeeInfo?.broadcasterFeeSubtext ?? 'Please wait...',
+          broadcasterFeeInfo?.broadcasterFeeSubtext ?? "Please wait...",
       };
     } else {
       gasTextFormatted = networkGasText(
         network.current,
         networkPrices,
         gasDetails,
-        showExactCurrencyGasPrice,
+        showExactCurrencyGasPrice
       );
     }
 
@@ -130,7 +130,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
 
   const customGasDetailsTypes01 = (
     evmGasType: EVMGasType.Type0 | EVMGasType.Type1,
-    gasPrice: bigint,
+    gasPrice: bigint
   ): TransactionGasDetails => {
     return {
       evmGasType,
@@ -141,7 +141,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
 
   const customGasDetailsType2 = (
     maxFeePerGas: bigint,
-    maxPriorityFeePerGas: bigint,
+    maxPriorityFeePerGas: bigint
   ): TransactionGasDetails => {
     return {
       evmGasType: EVMGasType.Type2,
@@ -158,10 +158,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
       case EVMGasType.Type1: {
         if (isDefined(customGasPrice)) {
           return networkFeeOptionRightView(
-            customGasDetailsTypes01(
-              normalGasDetails.evmGasType,
-              customGasPrice,
-            ),
+            customGasDetailsTypes01(normalGasDetails.evmGasType, customGasPrice)
           );
         }
         break;
@@ -174,15 +171,15 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
           return networkFeeOptionRightView(
             customGasDetailsType2(
               customMaxFeePerGas,
-              customMaxPriorityFeePerGas,
-            ),
+              customMaxPriorityFeePerGas
+            )
           );
         }
         break;
       }
     }
 
-    return rightView('Advanced gas selection', 'Set custom gas fee');
+    return rightView("Advanced gas selection", "Set custom gas fee");
   };
 
   const rightView = (rightTitle: string, rightDescription: string) => {
@@ -203,7 +200,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
           if (isDefined(customGasPrice)) {
             return customGasDetailsTypes01(
               defaultGasDetails.evmGasType,
-              customGasPrice,
+              customGasPrice
             );
           }
           break;
@@ -215,7 +212,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
           ) {
             return customGasDetailsType2(
               customMaxFeePerGas,
-              customMaxPriorityFeePerGas,
+              customMaxPriorityFeePerGas
             );
           }
           break;
@@ -231,13 +228,13 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
     switch (defaultGasDetails.evmGasType) {
       case EVMGasType.Type0:
       case EVMGasType.Type1:
-        navigation.navigate('CustomNetworkFeeTypes01Screen', {
+        navigation.navigate("CustomNetworkFeeTypes01Screen", {
           onDismiss: onDismissCustomFeeTypes01Modal,
           defaultGasDetails,
         });
         break;
       case EVMGasType.Type2:
-        navigation.navigate('CustomNetworkFeeType2Screen', {
+        navigation.navigate("CustomNetworkFeeType2Screen", {
           onDismiss: onDismissCustomFeeType2Modal,
           defaultGasDetails,
         });
@@ -254,7 +251,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
 
   const onDismissCustomFeeType2Modal = (
     customMaxFeePerGas?: bigint,
-    customMaxPriorityFeePerGas?: bigint,
+    customMaxPriorityFeePerGas?: bigint
   ) => {
     if (
       isDefined(customMaxFeePerGas) &&
@@ -306,7 +303,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
             }
             rightView={() =>
               networkFeeOptionRightView(
-                gasDetailsMap[NetworkFeeSelection.Slower],
+                gasDetailsMap[NetworkFeeSelection.Slower]
               )
             }
           />
@@ -319,7 +316,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
             }
             rightView={() =>
               networkFeeOptionRightView(
-                gasDetailsMap[NetworkFeeSelection.Standard],
+                gasDetailsMap[NetworkFeeSelection.Standard]
               )
             }
           />
@@ -332,7 +329,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
             }
             rightView={() =>
               networkFeeOptionRightView(
-                gasDetailsMap[NetworkFeeSelection.Faster],
+                gasDetailsMap[NetworkFeeSelection.Faster]
               )
             }
           />
@@ -345,7 +342,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
             }
             rightView={() =>
               networkFeeOptionRightView(
-                gasDetailsMap[NetworkFeeSelection.Aggressive],
+                gasDetailsMap[NetworkFeeSelection.Aggressive]
               )
             }
           />

@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AppState } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { SecurityView } from '@components/views/SecurityView.tsx/SecurityView';
-import { useDisableHardwareBackButton } from '@hooks/navigation/useDisableHardwareBackButton';
-import { useSecurityAuthorization } from '@hooks/security/useSecurityAuthorization';
-import { RootStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { setAuthKey, useAppDispatch } from '@react-shared';
-import { EnterPinModal } from '@screens/modals/EnterPinModal/EnterPinModal';
-import { styles } from './styles';
+import React, { useEffect, useRef, useState } from "react";
+import { AppState } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { SecurityView } from "@components/views/SecurityView.tsx/SecurityView";
+import { useDisableHardwareBackButton } from "@hooks/navigation/useDisableHardwareBackButton";
+import { useSecurityAuthorization } from "@hooks/security/useSecurityAuthorization";
+import { RootStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { setAuthKey, useAppDispatch } from "@react-shared";
+import { EnterPinModal } from "@screens/modals/EnterPinModal/EnterPinModal";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<RootStackParamList, 'LockedScreen'>;
-  route: RouteProp<{ params: RootStackParamList['LockedScreen'] }, 'params'>;
+  navigation: NavigationProp<RootStackParamList, "LockedScreen">;
+  route: RouteProp<{ params: RootStackParamList["LockedScreen"] }, "params">;
 };
 
 export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
@@ -49,10 +49,10 @@ export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     const subscription = AppState.addEventListener(
-      'change',
-      async nextAppState => {
-        if (appState.current === 'background' && nextAppState === 'active') {
-          await new Promise<void>(resolve => {
+      "change",
+      async (nextAppState) => {
+        if (appState.current === "background" && nextAppState === "active") {
+          await new Promise<void>((resolve) => {
             setTimeout(async () => {
               await authenticate();
               resolve();
@@ -60,10 +60,10 @@ export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
           });
         }
 
-        if (nextAppState === 'background' || nextAppState === 'active') {
+        if (nextAppState === "background" || nextAppState === "active") {
           appState.current = nextAppState;
         }
-      },
+      }
     );
 
     return () => {
@@ -74,7 +74,7 @@ export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
   const navigateToWalletProviderLoading = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'WalletProviderLoading' }],
+      routes: [{ name: "WalletProviderLoading" }],
     });
   };
 
@@ -83,7 +83,7 @@ export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
       index: 0,
       routes: [
         {
-          name: 'RecoveryWallets',
+          name: "RecoveryWallets",
         },
       ],
     });

@@ -1,22 +1,22 @@
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { formatUnits } from 'ethers';
-import { ERC20Amount, ERC20AmountRecipient } from '../../models/token';
-import { TransactionType } from '../../models/transaction';
-import { getTokenBalanceSerialized } from '../../utils/tokens';
-import { adjustERC20AmountRecipientForTransaction } from '../../utils/transactions';
-import { useERC20BalancesSerialized } from '../balances/useERC20BalancesSerialized';
-import { useRailgunFees } from '../formatting/useRailgunFees';
+import { RailgunWalletBalanceBucket } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { formatUnits } from "ethers";
+import { ERC20Amount, ERC20AmountRecipient } from "../../models/token";
+import { TransactionType } from "../../models/transaction";
+import { getTokenBalanceSerialized } from "../../utils/tokens";
+import { adjustERC20AmountRecipientForTransaction } from "../../utils/transactions";
+import { useERC20BalancesSerialized } from "../balances/useERC20BalancesSerialized";
+import { useRailgunFees } from "../formatting/useRailgunFees";
 
 export const useAdjustedRecipeUnshieldERC20Amount = (
   inputERC20AmountRecipient: Optional<ERC20AmountRecipient>,
-  broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+  broadcasterFeeERC20Amount: Optional<ERC20Amount>
 ) => {
   const isRailgun = true;
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const transactionType = TransactionType.Swap;
@@ -41,16 +41,19 @@ export const useAdjustedRecipeUnshieldERC20Amount = (
     const { token } = inputERC20AmountRecipient;
     const tokenBalanceSerialized = getTokenBalanceSerialized(
       token,
-      tokenBalancesSerialized,
+      tokenBalancesSerialized
     );
 
     const adjustedAmounts = adjustERC20AmountRecipientForTransaction(
       inputERC20AmountRecipient,
-      TransactionType.Unshield, isRailgun, undefined, broadcasterFeeERC20Amount,
+      TransactionType.Unshield,
+      isRailgun,
+      undefined,
+      broadcasterFeeERC20Amount,
       shieldFee,
       unshieldFee,
       tokenBalanceSerialized,
-      false,
+      false
     );
 
     const adjustedInputValue = BigInt(adjustedAmounts.output.amountString);
@@ -85,7 +88,7 @@ export const useAdjustedRecipeUnshieldERC20Amount = (
     const adjustedAmount = BigInt(unshieldERC20AmountAdjusted.amountString);
     return formatUnits(
       adjustedAmount,
-      unshieldERC20AmountAdjusted.token.decimals,
+      unshieldERC20AmountAdjusted.token.decimals
     );
   }, [unshieldERC20AmountAdjusted]);
 

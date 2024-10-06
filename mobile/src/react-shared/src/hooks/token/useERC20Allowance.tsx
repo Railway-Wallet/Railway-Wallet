@@ -1,24 +1,24 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useRef, useState } from 'react';
-import { ERC20Token } from '../../models/token';
-import { TransactionType } from '../../models/transaction';
-import { getERC20SpenderAllowance } from '../../services/token/erc20-allowance';
-import { requiresTokenApproval } from '../../utils/util';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
-import { usePendingApproveERC20Transaction } from '../saved-transactions/usePendingApproveERC20Transaction';
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useRef, useState } from "react";
+import { ERC20Token } from "../../models/token";
+import { TransactionType } from "../../models/transaction";
+import { getERC20SpenderAllowance } from "../../services/token/erc20-allowance";
+import { requiresTokenApproval } from "../../utils/util";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
+import { usePendingApproveERC20Transaction } from "../saved-transactions/usePendingApproveERC20Transaction";
 
-const NULL_SPENDER = '0x0000000000000000000000000000000000000000';
+const NULL_SPENDER = "0x0000000000000000000000000000000000000000";
 
 export const useERC20Allowance = (
   currentToken: Optional<ERC20Token>,
   transactionType: TransactionType,
   spender: Optional<string>,
   isPrivate: boolean,
-  setError: (error: Error) => void,
+  setError: (error: Error) => void
 ) => {
   const dispatch = useAppDispatch();
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [erc20Allowance, setERC20Allowance] = useState<Optional<bigint>>();
 
@@ -34,7 +34,7 @@ export const useERC20Allowance = (
   const { pendingApproveERC20Transaction } = usePendingApproveERC20Transaction(
     networkName,
     currentToken?.address,
-    spender,
+    spender
   );
 
   useEffect(() => {
@@ -46,12 +46,12 @@ export const useERC20Allowance = (
         return;
       }
       if (!isDefined(spender) || spender === NULL_SPENDER) {
-        setError(new Error('No spender'));
+        setError(new Error("No spender"));
         setERC20Allowance(undefined);
         return;
       }
       if (isDefined(wallets.active) && wallets.active.isViewOnlyWallet) {
-        setError(new Error('View-only wallet cannot have allowance'));
+        setError(new Error("View-only wallet cannot have allowance"));
         return;
       }
 
@@ -60,7 +60,7 @@ export const useERC20Allowance = (
         networkName,
         wallets.active?.ethAddress,
         currentToken,
-        spender,
+        spender
       );
 
       if (

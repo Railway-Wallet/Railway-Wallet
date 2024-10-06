@@ -1,18 +1,18 @@
-import { POIProofEventStatus } from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
+import { POIProofEventStatus } from "@railgun-community/shared-models";
+import { useEffect, useState } from "react";
 import {
   POIProofEventStatusUI,
   POIProofProgress,
-} from '../../redux-store/reducers/poi-proof-progress-reducer';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../redux-store/reducers/poi-proof-progress-reducer";
+import { useReduxSelector } from "../hooks-redux";
 
 const COMPLETED_TIMER_TIMEOUT = 3000;
 
 export const usePOIProofStatus = () => {
-  const { poiProofProgress } = useReduxSelector('poiProofProgress');
-  const { network } = useReduxSelector('network');
-  const { txidVersion } = useReduxSelector('txidVersion');
-  const { wallets } = useReduxSelector('wallets');
+  const { poiProofProgress } = useReduxSelector("poiProofProgress");
+  const { network } = useReduxSelector("network");
+  const { txidVersion } = useReduxSelector("txidVersion");
+  const { wallets } = useReduxSelector("wallets");
 
   const [poiProofProgressStatus, setPOIProofProgressStatus] =
     useState<Optional<POIProofProgress>>();

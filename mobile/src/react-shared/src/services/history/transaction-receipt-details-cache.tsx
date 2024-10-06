@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
-import { TransactionReceiptDetails } from '../../models/transaction';
-import { logDevError } from '../../utils/logging';
-import { StorageService } from '../storage/storage-service';
+import { isDefined } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
+import { TransactionReceiptDetails } from "../../models/transaction";
+import { logDevError } from "../../utils/logging";
+import { StorageService } from "../storage/storage-service";
 
 export class TransactionReceiptDetailsCache {
   private getStorageKey = (txid: string) => {
@@ -10,11 +10,11 @@ export class TransactionReceiptDetailsCache {
   };
 
   getCached = async (
-    txid: string,
+    txid: string
   ): Promise<Optional<TransactionReceiptDetails>> => {
     try {
       const txReceiptDetails = await StorageService.getItem(
-        this.getStorageKey(txid),
+        this.getStorageKey(txid)
       );
       if (isDefined(txReceiptDetails)) {
         const transactionReceiptDetails: TransactionReceiptDetails =
@@ -35,11 +35,11 @@ export class TransactionReceiptDetailsCache {
 
   store = async (
     txid: string,
-    txReceiptDetails: TransactionReceiptDetails,
+    txReceiptDetails: TransactionReceiptDetails
   ): Promise<void> => {
     await StorageService.setItem(
       this.getStorageKey(txid),
-      JSON.stringify(txReceiptDetails),
+      JSON.stringify(txReceiptDetails)
     );
   };
 

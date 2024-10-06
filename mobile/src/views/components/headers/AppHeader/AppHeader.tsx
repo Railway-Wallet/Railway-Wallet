@@ -1,12 +1,12 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { ReactNode, useState } from 'react';
-import { Text, View } from 'react-native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { ReactNode, useState } from "react";
+import { Text, View } from "react-native";
 import {
   Header as NativeHeader,
   HeaderTitleProps,
-} from '@react-navigation/elements';
-import { styleguide } from '@react-shared';
-import { styles } from './styles';
+} from "@react-navigation/elements";
+import { styleguide } from "@react-shared";
+import { styles } from "./styles";
 
 export type AppHeaderProps = {
   title?: string;
@@ -21,7 +21,7 @@ export type AppHeaderProps = {
 };
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
-  title = '',
+  title = "",
   isModal = false,
   headerLeft,
   headerRight,
@@ -39,7 +39,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         style={Object.assign(
           {},
           styles.title,
-          hoverTitle ? styles.hoveredTitle : {},
+          hoverTitle ? styles.hoveredTitle : {}
         )}
         onPressIn={() => setHoverTitle(true)}
         onPressOut={() => setHoverTitle(false)}
@@ -61,9 +61,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   };
 
   return (
-    (<NativeHeader
+    <NativeHeader
       title={title}
-      headerTitle={props => titleView({ ...props, allowFontScaling })}
+      headerTitle={(props) => titleView({ ...props, allowFontScaling })}
       modal={isModal}
       headerStyle={[
         styles.headerStyle,
@@ -73,6 +73,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       headerRight={() => headerButtonWithModalPadding(headerRight)}
       headerLeft={() => headerButtonWithModalPadding(headerLeft)}
       headerStatusBarHeight={headerStatusBarHeight}
-    />)
+    />
   );
 };

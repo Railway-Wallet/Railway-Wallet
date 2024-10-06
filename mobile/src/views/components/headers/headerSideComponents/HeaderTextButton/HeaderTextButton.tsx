@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, View } from 'react-native';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+import React from "react";
+import { Button, View } from "react-native";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 interface HeaderTextButtonProps {
   text: string;

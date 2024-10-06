@@ -3,10 +3,10 @@ import {
   isDefined,
   Network,
   ProviderJson,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Alert, Modal, ScrollView, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Alert, Modal, ScrollView, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import {
   logDev,
   logDevError,
@@ -20,18 +20,18 @@ import {
   ToastType,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { WideButtonTextOnly } from '@views/components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { SettingsListHeader } from '@views/screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader';
-import { SettingsListItem } from '@views/screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { WideButtonTextOnly } from "@views/components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { SettingsListHeader } from "@views/screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader";
+import { SettingsListItem } from "@views/screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '../ErrorDetailsModal/ErrorDetailsModal';
-import { styles } from './styles';
+} from "../ErrorDetailsModal/ErrorDetailsModal";
+import { styles } from "./styles";
 
 type Props = {
   selectedNetwork: Network;
@@ -39,7 +39,7 @@ type Props = {
 };
 
 export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { remoteConfig } = useReduxSelector("remoteConfig");
   const navigation = useNavigation();
 
   const dispatch = useAppDispatch();
@@ -55,7 +55,7 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
     const updateNetwork = async () => {
       const storedSettings =
         await NetworkStoredSettingsService.getSettingsForNetwork(
-          selectedNetwork.name,
+          selectedNetwork.name
         );
       setNetworkStoredSettings(storedSettings);
     };
@@ -66,7 +66,7 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
   const updateSettings = async (updatedSettings: SettingsForNetwork) => {
     await NetworkStoredSettingsService.storeSettingsForNetwork(
       selectedNetwork.name,
-      updatedSettings,
+      updatedSettings
     );
     setNetworkStoredSettings(updatedSettings);
   };
@@ -77,12 +77,12 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
         showImmediateToast({
           message: `Reloading RPC providers...`,
           type: ToastType.Info,
-        }),
+        })
       );
 
       await ProviderService.loadFrontendProviderForNetwork(
         selectedNetwork.name,
-        ProviderNodeType.FullNode,
+        ProviderNodeType.FullNode
       );
       await ProviderLoader.loadEngineProvider(selectedNetwork.name, dispatch);
 
@@ -90,10 +90,10 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
         showImmediateToast({
           message: `RPC Providers loaded successfully`,
           type: ToastType.Info,
-        }),
+        })
       );
     } catch (cause) {
-      const error = new Error('Error re-connecting to network', { cause });
+      const error = new Error("Error re-connecting to network", { cause });
       logDevError(error);
       setErrorModal({
         show: true,
@@ -107,31 +107,31 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
     triggerHaptic(HapticSurface.NavigationButton);
     onClose();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
-    (navigation as any).navigate('SettingsAddRPC', {
+    (navigation as any).navigate("SettingsAddRPC", {
       network: selectedNetwork,
     });
   };
 
   const promptRemoveRPCCustomURL = (url: string) => {
     triggerHaptic(HapticSurface.NavigationButton);
-    Alert.alert('Remove custom RPC?', `URL: ${url}.`, [
+    Alert.alert("Remove custom RPC?", `URL: ${url}.`, [
       {
-        text: 'Remove',
+        text: "Remove",
         onPress: () => removeRPCCustomURL(url),
-        style: 'destructive',
+        style: "destructive",
       },
       {
-        text: 'Cancel',
-        style: 'cancel',
+        text: "Cancel",
+        style: "cancel",
       },
     ]);
   };
 
   const setUseDefaultRailwayRPCsAsBackup = async (
-    useDefaultRailwayRPCsAsBackup: boolean,
+    useDefaultRailwayRPCsAsBackup: boolean
   ) => {
     if (!networkStoredSettings) {
-      logDev('No networkStoredSettings');
+      logDev("No networkStoredSettings");
       return;
     }
     const settings: SettingsForNetwork = {
@@ -144,13 +144,13 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
 
   const removeRPCCustomURL = async (url: string) => {
     if (!networkStoredSettings) {
-      logDev('No networkStoredSettings');
+      logDev("No networkStoredSettings");
       return;
     }
     const settings: SettingsForNetwork = {
       ...networkStoredSettings,
       rpcCustomURLs: networkStoredSettings.rpcCustomURLs.filter(
-        rpcCustomURL => rpcCustomURL !== url,
+        (rpcCustomURL) => rpcCustomURL !== url
       ),
     };
     await updateSettings(settings);
@@ -161,13 +161,13 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
     <View style={styles.listRightView}>
       <Text style={styles.listRightViewText}>
         {networkStoredSettings?.useDefaultRailwayRPCsAsBackup ?? false
-          ? 'Enabled'
-          : 'Disabled'}
+          ? "Enabled"
+          : "Disabled"}
       </Text>
       <Text style={styles.listRightViewSubtext}>
         {networkStoredSettings?.useDefaultRailwayRPCsAsBackup ?? false
-          ? 'Using default RPCs as backups'
-          : 'Only connecting to custom RPCs'}
+          ? "Using default RPCs as backups"
+          : "Only connecting to custom RPCs"}
       </Text>
     </View>
   );
@@ -178,25 +178,25 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
     : [];
   const defaultRPCProvidersForChain: ProviderJson[] =
     defaultRPCConfigs.find(
-      config => config.chainId === selectedNetwork.chain.id,
+      (config) => config.chainId === selectedNetwork.chain.id
     )?.providers ?? [];
 
   const hasCustomRPCs = (networkStoredSettings?.rpcCustomURLs ?? []).length > 0;
 
   return (
-    (<Modal animationType="slide" presentationStyle="formSheet" visible>
+    <Modal animationType="slide" presentationStyle="formSheet" visible>
       <AppHeader
         title={`${selectedNetwork.publicName} RPC Providers`}
         headerStatusBarHeight={16}
         backgroundColor={styleguide.colors.gray5()}
         isModal
-        headerRight={<HeaderTextButton text={'Close'} onPress={onClose} />}
+        headerRight={<HeaderTextButton text={"Close"} onPress={onClose} />}
       />
       <View style={styles.wrapper}>
         <ScrollView>
           <Text style={styles.sectionHeader}>
             Select the RPCs you would like to use for this network. These can be
-            changed in Settings {'>'} Network & RPCs.
+            changed in Settings {">"} Network & RPCs.
           </Text>
           <View style={styles.itemRow}>
             <SettingsListHeader title="Default RPC Providers" />
@@ -207,8 +207,8 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
                   centerStyle={styles.listItemCenter}
                   titleStyle={styles.listItemTitle}
                   title={
-                    provider.provider.includes('railwayapi')
-                      ? 'Alchemy Proxy'
+                    provider.provider.includes("railwayapi")
+                      ? "Alchemy Proxy"
                       : provider.provider
                   }
                 />
@@ -238,7 +238,7 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
                     icon="minus-circle"
                     onTap={() => promptRemoveRPCCustomURL(rpcCustomURL)}
                   />
-                ),
+                )
               )}
             </View>
             <View style={styles.items}>
@@ -251,30 +251,30 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
           </View>
           {networkStoredSettings && hasCustomRPCs && (
             // eslint-disable-next-line react-native/no-inline-styles
-            (<View style={[styles.itemRow, { marginBottom: 20 }]}>
+            <View style={[styles.itemRow, { marginBottom: 20 }]}>
               <View style={styles.items}>
                 <SettingsListItem
                   title="Default RPCs"
                   rightView={defaultRPCsRightView}
                   onTap={() =>
                     setUseDefaultRailwayRPCsAsBackup(
-                      !networkStoredSettings.useDefaultRailwayRPCsAsBackup,
+                      !networkStoredSettings.useDefaultRailwayRPCsAsBackup
                     )
                   }
                 />
               </View>
-            </View>)
+            </View>
           )}
           <WideButtonTextOnly
             onPress={onClose}
             title={`Continue with ${
-              hasCustomRPCs ? 'custom' : 'default'
+              hasCustomRPCs ? "custom" : "default"
             } providers`}
             additionalStyles={styles.continueButton}
           />
         </ScrollView>
       </View>
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-    </Modal>)
+    </Modal>
   );
 };

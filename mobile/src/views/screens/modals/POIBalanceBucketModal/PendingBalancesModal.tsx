@@ -1,15 +1,15 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, FlatList, Modal, Text, View } from 'react-native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, FlatList, Modal, Text, View } from "react-native";
 import {
   AlertProps,
   GenericAlert,
-} from '@components/alerts/GenericAlert/GenericAlert';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+} from "@components/alerts/GenericAlert/GenericAlert";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import {
   ERC20AmountRecipient,
   getPOIBalancesDisclaimerMessage,
@@ -21,22 +21,22 @@ import {
   styleguide,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { createPOIDisclaimerAlert } from '@utils/alerts';
-import { SpinnerCubes } from '@views/components/loading/SpinnerCubes/SpinnerCubes';
-import { PendingBalancesTabs } from './Tabs/PendingBalancesTabs';
-import { PendingBalancesItem } from './TxItem/PendingBalancesItem';
-import { styles } from './styles';
+} from "@react-shared";
+import { createPOIDisclaimerAlert } from "@utils/alerts";
+import { SpinnerCubes } from "@views/components/loading/SpinnerCubes/SpinnerCubes";
+import { PendingBalancesTabs } from "./Tabs/PendingBalancesTabs";
+import { PendingBalancesItem } from "./TxItem/PendingBalancesItem";
+import { styles } from "./styles";
 
 export enum PendingBalancesModalTabOption {
-  Pending = 'Pending',
-  Incomplete = 'Incomplete',
-  Restricted = 'Restricted',
+  Pending = "Pending",
+  Incomplete = "Incomplete",
+  Restricted = "Restricted",
 }
 
 export enum SyncProofType {
-  Spend = 'Spend',
-  Receive = 'Receive',
+  Spend = "Spend",
+  Receive = "Receive",
 }
 
 type Props = {
@@ -44,7 +44,7 @@ type Props = {
   onDismiss: () => void;
   navigateUnshieldToOrigin: (
     originalShieldTxid: string,
-    erc20AmountRecipients: ERC20AmountRecipient[],
+    erc20AmountRecipients: ERC20AmountRecipient[]
   ) => void;
   initialBalanceBucket?: RailgunWalletBalanceBucket;
 };
@@ -55,15 +55,15 @@ export const PendingBalancesModal: React.FC<Props> = ({
   navigateUnshieldToOrigin,
   initialBalanceBucket,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
+  const { remoteConfig } = useReduxSelector("remoteConfig");
 
   const [alert, setAlert] = useState<AlertProps | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<PendingBalancesModalTabOption>(
-    PendingBalancesModalTabOption.Pending,
+    PendingBalancesModalTabOption.Pending
   );
   const [showRestrictedTab, setShowRestrictedTab] = useState<boolean>(false);
   const [allTxItems, setAllTxItems] = useState<NonSpendableTransaction[]>([]);
@@ -110,18 +110,18 @@ export const PendingBalancesModal: React.FC<Props> = ({
     const railgunTransactions = await getWalletTransactionHistory(
       currentNetwork.chain,
       currentWallet.railWalletID,
-      0,
+      0
     );
     const txItems = await txHistoryService.getNonPOITransactions(
       currentNetwork.name,
       currentWallet,
       wallets.available,
-      railgunTransactions,
+      railgunTransactions
     );
 
     const hasRestrictedTransactions = txItems.some(
-      txItem =>
-        txItem.balanceBucket === RailgunWalletBalanceBucket.ShieldBlocked,
+      (txItem) =>
+        txItem.balanceBucket === RailgunWalletBalanceBucket.ShieldBlocked
     );
     setShowRestrictedTab(hasRestrictedTransactions);
 
@@ -162,14 +162,14 @@ export const PendingBalancesModal: React.FC<Props> = ({
       await refreshReceivePOIsForWallet(
         txidVersion.current,
         currentNetwork.name,
-        currentWallet?.railWalletID,
+        currentWallet?.railWalletID
       );
     } else {
       await refreshSpentPOIsForWallet(
         txidVersion.current,
         currentNetwork.name,
         currentWallet?.railWalletID,
-        undefined,
+        undefined
       );
     }
 
@@ -177,7 +177,7 @@ export const PendingBalancesModal: React.FC<Props> = ({
   };
 
   const filteredTxItems: NonSpendableTransaction[] = allTxItems.filter(
-    txItem => {
+    (txItem) => {
       switch (selectedTab) {
         case PendingBalancesModalTabOption.Pending:
           return (
@@ -196,11 +196,11 @@ export const PendingBalancesModal: React.FC<Props> = ({
             txItem.balanceBucket === RailgunWalletBalanceBucket.ShieldBlocked
           );
       }
-    },
+    }
   );
 
   return (
-    (<Modal animationType="slide" presentationStyle="formSheet" visible={show}>
+    <Modal animationType="slide" presentationStyle="formSheet" visible={show}>
       <ActionSheetProvider>
         <>
           <View style={styles.wrapper}>
@@ -214,12 +214,13 @@ export const PendingBalancesModal: React.FC<Props> = ({
                   title="Info"
                   onPress={() => {
                     createPOIDisclaimerAlert(
-                      'About Pending Balances',
+                      "About Pending Balances",
                       getPOIBalancesDisclaimerMessage(),
                       setAlert,
                       dispatch,
                       remoteConfig?.current?.poiDocumentation,
-                      undefined, "Okay",
+                      undefined,
+                      "Okay"
                     );
                   }}
                 />
@@ -256,7 +257,7 @@ export const PendingBalancesModal: React.FC<Props> = ({
                   data={filteredTxItems}
                   keyExtractor={(
                     _item: NonSpendableTransaction,
-                    index: number,
+                    index: number
                   ) => String(index)}
                   renderItem={({ item }: { item: NonSpendableTransaction }) => {
                     return (
@@ -275,6 +276,6 @@ export const PendingBalancesModal: React.FC<Props> = ({
           <GenericAlert {...alert} />
         </>
       </ActionSheetProvider>
-    </Modal>)
+    </Modal>
   );
 };

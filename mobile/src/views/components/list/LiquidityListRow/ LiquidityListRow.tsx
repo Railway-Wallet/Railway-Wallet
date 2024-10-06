@@ -1,6 +1,6 @@
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { RailgunWalletBalanceBucket } from "@railgun-community/shared-models";
+import React from "react";
+import { Image, Text, View } from "react-native";
 import {
   ERC20Token,
   getTokenDisplayNameShort,
@@ -8,9 +8,9 @@ import {
   styleguide,
   useGetTokenBalanceDescription,
   useReduxSelector,
-} from '@react-shared';
-import { ListRow } from '../ListRow/ListRow';
-import { styles } from './styles';
+} from "@react-shared";
+import { ListRow } from "../ListRow/ListRow";
+import { styles } from "./styles";
 
 type LiquidityListRowTokens = {
   tokenA: ERC20Token;
@@ -34,8 +34,8 @@ export const LiquidityListRow: React.FC<Props> = ({
   onSelect,
   balanceBucketFilter,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
   const { tokenA, tokenB } = tokens;
   const { getTokenBalanceDescription } =
     useGetTokenBalanceDescription(balanceBucketFilter);
@@ -45,17 +45,17 @@ export const LiquidityListRow: React.FC<Props> = ({
       {`${getTokenDisplayNameShort(
         tokenA,
         wallets.available,
-        network.current.name,
+        network.current.name
       )}-${getTokenDisplayNameShort(
         tokenB,
         wallets.available,
-        network.current.name,
+        network.current.name
       )}`}
     </Text>
   );
 
   const description = `${getTokenBalanceDescription(
-    tokenA,
+    tokenA
   )} • ${getTokenBalanceDescription(tokenB)}`;
 
   const leftView = () => {

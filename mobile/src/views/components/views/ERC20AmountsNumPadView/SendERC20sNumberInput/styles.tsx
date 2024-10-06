@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -20,8 +20,8 @@ export const styles = StyleSheet.create({
   title: {
     ...styleguide.typography.heading2,
     color: styleguide.colors.text(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
   },
   placeholderTitle: {
     color: styleguide.colors.textSecondary,
@@ -36,10 +36,10 @@ export const styles = StyleSheet.create({
   balanceText: {
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.lighterLabelSecondary,
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
     paddingTop: 10,
-    width: '100%',
+    width: "100%",
   },
   errorTextWrapper: {
     marginTop: 6,
@@ -49,10 +49,10 @@ export const styles = StyleSheet.create({
   errorText: {
     ...styleguide.typography.label,
     color: styleguide.colors.error(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
     paddingTop: 2,
-    width: '100%',
+    width: "100%",
   },
   errorTitleBorder: {
     borderColor: styleguide.colors.error(),

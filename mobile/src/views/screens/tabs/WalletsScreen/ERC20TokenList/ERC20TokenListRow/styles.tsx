@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
-import { isSmallScreen } from '@services/util/screen-dimensions-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
+import { isSmallScreen } from "@services/util/screen-dimensions-service";
 
 export const styles = StyleSheet.create({
   rowWrapper: {
@@ -15,10 +15,10 @@ export const styles = StyleSheet.create({
     height: 72,
   },
   rightBalances: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   titleStyle: {
     color: styleguide.colors.text(),
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   tokenIcon: {
     maxWidth: 32,
     maxHeight: 32,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginHorizontal: 12,
   },
 

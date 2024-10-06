@@ -1,13 +1,11 @@
-import { TransactionStatus } from '../../models/transaction';
-import { useFilteredNetworkTransactions } from './useFilteredNetworkTransactions';
+import { TransactionStatus } from "../../models/transaction";
+import { useFilteredNetworkTransactions } from "./useFilteredNetworkTransactions";
 
 export const usePendingTransactionCount = () => {
-  const { networkTransactions } = useFilteredNetworkTransactions(
-    false,
-  );
+  const { networkTransactions } = useFilteredNetworkTransactions(false);
 
   const pendingTransactionCount = networkTransactions.filter(
-    tx => tx.status === TransactionStatus.pending,
+    (tx) => tx.status === TransactionStatus.pending
   ).length;
 
   return {

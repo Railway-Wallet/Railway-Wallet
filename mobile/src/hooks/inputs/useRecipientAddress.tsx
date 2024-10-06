@@ -2,16 +2,16 @@ import {
   isDefined,
   NFTAmount,
   NFTAmountRecipient,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { Alert, TextInput } from 'react-native';
-import { RecipientAddressInput } from '@components/inputs/RecipientAddressInput/RecipientAddressInput';
+} from "react";
+import { Alert, TextInput } from "react-native";
+import { RecipientAddressInput } from "@components/inputs/RecipientAddressInput/RecipientAddressInput";
 import {
   ERC20Amount,
   ERC20AmountRecipient,
@@ -19,7 +19,7 @@ import {
   TransactionType,
   useReduxSelector,
   WalletAddressType,
-} from '@react-shared';
+} from "@react-shared";
 
 export const useRecipientAddress = (
   firstInitialRecipientAddress: Optional<string>,
@@ -30,17 +30,17 @@ export const useRecipientAddress = (
   walletAddressType: WalletAddressType.Ethereum | WalletAddressType.Railgun,
   validateAddress: (
     address: string,
-    isRailgunAddress: boolean,
-  ) => Promise<boolean>,
+    isRailgunAddress: boolean
+  ) => Promise<boolean>
 ) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
-  const [address, setAddress] = useState(firstInitialRecipientAddress ?? '');
+  const [address, setAddress] = useState(firstInitialRecipientAddress ?? "");
   const [
     externalUnresolvedToWalletAddress,
     setExternalUnresolvedToWalletAddress,
   ] = useState<Optional<string>>(
-    firstInitialRecipientExternalUnresolvedToWalletAddress,
+    firstInitialRecipientExternalUnresolvedToWalletAddress
   );
 
   const [hasValidRecipient, setHasValidRecipient] = useState(true);
@@ -60,7 +60,7 @@ export const useRecipientAddress = (
   const setAddresses = useCallback(
     (
       newAddress: string,
-      externalUnresolvedToWalletAddress: Optional<string>,
+      externalUnresolvedToWalletAddress: Optional<string>
     ) => {
       if (newAddress === address) {
         return;
@@ -69,11 +69,11 @@ export const useRecipientAddress = (
       setAddress(newAddress);
       setExternalUnresolvedToWalletAddress(externalUnresolvedToWalletAddress);
     },
-    [address],
+    [address]
   );
 
   const nftAmountRecipients: NFTAmountRecipient[] = useMemo(() => {
-    return nftAmounts.map(nft => ({
+    return nftAmounts.map((nft) => ({
       ...nft,
       recipientAddress: address,
       externalUnresolvedToWalletAddress,
@@ -81,7 +81,7 @@ export const useRecipientAddress = (
   }, [address, externalUnresolvedToWalletAddress, nftAmounts]);
 
   const erc20AmountRecipients: ERC20AmountRecipient[] = useMemo(() => {
-    return erc20Amounts.map(ta => ({
+    return erc20Amounts.map((ta) => ({
       token: ta.token,
       amountString: ta.amountString,
       recipientAddress: address,
@@ -92,10 +92,10 @@ export const useRecipientAddress = (
   const alertIfValidatedIncorrectAddressType = useCallback(async () => {
     if (await validateAddress(address, !isRailgunAddress())) {
       Alert.alert(
-        'Incorrect address type',
+        "Incorrect address type",
         isRailgunAddress()
-          ? 'You must use a private 0zk RAILGUN address for this transaction.'
-          : 'You must use a public address for this transaction.',
+          ? "You must use a private 0zk RAILGUN address for this transaction."
+          : "You must use a public address for this transaction."
       );
     }
   }, [address, validateAddress, isRailgunAddress]);
@@ -106,8 +106,8 @@ export const useRecipientAddress = (
       (await isSmartContract(network.current.name, address))
     ) {
       Alert.alert(
-        'Warning',
-        'The selected address appears to be a smart contract. Certain smart contracts cannot receive funds directly. Please make sure this recipient accepts smart contract deposits, and double-check the destination address.',
+        "Warning",
+        "The selected address appears to be a smart contract. Certain smart contracts cannot receive funds directly. Please make sure this recipient accepts smart contract deposits, and double-check the destination address."
       );
     }
   }, [address, network, walletAddressType]);

@@ -2,19 +2,19 @@ import {
   isDefined,
   Network,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { ButtonTextOnly } from '@components/buttons/ButtonTextOnly/ButtonTextOnly';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { LoadingSwirl } from '@components/loading/LoadingSwirl/LoadingSwirl';
-import { SpinnerCubes } from '@components/loading/SpinnerCubes/SpinnerCubes';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
+import { Button } from "react-native-paper";
+import { ButtonTextOnly } from "@components/buttons/ButtonTextOnly/ButtonTextOnly";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { FullScreenSpinner } from "@components/loading/FullScreenSpinner/FullScreenSpinner";
+import { LoadingSwirl } from "@components/loading/LoadingSwirl/LoadingSwirl";
+import { SpinnerCubes } from "@components/loading/SpinnerCubes/SpinnerCubes";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   CookbookFarmRecipeType,
   ERC20Token,
@@ -35,21 +35,21 @@ import {
   useReduxSelector,
   useVaultFetch,
   useWalletTokenVaultsFilter,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { openInAppBrowserLink } from '@services/util/in-app-browser-service';
-import { Icon } from '@views/components/icons/Icon';
-import { TokenListRow } from '@views/components/list/TokenListRow/TokenListRow';
-import { WalletNetworkSelector } from '@views/screens/tabs/WalletsScreen/WalletNetworkSelector/WalletNetworkSelector';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { openInAppBrowserLink } from "@services/util/in-app-browser-service";
+import { Icon } from "@views/components/icons/Icon";
+import { TokenListRow } from "@views/components/list/TokenListRow/TokenListRow";
+import { WalletNetworkSelector } from "@views/screens/tabs/WalletsScreen/WalletNetworkSelector/WalletNetworkSelector";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'FarmScreen'>;
+  navigation: NavigationProp<DAppsStackParamList, "FarmScreen">;
 };
 
 type Action = {
@@ -57,13 +57,13 @@ type Action = {
   value: CookbookFarmRecipeType;
 };
 
-const DEPOSIT_LABEL = 'Farmable assets';
-const REDEEM_LABEL = 'Assets to redeem';
+const DEPOSIT_LABEL = "Farmable assets";
+const REDEEM_LABEL = "Assets to redeem";
 
 export const FarmScreen: React.FC<Props> = ({ navigation }) => {
-  const { vaults } = useReduxSelector('vaults');
-  const { wallets } = useReduxSelector('wallets');
-  const { network } = useReduxSelector('network');
+  const { vaults } = useReduxSelector("vaults");
+  const { wallets } = useReduxSelector("wallets");
+  const { network } = useReduxSelector("network");
   const dispatch = useAppDispatch();
   const { showActionSheetWithOptions } = useActionSheet();
   const { isLoading, refreshVaultData } = useVaultFetch();
@@ -76,7 +76,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
         show: true,
         error,
         onDismiss: () => setErrorModal(undefined),
-      }),
+      })
   );
 
   const [filteredTokens, setFilteredTokens] = useState<ERC20Token[]>([]);
@@ -101,7 +101,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     useRailgunBalances,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
   const { availableDepositTokens, availableRedeemTokens } =
     useWalletTokenVaultsFilter(activeWallet, networkName);
@@ -128,14 +128,14 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
 
   const onSelectFarmAction = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    const buttons = actions.map(a => {
+    const buttons = actions.map((a) => {
       return {
         name: a.label,
         action: () => setSelectedAction(a),
       };
     });
 
-    callActionSheet(showActionSheetWithOptions, 'Filter assets', buttons);
+    callActionSheet(showActionSheetWithOptions, "Filter assets", buttons);
   };
 
   const onSelectNetwork = async (newNetwork: Network) => {
@@ -152,7 +152,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
         newNetwork.name,
         shouldFallbackOnError,
         pullPrices,
-        pullBalances,
+        pullBalances
       );
 
       triggerHaptic(HapticSurface.EditSuccess);
@@ -161,8 +161,8 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
       setShowLoadingNetworkPublicName(undefined);
     } catch (cause) {
       const error = new Error(
-        'Connection error while loading network. Please try again.',
-        { cause },
+        "Connection error while loading network. Please try again.",
+        { cause }
       );
       logDevError(error);
       setShowLoadingNetworkPublicName(undefined);
@@ -177,7 +177,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
   const onTapNetworkSelector = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     const networks = getSupportedNetworks();
-    const buttons = networks.map(n => {
+    const buttons = networks.map((n) => {
       return {
         name:
           n.isDevOnlyNetwork === true ? `[DEV] ${n.publicName}` : n.publicName,
@@ -185,7 +185,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
       };
     });
 
-    callActionSheet(showActionSheetWithOptions, 'Select network', buttons);
+    callActionSheet(showActionSheetWithOptions, "Select network", buttons);
   };
 
   const refreshBalancesAndVaults = async () => {
@@ -204,7 +204,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
   const onSelectERC20 = (token: ERC20Token) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('FarmVaultInitial', {
+    navigation.navigate("FarmVaultInitial", {
       currentToken: token,
       cookbookFarmRecipeType: selectedAction.value,
     });
@@ -225,7 +225,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
   const getBestAPYPercentage = (tokenAddress: string): string => {
     const bestAPY = bestAPYForToken(tokenAddress);
     if (!isDefined(bestAPY)) {
-      return 'N/A';
+      return "N/A";
     }
     return formatNumberToLocaleWithMinDecimals(bestAPY * 100, 2);
   };
@@ -241,7 +241,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
     const balanceDecimal = getDecimalBalance(BigInt(balance), token.decimals);
     const balanceText = hasBalance
       ? balanceDecimal > 0 && balanceDecimal < 0.0001
-        ? '<' + formatNumberToLocaleWithMinDecimals(0.0001, 4)
+        ? "<" + formatNumberToLocaleWithMinDecimals(0.0001, 4)
         : formatNumberToLocaleWithMinDecimals(balanceDecimal, 4)
       : undefined;
 
@@ -266,7 +266,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
         description={getTokenDisplayName(
           token,
           wallets.available,
-          network.current.name,
+          network.current.name
         )}
         onSelect={() => onSelectERC20(token)}
         rightView={() => rightBalances(token)}
@@ -283,8 +283,8 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
 
   const farmActionAdjectiveText =
     selectedAction.value === CookbookFarmRecipeType.Deposit
-      ? 'farmable'
-      : 'redeemable';
+      ? "farmable"
+      : "redeemable";
 
   return (
     <>
@@ -359,7 +359,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
                       viewStyle={styles.farmSourceButton}
                       labelStyle={styles.farmSourcesListButtonText}
                     />
-                  ),
+                  )
                 )}
               </View>
             </View>
@@ -371,7 +371,7 @@ export const FarmScreen: React.FC<Props> = ({ navigation }) => {
         text={
           isDefined(showLoadingNetworkPublicName)
             ? `Loading ${showLoadingNetworkPublicName} and scanning new transactions`
-            : ''
+            : ""
         }
       />
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}

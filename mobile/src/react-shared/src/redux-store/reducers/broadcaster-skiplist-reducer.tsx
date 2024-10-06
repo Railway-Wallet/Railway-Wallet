@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type BroadcasterSkiplistState = {
   railgunAddresses: string[];
@@ -9,7 +9,7 @@ const initialState = {
 } as BroadcasterSkiplistState;
 
 const slice = createSlice({
-  name: 'broadcaster-skiplist',
+  name: "broadcaster-skiplist",
   initialState,
   reducers: {
     addSkippedBroadcaster(state, action: PayloadAction<string>) {

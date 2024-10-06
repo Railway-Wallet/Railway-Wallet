@@ -1,13 +1,13 @@
-import { SwapQuoteData } from '@railgun-community/cookbook';
+import { SwapQuoteData } from "@railgun-community/cookbook";
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
-import { ApproveButton } from '@components/views/ERC20AmountsNumPadView/ApproveButton/ApproveButton';
-import { ERC20AmountRowView } from '@components/views/ERC20AmountsNumPadView/ERC20AmountRowView';
-import { SendERC20sNumberInput } from '@components/views/ERC20AmountsNumPadView/SendERC20sNumberInput/SendERC20sNumberInput';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
+import { ApproveButton } from "@components/views/ERC20AmountsNumPadView/ApproveButton/ApproveButton";
+import { ERC20AmountRowView } from "@components/views/ERC20AmountsNumPadView/ERC20AmountRowView";
+import { SendERC20sNumberInput } from "@components/views/ERC20AmountsNumPadView/SendERC20sNumberInput/SendERC20sNumberInput";
 import {
   compareTokens,
   ERC20Amount,
@@ -22,10 +22,10 @@ import {
   useERC20Balance,
   useReduxSelector,
   useValidateNumEntry,
-} from '@react-shared';
-import { SelectERC20Modal } from '@screens/modals/SelectERC20Modal/SelectERC20Modal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { SelectERC20Modal } from "@screens/modals/SelectERC20Modal/SelectERC20Modal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 type Props = {
   isRailgun: boolean;
@@ -58,8 +58,8 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
   validSellTokenAmount,
   onSelectTokenAmount,
 }: Props) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const activeWallet = wallets.active;
 
@@ -87,7 +87,7 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
     activeWallet,
     sellToken,
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
     transactionType,
     currentQuote?.spender,
     isRailgun,
-    setSellTokenError,
+    setSellTokenError
   );
 
   const showTokenApprove =
@@ -116,7 +116,7 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
       erc20Allowance <
         stringEntryToBigInt(
           sellTokenEntryString,
-          currentSellToken.current.decimals,
+          currentSellToken.current.decimals
         ));
 
   const { hasValidNumEntry, disableNumPad } = useValidateNumEntry(
@@ -127,7 +127,7 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
     tokenBalance ?? 0n,
     transactionType,
     sellToken,
-    isRailgun,
+    isRailgun
   );
 
   useEffect(() => {
@@ -167,14 +167,14 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
     triggerHaptic(HapticSurface.SelectItem);
     const newString = formatUnitFromHexString(
       tokenBalance ?? 0n,
-      sellToken.decimals,
+      sellToken.decimals
     );
     setSellTokenEntryString(newString);
   };
 
   const onTapClearButton = () => {
     triggerHaptic(HapticSurface.SelectItem);
-    setSellTokenEntryString('');
+    setSellTokenEntryString("");
   };
 
   return (
@@ -229,7 +229,7 @@ export const SwapSellTokenAmountEntry: React.FC<Props> = ({
           approveText={`Approve ${getTokenDisplayName(
             sellToken,
             wallets.available,
-            network.current.name,
+            network.current.name
           )} for 0x Exchange`}
           customStyles={styles.approveButton}
         />

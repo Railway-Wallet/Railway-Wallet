@@ -1,6 +1,6 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SavedTransaction } from '../../models/transaction';
+import { NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SavedTransaction } from "../../models/transaction";
 
 type RemoveTransactionPayload = {
   networkName: NetworkName;
@@ -20,12 +20,12 @@ const initialState = {
 } as TransactionsMissingTimestampState;
 
 const slice = createSlice({
-  name: 'transactionsMissingTimestamp',
+  name: "transactionsMissingTimestamp",
   initialState,
   reducers: {
     addMissingTimestampTransaction(
       state,
-      action: PayloadAction<AddTransactionPayload>,
+      action: PayloadAction<AddTransactionPayload>
     ) {
       const { transaction, networkName } = action.payload;
       state.forNetwork[networkName] = state.forNetwork[networkName] ?? [];
@@ -41,16 +41,16 @@ const slice = createSlice({
     },
     removeMissingTimestampTransactionByID(
       state,
-      action: PayloadAction<RemoveTransactionPayload>,
+      action: PayloadAction<RemoveTransactionPayload>
     ) {
       const { id, networkName } = action.payload;
       state.forNetwork[networkName] = (
         state.forNetwork[networkName] ?? []
-      ).filter(t => t.id !== id);
+      ).filter((t) => t.id !== id);
     },
     resetMissingTimestampTransactions(
       state,
-      action: PayloadAction<NetworkName>,
+      action: PayloadAction<NetworkName>
     ) {
       const networkName: NetworkName = action.payload;
       state.forNetwork[networkName] = [];

@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 const iconContainer = {
   backgroundColor: styleguide.colors.gray6(),
@@ -19,9 +19,9 @@ export const styles = StyleSheet.create({
     lineHeight: 18,
   },
   leftViewContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     paddingHorizontal: 12,
   },
   iconContainerLeft: {

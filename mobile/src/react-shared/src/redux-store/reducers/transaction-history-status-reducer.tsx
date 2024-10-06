@@ -1,11 +1,11 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export enum TransactionHistoryStatus {
-  NeedsSync = 'NeedsSync',
-  Syncing = 'Syncing',
-  Synced = 'Synced',
-  Error = 'Error',
+  NeedsSync = "NeedsSync",
+  Syncing = "Syncing",
+  Synced = "Synced",
+  Error = "Error",
 }
 
 type SetTransactionHistoryStatusPayload = {
@@ -23,7 +23,7 @@ export type TransactionHistoryStatusState = {
 
 const defaultAllNetworksMapNeedsSync: MapType<TransactionHistoryCurrentStatus> =
   {};
-Object.values(NetworkName).forEach(networkName => {
+Object.values(NetworkName).forEach((networkName) => {
   defaultAllNetworksMapNeedsSync[networkName] = {
     status: TransactionHistoryStatus.NeedsSync,
   };
@@ -34,12 +34,12 @@ const initialState: TransactionHistoryStatusState = {
 };
 
 const slice = createSlice({
-  name: 'transactionHistoryStatus',
+  name: "transactionHistoryStatus",
   initialState,
   reducers: {
     setTransactionHistoryStatus(
       state,
-      action: PayloadAction<SetTransactionHistoryStatusPayload>,
+      action: PayloadAction<SetTransactionHistoryStatusPayload>
     ) {
       const { networkName, status } = action.payload;
       state.forNetwork[networkName] = { status };

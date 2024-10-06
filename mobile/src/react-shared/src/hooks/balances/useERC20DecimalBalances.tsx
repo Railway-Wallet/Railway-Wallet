@@ -1,29 +1,29 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { ERC20Token } from '../../models/token';
-import { AppSettingsService } from '../../services/settings/app-settings-service';
-import { tokenBalancesForWalletAndState } from '../../services/wallet/wallet-balance-service';
+} from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { ERC20Token } from "../../models/token";
+import { AppSettingsService } from "../../services/settings/app-settings-service";
+import { tokenBalancesForWalletAndState } from "../../services/wallet/wallet-balance-service";
 import {
   tokenAddressForBalances,
   tokenAddressForPrices,
-} from '../../utils/tokens';
-import { getDecimalBalanceFromSerialized } from '../../utils/util';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../utils/tokens";
+import { getDecimalBalanceFromSerialized } from "../../utils/util";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useERC20DecimalBalances = (
   token: ERC20Token,
   isRailgun: boolean,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
-  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
-  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
+  const { erc20BalancesNetwork } = useReduxSelector("erc20BalancesNetwork");
+  const { erc20BalancesRailgun } = useReduxSelector("erc20BalancesRailgun");
+  const { txidVersion } = useReduxSelector("txidVersion");
   const currentTxidVersion = txidVersion.current;
 
   const activeWallet = wallets.active;
@@ -40,7 +40,7 @@ export const useERC20DecimalBalances = (
 
     const tokenAddressBalances = tokenAddressForBalances(
       token.address,
-      token.isBaseToken,
+      token.isBaseToken
     );
     const tokenBalances = tokenBalancesForWalletAndState(
       activeWallet,
@@ -48,7 +48,7 @@ export const useERC20DecimalBalances = (
       railgunWalletBalances,
       isRailgun,
       currentTxidVersion,
-      balanceBucketFilter,
+      balanceBucketFilter
     );
     const tokenBalance = tokenBalances[tokenAddressBalances];
     if (isDefined(tokenBalance)) {

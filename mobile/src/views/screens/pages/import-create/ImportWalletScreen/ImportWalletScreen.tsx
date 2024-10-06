@@ -1,37 +1,37 @@
 import {
   isDefined,
   WalletCreationType,
-} from '@railgun-community/shared-models';
-import React, { useRef, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
-import DatePicker from 'react-native-date-picker';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { TextEntry } from '@components/inputs/TextEntry/TextEntry';
-import { useSetPinWarning } from '@hooks/alerts/useSetPinWarning';
-import { NewWalletStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useRef, useState } from "react";
+import { Text, TextInput, View } from "react-native";
+import DatePicker from "react-native-date-picker";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { TextEntry } from "@components/inputs/TextEntry/TextEntry";
+import { useSetPinWarning } from "@hooks/alerts/useSetPinWarning";
+import { NewWalletStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   AppSettingsService,
   CalloutType,
   FrontendWallet,
   SharedConstants,
   validateWalletName,
-} from '@react-shared';
-import { ProcessNewWalletModal } from '@screens/modals/ProcessNewWalletModal/ProcessNewWalletModal';
-import { ScanQRCodeModal } from '@screens/modals/ScanQRCodeModal/ScanQRCodeModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { InfoCallout } from '@views/components/callouts/InfoCallout/InfoCallout';
-import { SelectableListItem } from '@views/components/list/SelectableListItem/SelectableListItem';
-import { styles } from './styles';
+} from "@react-shared";
+import { ProcessNewWalletModal } from "@screens/modals/ProcessNewWalletModal/ProcessNewWalletModal";
+import { ScanQRCodeModal } from "@screens/modals/ScanQRCodeModal/ScanQRCodeModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { InfoCallout } from "@views/components/callouts/InfoCallout/InfoCallout";
+import { SelectableListItem } from "@views/components/list/SelectableListItem/SelectableListItem";
+import { styles } from "./styles";
 
 const MOCKED_MNEMONIC =
-  'debate fish design eye property sunday weather clean house odor either baby';
+  "debate fish design eye property sunday weather clean house odor either baby";
 
 interface ImportWalletScreenProps {
-  navigation: NavigationProp<NewWalletStackParamList, 'ImportWallet'>;
+  navigation: NavigationProp<NewWalletStackParamList, "ImportWallet">;
 }
 
 export const ImportWalletScreen: React.FC<ImportWalletScreenProps> = ({
@@ -42,9 +42,9 @@ export const ImportWalletScreen: React.FC<ImportWalletScreenProps> = ({
     useState<number>();
   const [showWalletCreationDateSelector, setShowWalletCreationDateSelector] =
     useState(false);
-  const [mnemonic, setMnemonic] = useState('');
-  const [walletName, setWalletName] = useState('');
-  const [derivationIndex, setDerivationIndex] = useState<string>('');
+  const [mnemonic, setMnemonic] = useState("");
+  const [walletName, setWalletName] = useState("");
+  const [derivationIndex, setDerivationIndex] = useState<string>("");
   const [hasValidDerivationIndex, setHasValidDerivationIndex] = useState(false);
   const [hasValidEntries, setHasValidEntries] = useState(false);
   const [showProcessModal, setShowProcessModal] = useState(false);
@@ -79,7 +79,7 @@ export const ImportWalletScreen: React.FC<ImportWalletScreenProps> = ({
 
   const onSuccess = (wallet: FrontendWallet) => {
     setShowProcessModal(false);
-    navigation.navigate('ViewingKeyCallout', {
+    navigation.navigate("ViewingKeyCallout", {
       walletCreationType: WalletCreationType.Import,
       wallet,
     });
@@ -108,11 +108,11 @@ export const ImportWalletScreen: React.FC<ImportWalletScreenProps> = ({
   const getCreationDateDescription = () => {
     return walletCreationDateIsSelected
       ? walletCreationDate.toLocaleDateString(AppSettingsService.locale, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
+          year: "numeric",
+          month: "short",
+          day: "numeric",
         })
-      : 'Tap to select (optional)';
+      : "Tap to select (optional)";
   };
 
   return (
@@ -180,7 +180,7 @@ export const ImportWalletScreen: React.FC<ImportWalletScreenProps> = ({
             multiline
             placeholder="Enter 12- or 24-word phrase"
             reference={refSecondEntry}
-            iconButtons={[{ icon: 'qrcode-scan', onTap: onTapQrCode }]}
+            iconButtons={[{ icon: "qrcode-scan", onTap: onTapQrCode }]}
           />
         </View>
         {showAdvancedOptions && (
@@ -223,7 +223,7 @@ export const ImportWalletScreen: React.FC<ImportWalletScreenProps> = ({
                 mode="date"
                 date={walletCreationDate}
                 open={showWalletCreationDateSelector}
-                onConfirm={date => {
+                onConfirm={(date) => {
                   setShowWalletCreationDateSelector(false);
                   setWalletCreationDate(date);
                   setWalletCreationTimestamp(date?.getTime() / 1000);

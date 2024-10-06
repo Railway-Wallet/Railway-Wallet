@@ -1,12 +1,12 @@
-import React from 'react';
-import { ImageURISource, useWindowDimensions, View } from 'react-native';
+import React from "react";
+import { ImageURISource, useWindowDimensions, View } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
   SharedValue,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import { styles } from './styles';
+} from "react-native-reanimated";
+import { styles } from "./styles";
 
 type Props = {
   item: { text: string; image: ImageURISource };
@@ -27,7 +27,7 @@ export const OnboardingListItem = ({ item, index, x }: Props) => {
         (index + 1) * SCREEN_WIDTH,
       ],
       [100, 0, 100],
-      Extrapolation.CLAMP,
+      Extrapolation.CLAMP
     );
 
     const opacity = interpolate(
@@ -38,7 +38,7 @@ export const OnboardingListItem = ({ item, index, x }: Props) => {
         (index + 1) * SCREEN_WIDTH,
       ],
       [0, 1, 0],
-      Extrapolation.CLAMP,
+      Extrapolation.CLAMP
     );
 
     return {
@@ -58,7 +58,7 @@ export const OnboardingListItem = ({ item, index, x }: Props) => {
         (index + 1) * SCREEN_WIDTH,
       ],
       [100, 0, 100],
-      Extrapolation.CLAMP,
+      Extrapolation.CLAMP
     );
 
     const opacity = interpolate(
@@ -69,7 +69,7 @@ export const OnboardingListItem = ({ item, index, x }: Props) => {
         (index + 1) * SCREEN_WIDTH,
       ],
       [0, 1, 0],
-      Extrapolation.CLAMP,
+      Extrapolation.CLAMP
     );
 
     return {

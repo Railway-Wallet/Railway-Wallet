@@ -1,19 +1,19 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Modal, View } from 'react-native';
-import { WideButtonTextOnly } from '@components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { SafeGrayFooter } from '@components/footers/SafeGrayFooter/SafeGrayFooter';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { styleguide } from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { SlippageSelector } from '@views/components/selectors/SlippageSelector/SlippageSelector';
-import { styles } from './styles';
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { Modal, View } from "react-native";
+import { WideButtonTextOnly } from "@components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { SafeGrayFooter } from "@components/footers/SafeGrayFooter/SafeGrayFooter";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { styleguide } from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { SlippageSelector } from "@views/components/selectors/SlippageSelector/SlippageSelector";
+import { styles } from "./styles";
 
 type Props = {
   show: boolean;
   initialSlippagePercentage: number;
   setFinalSlippagePercentage: (
-    slippage: number,
+    slippage: number
   ) => void | Dispatch<SetStateAction<number>>;
   onClose: () => void;
 };
@@ -25,7 +25,7 @@ export const LiquiditySettingsModal: React.FC<Props> = ({
   onClose,
 }) => {
   const [slippagePercentage, setSlippagePercentage] = useState(
-    initialSlippagePercentage,
+    initialSlippagePercentage
   );
 
   const saveSettings = () => {
@@ -35,7 +35,7 @@ export const LiquiditySettingsModal: React.FC<Props> = ({
   };
 
   const slippageDisclaimer =
-    'Warning: Low slippage buffers may cause this action to fail. We recommend 3-5% which increases the likelihood of success. Private transactions incur gas fees and RAILGUN shielding/unshielding fees, even if the underlying action fails.';
+    "Warning: Low slippage buffers may cause this action to fail. We recommend 3-5% which increases the likelihood of success. Private transactions incur gas fees and RAILGUN shielding/unshielding fees, even if the underlying action fails.";
 
   return (
     <Modal animationType="slide" presentationStyle="formSheet" visible={show}>

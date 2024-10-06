@@ -1,9 +1,9 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Text } from 'react-native';
-import { shortenWalletAddress } from '@react-shared';
-import { AnimatedWrapper } from '@services/animation/AnimatedWrapper';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { Text } from "react-native";
+import { shortenWalletAddress } from "@react-shared";
+import { AnimatedWrapper } from "@services/animation/AnimatedWrapper";
+import { styles } from "./styles";
 
 type Props = {
   walletAddress?: string;

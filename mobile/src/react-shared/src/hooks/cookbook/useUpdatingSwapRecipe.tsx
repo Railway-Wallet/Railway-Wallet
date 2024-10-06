@@ -2,12 +2,12 @@ import {
   RecipeOutput,
   SwapQuoteData,
   SwapRecipe,
-} from '@railgun-community/cookbook';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { CookbookSwapRecipeType } from '../../models/cookbook';
-import { ERC20Amount, ERC20Token } from '../../models/token';
-import { useSwapQuoteSignificantlyChanged } from './useSwapQuoteSignificantlyChanged';
-import { useSwapRecipe } from './useSwapRecipe';
+} from "@railgun-community/cookbook";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { CookbookSwapRecipeType } from "../../models/cookbook";
+import { ERC20Amount, ERC20Token } from "../../models/token";
+import { useSwapQuoteSignificantlyChanged } from "./useSwapQuoteSignificantlyChanged";
+import { useSwapRecipe } from "./useSwapRecipe";
 
 export const useUpdatingSwapRecipe = (
   swapRecipeType: CookbookSwapRecipeType,
@@ -17,10 +17,10 @@ export const useUpdatingSwapRecipe = (
   sellERC20Amount: Optional<ERC20Amount>,
   buyERC20: ERC20Token,
   slippagePercentage: number,
-  swapDestinationAddress: Optional<string>,
+  swapDestinationAddress: Optional<string>
 ) => {
   if (!sellERC20Amount) {
-    throw new Error('Requires sell amount for swap confirm');
+    throw new Error("Requires sell amount for swap confirm");
   }
 
   const [lockedQuote, setLockedQuote] = useState<SwapQuoteData>(originalQuote);
@@ -48,12 +48,12 @@ export const useUpdatingSwapRecipe = (
     sellERC20Amount,
     buyERC20,
     slippagePercentage,
-    swapDestinationAddress,
+    swapDestinationAddress
   );
 
   const { quoteSignificantlyChanged } = useSwapQuoteSignificantlyChanged(
     lockedQuote,
-    currentQuote,
+    currentQuote
   );
 
   const updateCurrentLockedQuote = useCallback(
@@ -87,7 +87,7 @@ export const useUpdatingSwapRecipe = (
       swapDestinationAddressChanged,
       sellERC20Amount,
       swapDestinationAddress,
-    ],
+    ]
   );
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export const useUpdatingSwapRecipe = (
   const recipeAmounts =
     lockedRecipe.getBuySellAmountsFromRecipeOutput(lockedRecipeOutput);
   if (!recipeAmounts) {
-    throw new Error('Requires buy/sell amounts for swap confirm');
+    throw new Error("Requires buy/sell amounts for swap confirm");
   }
   const sellERC20Fee: ERC20Amount = {
     token: sellERC20Amount.token,

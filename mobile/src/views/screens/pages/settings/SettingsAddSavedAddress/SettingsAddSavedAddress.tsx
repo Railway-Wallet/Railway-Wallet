@@ -1,9 +1,9 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   logDevError,
   SavedAddressService,
@@ -12,22 +12,22 @@ import {
   useAppDispatch,
   validateRailgunAddress,
   WalletAddressType,
-} from '@react-shared';
-import { validateEthAddress } from '@utils/validation';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { TextEntry } from '@views/components/inputs/TextEntry/TextEntry';
-import { styles } from './styles';
+} from "@react-shared";
+import { validateEthAddress } from "@utils/validation";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { TextEntry } from "@views/components/inputs/TextEntry/TextEntry";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsAddSavedAddress'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsAddSavedAddress">;
 };
 
 export const SettingsAddSavedAddressScreen: React.FC<Props> = ({
   navigation,
 }) => {
-  const [addressName, setAddressName] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
+  const [addressName, setAddressName] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
   const [addressType, setAddressType] = useState<Optional<WalletAddressType>>();
   const [hasValidName, setHasValidName] = useState(false);
   const [hasValidRecipient, setHasValidRecipient] = useState(false);
@@ -73,7 +73,7 @@ export const SettingsAddSavedAddressScreen: React.FC<Props> = ({
 
     try {
       if (addressName?.length > SharedConstants.MAX_LENGTH_WALLET_NAME) {
-        throw new Error('Address name is too long.');
+        throw new Error("Address name is too long.");
       }
 
       let ethAddress, railAddress, externalResolvedAddress;
@@ -93,7 +93,7 @@ export const SettingsAddSavedAddressScreen: React.FC<Props> = ({
         addressName,
         ethAddress,
         railAddress,
-        externalResolvedAddress,
+        externalResolvedAddress
       );
 
       navigation.goBack();

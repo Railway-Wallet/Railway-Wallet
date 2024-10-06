@@ -3,26 +3,26 @@ import {
   RecipeERC20Info,
   RecipeRemoveLiquidityData,
   UniV2LikeRemoveLiquidityRecipe,
-} from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Provider } from 'ethers';
-import { ERC20Amount } from '../../models/token';
-import { ProviderService } from '../../services';
+} from "@railgun-community/cookbook";
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Provider } from "ethers";
+import { ERC20Amount } from "../../models/token";
+import { ProviderService } from "../../services";
 import {
   generateKey,
   getRecipeERC20Amount,
   getSlippageBasisPoints,
-} from '../../utils';
-import { useReduxSelector } from '../hooks-redux';
-import { useRecipe } from './useRecipe';
+} from "../../utils";
+import { useReduxSelector } from "../hooks-redux";
+import { useRecipe } from "./useRecipe";
 
 export const useRemoveLiquidityRecipe = (
   liquidityPool: LiquidityV2Pool,
   tokenUnshieldAmount: Optional<ERC20Amount>,
-  slippagePercentage: Optional<number>,
+  slippagePercentage: Optional<number>
 ) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
   const networkName = network.current.name;
 
   const [removeLiquidityData, setRemoveLiquidityData] =
@@ -73,7 +73,7 @@ export const useRemoveLiquidityRecipe = (
         erc20InfoA,
         erc20InfoB,
         slippageBasisPoints,
-        provider,
+        provider
       );
     }, [liquidityPool, provider, slippagePercentage]);
 
@@ -93,7 +93,7 @@ export const useRemoveLiquidityRecipe = (
       const removeLiquidityData =
         await removeLiquidityRecipe.getRemoveLiquidityData(
           networkName,
-          getRecipeERC20Amount(tokenUnshieldAmount),
+          getRecipeERC20Amount(tokenUnshieldAmount)
         );
 
       if (calculationID === removeLiquidityCalculationID.current) {
@@ -110,11 +110,7 @@ export const useRemoveLiquidityRecipe = (
     : [];
 
   const { recipe, recipeError, recipeOutput, isLoadingRecipeOutput } =
-    useRecipe(
-      removeLiquidityRecipe,
-      unshieldERC20Amounts,
-      [],
-    );
+    useRecipe(removeLiquidityRecipe, unshieldERC20Amounts, []);
 
   useEffect(() => {
     if (!isDefined(recipeOutput) || !isDefined(removeLiquidityRecipe)) {

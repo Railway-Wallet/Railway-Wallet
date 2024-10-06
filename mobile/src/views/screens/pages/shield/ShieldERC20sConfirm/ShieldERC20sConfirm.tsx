@@ -8,17 +8,17 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React from 'react';
-import { Alert } from 'react-native';
-import { ContractTransaction, keccak256, Wallet } from 'ethers';
-import { ReviewTransactionView } from '@components/views/ReviewTransactionView/ReviewTransactionView';
-import { TokenStackParamList } from '@models/navigation-models';
+} from "@railgun-community/shared-models";
+import React from "react";
+import { Alert } from "react-native";
+import { ContractTransaction, keccak256, Wallet } from "ethers";
+import { ReviewTransactionView } from "@components/views/ReviewTransactionView/ReviewTransactionView";
+import { TokenStackParamList } from "@models/navigation-models";
 import {
   CommonActions,
   NavigationProp,
   RouteProp,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   AdjustedERC20AmountRecipientGroup,
   assertIsNotHighSevereRiskAddress,
@@ -41,23 +41,23 @@ import {
   TransactionType,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
-import { Constants } from '@utils/constants';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
+import { Constants } from "@utils/constants";
 
 type Props = {
-  navigation: NavigationProp<TokenStackParamList, 'ShieldERC20sConfirm'>;
+  navigation: NavigationProp<TokenStackParamList, "ShieldERC20sConfirm">;
   route: RouteProp<
-    { params: TokenStackParamList['ShieldERC20sConfirm'] },
-    'params'
+    { params: TokenStackParamList["ShieldERC20sConfirm"] },
+    "params"
   >;
 };
 
 export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
-  const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
+  const { merkletreeHistoryScan } = useReduxSelector("merkletreeHistoryScan");
 
   const { erc20AmountRecipients, nftAmountRecipients } = route.params;
 
@@ -77,7 +77,7 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
 
   const onSuccess = async () => {
     const hasCompletedFirstShield = await StorageService.getItem(
-      Constants.HAS_COMPLETED_FIRST_SHIELD,
+      Constants.HAS_COMPLETED_FIRST_SHIELD
     );
 
     if (!isDefined(hasCompletedFirstShield)) {
@@ -91,31 +91,31 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
 
       if (railgunBalancesUpdating) {
         Alert.alert(
-          'Notice: Merkletree Syncing',
-          'Your private balances are currently updating. Once fully synced, your private balances will appear in your RAILGUN wallet. Please view progress from the main Wallets page.',
+          "Notice: Merkletree Syncing",
+          "Your private balances are currently updating. Once fully synced, your private balances will appear in your RAILGUN wallet. Please view progress from the main Wallets page.",
           [
             {
-              text: 'Okay',
+              text: "Okay",
               onPress: () => {
-                navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+                navigation.dispatch(CommonActions.navigate("WalletsScreen"));
               },
             },
-          ],
+          ]
         );
       }
 
-      await StorageService.setItem(Constants.HAS_COMPLETED_FIRST_SHIELD, '1');
+      await StorageService.setItem(Constants.HAS_COMPLETED_FIRST_SHIELD, "1");
       return;
     }
 
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate("WalletsScreen"));
   };
 
   const getShieldPrivateKey = async (pKey: string): Promise<string> => {
     const wallet = new Wallet(pKey);
     const shieldSignatureMessage = await getShieldPrivateKeySignatureMessage();
     const shieldPrivateKey = keccak256(
-      await wallet.signMessage(shieldSignatureMessage),
+      await wallet.signMessage(shieldSignatureMessage)
     );
     return shieldPrivateKey;
   };
@@ -131,7 +131,7 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ): Promise<Optional<string>> => {
     const pKey = await walletSecureService.getWallet0xPKey(activeWallet);
     const shieldPrivateKey = await getShieldPrivateKey(pKey);
@@ -149,20 +149,20 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
           shieldPrivateKey,
           finalAdjustedERC20AmountRecipientGroup.inputs,
           nftAmountRecipients,
-          transactionGasDetails,
+          transactionGasDetails
         ),
         delay(1000),
       ]);
       populatedTransaction = transaction;
     } catch (cause) {
-      error(new Error('Failed to populate shield.', { cause }));
+      error(new Error("Failed to populate shield.", { cause }));
       return;
     }
 
     try {
       await assertIsNotHighSevereRiskAddress(
         network.current.name,
-        fromWalletAddress,
+        fromWalletAddress
       );
 
       const pKey = await walletSecureService.getWallet0xPKey(activeWallet);
@@ -171,7 +171,7 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
         pKey,
         populatedTransaction,
         network.current,
-        customNonce,
+        customNonce
       );
 
       const transactionService = new SavedTransactionService(dispatch);
@@ -184,13 +184,13 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
         nftAmountRecipients,
         network.current,
         isBaseTokenShield,
-        txResponse.nonce,
+        txResponse.nonce
       );
       success();
       await refreshNFTsMetadataAfterShieldUnshield(
         dispatch,
         network.current.name,
-        nftAmountRecipients,
+        nftAmountRecipients
       );
       return txResponse.hash;
     } catch (cause) {
@@ -204,7 +204,7 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
     networkName: NetworkName,
     fromWalletAddress: string,
     erc20AmountRecipients: ERC20AmountRecipient[],
-    nftAmountRecipients: NFTAmountRecipient[],
+    nftAmountRecipients: NFTAmountRecipient[]
   ): Promise<bigint> => {
     const pKey = await walletSecureService.getWallet0xPKey(activeWallet);
     const shieldPrivateKey = await getShieldPrivateKey(pKey);
@@ -219,12 +219,12 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
       fromWalletAddress,
       shieldPrivateKey,
       erc20AmountRecipients,
-      nftAmountRecipients,
+      nftAmountRecipients
     );
   };
 
-  const infoCalloutText = 'Shielding tokens into a private RAILGUN address.';
-  const processingText = 'Shielding tokens...';
+  const infoCalloutText = "Shielding tokens into a private RAILGUN address.";
+  const processingText = "Shielding tokens...";
 
   return (
     <ReviewTransactionView

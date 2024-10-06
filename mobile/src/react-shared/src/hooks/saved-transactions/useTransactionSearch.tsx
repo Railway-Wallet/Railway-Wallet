@@ -1,20 +1,20 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { useCallback, useMemo } from 'react';
-import { SavedTransaction } from '../../models/transaction';
+import { isDefined } from "@railgun-community/shared-models";
+import { useCallback, useMemo } from "react";
+import { SavedTransaction } from "../../models/transaction";
 import {
   transactionText,
   transactionTitle,
-} from '../../utils/saved-transactions';
-import { getTokenDisplayName } from '../../utils/tokens';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../utils/saved-transactions";
+import { getTokenDisplayName } from "../../utils/tokens";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useTransactionSearch = (
   transactions: SavedTransaction[],
   isRailgun: boolean,
-  searchText?: string,
+  searchText?: string
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const search = searchText?.toLowerCase();
 
@@ -25,7 +25,7 @@ export const useTransactionSearch = (
         (comparator?.toLowerCase().includes(search) ?? false)
       );
     },
-    [search],
+    [search]
   );
 
   const transactionsWithText: {
@@ -33,7 +33,7 @@ export const useTransactionSearch = (
     text: string;
   }[] = useMemo(
     () =>
-      transactions.map(transaction => ({
+      transactions.map((transaction) => ({
         transaction,
         text: transactionText(
           transaction,
@@ -41,10 +41,10 @@ export const useTransactionSearch = (
           network.current,
           wallets.active,
           wallets.available,
-          undefined,
+          undefined
         ),
       })),
-    [isRailgun, network, transactions, wallets.active, wallets.available],
+    [isRailgun, network, transactions, wallets.active, wallets.available]
   );
 
   const filteredTransactions: SavedTransaction[] = useMemo(() => {
@@ -54,29 +54,36 @@ export const useTransactionSearch = (
 
     const filteredTransactionsWithText = transactionsWithText.filter(
       ({ transaction, text }) => {
-        return (compareWithSearch(text) ||
-        compareWithSearch(transaction.action) ||
-        compareWithSearch(transaction.id) ||
-        compareWithSearch(transaction.walletAddress) ||
-        compareWithSearch(transaction.toWalletAddress) ||
-        compareWithSearch(transaction.spenderName) ||
-        compareWithSearch(transaction.memoText) ||
-        compareWithSearch(
-          transaction.tokenAmounts.map(t => t.token.address).join(','),
-        ) ||
-        compareWithSearch(
-          transaction.tokenAmounts
-            .map(t =>
-              getTokenDisplayName(t.token, wallets.available, network.current.name),
-            )
-            .join(','),
-        ) ||
-        compareWithSearch(
-          transaction.tokenAmounts
-            .map(t => (t.token.isAddressOnly ?? false ? '' : t.token.name))
-            .join(','),
-        ) || compareWithSearch(transactionTitle(transaction)));
-      },
+        return (
+          compareWithSearch(text) ||
+          compareWithSearch(transaction.action) ||
+          compareWithSearch(transaction.id) ||
+          compareWithSearch(transaction.walletAddress) ||
+          compareWithSearch(transaction.toWalletAddress) ||
+          compareWithSearch(transaction.spenderName) ||
+          compareWithSearch(transaction.memoText) ||
+          compareWithSearch(
+            transaction.tokenAmounts.map((t) => t.token.address).join(",")
+          ) ||
+          compareWithSearch(
+            transaction.tokenAmounts
+              .map((t) =>
+                getTokenDisplayName(
+                  t.token,
+                  wallets.available,
+                  network.current.name
+                )
+              )
+              .join(",")
+          ) ||
+          compareWithSearch(
+            transaction.tokenAmounts
+              .map((t) => (t.token.isAddressOnly ?? false ? "" : t.token.name))
+              .join(",")
+          ) ||
+          compareWithSearch(transactionTitle(transaction))
+        );
+      }
     );
     return filteredTransactionsWithText.map(({ transaction }) => transaction);
   }, [

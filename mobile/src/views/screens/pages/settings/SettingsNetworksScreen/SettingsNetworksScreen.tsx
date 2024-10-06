@@ -1,24 +1,24 @@
-import { ChainType, Network } from '@railgun-community/shared-models';
-import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { ChainType, Network } from "@railgun-community/shared-models";
+import React from "react";
+import { ScrollView, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   getSupportedNetworks,
   styleguide,
   useReduxSelector,
-} from '@react-shared';
-import { SettingsListItem } from '@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { SettingsListItem } from "@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsNetworks'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsNetworks">;
   route: RouteProp<
-    { params?: SettingsStackParamList['SettingsNetworks'] },
-    'params'
+    { params?: SettingsStackParamList["SettingsNetworks"] },
+    "params"
   >;
 };
 
@@ -26,7 +26,7 @@ export const SettingsNetworksScreen: React.FC<Props> = ({
   navigation,
   route,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
   const resetRecoveryMode = route.params?.resetRecoveryMode;
 
   const activeNetworkName = network.current.name;
@@ -34,7 +34,7 @@ export const SettingsNetworksScreen: React.FC<Props> = ({
 
   const onSelectNetwork = (network: Network) => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('SettingsNetworkInfo', { network });
+    navigation.navigate("SettingsNetworkInfo", { network });
   };
 
   const chainTypeDescription = (network: Network) => {
@@ -52,7 +52,7 @@ export const SettingsNetworksScreen: React.FC<Props> = ({
       <View key={index}>
         <SettingsListItem
           title={network.publicName}
-          titleIcon={isActive ? 'check-bold' : undefined}
+          titleIcon={isActive ? "check-bold" : undefined}
           description={chainTypeDescription(network)}
           icon="chevron-right"
           onTap={() => onSelectNetwork(network)}

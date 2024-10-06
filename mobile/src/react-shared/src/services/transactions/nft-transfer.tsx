@@ -3,24 +3,24 @@ import {
   NFTAmountRecipient,
   NFTTokenType,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { ContractTransaction, TransactionResponse } from 'ethers';
-import { erc721Contract, erc1155Contract } from '../contract/contract';
-import { ProviderService } from '../providers/provider-service';
-import { executeTransaction } from './execute-service';
-import { getGasEstimate } from './gas-estimate';
+} from "@railgun-community/shared-models";
+import { ContractTransaction, TransactionResponse } from "ethers";
+import { erc721Contract, erc1155Contract } from "../contract/contract";
+import { ProviderService } from "../providers/provider-service";
+import { executeTransaction } from "./execute-service";
+import { getGasEstimate } from "./gas-estimate";
 
 const createERC721Transfer = async (
   networkName: NetworkName,
   fromWalletAddress: string,
-  nftAmountRecipient: NFTAmountRecipient,
+  nftAmountRecipient: NFTAmountRecipient
 ): Promise<ContractTransaction> => {
   const provider = await ProviderService.getProvider(networkName);
   const erc721 = erc721Contract(nftAmountRecipient.nftAddress, provider);
   return erc721.transferFrom.populateTransaction(
     fromWalletAddress,
     nftAmountRecipient.recipientAddress,
-    nftAmountRecipient.tokenSubID,
+    nftAmountRecipient.tokenSubID
   );
 };
 
@@ -28,7 +28,7 @@ const createERC1155Transfer = async (
   networkName: NetworkName,
   fromWalletAddress: string,
   nftAmountRecipient: NFTAmountRecipient,
-  data?: string,
+  data?: string
 ): Promise<ContractTransaction> => {
   const provider = await ProviderService.getProvider(networkName);
   const erc1155 = erc1155Contract(nftAmountRecipient.nftAddress, provider);
@@ -37,14 +37,14 @@ const createERC1155Transfer = async (
     nftAmountRecipient.recipientAddress,
     nftAmountRecipient.tokenSubID,
     BigInt(nftAmountRecipient.amountString),
-    data ?? '',
+    data ?? ""
   );
 };
 
 export const getNFTTransferGasEstimate = async (
   networkName: NetworkName,
   fromWalletAddress: string,
-  nftAmountRecipient: NFTAmountRecipient,
+  nftAmountRecipient: NFTAmountRecipient
 ): Promise<bigint> => {
   let nftTransfer: ContractTransaction;
   switch (nftAmountRecipient.nftTokenType) {
@@ -52,7 +52,7 @@ export const getNFTTransferGasEstimate = async (
       nftTransfer = await createERC721Transfer(
         networkName,
         fromWalletAddress,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
       break;
     }
@@ -60,7 +60,7 @@ export const getNFTTransferGasEstimate = async (
       nftTransfer = await createERC1155Transfer(
         networkName,
         fromWalletAddress,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
       break;
     }
@@ -76,7 +76,7 @@ export const executeNFTTransfer = async (
   nftAmountRecipient: NFTAmountRecipient,
   gasDetails?: TransactionGasDetails,
   customNonce?: number,
-  overrideGasLimitForCancel?: bigint,
+  overrideGasLimitForCancel?: bigint
 ): Promise<TransactionResponse> => {
   let nftTransfer: ContractTransaction;
   switch (nftAmountRecipient.nftTokenType) {
@@ -84,7 +84,7 @@ export const executeNFTTransfer = async (
       nftTransfer = await createERC721Transfer(
         networkName,
         fromWalletAddress,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
       break;
     }
@@ -92,7 +92,7 @@ export const executeNFTTransfer = async (
       nftTransfer = await createERC1155Transfer(
         networkName,
         fromWalletAddress,
-        nftAmountRecipient,
+        nftAmountRecipient
       );
       break;
     }
@@ -104,6 +104,6 @@ export const executeNFTTransfer = async (
     nftTransfer,
     gasDetails,
     customNonce,
-    overrideGasLimitForCancel,
+    overrideGasLimitForCancel
   );
 };

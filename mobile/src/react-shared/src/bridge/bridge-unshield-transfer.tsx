@@ -10,7 +10,7 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import {
   BridgeCallEvent,
   GasEstimateForUnprovenTransferParams,
@@ -22,17 +22,17 @@ import {
   PopulateProvedUnshieldBaseTokenParams,
   PopulateProvedUnshieldParams,
   PopulateProvedUnshieldToOriginParams,
-} from '../models/bridge';
-import { ERC20Amount, ERC20AmountRecipient } from '../models/token';
-import { logDev } from '../utils/logging';
+} from "../models/bridge";
+import { ERC20Amount, ERC20AmountRecipient } from "../models/token";
+import { logDev } from "../utils/logging";
 import {
   createBroadcasterFeeERC20AmountRecipient,
   createRailgunERC20Amount,
   createRailgunERC20AmountRecipient,
   createRailgunERC20AmountRecipients,
   createRailgunNFTAmountRecipients,
-} from '../utils/tokens';
-import { bridgeCall } from './ipc';
+} from "../utils/tokens";
+import { bridgeCall } from "./ipc";
 
 export const populateProvedTransfer = (
   txidVersion: TXIDVersion,
@@ -46,15 +46,15 @@ export const populateProvedTransfer = (
   broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const broadcasterFeeERC20AmountRecipient =
     createBroadcasterFeeERC20AmountRecipient(
       selectedBroadcaster,
-      broadcasterFeeERC20Amount,
+      broadcasterFeeERC20Amount
     );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
@@ -90,15 +90,15 @@ export const populateProvedUnshield = (
   broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const broadcasterFeeERC20AmountRecipient =
     createBroadcasterFeeERC20AmountRecipient(
       selectedBroadcaster,
-      broadcasterFeeERC20Amount,
+      broadcasterFeeERC20Amount
     );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
@@ -132,24 +132,24 @@ export const populateProvedUnshieldBaseToken = async (
   broadcasterFeeERC20Amount: Optional<ERC20Amount>,
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   if (erc20AmountRecipients.length > 1) {
     throw new Error(
-      'You must unshield base token in a transaction by itself. Please remove other tokens from this transaction.',
+      "You must unshield base token in a transaction by itself. Please remove other tokens from this transaction."
     );
   }
   const wrappedTokenAmountRailgun = createRailgunERC20Amount(
-    erc20AmountRecipients[0],
+    erc20AmountRecipients[0]
   );
   if (!wrappedTokenAmountRailgun) {
-    throw new Error('No token selected for unshielding.');
+    throw new Error("No token selected for unshielding.");
   }
 
   const broadcasterFeeERC20AmountRecipient =
     createBroadcasterFeeERC20AmountRecipient(
       selectedBroadcaster,
-      broadcasterFeeERC20Amount,
+      broadcasterFeeERC20Amount
     );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
@@ -179,10 +179,10 @@ export const populateProvedUnshieldToOrigin = (
   railWalletID: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -204,7 +204,7 @@ export const getERC20AndNFTAmountRecipientsForUnshieldToOrigin = (
   txidVersion: TXIDVersion,
   networkName: NetworkName,
   railgunWalletID: string,
-  originalShieldTxid: string,
+  originalShieldTxid: string
 ): Promise<{
   erc20AmountRecipients: RailgunERC20AmountRecipient[];
   nftAmountRecipients: RailgunNFTAmountRecipient[];
@@ -233,13 +233,13 @@ export const gasEstimateForUnprovenTransfer = async (
   nftAmountRecipients: NFTAmountRecipient[],
   originalGasDetails: TransactionGasDetails,
   feeTokenDetails: Optional<FeeTokenDetails>,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): Promise<bigint> => {
   if (!isDefined(originalGasDetails)) {
-    throw new Error('Requires original gas details');
+    throw new Error("Requires original gas details");
   }
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -272,13 +272,13 @@ export const gasEstimateForUnprovenUnshield = async (
   nftAmountRecipients: NFTAmountRecipient[],
   originalGasDetails: TransactionGasDetails,
   feeTokenDetails: Optional<FeeTokenDetails>,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): Promise<bigint> => {
   if (!isDefined(originalGasDetails)) {
-    throw new Error('Requires original gas details');
+    throw new Error("Requires original gas details");
   }
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -306,10 +306,10 @@ export const gasEstimateForUnprovenUnshieldToOrigin = async (
   railWalletID: string,
   encryptionKey: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
-  nftAmountRecipients: NFTAmountRecipient[],
+  nftAmountRecipients: NFTAmountRecipient[]
 ): Promise<bigint> => {
   const erc20AmountRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -338,16 +338,16 @@ export const gasEstimateForUnprovenUnshieldBaseToken = async (
   _nftAmountRecipients: NFTAmountRecipient[],
   originalGasDetails: TransactionGasDetails,
   feeTokenDetails: Optional<FeeTokenDetails>,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ): Promise<bigint> => {
   const wrappedTokenAmountRailgun = createRailgunERC20Amount(
-    erc20AmountRecipients[0],
+    erc20AmountRecipients[0]
   );
   if (!wrappedTokenAmountRailgun) {
-    throw new Error('No token selected for unshielding.');
+    throw new Error("No token selected for unshielding.");
   }
   if (!isDefined(originalGasDetails)) {
-    throw new Error('Requires original gas details');
+    throw new Error("Requires original gas details");
   }
 
   const publicWalletAddress = erc20AmountRecipients[0].recipientAddress;

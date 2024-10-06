@@ -2,7 +2,7 @@ import {
   LiquidityV2Pool,
   RecipeOutput,
   SwapQuoteData,
-} from '@railgun-community/cookbook';
+} from "@railgun-community/cookbook";
 import {
   FeeTokenDetails,
   isDefined,
@@ -16,11 +16,11 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useRef } from 'react';
-import { ContractTransaction } from 'ethers';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useRef } from "react";
+import { ContractTransaction } from "ethers";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   AdjustedERC20AmountRecipientGroup,
   AuthenticatedWalletService,
@@ -41,20 +41,20 @@ import {
   useAppDispatch,
   useReduxSelector,
   Vault,
-} from '@react-shared';
-import { getOrCreateDbEncryptionKey } from '@services/core/db';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
-import { FullScreenSpinner } from '../../loading/FullScreenSpinner/FullScreenSpinner';
-import { ReviewTransactionView } from './ReviewTransactionView';
+} from "@react-shared";
+import { getOrCreateDbEncryptionKey } from "@services/core/db";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
+import { FullScreenSpinner } from "../../loading/FullScreenSpinner/FullScreenSpinner";
+import { ReviewTransactionView } from "./ReviewTransactionView";
 
 type Props = {
   navigation: NavigationProp<
     DAppsStackParamList,
-    | 'SwapPublicConfirm'
-    | 'SwapPrivateConfirm'
-    | 'FarmVaultConfirm'
-    | 'AddLiquidityConfirm'
-    | 'RemoveLiquidityConfirm'
+    | "SwapPublicConfirm"
+    | "SwapPrivateConfirm"
+    | "FarmVaultConfirm"
+    | "AddLiquidityConfirm"
+    | "RemoveLiquidityConfirm"
   >;
   crossContractCalls: ContractTransaction[];
   saveTransaction: (
@@ -63,7 +63,7 @@ type Props = {
     publicExecutionWalletAddress: Optional<string>,
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ) => Promise<void>;
   onSuccess: () => void;
   transactionType: TransactionType;
@@ -75,23 +75,23 @@ type Props = {
   processingText: string;
   confirmButtonText: string;
   onBroadcasterFeeUpdate?: (
-    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>
   ) => void;
 
   receivedMinimumAmounts?: ERC20Amount[];
   recipeOutput: RecipeOutput;
   isRefreshingRecipeOutput: boolean;
 
-  swapQuote?: SwapQuoteData
+  swapQuote?: SwapQuoteData;
   swapBuyTokenAmount?: ERC20Amount;
   swapQuoteOutdated?: boolean;
   swapDestinationAddress?: string;
   setSwapDestinationAddress?: (destinationAddress: Optional<string>) => void;
   updateSwapQuote?: () => void;
 
-  vault?: Vault
+  vault?: Vault;
 
-  pool?: LiquidityV2Pool
+  pool?: LiquidityV2Pool;
   setSlippagePercent?: (slippage: number) => void;
   slippagePercent?: number;
 };
@@ -124,9 +124,9 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
   vault,
   pool,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
   const dispatch = useAppDispatch();
 
   const nftAmountRecipientsRef = useRef<NFTAmountRecipient[]>([]);
@@ -140,7 +140,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
   const { railWalletID } = activeWallet;
 
   const relayAdaptUnshieldERC20AmountRecipients: ERC20AmountRecipient[] =
-    relayAdaptUnshieldERC20Amounts.map(tokenAmount => ({
+    relayAdaptUnshieldERC20Amounts.map((tokenAmount) => ({
       token: tokenAmount.token,
       amountString: tokenAmount.amountString,
       recipientAddress: NETWORK_CONFIG[network.current.name].relayAdaptContract,
@@ -149,7 +149,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
 
   const walletSecureService = new WalletSecureServiceReactNative();
   const authenticatedWalletService = new AuthenticatedWalletService(
-    getOrCreateDbEncryptionKey(),
+    getOrCreateDbEncryptionKey()
   );
   const unauthenticatedWalletService = new UnauthenticatedWalletService();
 
@@ -163,14 +163,14 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
     _memoText: Optional<string>,
     overallBatchMinGasPrice: Optional<bigint>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ) => {
     if (!selectedBroadcaster && !publicWalletOverride) {
-      error(new Error('No public broadcaster selected.'));
+      error(new Error("No public broadcaster selected."));
       return;
     }
     if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
-      error(new Error('No fee amount selected.'));
+      error(new Error("No fee amount selected."));
       return;
     }
     try {
@@ -179,7 +179,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       const broadcasterFeeERC20AmountRecipient =
         createBroadcasterFeeERC20AmountRecipient(
           selectedBroadcaster,
-          broadcasterFeeERC20Amount,
+          broadcasterFeeERC20Amount
         );
 
       await Promise.all([
@@ -187,14 +187,15 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
           txidVersion.current,
           network.current.name,
           railWalletID,
-          relayAdaptUnshieldERC20Amounts, relayAdaptUnshieldNFTAmounts,
+          relayAdaptUnshieldERC20Amounts,
+          relayAdaptUnshieldNFTAmounts,
           relayAdaptShieldERC20Recipients,
           relayAdaptShieldNFTRecipients,
           crossContractCalls,
           broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
           overallBatchMinGasPrice,
-          recipeOutput.minGasLimit,
+          recipeOutput.minGasLimit
         ),
         delay(1000),
       ]);
@@ -216,16 +217,16 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error, isBroadcasterError?: boolean) => void,
+    error: (err: Error, isBroadcasterError?: boolean) => void
   ): Promise<Optional<string>> => {
     if (!selectedBroadcaster && !publicWalletOverride) {
       error(
-        new Error('No public broadcaster or self broadcast wallet selected.'),
+        new Error("No public broadcaster or self broadcast wallet selected.")
       );
       return;
     }
     if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
-      error(new Error('No gas fee amount found.'));
+      error(new Error("No gas fee amount found."));
       return;
     }
 
@@ -233,13 +234,13 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
 
     const overallBatchMinGasPrice = getOverallBatchMinGasPrice(
       isDefined(selectedBroadcaster),
-      transactionGasDetails,
+      transactionGasDetails
     );
 
     const broadcasterFeeERC20AmountRecipient =
       createBroadcasterFeeERC20AmountRecipient(
         selectedBroadcaster,
-        broadcasterFeeERC20Amount,
+        broadcasterFeeERC20Amount
       );
 
     let populateResponse: Optional<RailgunPopulateTransactionResponse>;
@@ -257,13 +258,13 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
           broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
           overallBatchMinGasPrice,
-          transactionGasDetails,
+          transactionGasDetails
         ),
         delay(1000),
       ]);
       populateResponse = populateCrossContractCallsResponse;
     } catch (cause) {
-      error(new Error('Failed to populate cross contract calls.', { cause }));
+      error(new Error("Failed to populate cross contract calls.", { cause }));
       return;
     }
 
@@ -272,21 +273,21 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       let nonce: Optional<number>;
       if (publicWalletOverride) {
         const pKey = await walletSecureService.getWallet0xPKey(
-          publicWalletOverride,
+          publicWalletOverride
         );
         const txResponse = await executeWithoutBroadcaster(
           publicWalletOverride.ethAddress,
           pKey,
           populateResponse.transaction,
           network.current,
-          customNonce,
+          customNonce
         );
         txHash = txResponse.hash;
         nonce = txResponse.nonce;
       } else if (selectedBroadcaster) {
         if (!isDefined(overallBatchMinGasPrice)) {
           throw new Error(
-            'Broadcaster transaction requires overallBatchMinGasPrice.',
+            "Broadcaster transaction requires overallBatchMinGasPrice."
           );
         }
         const nullifiers = populateResponse.nullifiers ?? [];
@@ -299,11 +300,12 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
           network.current.chain,
           nullifiers,
           overallBatchMinGasPrice,
-          true, populateResponse.preTransactionPOIsPerTxidLeafPerList,
+          true,
+          populateResponse.preTransactionPOIsPerTxidLeafPerList
         );
       } else {
         throw new Error(
-          'Must send with public broadcaster or self broadcast wallet',
+          "Must send with public broadcaster or self broadcast wallet"
         );
       }
 
@@ -317,7 +319,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
         publicWalletOverride?.ethAddress,
         broadcasterFeeERC20Amount,
         broadcasterRailgunAddress,
-        nonce,
+        nonce
       );
 
       const poiRequired = await getPOIRequiredForNetwork(network.current.name);
@@ -328,7 +330,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
             walletID: railWalletID,
             txidVersion: txidVersion.current,
             status: POIProofEventStatusUI.NewTransactionLoading,
-          }),
+          })
         );
       }
 
@@ -338,7 +340,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       const isBroadcasterError = true;
       error(
         new Error(`Transaction could not be executed.`, { cause }),
-        isBroadcasterError,
+        isBroadcasterError
       );
       return undefined;
     }
@@ -353,7 +355,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
     _nftAmountRecipients: NFTAmountRecipient[],
     originalGasDetails: TransactionGasDetails,
     feeTokenDetails: Optional<FeeTokenDetails>,
-    sendWithPublicWallet: boolean,
+    sendWithPublicWallet: boolean
   ) => {
     return authenticatedWalletService.getGasEstimatesForUnprovenCrossContractCalls(
       txidVersion.current,
@@ -367,7 +369,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       originalGasDetails,
       feeTokenDetails,
       sendWithPublicWallet,
-      recipeOutput.minGasLimit,
+      recipeOutput.minGasLimit
     );
   };
 

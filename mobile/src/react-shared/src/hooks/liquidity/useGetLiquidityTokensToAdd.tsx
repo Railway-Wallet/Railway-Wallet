@@ -1,16 +1,16 @@
-import { LiquidityV2Pool } from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
-import { ERC20TokenAddressOnly, SearchableERC20 } from '../../models/token';
-import { getFullERC20TokenInfo } from '../../services/token';
-import { findMatchingAddedTokenForWallet } from '../../utils/tokens';
-import { useReduxSelector } from '../hooks-redux';
+import { LiquidityV2Pool } from "@railgun-community/cookbook";
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useState } from "react";
+import { ERC20TokenAddressOnly, SearchableERC20 } from "../../models/token";
+import { getFullERC20TokenInfo } from "../../services/token";
+import { findMatchingAddedTokenForWallet } from "../../utils/tokens";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useGetLiquidityTokensToAdd = (
-  liquidityPool: Optional<LiquidityV2Pool>,
+  liquidityPool: Optional<LiquidityV2Pool>
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
   const availableWallets = wallets.available;
   const activeWallet = wallets.active;
 
@@ -44,14 +44,14 @@ export const useGetLiquidityTokensToAdd = (
           findMatchingAddedTokenForWallet(
             tokenA,
             activeWallet,
-            network.current.name,
-          ),
+            network.current.name
+          )
         )
       ) {
         const tokenToAddA = await getFullERC20TokenInfo(
           tokenA,
           availableWallets,
-          network.current,
+          network.current
         );
         tokensToAdd.push(tokenToAddA);
       }
@@ -61,14 +61,14 @@ export const useGetLiquidityTokensToAdd = (
           findMatchingAddedTokenForWallet(
             tokenB,
             activeWallet,
-            network.current.name,
-          ),
+            network.current.name
+          )
         )
       ) {
         const tokenToAddB = await getFullERC20TokenInfo(
           tokenB,
           availableWallets,
-          network.current,
+          network.current
         );
         tokensToAdd.push(tokenToAddB);
       }

@@ -1,75 +1,75 @@
-import React, { useState } from 'react';
-import { enableScreens } from 'react-native-screens';
-import { RootStackParamList } from '@models/navigation-models';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useState } from "react";
+import { enableScreens } from "react-native-screens";
+import { RootStackParamList } from "@models/navigation-models";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createNavigationContainerRef,
   ParamListBase,
   RouteProp,
-} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   styleguide,
   usePendingTransactionCount,
   usePOIProofStatus,
-} from '@react-shared';
-import { SwapPrivateConfirm } from '@screens/DApps/Swap/SwapPrivateConfirm/SwapPrivateConfirm';
-import { SwapPublicConfirm } from '@screens/DApps/Swap/SwapPublicConfirm/SwapPublicConfirm';
-import { SwapScreen } from '@screens/DApps/Swap/SwapScreen/SwapScreen';
-import { CustomNetworkFeeType2Screen } from '@screens/modals/SelectNetworkFeeModal/CustomNetworkFeeScreen/CustomNetworkFeeType2Screen';
-import { CustomNetworkFeeTypes01Screen } from '@screens/modals/SelectNetworkFeeModal/CustomNetworkFeeScreen/CustomNetworkFeeTypes01Screen';
-import { SelectNetworkFeeModal } from '@screens/modals/SelectNetworkFeeModal/SelectNetworkFeeModal';
-import { AddCustomTokenScreen } from '@screens/pages/add-token/AddCustomTokenScreen/AddCustomTokenScreen';
-import { AddTokensScreen } from '@screens/pages/add-token/AddTokensScreen/AddTokensScreen';
-import { ApproveTokenConfirm } from '@screens/pages/approve/ApproveTokenConfirm/ApproveTokenConfirm';
-import { CancelTransactionConfirm } from '@screens/pages/cancel/CancelTransactionConfirm/CancelTransactionConfirm';
-import { AddViewOnlyWalletScreen } from '@screens/pages/import-create/AddViewOnlyWalletScreen/AddViewOnlyWalletScreen';
-import { CreateWalletScreen } from '@screens/pages/import-create/CreateWalletScreen/CreateWalletScreen';
-import { ImportWalletScreen } from '@screens/pages/import-create/ImportWalletScreen/ImportWalletScreen';
-import { NewWalletSuccess } from '@screens/pages/import-create/NewWalletSuccess/NewWalletSuccess';
-import { SeedPhraseCalloutScreen } from '@screens/pages/import-create/SeedPhraseCalloutScreen/SeedPhraseCalloutScreen';
-import { ViewingKeyCalloutScreen } from '@screens/pages/import-create/ViewingKeyCalloutScreen/ViewingKeyCalloutScreen';
-import { WalletProviderLoadingView } from '@screens/pages/loading-network/WalletProviderLoadingView/WalletProviderLoadingView';
-import { LockedScreen } from '@screens/pages/locked/LockedScreen/LockedScreen';
-import { MintTokensConfirm } from '@screens/pages/mint/MintTokensConfirm/MintTokensConfirm';
-import { ReceiveTokenScreen } from '@screens/pages/receive/ReceiveTokenScreen/ReceiveTokenScreen';
-import { RecoveryWalletsScreen } from '@screens/pages/recovery/RecoveryWalletsScreen';
-import { SendERC20s } from '@screens/pages/send/SendERC20s/SendERC20s';
-import { SendERC20sConfirm } from '@screens/pages/send/SendERC20sConfirm/SendERC20sConfirm';
-import { SettingsBroadcastersScreen } from '@screens/pages/settings/SettingsBroadcastersScreen/SettingsBroadcastersScreen';
-import { SettingsDefaultsScreen } from '@screens/pages/settings/SettingsDefaultsScreen/SettingsDefaultsScreen';
-import { SettingsNetworkInfoScreen } from '@screens/pages/settings/SettingsNetworkInfoScreen/SettingsNetworkInfoScreen';
-import { SettingsNetworksScreen } from '@screens/pages/settings/SettingsNetworksScreen/SettingsNetworksScreen';
-import { SettingsWalletInfoScreen } from '@screens/pages/settings/SettingsWalletInfoScreen/SettingsWalletInfoScreen';
-import { SettingsWalletsScreen } from '@screens/pages/settings/SettingsWalletsScreen/SettingsWalletsScreen';
-import { ShowSeedPhraseScreen } from '@screens/pages/settings/ShowSeedPhraseScreen/ShowSeedPhraseScreen';
-import { ShowViewingKeyScreen } from '@screens/pages/settings/ShowViewingKeyScreen/ShowViewingKeyScreen';
-import { ShieldERC20s } from '@screens/pages/shield/ShieldERC20s/ShieldERC20s';
-import { ShieldERC20sConfirm } from '@screens/pages/shield/ShieldERC20sConfirm/ShieldERC20sConfirm';
-import { ERC20Info } from '@screens/pages/token-info/ERC20Info/ERC20Info';
-import { UnshieldERC20s } from '@screens/pages/unshield/UnshieldERC20s/UnshieldERC20s';
-import { UnshieldERC20sConfirm } from '@screens/pages/unshield/UnshieldERC20sConfirm/UnshieldERC20sConfirm';
-import { ActivityScreen } from '@screens/tabs/ActivityScreen/ActivityScreen';
-import { DAppsScreen } from '@screens/tabs/DAppsScreen/DAppsScreen';
-import { NFTsScreen } from '@screens/tabs/NFTsScreen/NFTsScreen';
-import { SettingsScreen } from '@screens/tabs/SettingsScreen/SettingsScreen';
-import { WalletsScreen } from '@screens/tabs/WalletsScreen/WalletsScreen';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { Icon } from '@views/components/icons/Icon';
-import { FarmScreen } from '@views/screens/DApps/Farm/FarmScreen/FarmScreen';
-import { FarmVaultInitial } from '@views/screens/DApps/Farm/FarmVaultInitial/FarmVaultInitial';
-import { AddLiquidityConfirm } from '@views/screens/DApps/Liquidity/AddLiquidityConfirm/AddLiquidityConfirm';
-import { AddLiquidityInitial } from '@views/screens/DApps/Liquidity/AddLiquidityInitial/AddLiquidityInitial';
-import { LiquidityScreen } from '@views/screens/DApps/Liquidity/LiquidityScreen/LiquidityScreen';
-import { RemoveLiquidityConfirm } from '@views/screens/DApps/Liquidity/RemoveLiquidityConfirm/RemoveLiquidityConfirm';
-import { RemoveLiquidityInitial } from '@views/screens/DApps/Liquidity/RemoveLiquidityInitial/RemoveLiquidityInitial';
-import { POIProgressModal } from '@views/screens/modals/POIPorgressModal/POIProgressModal';
-import { OnboardingScreen } from '@views/screens/pages/onboarding/OnboardingScreen/OnboardingScreen';
-import { SettingsAddCustomRPCScreen } from '@views/screens/pages/settings/SettingsAddCustomRPCScreen/SettingsAddCustomRPCScreen';
-import { SettingsAddressBookScreen } from '@views/screens/pages/settings/SettingsAddressBookScreen/SettingsAddressBookScreen';
-import { SettingsAddSavedAddressScreen } from '@views/screens/pages/settings/SettingsAddSavedAddress/SettingsAddSavedAddress';
-import { FarmVaultConfirm } from '../views/screens/DApps/Farm/FarmVaultConfirm/FarmVaultConfirm';
+} from "@react-shared";
+import { SwapPrivateConfirm } from "@screens/DApps/Swap/SwapPrivateConfirm/SwapPrivateConfirm";
+import { SwapPublicConfirm } from "@screens/DApps/Swap/SwapPublicConfirm/SwapPublicConfirm";
+import { SwapScreen } from "@screens/DApps/Swap/SwapScreen/SwapScreen";
+import { CustomNetworkFeeType2Screen } from "@screens/modals/SelectNetworkFeeModal/CustomNetworkFeeScreen/CustomNetworkFeeType2Screen";
+import { CustomNetworkFeeTypes01Screen } from "@screens/modals/SelectNetworkFeeModal/CustomNetworkFeeScreen/CustomNetworkFeeTypes01Screen";
+import { SelectNetworkFeeModal } from "@screens/modals/SelectNetworkFeeModal/SelectNetworkFeeModal";
+import { AddCustomTokenScreen } from "@screens/pages/add-token/AddCustomTokenScreen/AddCustomTokenScreen";
+import { AddTokensScreen } from "@screens/pages/add-token/AddTokensScreen/AddTokensScreen";
+import { ApproveTokenConfirm } from "@screens/pages/approve/ApproveTokenConfirm/ApproveTokenConfirm";
+import { CancelTransactionConfirm } from "@screens/pages/cancel/CancelTransactionConfirm/CancelTransactionConfirm";
+import { AddViewOnlyWalletScreen } from "@screens/pages/import-create/AddViewOnlyWalletScreen/AddViewOnlyWalletScreen";
+import { CreateWalletScreen } from "@screens/pages/import-create/CreateWalletScreen/CreateWalletScreen";
+import { ImportWalletScreen } from "@screens/pages/import-create/ImportWalletScreen/ImportWalletScreen";
+import { NewWalletSuccess } from "@screens/pages/import-create/NewWalletSuccess/NewWalletSuccess";
+import { SeedPhraseCalloutScreen } from "@screens/pages/import-create/SeedPhraseCalloutScreen/SeedPhraseCalloutScreen";
+import { ViewingKeyCalloutScreen } from "@screens/pages/import-create/ViewingKeyCalloutScreen/ViewingKeyCalloutScreen";
+import { WalletProviderLoadingView } from "@screens/pages/loading-network/WalletProviderLoadingView/WalletProviderLoadingView";
+import { LockedScreen } from "@screens/pages/locked/LockedScreen/LockedScreen";
+import { MintTokensConfirm } from "@screens/pages/mint/MintTokensConfirm/MintTokensConfirm";
+import { ReceiveTokenScreen } from "@screens/pages/receive/ReceiveTokenScreen/ReceiveTokenScreen";
+import { RecoveryWalletsScreen } from "@screens/pages/recovery/RecoveryWalletsScreen";
+import { SendERC20s } from "@screens/pages/send/SendERC20s/SendERC20s";
+import { SendERC20sConfirm } from "@screens/pages/send/SendERC20sConfirm/SendERC20sConfirm";
+import { SettingsBroadcastersScreen } from "@screens/pages/settings/SettingsBroadcastersScreen/SettingsBroadcastersScreen";
+import { SettingsDefaultsScreen } from "@screens/pages/settings/SettingsDefaultsScreen/SettingsDefaultsScreen";
+import { SettingsNetworkInfoScreen } from "@screens/pages/settings/SettingsNetworkInfoScreen/SettingsNetworkInfoScreen";
+import { SettingsNetworksScreen } from "@screens/pages/settings/SettingsNetworksScreen/SettingsNetworksScreen";
+import { SettingsWalletInfoScreen } from "@screens/pages/settings/SettingsWalletInfoScreen/SettingsWalletInfoScreen";
+import { SettingsWalletsScreen } from "@screens/pages/settings/SettingsWalletsScreen/SettingsWalletsScreen";
+import { ShowSeedPhraseScreen } from "@screens/pages/settings/ShowSeedPhraseScreen/ShowSeedPhraseScreen";
+import { ShowViewingKeyScreen } from "@screens/pages/settings/ShowViewingKeyScreen/ShowViewingKeyScreen";
+import { ShieldERC20s } from "@screens/pages/shield/ShieldERC20s/ShieldERC20s";
+import { ShieldERC20sConfirm } from "@screens/pages/shield/ShieldERC20sConfirm/ShieldERC20sConfirm";
+import { ERC20Info } from "@screens/pages/token-info/ERC20Info/ERC20Info";
+import { UnshieldERC20s } from "@screens/pages/unshield/UnshieldERC20s/UnshieldERC20s";
+import { UnshieldERC20sConfirm } from "@screens/pages/unshield/UnshieldERC20sConfirm/UnshieldERC20sConfirm";
+import { ActivityScreen } from "@screens/tabs/ActivityScreen/ActivityScreen";
+import { DAppsScreen } from "@screens/tabs/DAppsScreen/DAppsScreen";
+import { NFTsScreen } from "@screens/tabs/NFTsScreen/NFTsScreen";
+import { SettingsScreen } from "@screens/tabs/SettingsScreen/SettingsScreen";
+import { WalletsScreen } from "@screens/tabs/WalletsScreen/WalletsScreen";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { Icon } from "@views/components/icons/Icon";
+import { FarmScreen } from "@views/screens/DApps/Farm/FarmScreen/FarmScreen";
+import { FarmVaultInitial } from "@views/screens/DApps/Farm/FarmVaultInitial/FarmVaultInitial";
+import { AddLiquidityConfirm } from "@views/screens/DApps/Liquidity/AddLiquidityConfirm/AddLiquidityConfirm";
+import { AddLiquidityInitial } from "@views/screens/DApps/Liquidity/AddLiquidityInitial/AddLiquidityInitial";
+import { LiquidityScreen } from "@views/screens/DApps/Liquidity/LiquidityScreen/LiquidityScreen";
+import { RemoveLiquidityConfirm } from "@views/screens/DApps/Liquidity/RemoveLiquidityConfirm/RemoveLiquidityConfirm";
+import { RemoveLiquidityInitial } from "@views/screens/DApps/Liquidity/RemoveLiquidityInitial/RemoveLiquidityInitial";
+import { POIProgressModal } from "@views/screens/modals/POIPorgressModal/POIProgressModal";
+import { OnboardingScreen } from "@views/screens/pages/onboarding/OnboardingScreen/OnboardingScreen";
+import { SettingsAddCustomRPCScreen } from "@views/screens/pages/settings/SettingsAddCustomRPCScreen/SettingsAddCustomRPCScreen";
+import { SettingsAddressBookScreen } from "@views/screens/pages/settings/SettingsAddressBookScreen/SettingsAddressBookScreen";
+import { SettingsAddSavedAddressScreen } from "@views/screens/pages/settings/SettingsAddSavedAddress/SettingsAddSavedAddress";
+import { FarmVaultConfirm } from "../views/screens/DApps/Farm/FarmVaultConfirm/FarmVaultConfirm";
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
@@ -108,7 +108,7 @@ const RootNavigator = ({
         component={RecoveryWalletsNavigator}
       />
       <RootStack.Screen
-        options={{ animation: 'fade', gestureEnabled: false }}
+        options={{ animation: "fade", gestureEnabled: false }}
         name="Tabs"
         component={TabNavigator}
       />
@@ -119,17 +119,17 @@ const RootNavigator = ({
       />
       <RootStack.Screen name="Token" component={TokenNavigator} />
     </RootStack.Group>
-    <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+    <RootStack.Group screenOptions={{ presentation: "modal" }}>
       <RootStack.Screen name="AddTokens" component={AddTokenNavigator} />
     </RootStack.Group>
-    <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+    <RootStack.Group screenOptions={{ presentation: "modal" }}>
       <RootStack.Screen
         name="SelectNetworkFee"
         component={SelectNetworkFeeNavigator}
       />
     </RootStack.Group>
     <RootStack.Group
-      screenOptions={{ gestureEnabled: false, animation: 'fade' }}
+      screenOptions={{ gestureEnabled: false, animation: "fade" }}
     >
       <RootStack.Screen
         name="LockedModal"
@@ -146,34 +146,34 @@ const hapticOnTabPress = {
 };
 
 export enum NavigationTabName {
-  Wallets = 'Wallets',
-  dApps = 'dApps',
-  NFTs = 'NFTs',
-  Activity = 'Activity',
-  Settings = 'Settings',
+  Wallets = "Wallets",
+  dApps = "dApps",
+  NFTs = "NFTs",
+  Activity = "Activity",
+  Settings = "Settings",
 }
 
 export const getTabBarIcon = (
   color: string,
   size: number,
-  route: RouteProp<ParamListBase, string>,
+  route: RouteProp<ParamListBase, string>
 ) => {
-  let iconName = '';
+  let iconName = "";
   switch (route.name) {
     case NavigationTabName.Wallets:
-      iconName = 'wallet-outline';
+      iconName = "wallet-outline";
       break;
     case NavigationTabName.dApps:
-      iconName = 'puzzle-outline';
+      iconName = "puzzle-outline";
       break;
     case NavigationTabName.NFTs:
-      iconName = 'image-multiple-outline';
+      iconName = "image-multiple-outline";
       break;
     case NavigationTabName.Activity:
-      iconName = 'rss';
+      iconName = "rss";
       break;
     case NavigationTabName.Settings:
-      iconName = 'cog-outline';
+      iconName = "cog-outline";
       break;
   }
   return <Icon source={iconName} size={size} color={color} />;
@@ -181,7 +181,7 @@ export const getTabBarIcon = (
 
 const tabBadge = (
   route: RouteProp<ParamListBase, string>,
-  pendingTransactionCount: number,
+  pendingTransactionCount: number
 ): Optional<number> => {
   if (route.name !== NavigationTabName.Activity) {
     return undefined;
@@ -221,7 +221,7 @@ const TabNavigator = () => {
   );
 
   return (
-    (<Tab.Navigator
+    <Tab.Navigator
       detachInactiveScreens={false}
       screenOptions={({ route }) => ({
         poiProgressData: poiProofProgressStatus,
@@ -232,7 +232,7 @@ const TabNavigator = () => {
         tabBarIcon: ({ color, size }) => {
           return getTabBarIcon(color, size, route);
         },
-        tabBarActiveTintColor: '#fff',
+        tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: styleguide.colors.gray7(),
         tabBarStyle: {
           backgroundColor: styleguide.colors.headerBackground,
@@ -287,7 +287,7 @@ const TabNavigator = () => {
         component={SettingsNavigator}
         listeners={hapticOnTabPress}
       />
-    </Tab.Navigator>)
+    </Tab.Navigator>
   );
 };
 
@@ -390,7 +390,7 @@ const DAppsNavigator = () => (
     />
 
     {}
-    <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+    <RootStack.Group screenOptions={{ presentation: "modal" }}>
       <RootStack.Screen name="AddTokens" component={AddTokenNavigator} />
     </RootStack.Group>
   </DAppsStack.Navigator>

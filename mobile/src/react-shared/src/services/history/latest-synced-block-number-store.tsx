@@ -1,7 +1,7 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
-import { logDevError } from '../../utils/logging';
-import { StorageService } from '../storage/storage-service';
+import { isDefined } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
+import { logDevError } from "../../utils/logging";
+import { StorageService } from "../storage/storage-service";
 
 const KEY = SharedConstants.LATEST_SYNCED_BLOCK_NUMBER;
 

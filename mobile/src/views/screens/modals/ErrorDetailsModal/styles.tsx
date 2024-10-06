@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -16,14 +16,14 @@ export const styles = StyleSheet.create({
   errorMessage: {
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.text(),
-    textAlign: 'left',
-    width: '100%',
+    textAlign: "left",
+    width: "100%",
   },
   causedBy: {
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.textSecondary,
-    textAlign: 'left',
-    width: '100%',
+    textAlign: "left",
+    width: "100%",
     marginBottom: 8,
   },
   errorContainer: {
@@ -32,6 +32,6 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 16,
     gap: 12,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
 });

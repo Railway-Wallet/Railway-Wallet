@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,11 +7,11 @@ export const styles = StyleSheet.create({
     backgroundColor: styleguide.colors.black,
   },
   scrollView: {
-    height: '100%',
+    height: "100%",
     backgroundColor: styleguide.colors.black,
   },
   titleRow: {
-    alignContent: 'flex-start',
+    alignContent: "flex-start",
     marginTop: 12,
   },
 });

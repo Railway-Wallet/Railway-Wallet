@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -31,9 +31,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingBottom: 32,
     paddingVertical: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   saveButton: {
-    width: '100%',
+    width: "100%",
   },
 });

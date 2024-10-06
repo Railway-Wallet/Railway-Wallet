@@ -1,29 +1,29 @@
-import { isDefined, TXIDVersion } from '@railgun-community/shared-models';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { TransactionType } from '../../models/transaction';
-import { useReduxSelector } from '../hooks-redux';
+import { isDefined, TXIDVersion } from "@railgun-community/shared-models";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { TransactionType } from "../../models/transaction";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useRailgunFees = (
   transactionType: TransactionType,
-  isFullyPrivateTransaction: boolean = false,
+  isFullyPrivateTransaction: boolean = false
 ) => {
-  const { network } = useReduxSelector('network');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const [calculateFeesError, setCalculateFeesError] =
     useState<Optional<Error>>();
 
   const [shieldFeeV2, setShieldFeeV2] = useState(
-    network.current.feesSerialized?.shieldFeeV2 ?? '0',
+    network.current.feesSerialized?.shieldFeeV2 ?? "0"
   );
   const [unshieldFeeV2, setUnshieldFeeV2] = useState(
-    network.current.feesSerialized?.unshieldFeeV2 ?? '0',
+    network.current.feesSerialized?.unshieldFeeV2 ?? "0"
   );
   const [shieldFeeV3, setShieldFeeV3] = useState(
-    network.current.feesSerialized?.shieldFeeV3 ?? '0',
+    network.current.feesSerialized?.shieldFeeV3 ?? "0"
   );
   const [unshieldFeeV3, setUnshieldFeeV3] = useState(
-    network.current.feesSerialized?.unshieldFeeV3 ?? '0',
+    network.current.feesSerialized?.unshieldFeeV3 ?? "0"
   );
 
   const needsFees = useCallback(() => {
@@ -50,8 +50,8 @@ export const useRailgunFees = (
     if (needsFees()) {
       setCalculateFeesError(
         new Error(
-          'Cannot calculate fees for this network. Please reload your app.',
-        ),
+          "Cannot calculate fees for this network. Please reload your app."
+        )
       );
     }
   }, [needsFees]);

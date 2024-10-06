@@ -3,12 +3,12 @@ import {
   NetworkName,
   POIProofEventStatus,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { copyByValue, logDev } from '../../utils';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { copyByValue, logDev } from "../../utils";
 
 export enum POIProofEventStatusUI {
-  NewTransactionLoading = 'NewTransactionLoading',
+  NewTransactionLoading = "NewTransactionLoading",
 }
 
 export type POIProofProgress = {
@@ -63,12 +63,12 @@ const initialState = {
 } as POIProofProgressNetworkMap;
 
 const slice = createSlice({
-  name: 'poi-proof-progress',
+  name: "poi-proof-progress",
   initialState,
   reducers: {
     updatePOIProofProgressStatus(
       state,
-      action: PayloadAction<POIProofProgressStatusPayload>,
+      action: PayloadAction<POIProofProgressStatusPayload>
     ) {
       const { networkName, walletID, txidVersion, status } = action.payload;
       if (
@@ -77,7 +77,7 @@ const slice = createSlice({
         !isDefined(txidVersion) ||
         !isDefined(status)
       ) {
-        logDev('Invalid POIProofProgressStatusPayload');
+        logDev("Invalid POIProofProgressStatusPayload");
         return;
       }
 
@@ -91,9 +91,9 @@ const slice = createSlice({
       const proofProgress: POIProofProgress = {
         status,
         progress: 0,
-        listKey: 'N/A',
-        txid: 'N/A',
-        railgunTxid: 'N/A',
+        listKey: "N/A",
+        txid: "N/A",
+        railgunTxid: "N/A",
         index: 0,
         totalCount: 0,
         errMessage: undefined,
@@ -108,7 +108,7 @@ const slice = createSlice({
     },
     updatePOIProofProgress(
       state,
-      action: PayloadAction<POIProofProgressPayload>,
+      action: PayloadAction<POIProofProgressPayload>
     ) {
       const {
         networkName,
@@ -135,7 +135,7 @@ const slice = createSlice({
         !isDefined(index) ||
         !isDefined(totalCount)
       ) {
-        logDev('Invalid POIProofProgressPayload');
+        logDev("Invalid POIProofProgressPayload");
         return;
       }
 

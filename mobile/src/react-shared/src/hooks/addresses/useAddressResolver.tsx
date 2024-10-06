@@ -2,32 +2,32 @@ import {
   isDefined,
   NETWORK_CONFIG,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+} from "@railgun-community/shared-models";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import {
   AddressResolverStatus,
   ResolvedAddressType,
   UnstoppableDataRecordPath,
-} from '../../models/address-resolution';
-import { store } from '../../redux-store/store';
-import { ProviderService } from '../../services/providers/provider-service';
-import { getUnstoppableRecordPathForNetwork } from '../../utils/domain-resolution';
-import { endsWithAny } from '../../utils/util';
+} from "../../models/address-resolution";
+import { store } from "../../redux-store/store";
+import { ProviderService } from "../../services/providers/provider-service";
+import { getUnstoppableRecordPathForNetwork } from "../../utils/domain-resolution";
+import { endsWithAny } from "../../utils/util";
 
-const ENS_RAILGUN_ADDRESS_KEY = 'railgun';
+const ENS_RAILGUN_ADDRESS_KEY = "railgun";
 
 const UNSTOPPABLE_DOMAIN_SUFFIXES: string[] = [
-  '.crypto',
-  '.nft',
-  '.blockchain',
-  '.bitcoin',
-  '.coin',
-  '.wallet',
-  '.888',
-  '.dao',
-  '.x',
-  '.zil',
+  ".crypto",
+  ".nft",
+  ".blockchain",
+  ".bitcoin",
+  ".coin",
+  ".wallet",
+  ".888",
+  ".dao",
+  ".x",
+  ".zil",
 ];
 
 type UnstoppableData = {
@@ -37,7 +37,7 @@ type UnstoppableData = {
 export const useAddressResolver = (
   text: string,
   networkName: NetworkName,
-  isRailgun: boolean,
+  isRailgun: boolean
 ) => {
   const [addressResolverStatus, setAddressResolverStatus] =
     useState<Optional<AddressResolverStatus>>();
@@ -52,12 +52,12 @@ export const useAddressResolver = (
       setAddressResolverStatus(AddressResolverStatus.Resolving);
 
       const ethereumProvider = await ProviderService.getProvider(
-        NetworkName.Ethereum,
+        NetworkName.Ethereum
       );
       const resolver = await ethereumProvider.getResolver(text);
       if (!isDefined(resolver)) {
         throw new Error(
-          `Cannot find ENS resolver for ${NETWORK_CONFIG[networkName].publicName}.`,
+          `Cannot find ENS resolver for ${NETWORK_CONFIG[networkName].publicName}.`
         );
       }
 
@@ -67,9 +67,9 @@ export const useAddressResolver = (
       } else {
         address = await resolver.getAddress();
       }
-      if (!isDefined(address) || address === '') {
+      if (!isDefined(address) || address === "") {
         throw new Error(
-          `Cannot find ENS address for ${NETWORK_CONFIG[networkName].publicName}.`,
+          `Cannot find ENS address for ${NETWORK_CONFIG[networkName].publicName}.`
         );
       }
 
@@ -79,10 +79,10 @@ export const useAddressResolver = (
     } catch (cause) {
       setAddressResolverStatus(AddressResolverStatus.Error);
       if (!(cause instanceof Error)) {
-        throw new Error('Unexpected non-error thrown', { cause });
+        throw new Error("Unexpected non-error thrown", { cause });
       }
       setAddressResolverError(
-        new Error('Failed to resolve ENS address', { cause }),
+        new Error("Failed to resolve ENS address", { cause })
       );
     }
   }, [isRailgun, networkName, text]);
@@ -93,7 +93,7 @@ export const useAddressResolver = (
       try {
         const remoteConfig = store.getState().remoteConfig.current;
         if (!isDefined(remoteConfig)) {
-          throw new Error('Config not available.');
+          throw new Error("Config not available.");
         }
         const url = `${remoteConfig.proxyApiUrl}/unstoppable/domains/resolve/${text}`;
         const { data }: { data: UnstoppableData } = await axios.get(url);
@@ -104,7 +104,7 @@ export const useAddressResolver = (
           ];
         if (!isDefined(address)) {
           throw new Error(
-            `Cannot find Unstoppable Domain address for ${NETWORK_CONFIG[networkName].publicName}.`,
+            `Cannot find Unstoppable Domain address for ${NETWORK_CONFIG[networkName].publicName}.`
           );
         }
 
@@ -114,17 +114,17 @@ export const useAddressResolver = (
       } catch (cause) {
         setAddressResolverStatus(AddressResolverStatus.Error);
         if (!(cause instanceof Error)) {
-          throw new Error('Unexpected non-error thrown', { cause });
+          throw new Error("Unexpected non-error thrown", { cause });
         }
         setAddressResolverError(
-          new Error('Failed to resolve Unstoppable Domain address', { cause }),
+          new Error("Failed to resolve Unstoppable Domain address", { cause })
         );
       }
     }, [isRailgun, networkName, text]);
 
   useEffect(() => {
     const resolveAddress = (): Promise<void> => {
-      if (text.endsWith('.eth')) {
+      if (text.endsWith(".eth")) {
         return resolveEnsAddress();
       }
       if (endsWithAny(text, UNSTOPPABLE_DOMAIN_SUFFIXES)) {

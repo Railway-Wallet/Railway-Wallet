@@ -4,9 +4,9 @@ import {
   Network,
   NETWORK_CONFIG,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SharedConstants } from '../../config/shared-constants';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SharedConstants } from "../../config/shared-constants";
 
 const BACKUP_DEFAULT_NETWORK =
   NETWORK_CONFIG[SharedConstants.BACKUP_DEFAULT_NETWORK_NAME];
@@ -20,7 +20,7 @@ const initialState = {
 } as NetworkState;
 
 const slice = createSlice({
-  name: 'network',
+  name: "network",
   initialState,
   reducers: {
     setNetworkByName(state, action: PayloadAction<NetworkName>) {

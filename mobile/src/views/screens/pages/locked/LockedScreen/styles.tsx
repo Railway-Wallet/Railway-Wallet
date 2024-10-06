@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -7,16 +7,16 @@ export const styles = StyleSheet.create({
     backgroundColor: styleguide.colors.gray(),
     padding: 16,
     paddingTop: 84,
-    alignItems: 'center',
+    alignItems: "center",
   },
   swirlBackground: {
     left: -10,
-    top: '46%',
+    top: "46%",
   },
   unlockButton: {
     margin: 48,
-    width: '100%',
-    position: 'absolute',
+    width: "100%",
+    position: "absolute",
     bottom: 24,
   },
 });

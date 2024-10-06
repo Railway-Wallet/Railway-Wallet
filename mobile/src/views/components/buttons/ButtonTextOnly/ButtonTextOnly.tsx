@@ -1,7 +1,7 @@
-import React from 'react';
-import { Text, TextStyle, ViewStyle } from 'react-native';
-import { Button } from 'react-native-paper';
-import { styles } from './styles';
+import React from "react";
+import { Text, TextStyle, ViewStyle } from "react-native";
+import { Button } from "react-native-paper";
+import { styles } from "./styles";
 
 type Props = {
   onTap?: () => void;

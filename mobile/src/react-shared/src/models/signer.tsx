@@ -1,4 +1,4 @@
 export enum SignerType {
-  SelfBroadcast = 'SelfBroadcast',
-  PublicBroadcaster = 'PublicBroadcaster',
+  SelfBroadcast = "SelfBroadcast",
+  PublicBroadcaster = "PublicBroadcaster",
 }

@@ -1,1 +1,1 @@
-export * from './blocked-broadcaster-service';
+export * from "./blocked-broadcaster-service";

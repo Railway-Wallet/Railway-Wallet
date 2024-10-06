@@ -1,13 +1,13 @@
-import React from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import React from "react";
+import { useWindowDimensions, View } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
   interpolateColor,
   SharedValue,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import { styles } from './styles';
+} from "react-native-reanimated";
+import { styles } from "./styles";
 
 type Props = {
   length: number;
@@ -32,7 +32,7 @@ const PaginationComponent = ({
         (index + 1) * SCREEN_WIDTH,
       ],
       [35, 16, 35],
-      Extrapolation.CLAMP,
+      Extrapolation.CLAMP
     );
 
     const bgColor = interpolateColor(
@@ -42,7 +42,7 @@ const PaginationComponent = ({
         index * SCREEN_WIDTH,
         (index + 1) * SCREEN_WIDTH,
       ],
-      ['#D0D0D0', 'rgb(55, 55, 55)', '#D0D0D0'],
+      ["#D0D0D0", "rgb(55, 55, 55)", "#D0D0D0"]
     );
 
     return {

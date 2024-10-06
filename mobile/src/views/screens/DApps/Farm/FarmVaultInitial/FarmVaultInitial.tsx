@@ -1,17 +1,17 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { ERC20AmountsNumPadView } from '@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useMemo, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { ERC20AmountsNumPadView } from "@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   CalloutType,
   CookbookFarmRecipeType,
@@ -28,14 +28,14 @@ import {
   useReduxSelector,
   Vault,
   VaultType,
-} from '@react-shared';
-import { AddCustomTokenModal } from '@screens/modals/AddCustomTokenModal/AddCustomTokenModal';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { TextEntry } from '@views/components/inputs/TextEntry/TextEntry';
-import { styles } from './styles';
+} from "@react-shared";
+import { AddCustomTokenModal } from "@screens/modals/AddCustomTokenModal/AddCustomTokenModal";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { TextEntry } from "@views/components/inputs/TextEntry/TextEntry";
+import { styles } from "./styles";
 
 type VaultOption = {
   label: string;
@@ -44,19 +44,19 @@ type VaultOption = {
 };
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'FarmVaultInitial'>;
+  navigation: NavigationProp<DAppsStackParamList, "FarmVaultInitial">;
   route: RouteProp<
-    { params: DAppsStackParamList['FarmVaultInitial'] },
-    'params'
+    { params: DAppsStackParamList["FarmVaultInitial"] },
+    "params"
   >;
 };
 
 export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
   const { cookbookFarmRecipeType, currentToken } = route.params;
 
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { vaults } = useReduxSelector('vaults');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { vaults } = useReduxSelector("vaults");
 
   const { showActionSheetWithOptions } = useActionSheet();
 
@@ -67,7 +67,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
     cookbookFarmRecipeType,
     wallets.available,
     undefined,
-    currentToken,
+    currentToken
   );
 
   const [erc20Amounts, setERC20Amounts] = useState<ERC20Amount[]>([]);
@@ -90,7 +90,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
       networkVaultData?.depositVaultsForToken[
         currentToken.address.toLowerCase()
       ]?.list,
-    [currentToken, networkVaultData?.depositVaultsForToken],
+    [currentToken, networkVaultData?.depositVaultsForToken]
   );
 
   const getVaultOptionName = (vault: Vault) => {
@@ -102,7 +102,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
     : undefined;
   const currentVaultName = currentVault
     ? getVaultOptionName(currentVault)
-    : 'Select an option';
+    : "Select an option";
 
   const tokenToAdd: Optional<ERC20TokenAddressOnly> = useMemo(
     () =>
@@ -121,7 +121,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
               decimals: currentVault.depositERC20Decimals,
             }
         : undefined,
-    [currentVault, isFarmDeposit],
+    [currentVault, isFarmDeposit]
   );
   const vaultERC20AlreadyAdded = useMemo(
     () =>
@@ -130,26 +130,26 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
             findMatchingAddedTokenForWallet(
               tokenToAdd,
               wallets.active,
-              networkName,
-            ),
+              networkName
+            )
           )
         : false,
-    [wallets.active, networkName, tokenToAdd],
+    [wallets.active, networkName, tokenToAdd]
   );
 
   const vaultOptions: Optional<VaultOption[]> = availableVaults?.map(
     (vault: Vault) => {
       const apyPercentage = formatNumberToLocaleWithMinDecimals(
         vault.apy * 100,
-        2,
+        2
       );
       const vaultOptionName = getVaultOptionName(vault);
       return {
         label: `${vaultOptionName}: ${apyPercentage}%`,
-        value: vault.id ?? 'NO_ID',
+        value: vault.id ?? "NO_ID",
         type: vault.type,
       };
-    },
+    }
   );
 
   useEffect(() => {
@@ -158,9 +158,9 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
     }
 
     const vault = availableVaults?.find(
-      vault =>
+      (vault) =>
         vault.id === selectedVaultOption?.value &&
-        vault.type === selectedVaultOption?.type,
+        vault.type === selectedVaultOption?.type
     );
     setSelectedVault(vault);
   }, [availableVaults, selectedVaultOption, vaultOptions]);
@@ -175,7 +175,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
 
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('FarmVaultConfirm', {
+    navigation.navigate("FarmVaultConfirm", {
       cookbookFarmRecipeType,
       selectedTokenAmount: erc20Amounts[0],
       selectedVault: currentVault,
@@ -189,7 +189,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
   const onTapChangeVault = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     const buttons =
-      vaultOptions?.map(v => {
+      vaultOptions?.map((v) => {
         return {
           name: v.label,
           action: () => setSelectedVaultOption(v),
@@ -198,14 +198,14 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
 
     callActionSheet(
       showActionSheetWithOptions,
-      'Select farming source',
-      buttons,
+      "Select farming source",
+      buttons
     );
   };
 
   const tokenToAddInfo: Optional<SearchableERC20> = currentVault
     ? {
-        searchStr: '',
+        searchStr: "",
         address: isFarmDeposit
           ? currentVault.redeemERC20Address.toLowerCase()
           : currentVault.depositERC20Address.toLowerCase(),
@@ -224,7 +224,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
   const currentTokenName = getTokenDisplayNameShort(
     currentToken,
     wallets.available,
-    networkName,
+    networkName
   );
   const addTokenDescription = isFarmDeposit
     ? `When you deposit ${currentTokenName} into this ${vaultDisplayName}, you will receive ${currentVault?.redeemERC20Symbol}, which is redeemable for ${currentTokenName} at an ever-increasing rate.`
@@ -257,7 +257,7 @@ export const FarmVaultInitial: React.FC<Props> = ({ route, navigation }) => {
             iconButtons={[
               isFarmDeposit
                 ? {
-                    icon: 'pencil-outline',
+                    icon: "pencil-outline",
                     onTap: onTapChangeVault,
                   }
                 : undefined,

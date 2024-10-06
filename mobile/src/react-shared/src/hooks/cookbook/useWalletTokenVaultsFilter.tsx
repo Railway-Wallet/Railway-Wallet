@@ -1,14 +1,14 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { ERC20Token, FrontendWallet } from '../../models';
-import { compareTokenAddress } from '../../utils';
-import { useReduxSelector } from '../hooks-redux';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { ERC20Token, FrontendWallet } from "../../models";
+import { compareTokenAddress } from "../../utils";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useWalletTokenVaultsFilter = (
   wallet: Optional<FrontendWallet>,
-  networkName: NetworkName,
+  networkName: NetworkName
 ) => {
-  const { vaults } = useReduxSelector('vaults');
+  const { vaults } = useReduxSelector("vaults");
 
   const tokensForNetwork = wallet?.addedTokens[networkName];
   const networkVaultData = vaults.forNetwork[networkName];
@@ -25,13 +25,12 @@ export const useWalletTokenVaultsFilter = (
     }
 
     for (const t of tokensForNetwork) {
-      if (t.isBaseToken ?? false)
-        continue;
+      if (t.isBaseToken ?? false) continue;
 
       const hasVaultForDeposit = Object.keys(
-        networkVaultData.depositVaultsForToken,
-      ).some(vaultDepositTokenAddress =>
-        compareTokenAddress(vaultDepositTokenAddress, t.address),
+        networkVaultData.depositVaultsForToken
+      ).some((vaultDepositTokenAddress) =>
+        compareTokenAddress(vaultDepositTokenAddress, t.address)
       );
 
       if (hasVaultForDeposit) {
@@ -39,9 +38,9 @@ export const useWalletTokenVaultsFilter = (
       }
 
       const hasVaultForRedeem = Object.keys(
-        networkVaultData.redeemVaultForToken,
-      ).some(vaultRedeemTokenAddress =>
-        compareTokenAddress(vaultRedeemTokenAddress, t.address),
+        networkVaultData.redeemVaultForToken
+      ).some((vaultRedeemTokenAddress) =>
+        compareTokenAddress(vaultRedeemTokenAddress, t.address)
       );
 
       if (hasVaultForRedeem) {

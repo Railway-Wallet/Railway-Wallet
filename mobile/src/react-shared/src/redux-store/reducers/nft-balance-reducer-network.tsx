@@ -2,10 +2,10 @@ import {
   isDefined,
   NetworkName,
   NFTAmount,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { cacheNFTBalances } from '../../services/wallet/wallet-balance-cache';
-import { copyByValue } from '../../utils/util';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { cacheNFTBalances } from "../../services/wallet/wallet-balance-cache";
+import { copyByValue } from "../../utils/util";
 
 export type UpdateNFTBalancesPayload = {
   networkName: NetworkName;
@@ -28,12 +28,12 @@ const initialState = {
 } as NFTBalanceState;
 
 const slice = createSlice({
-  name: 'nft-balances-network',
+  name: "nft-balances-network",
   initialState,
   reducers: {
     updateNFTBalancesNetwork(
       state,
-      action: PayloadAction<UpdateNFTBalancesPayload>,
+      action: PayloadAction<UpdateNFTBalancesPayload>
     ) {
       const { networkName, walletID, nftAmounts } = action.payload;
       if (

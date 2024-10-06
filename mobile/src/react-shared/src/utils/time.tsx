@@ -5,13 +5,13 @@ export const formatTimeToText = (totalSeconds: number): string => {
 
   if (hours > 0) {
     const formattedTime: string = [hours, minutes, seconds]
-      .map(val => val.toString().padStart(2, '0'))
-      .join(':');
+      .map((val) => val.toString().padStart(2, "0"))
+      .join(":");
     return formattedTime;
   } else {
     const formattedTime: string = [minutes, seconds]
-      .map(val => val.toString().padStart(2, '0'))
-      .join(':');
+      .map((val) => val.toString().padStart(2, "0"))
+      .join(":");
     return formattedTime;
   }
 };

@@ -1,20 +1,20 @@
-import React from 'react';
-import { Dimensions, View } from 'react-native';
-import { useReduxSelector, WalletCardSlideItem } from '@react-shared';
+import React from "react";
+import { Dimensions, View } from "react-native";
+import { useReduxSelector, WalletCardSlideItem } from "@react-shared";
 
-const CarouselStable = require('react-native-snap-carousel-stable').default;
-const CarouselBeta = require('react-native-snap-carousel-beta').default;
+const CarouselStable = require("react-native-snap-carousel-stable").default;
+const CarouselBeta = require("react-native-snap-carousel-beta").default;
 
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { isAndroid } from '@services/util/platform-os-service';
-import { WalletCardSlide } from './WalletCardSlide/WalletCardSlide';
-import { styles } from './styles';
+} from "@railgun-community/shared-models";
+import { isAndroid } from "@services/util/platform-os-service";
+import { WalletCardSlide } from "./WalletCardSlide/WalletCardSlide";
+import { styles } from "./styles";
 
 const HORIZONTAL_SLIDE_MARGIN = 0;
-const SLIDER_WIDTH = Dimensions.get('window').width;
+const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = SLIDER_WIDTH + HORIZONTAL_SLIDE_MARGIN * 2 - 69;
 
 type Props = {
@@ -42,14 +42,14 @@ export const WalletCardSlides: React.FC<Props> = ({
   onActionMintTokens,
   onWalletBecameActive,
 }) => {
-  const { wallets } = useReduxSelector('wallets');
+  const { wallets } = useReduxSelector("wallets");
 
   const activeWallet = wallets.active;
 
   const slideItems: WalletCardSlideItem[] = [
     {
       walletAddress: activeWallet?.railAddress,
-      walletName: activeWallet?.name ?? 'PRIVATE',
+      walletName: activeWallet?.name ?? "PRIVATE",
       isRailgun: true,
     },
   ];
@@ -60,7 +60,7 @@ export const WalletCardSlides: React.FC<Props> = ({
         isDefined(activeWallet) && !activeWallet.isViewOnlyWallet
           ? activeWallet.ethAddress
           : undefined,
-      walletName: activeWallet?.name ?? 'PUBLIC',
+      walletName: activeWallet?.name ?? "PUBLIC",
       isRailgun: false,
     });
   }
@@ -89,10 +89,10 @@ export const WalletCardSlides: React.FC<Props> = ({
   };
 
   return (
-    (<View style={styles.cardsWrapper}>
+    <View style={styles.cardsWrapper}>
       {}
       {isAndroid() ? (
-        (<CarouselBeta
+        <CarouselBeta
           data={slideItems}
           renderItem={(slide: { item: WalletCardSlideItem }) =>
             walletCardSlide(slide.item)
@@ -102,9 +102,9 @@ export const WalletCardSlides: React.FC<Props> = ({
           onSnapToItem={onSlideBecameActive}
           enableSnap={true}
           vertical={false}
-        />)
+        />
       ) : (
-        (<CarouselStable
+        <CarouselStable
           data={slideItems}
           renderItem={(slide: { item: WalletCardSlideItem }) =>
             walletCardSlide(slide.item)
@@ -114,8 +114,8 @@ export const WalletCardSlides: React.FC<Props> = ({
           onSnapToItem={onSlideBecameActive}
           enableSnap={true}
           activeAnimationType="spring"
-        />)
+        />
       )}
-    </View>)
+    </View>
   );
 };

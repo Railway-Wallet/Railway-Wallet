@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { Text, View } from 'react-native';
-import { TokenListRow } from '@components/list/TokenListRow/TokenListRow';
-import { LoadingSwirl } from '@components/loading/LoadingSwirl/LoadingSwirl';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { Text, View } from "react-native";
+import { TokenListRow } from "@components/list/TokenListRow/TokenListRow";
+import { LoadingSwirl } from "@components/loading/LoadingSwirl/LoadingSwirl";
 import {
   AppSettingsService,
   CURRENCY_ARS,
@@ -15,10 +15,10 @@ import {
   tokenPriceUndefinedLabel,
   truncateStr,
   useReduxSelector,
-} from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
-import { isSmallScreen } from '@services/util/screen-dimensions-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
+import { isSmallScreen } from "@services/util/screen-dimensions-service";
+import { styles } from "./styles";
 
 type Props = {
   tokenBalance: ERC20TokenBalance;
@@ -31,9 +31,9 @@ export const ERC20TokenListRow: React.FC<Props> = ({
   onSelect,
   hasPendingBalance,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { discreetMode } = useReduxSelector('discreetMode');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { discreetMode } = useReduxSelector("discreetMode");
 
   const { token, balance, balanceCurrency, priceCurrency } = tokenBalance;
   const appCurrency = AppSettingsService.currency;
@@ -46,7 +46,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
       return (
         <>
           <Text style={styles.titleCurrencyStyle}>{appCurrency.symbol}</Text>
-          {'<' + formatNumberToLocaleWithMinDecimals(0.01, 2)}
+          {"<" + formatNumberToLocaleWithMinDecimals(0.01, 2)}
         </>
       );
     }
@@ -62,7 +62,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
   const discreetBalanceCurrency = (
     <>
       <Text style={styles.titleCurrencyStyle}>{appCurrency.symbol}</Text>
-      {'***'}
+      {"***"}
     </>
   );
 
@@ -78,7 +78,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
 
     const balanceText = hasBalance
       ? balanceDecimal > 0 && balanceDecimal < 0.0001
-        ? '<' + formatNumberToLocaleWithMinDecimals(0.0001, 4)
+        ? "<" + formatNumberToLocaleWithMinDecimals(0.0001, 4)
         : formatNumberToLocaleWithMinDecimals(balanceDecimal, 4)
       : undefined;
 
@@ -92,14 +92,14 @@ export const ERC20TokenListRow: React.FC<Props> = ({
           adjustsFontSizeToFit={adjustsFontSizeToFit}
         >
           {discreetMode.enabled ? discreetBalanceCurrency : balanceCurrency}
-          {hasPendingBalance ? '*' : ''}
+          {hasPendingBalance ? "*" : ""}
         </Text>
         <Text
           style={styles.descriptionStyle}
           numberOfLines={1}
           adjustsFontSizeToFit={adjustsFontSizeToFit}
         >
-          {discreetMode.enabled ? '***' : truncateStr(balanceText, 12)}
+          {discreetMode.enabled ? "***" : truncateStr(balanceText, 12)}
         </Text>
       </View>
     );
@@ -108,7 +108,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
   const tokenDisplayName = getTokenDisplayNameShort(
     token,
     wallets.available,
-    network.current.name,
+    network.current.name
   );
 
   const shouldBeMultilineDescription =
@@ -124,7 +124,7 @@ export const ERC20TokenListRow: React.FC<Props> = ({
       }${formatNumberToLocaleWithMinDecimals(priceCurrency, 5)}`
     : `${tokenDisplayName}${tokenPriceUndefinedLabel(
         network.current,
-        '• N/A',
+        "• N/A"
       )}`;
 
   const multilineDescription = (
@@ -134,9 +134,9 @@ export const ERC20TokenListRow: React.FC<Props> = ({
         {isDefined(priceCurrency)
           ? `\n${appCurrency.symbol}${formatNumberToLocaleWithMinDecimals(
               priceCurrency,
-              5,
+              5
             )}`
-          : `${tokenPriceUndefinedLabel(network.current, 'N/A')}`}
+          : `${tokenPriceUndefinedLabel(network.current, "N/A")}`}
       </Text>
     </Text>
   );

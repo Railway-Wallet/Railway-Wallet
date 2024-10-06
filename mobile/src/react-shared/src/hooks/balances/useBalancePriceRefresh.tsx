@@ -3,30 +3,30 @@ import {
   isDefined,
   Network,
   RailgunBalanceRefreshTrigger,
-} from '@railgun-community/shared-models';
-import { useCallback, useRef, useState } from 'react';
-import { FrontendWallet } from '../../models/wallet';
-import { pullWalletBalancesNetwork } from '../../services/wallet/wallet-balance-service';
-import { pullERC20TokenPricesForNetwork } from '../../services/wallet/wallet-price-service';
-import { logDevError } from '../../utils';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
+} from "@railgun-community/shared-models";
+import { useCallback, useRef, useState } from "react";
+import { FrontendWallet } from "../../models/wallet";
+import { pullWalletBalancesNetwork } from "../../services/wallet/wallet-balance-service";
+import { pullERC20TokenPricesForNetwork } from "../../services/wallet/wallet-price-service";
+import { logDevError } from "../../utils";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
 
 export type PullPrices = (
   forceWallet?: FrontendWallet,
-  forceNetwork?: Network,
+  forceNetwork?: Network
 ) => Promise<void>;
 
 export type PullBalances = (
   forceWallet?: FrontendWallet,
-  forceNetwork?: Network,
+  forceNetwork?: Network
 ) => Promise<[void, void]>;
 
 export const useBalancePriceRefresh = (
   railgunBalanceRefreshTrigger: RailgunBalanceRefreshTrigger,
-  setError: (error: Error) => void,
+  setError: (error: Error) => void
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const dispatch = useAppDispatch();
   const [isRefreshingPrices, setIsRefreshingPrices] = useState(false);
@@ -42,14 +42,14 @@ export const useBalancePriceRefresh = (
       try {
         await railgunBalanceRefreshTrigger(
           forceChain ?? network.current.chain,
-          [wallets.active.railWalletID],
+          [wallets.active.railWalletID]
         );
       } catch (cause) {
         if (!(cause instanceof Error)) {
-          throw new Error('Unexpected non-error thrown', { cause });
+          throw new Error("Unexpected non-error thrown", { cause });
         }
-        if (cause.message.includes('provider destroyed')) return;
-        const error = new Error('Error refreshing Railgun balances', { cause });
+        if (cause.message.includes("provider destroyed")) return;
+        const error = new Error("Error refreshing Railgun balances", { cause });
         logDevError(error);
         setError(error);
       }
@@ -62,7 +62,7 @@ export const useBalancePriceRefresh = (
       dispatch,
       network.current.name,
       railgunBalanceRefreshTrigger,
-    ],
+    ]
   );
 
   const pullPrices: PullPrices = useCallback(
@@ -75,7 +75,7 @@ export const useBalancePriceRefresh = (
       await pullERC20TokenPricesForNetwork(
         dispatch,
         wallet,
-        forceNetwork ?? network.current,
+        forceNetwork ?? network.current
       );
       setIsRefreshingPrices(false);
     },
@@ -85,13 +85,13 @@ export const useBalancePriceRefresh = (
       wallets.active?.addedTokens,
       dispatch,
       network.current.name,
-    ],
+    ]
   );
 
   const pullBalances: PullBalances = useCallback(
     (
       forceWallet?: FrontendWallet,
-      forceNetwork?: Network,
+      forceNetwork?: Network
     ): Promise<[void, void]> => {
       const wallet = forceWallet ?? wallets.active;
       const isDifferentWallet =
@@ -106,7 +106,7 @@ export const useBalancePriceRefresh = (
         pullWalletBalancesNetwork(
           dispatch,
           wallet,
-          forceNetwork ?? network.current,
+          forceNetwork ?? network.current
         ),
         refreshRailgunBalances(forceNetwork?.chain),
       ]);
@@ -116,9 +116,7 @@ export const useBalancePriceRefresh = (
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      refreshRailgunBalances,
-    ],
+    [refreshRailgunBalances]
   );
 
   return { pullPrices, pullBalances };

@@ -4,30 +4,30 @@ import {
   RecipeERC20Info,
   UniswapV2Fork,
   UniV2LikeSDK,
-} from '@railgun-community/cookbook';
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { FrontendLiquidityPair } from '../hooks';
-import { ERC20Token, FrontendWallet, TokenIconKey } from '../models';
-import { LiquidityV2PoolSerialized } from '../models/liquidity-pool';
+} from "@railgun-community/cookbook";
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { FrontendLiquidityPair } from "../hooks";
+import { ERC20Token, FrontendWallet, TokenIconKey } from "../models";
+import { LiquidityV2PoolSerialized } from "../models/liquidity-pool";
 import {
   updateLiquidityPool,
   updateLiquidityPools,
-} from '../redux-store/reducers/liquidity-reducer';
-import { AppDispatch } from '../redux-store/store';
-import { ProviderService } from '../services';
-import { getSupportedNetworks } from './networks';
-import { compareTokenAddress, tokenMatchesSearchField } from './tokens';
+} from "../redux-store/reducers/liquidity-reducer";
+import { AppDispatch } from "../redux-store/store";
+import { ProviderService } from "../services";
+import { getSupportedNetworks } from "./networks";
+import { compareTokenAddress, tokenMatchesSearchField } from "./tokens";
 import {
   formatNumberToLocale,
   formatUnitFromHexStringToLocale,
   roundToNDecimals,
-} from './util';
+} from "./util";
 
 const fetchLiquidityPairRate = async (
   uniswapV2Fork: UniswapV2Fork,
   networkName: NetworkName,
   erc20InfoA: ERC20Token,
-  erc20InfoB: ERC20Token,
+  erc20InfoB: ERC20Token
 ): Promise<bigint> => {
   const provider = await ProviderService.getProvider(networkName);
 
@@ -48,7 +48,7 @@ const fetchLiquidityPairRate = async (
     networkName,
     provider,
     tokenA,
-    tokenB,
+    tokenB
   );
 };
 
@@ -56,20 +56,20 @@ export const refreshLiquidityPairRate = async (
   dispatch: AppDispatch,
   liquidityPool: LiquidityV2Pool,
   networkName: NetworkName,
-  wallet: FrontendWallet,
+  wallet: FrontendWallet
 ) => {
   const addedTokens = wallet.addedTokens[networkName] ?? [];
-  const tokenA = addedTokens.find(t =>
-    compareTokenAddress(t.address, liquidityPool.tokenAddressA),
+  const tokenA = addedTokens.find((t) =>
+    compareTokenAddress(t.address, liquidityPool.tokenAddressA)
   );
 
-  const tokenB = addedTokens.find(t =>
-    compareTokenAddress(t.address, liquidityPool.tokenAddressB),
+  const tokenB = addedTokens.find((t) =>
+    compareTokenAddress(t.address, liquidityPool.tokenAddressB)
   );
 
   if (!isDefined(tokenA) || !isDefined(tokenB)) {
     throw new Error(
-      'Refresh liquidity rate failed. Liquidity pair not found in wallet.',
+      "Refresh liquidity rate failed. Liquidity pair not found in wallet."
     );
   }
 
@@ -77,7 +77,7 @@ export const refreshLiquidityPairRate = async (
     liquidityPool.uniswapV2Fork,
     networkName,
     tokenA,
-    tokenB,
+    tokenB
   );
 
   dispatch(
@@ -87,35 +87,35 @@ export const refreshLiquidityPairRate = async (
         ...convertLiquidityPoolToSerialized(liquidityPool),
         rateWith18Decimals: updatedRate.toString(),
       },
-    }),
+    })
   );
 };
 
 export const fetchLiquidity = async (
   networkName: NetworkName,
   tokenAddresses: string[],
-  dispatch: AppDispatch,
+  dispatch: AppDispatch
 ): Promise<LiquidityV2Pool[]> => {
   const provider = await ProviderService.getProvider(networkName);
 
   const liquidityPools = await getLPPairsForTokenAddresses(
     provider,
     networkName,
-    tokenAddresses,
+    tokenAddresses
   );
 
   dispatch(
     updateLiquidityPools({
       networkName,
       liquidityPools: liquidityPools.map(convertLiquidityPoolToSerialized),
-    }),
+    })
   );
 
   return liquidityPools;
 };
 
 export const convertLiquidityPoolToSerialized = (
-  liquidityPool: LiquidityV2Pool,
+  liquidityPool: LiquidityV2Pool
 ): LiquidityV2PoolSerialized => {
   const serialized: LiquidityV2PoolSerialized = {
     ...liquidityPool,
@@ -128,7 +128,7 @@ export const convertLiquidityPoolToSerialized = (
 };
 
 export const convertSerializedToLiquidityPool = (
-  liquidityPoolSerialized: LiquidityV2PoolSerialized,
+  liquidityPoolSerialized: LiquidityV2PoolSerialized
 ): LiquidityV2Pool => {
   const liquidityPool: LiquidityV2Pool = {
     ...liquidityPoolSerialized,
@@ -142,9 +142,9 @@ export const convertSerializedToLiquidityPool = (
 
 export const getFilteredLiquidityPairs = (
   supportedLiquidityPairs: FrontendLiquidityPair[],
-  tokenSearchText: string,
+  tokenSearchText: string
 ) => {
-  const filteredPools = supportedLiquidityPairs.filter(pool => {
+  const filteredPools = supportedLiquidityPairs.filter((pool) => {
     const { tokenA, tokenB } = pool;
     const searchText = tokenSearchText?.toLowerCase();
     return (
@@ -159,7 +159,7 @@ export const getFilteredLiquidityPairs = (
 export const getLiquidityPoolMoreInfoLink = (
   uniswapV2Fork: UniswapV2Fork,
   address: string,
-  chainId: number,
+  chainId: number
 ) => {
   switch (uniswapV2Fork) {
     case UniswapV2Fork.Uniswap:
@@ -169,24 +169,24 @@ export const getLiquidityPoolMoreInfoLink = (
       return `https://www.sushi.com/pool/${chainId}:${address}`;
 
     case UniswapV2Fork.PancakeSwap:
-      return 'https://pancakeswap.finance/find';
+      return "https://pancakeswap.finance/find";
 
     case UniswapV2Fork.Quickswap:
-      return 'https://quickswap.exchange/#/pools/v2';
+      return "https://quickswap.exchange/#/pools/v2";
   }
 };
 
 export const getLiquiditySourcesAndAssetsUrls = (
-  networkName: NetworkName,
+  networkName: NetworkName
 ): {
   liquiditySource: string;
   url: string;
 }[] => {
   const chainIds = getSupportedNetworks()
-    .map(n => n.chain.id)
-    .join(',');
+    .map((n) => n.chain.id)
+    .join(",");
 
-  const sourceOptions = Object.values(UniswapV2Fork).map(pair => {
+  const sourceOptions = Object.values(UniswapV2Fork).map((pair) => {
     if (!UniV2LikeSDK.supportsForkAndNetwork(pair, networkName)) {
       return null;
     }
@@ -194,22 +194,22 @@ export const getLiquiditySourcesAndAssetsUrls = (
     switch (pair) {
       case UniswapV2Fork.Uniswap:
         return {
-          liquiditySource: 'Uniswap V2',
-          url: 'https://v2.info.uniswap.org/pairs',
+          liquiditySource: "Uniswap V2",
+          url: "https://v2.info.uniswap.org/pairs",
         };
       case UniswapV2Fork.SushiSwap:
         return {
-          liquiditySource: 'SushiSwap V2',
+          liquiditySource: "SushiSwap V2",
           url: `https://www.sushi.com/pool?chainIds=${chainIds}&protocols=SUSHISWAP_V2`,
         };
       case UniswapV2Fork.PancakeSwap:
         return {
-          liquiditySource: 'PancakeSwap V2',
+          liquiditySource: "PancakeSwap V2",
           url: `https://pancakeswap.finance/info/v2/pairs`,
         };
       case UniswapV2Fork.Quickswap:
         return {
-          liquiditySource: 'Quickswap V2',
+          liquiditySource: "Quickswap V2",
           url: `https://quickswap.exchange/#/analytics/v2/pairs`,
         };
     }
@@ -226,18 +226,15 @@ const reversePairRate = (pool: LiquidityV2Pool): bigint => {
 };
 
 export const getPairExchangeRateDisplayText = (
-  pool: Optional<LiquidityV2Pool>,
+  pool: Optional<LiquidityV2Pool>
 ) => {
   if (!isDefined(pool)) {
-    return 'N/A';
+    return "N/A";
   }
   const pairRate = reversePairRate(pool);
-  const exchangeRate = formatUnitFromHexStringToLocale(
-    pairRate,
-    18,
-  );
+  const exchangeRate = formatUnitFromHexStringToLocale(pairRate, 18);
   const exchangeRateText = formatNumberToLocale(
-    roundToNDecimals(Number(exchangeRate), 8),
+    roundToNDecimals(Number(exchangeRate), 8)
   );
   return `1 ${pool.tokenSymbolA} = ${exchangeRateText} ${pool.tokenSymbolB}`;
 };

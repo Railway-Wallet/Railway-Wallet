@@ -1,10 +1,10 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React from 'react';
-import { Image, Text, View } from 'react-native';
-import { ResizingCardBalance } from '@components/text/ResizingCardBalance/ResizingCardBalance';
+} from "@railgun-community/shared-models";
+import React from "react";
+import { Image, Text, View } from "react-native";
+import { ResizingCardBalance } from "@components/text/ResizingCardBalance/ResizingCardBalance";
 import {
   AppSettingsService,
   ERC20Token,
@@ -14,8 +14,8 @@ import {
   useERC20DecimalBalances,
   useReduxSelector,
   WalletCardSlideItem,
-} from '@react-shared';
-import { styles } from './styles';
+} from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   item: WalletCardSlideItem;
@@ -32,14 +32,14 @@ export const ERC20CardBalance: React.FC<Props> = ({
   isRailgun,
   balanceBucketFilter,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { discreetMode } = useReduxSelector('discreetMode');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { discreetMode } = useReduxSelector("discreetMode");
 
   const { erc20Balance, erc20BalanceCurrency } = useERC20DecimalBalances(
     token,
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const appCurrency = AppSettingsService.currency;
@@ -55,12 +55,12 @@ export const ERC20CardBalance: React.FC<Props> = ({
         <Image source={icon} style={styles.tokenIcon} />
         <Text numberOfLines={1} adjustsFontSizeToFit style={styles.balanceText}>
           {discreetMode.enabled
-            ? '***'
-            : formatNumberToLocaleWithMinDecimals(erc20Balance, 20)}{' '}
+            ? "***"
+            : formatNumberToLocaleWithMinDecimals(erc20Balance, 20)}{" "}
           {getTokenDisplayNameShort(
             token,
             wallets.available,
-            network.current.name,
+            network.current.name
           )}
         </Text>
       </View>
@@ -70,7 +70,7 @@ export const ERC20CardBalance: React.FC<Props> = ({
             {tokenPrice
               ? `${appCurrency.symbol}${formatNumberToLocaleWithMinDecimals(
                   tokenPrice,
-                  6,
+                  6
                 )} per token`
               : undefined}
           </Text>

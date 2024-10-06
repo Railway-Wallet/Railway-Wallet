@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isSmallScreen } from '@services/util/screen-dimensions-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isSmallScreen } from "@services/util/screen-dimensions-service";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
     top: 36,
   },
   pinTitleDotsWrapper: {
-    marginTop: '30%',
-    alignItems: 'center',
+    marginTop: "30%",
+    alignItems: "center",
   },
   errorShowMore: {
     color: styleguide.colors.textSecondary,
@@ -23,40 +23,40 @@ export const styles = StyleSheet.create({
   titleText: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   noticeTextWrapper: {
     marginTop: isSmallScreen() ? 4 : 16,
     paddingHorizontal: 48,
     minHeight: 32,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   noticeText: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
   },
   errorText: {
     ...styleguide.typography.label,
     color: styleguide.colors.error(),
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
   },
   pinEntryPanelWrapper: {
     marginTop: isSmallScreen() ? 4 : 16,
   },
   bottomButtons: {
     marginTop: isSmallScreen() ? 16 : 26,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     paddingHorizontal: 24,
   },
   bottomButton: {
-    width: '100%',
+    width: "100%",
   },
   bottomButtonLabel: {
     ...styleguide.typography.label,
-    textTransform: 'none',
+    textTransform: "none",
   },
 });

@@ -1,11 +1,11 @@
-import { ZeroXConfig, ZeroXQuote } from '@railgun-community/cookbook';
-import React from 'react';
+import { ZeroXConfig, ZeroXQuote } from "@railgun-community/cookbook";
+import React from "react";
 import {
   ERC20Amount,
   usePublicSwapQuote,
   useReduxSelector,
-} from '@react-shared';
-import { SharedSwapContent, SwapContentProps } from './SharedSwapContent';
+} from "@react-shared";
+import { SharedSwapContent, SwapContentProps } from "./SharedSwapContent";
 
 export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
   navigation,
@@ -15,14 +15,14 @@ export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
   returnBackFromCompletedOrder,
   ...props
 }: SwapContentProps) => {
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { remoteConfig } = useReduxSelector("remoteConfig");
 
   ZeroXConfig.PROXY_API_DOMAIN = remoteConfig.current?.proxyApiUrl;
   const { quote, quoteError, isLoadingQuote } = usePublicSwapQuote(
     sellERC20Amount,
     buyERC20,
     swapSettings.slippagePercentage,
-    ZeroXQuote.getSwapQuote,
+    ZeroXQuote.getSwapQuote
   );
 
   const buyERC20Amount: Optional<ERC20Amount> =
@@ -37,7 +37,7 @@ export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
     if (!sellERC20Amount || !buyERC20 || !quote) {
       return;
     }
-    navigation.navigate('SwapPublicConfirm', {
+    navigation.navigate("SwapPublicConfirm", {
       returnBackFromCompletedOrder,
       originalQuote: quote,
       sellERC20Amount,

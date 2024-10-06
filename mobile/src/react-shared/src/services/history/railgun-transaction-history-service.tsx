@@ -10,13 +10,13 @@ import {
   RailgunWalletBalanceBucket,
   removeUndefineds,
   TransactionHistoryItem,
-} from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config';
+} from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config";
 import {
   ERC20Amount,
   ERC20Token,
   ERC20TokenAddressOnly,
-} from '../../models/token';
+} from "../../models/token";
 import {
   NonSpendableTransaction,
   ReceiveERC20Amount,
@@ -27,16 +27,16 @@ import {
   TransactionStatus,
   TransferNFTAmountRecipient,
   TransferRecipientERC20Amount,
-} from '../../models/transaction';
-import { AvailableWallet, FrontendWallet } from '../../models/wallet';
-import { AppDispatch } from '../../redux-store/store';
-import { isNonSpendableBucket } from '../../utils';
-import { logDev } from '../../utils/logging';
-import { findMatchingAddedToken } from '../../utils/tokens';
-import { getERC20Decimals } from '../token/erc20';
-import { LatestSyncedBlockNumberStore } from './latest-synced-block-number-store';
-import { SavedTransactionStore } from './saved-transaction-store';
-import { TransactionReceiptDetailsService } from './transaction-receipt-details-service';
+} from "../../models/transaction";
+import { AvailableWallet, FrontendWallet } from "../../models/wallet";
+import { AppDispatch } from "../../redux-store/store";
+import { isNonSpendableBucket } from "../../utils";
+import { logDev } from "../../utils/logging";
+import { findMatchingAddedToken } from "../../utils/tokens";
+import { getERC20Decimals } from "../token/erc20";
+import { LatestSyncedBlockNumberStore } from "./latest-synced-block-number-store";
+import { SavedTransactionStore } from "./saved-transaction-store";
+import { TransactionReceiptDetailsService } from "./transaction-receipt-details-service";
 
 export class RailgunTransactionHistoryService {
   private savedTransactionStore: SavedTransactionStore;
@@ -54,7 +54,7 @@ export class RailgunTransactionHistoryService {
     networkName: NetworkName,
     activeWallet: FrontendWallet,
     availableWallets: AvailableWallet[],
-    railgunTransactions: TransactionHistoryItem[],
+    railgunTransactions: TransactionHistoryItem[]
   ): Promise<void> {
     this.cachedTokenMap = {};
 
@@ -64,27 +64,27 @@ export class RailgunTransactionHistoryService {
     await this.updateLocalTransactionsFoundBySync(
       railgunTransactions,
       savedTransactions,
-      networkName,
+      networkName
     );
 
-    const newTransactionsToSync = railgunTransactions.filter(historyItem => {
+    const newTransactionsToSync = railgunTransactions.filter((historyItem) => {
       return this.hasNoFullMatchingSavedTransaction(
         historyItem,
-        savedTransactions,
+        savedTransactions
       );
     });
 
     this.lookupMissingTimestampCount = 0;
 
     const transactions = await Promise.all(
-      newTransactionsToSync.map(railgunTransaction =>
+      newTransactionsToSync.map((railgunTransaction) =>
         this.createNewSyncedTransaction(
           networkName,
           activeWallet,
           availableWallets,
-          railgunTransaction,
-        ),
-      ),
+          railgunTransaction
+        )
+      )
     );
 
     const nonnullTransactions = removeUndefineds(transactions);
@@ -95,7 +95,7 @@ export class RailgunTransactionHistoryService {
 
     await this.savedTransactionStore.addTransactions(
       nonnullTransactions,
-      networkName,
+      networkName
     );
   }
 
@@ -103,27 +103,29 @@ export class RailgunTransactionHistoryService {
     networkName: NetworkName,
     activeWallet: FrontendWallet,
     availableWallets: AvailableWallet[],
-    railgunTransactions: TransactionHistoryItem[],
+    railgunTransactions: TransactionHistoryItem[]
   ): Promise<NonSpendableTransaction[]> {
-    const nonSpendableHistoryItems = railgunTransactions.filter(historyItem => {
-      const allReceiveTypeAmounts = [
-        ...historyItem.receiveERC20Amounts,
-        ...historyItem.receiveNFTAmounts,
-        ...historyItem.changeERC20Amounts,
-      ];
-      return allReceiveTypeAmounts.some(
-        receiveTypeAmount => !receiveTypeAmount.hasValidPOIForActiveLists,
-      );
-    });
+    const nonSpendableHistoryItems = railgunTransactions.filter(
+      (historyItem) => {
+        const allReceiveTypeAmounts = [
+          ...historyItem.receiveERC20Amounts,
+          ...historyItem.receiveNFTAmounts,
+          ...historyItem.changeERC20Amounts,
+        ];
+        return allReceiveTypeAmounts.some(
+          (receiveTypeAmount) => !receiveTypeAmount.hasValidPOIForActiveLists
+        );
+      }
+    );
 
     const nonPOITransactions: Optional<NonSpendableTransaction>[] =
       await Promise.all(
-        nonSpendableHistoryItems.map(async historyItem => {
+        nonSpendableHistoryItems.map(async (historyItem) => {
           const transaction = await this.createNewSyncedTransaction(
             networkName,
             activeWallet,
             availableWallets,
-            historyItem,
+            historyItem
           );
           if (!transaction) {
             return;
@@ -133,14 +135,14 @@ export class RailgunTransactionHistoryService {
             balanceBucket:
               this.getBalanceBucketForNonSpendableHistoryItem(historyItem),
           };
-        }),
+        })
       );
 
     return removeUndefineds(nonPOITransactions);
   }
 
   private getBalanceBucketForNonSpendableHistoryItem = (
-    historyItem: TransactionHistoryItem,
+    historyItem: TransactionHistoryItem
   ): RailgunWalletBalanceBucket => {
     for (const change of historyItem.changeERC20Amounts) {
       if (!change.hasValidPOIForActiveLists) {
@@ -154,7 +156,7 @@ export class RailgunTransactionHistoryService {
     ];
 
     const nonSpendableBalanceBuckets: RailgunWalletBalanceBucket[] = [];
-    Object.values(RailgunWalletBalanceBucket).forEach(balanceBucket => {
+    Object.values(RailgunWalletBalanceBucket).forEach((balanceBucket) => {
       if (isNonSpendableBucket(balanceBucket)) {
         nonSpendableBalanceBuckets.push(balanceBucket);
       }
@@ -163,7 +165,7 @@ export class RailgunTransactionHistoryService {
     for (const balanceBucket of nonSpendableBalanceBuckets) {
       if (
         allReceiveTypeAmounts.some(
-          receive => receive.balanceBucket === balanceBucket,
+          (receive) => receive.balanceBucket === balanceBucket
         )
       ) {
         return balanceBucket;
@@ -174,10 +176,10 @@ export class RailgunTransactionHistoryService {
   };
 
   private storeLatestSyncedBlockNumber = async (
-    railgunTransactions: TransactionHistoryItem[],
+    railgunTransactions: TransactionHistoryItem[]
   ) => {
     let latestSyncedBlockNumber = 0;
-    railgunTransactions.forEach(transaction => {
+    railgunTransactions.forEach((transaction) => {
       if (
         isDefined(transaction.blockNumber) &&
         transaction.blockNumber > latestSyncedBlockNumber
@@ -191,7 +193,7 @@ export class RailgunTransactionHistoryService {
   private createERC20Token = async (
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
-    tokenAddress: string,
+    tokenAddress: string
   ): Promise<ERC20Token> => {
     const tokenAddressLowercase = tokenAddress.toLowerCase();
 
@@ -209,7 +211,7 @@ export class RailgunTransactionHistoryService {
     const matchingAddedToken: Optional<ERC20Token> = findMatchingAddedToken(
       tokenAddressOnly,
       availableWallets,
-      networkName,
+      networkName
     );
     if (matchingAddedToken) {
       this.cachedTokenMap[tokenAddressLowercase] = matchingAddedToken;
@@ -217,7 +219,7 @@ export class RailgunTransactionHistoryService {
     }
 
     tokenAddressOnly.decimals = Number(
-      await getERC20Decimals(networkName, tokenAddressLowercase),
+      await getERC20Decimals(networkName, tokenAddressLowercase)
     );
 
     this.cachedTokenMap[tokenAddressLowercase] = tokenAddressOnly;
@@ -227,12 +229,12 @@ export class RailgunTransactionHistoryService {
   private createERC20Amount = async (
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
-    erc20Amount: RailgunHistoryERC20Amount,
+    erc20Amount: RailgunHistoryERC20Amount
   ): Promise<ERC20Amount> => {
     const token = await this.createERC20Token(
       networkName,
       availableWallets,
-      erc20Amount.tokenAddress,
+      erc20Amount.tokenAddress
     );
     return {
       token,
@@ -243,12 +245,12 @@ export class RailgunTransactionHistoryService {
   private createReceiveERC20Amount = async (
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
-    receiveERC20Amount: RailgunHistoryReceiveERC20Amount,
+    receiveERC20Amount: RailgunHistoryReceiveERC20Amount
   ): Promise<ReceiveERC20Amount> => {
     const erc20Amount = await this.createERC20Amount(
       networkName,
       availableWallets,
-      receiveERC20Amount,
+      receiveERC20Amount
     );
     return {
       token: erc20Amount.token,
@@ -261,12 +263,12 @@ export class RailgunTransactionHistoryService {
   private createTransferERC20Amount = async (
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
-    transferERC20Amount: RailgunHistorySendERC20Amount,
+    transferERC20Amount: RailgunHistorySendERC20Amount
   ): Promise<TransferRecipientERC20Amount> => {
     const erc20Amount = await this.createERC20Amount(
       networkName,
       availableWallets,
-      transferERC20Amount,
+      transferERC20Amount
     );
     return {
       token: erc20Amount.token,
@@ -278,7 +280,7 @@ export class RailgunTransactionHistoryService {
 
   private createReceiveNFTAmountRecipient = (
     wallet: FrontendWallet,
-    receiveNFTAmount: RailgunHistoryReceiveNFTAmount,
+    receiveNFTAmount: RailgunHistoryReceiveNFTAmount
   ): ReceiveNFTAmountRecipient => {
     return {
       nftAddress: receiveNFTAmount.nftAddress,
@@ -291,36 +293,36 @@ export class RailgunTransactionHistoryService {
   };
 
   private createTransferNFTAmountRecipient = (
-    nftSendAmount: RailgunHistorySendNFTAmount,
+    nftSendAmount: RailgunHistorySendNFTAmount
   ): TransferNFTAmountRecipient => {
     return {
       nftAddress: nftSendAmount.nftAddress,
       nftTokenType: nftSendAmount.nftTokenType,
       tokenSubID: nftSendAmount.tokenSubID,
       amountString: nftSendAmount.amount.toString(),
-      recipientAddress: nftSendAmount.recipientAddress ?? '',
+      recipientAddress: nftSendAmount.recipientAddress ?? "",
     };
   };
 
   private shieldFeesFromReceiveERC20Amounts = async (
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
-    receiveERC20Amounts: RailgunHistoryReceiveERC20Amount[],
+    receiveERC20Amounts: RailgunHistoryReceiveERC20Amount[]
   ): Promise<ERC20Amount[]> => {
     const shieldFees: ERC20Amount[] = await Promise.all(
       receiveERC20Amounts
-        .filter(receiveERC20Amount => receiveERC20Amount.shieldFee)
-        .map(async receiveERC20Amount => {
+        .filter((receiveERC20Amount) => receiveERC20Amount.shieldFee)
+        .map(async (receiveERC20Amount) => {
           const token = await this.createERC20Token(
             networkName,
             availableWallets,
-            receiveERC20Amount.tokenAddress,
+            receiveERC20Amount.tokenAddress
           );
           return {
             token,
             amountString: receiveERC20Amount.shieldFee as string,
           };
-        }),
+        })
     );
     return shieldFees;
   };
@@ -328,22 +330,22 @@ export class RailgunTransactionHistoryService {
   private unshieldFeesFromUnshieldERC20Amounts = async (
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
-    unshieldERC20Amounts: RailgunHistoryUnshieldERC20Amount[],
+    unshieldERC20Amounts: RailgunHistoryUnshieldERC20Amount[]
   ): Promise<ERC20Amount[]> => {
     const unshieldFees: ERC20Amount[] = await Promise.all(
       unshieldERC20Amounts
-        .filter(unshieldERC20Amount => unshieldERC20Amount.unshieldFee)
-        .map(async unshieldERC20Amount => {
+        .filter((unshieldERC20Amount) => unshieldERC20Amount.unshieldFee)
+        .map(async (unshieldERC20Amount) => {
           const token = await this.createERC20Token(
             networkName,
             availableWallets,
-            unshieldERC20Amount.tokenAddress,
+            unshieldERC20Amount.tokenAddress
           );
           return {
             token,
             amountString: unshieldERC20Amount.unshieldFee as string,
           };
-        }),
+        })
     );
     return unshieldFees;
   };
@@ -352,19 +354,19 @@ export class RailgunTransactionHistoryService {
     networkName: NetworkName,
     availableWallets: Optional<AvailableWallet[]>,
     receiveERC20Amounts: RailgunHistoryReceiveERC20Amount[],
-    unshieldERC20Amounts: RailgunHistoryUnshieldERC20Amount[],
+    unshieldERC20Amounts: RailgunHistoryUnshieldERC20Amount[]
   ): Promise<Optional<ERC20Amount[]>> => {
     const shieldFees: ERC20Amount[] =
       await this.shieldFeesFromReceiveERC20Amounts(
         networkName,
         availableWallets,
-        receiveERC20Amounts,
+        receiveERC20Amounts
       );
     const unshieldFees: ERC20Amount[] =
       await this.unshieldFeesFromUnshieldERC20Amounts(
         networkName,
         availableWallets,
-        unshieldERC20Amounts,
+        unshieldERC20Amounts
       );
     const allRailgunFees = [...shieldFees, ...unshieldFees];
     if (allRailgunFees.length) {
@@ -377,7 +379,7 @@ export class RailgunTransactionHistoryService {
     receiveERC20Amounts: ReceiveERC20Amount[],
     transferERC20Amounts: TransferRecipientERC20Amount[],
     receiveNFTAmountRecipients: ReceiveNFTAmountRecipient[],
-    transferNFTAmountRecipients: TransferNFTAmountRecipient[],
+    transferNFTAmountRecipients: TransferNFTAmountRecipient[]
   ): Optional<string> {
     for (const tokenAmount of [
       ...receiveERC20Amounts,
@@ -396,33 +398,33 @@ export class RailgunTransactionHistoryService {
     networkName: NetworkName,
     activeWallet: FrontendWallet,
     availableWallets: AvailableWallet[],
-    railgunTransaction: TransactionHistoryItem,
+    railgunTransaction: TransactionHistoryItem
   ): Promise<Optional<SavedTransaction>> {
     try {
       const receiveERC20Amounts: ReceiveERC20Amount[] = await Promise.all(
-        railgunTransaction.receiveERC20Amounts.map(ta =>
-          this.createReceiveERC20Amount(networkName, availableWallets, ta),
-        ),
+        railgunTransaction.receiveERC20Amounts.map((ta) =>
+          this.createReceiveERC20Amount(networkName, availableWallets, ta)
+        )
       );
       const transferERC20Amounts: TransferRecipientERC20Amount[] =
         await Promise.all(
           [
             ...railgunTransaction.transferERC20Amounts,
             ...railgunTransaction.unshieldERC20Amounts,
-          ].map(ta =>
-            this.createTransferERC20Amount(networkName, availableWallets, ta),
-          ),
+          ].map((ta) =>
+            this.createTransferERC20Amount(networkName, availableWallets, ta)
+          )
         );
 
       const receiveNFTAmountRecipients: ReceiveNFTAmountRecipient[] =
-        railgunTransaction.receiveNFTAmounts.map(nftReceiveAmount =>
-          this.createReceiveNFTAmountRecipient(activeWallet, nftReceiveAmount),
+        railgunTransaction.receiveNFTAmounts.map((nftReceiveAmount) =>
+          this.createReceiveNFTAmountRecipient(activeWallet, nftReceiveAmount)
         );
       const transferNFTAmountRecipients: TransferNFTAmountRecipient[] = [
         ...railgunTransaction.transferNFTAmounts,
         ...railgunTransaction.unshieldNFTAmounts,
-      ].map(nftSendAmount =>
-        this.createTransferNFTAmountRecipient(nftSendAmount),
+      ].map((nftSendAmount) =>
+        this.createTransferNFTAmountRecipient(nftSendAmount)
       );
 
       const broadcasterFeeERC20Amount: Optional<ERC20Amount> =
@@ -430,7 +432,7 @@ export class RailgunTransactionHistoryService {
           ? await this.createERC20Amount(
               networkName,
               availableWallets,
-              railgunTransaction.broadcasterFeeERC20Amount,
+              railgunTransaction.broadcasterFeeERC20Amount
             )
           : undefined;
 
@@ -438,14 +440,14 @@ export class RailgunTransactionHistoryService {
         receiveERC20Amounts,
         transferERC20Amounts,
         receiveNFTAmountRecipients,
-        transferNFTAmountRecipients,
+        transferNFTAmountRecipients
       );
 
       const railgunFeeTokenAmounts = await this.createRailgunFeeTokenAmounts(
         networkName,
         availableWallets,
         railgunTransaction.receiveERC20Amounts,
-        railgunTransaction.unshieldERC20Amounts,
+        railgunTransaction.unshieldERC20Amounts
       );
 
       const transaction: SavedTransaction = {
@@ -459,8 +461,9 @@ export class RailgunTransactionHistoryService {
         broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
         railFeeTokenAmounts: railgunFeeTokenAmounts,
         network: networkName,
-        timestamp: railgunTransaction.timestamp ??
-        SharedConstants.TIMESTAMP_MISSING_VALUE,
+        timestamp:
+          railgunTransaction.timestamp ??
+          SharedConstants.TIMESTAMP_MISSING_VALUE,
         id: railgunTransaction.txid,
         action: TransactionAction.synced,
         status: TransactionStatus.completed,
@@ -483,7 +486,7 @@ export class RailgunTransactionHistoryService {
         const transactionReceiptDetails: Optional<TransactionReceiptDetails> =
           await this.txReceiptDetailsService.getTransactionReceiptDetails(
             networkName,
-            railgunTransaction.txid,
+            railgunTransaction.txid
           );
 
         if (transactionReceiptDetails) {
@@ -494,11 +497,11 @@ export class RailgunTransactionHistoryService {
       }
       if (transaction.timestamp === SharedConstants.TIMESTAMP_MISSING_VALUE) {
         logDev(
-          `Add missing timestamp transaction: txid ${railgunTransaction.txid}`,
+          `Add missing timestamp transaction: txid ${railgunTransaction.txid}`
         );
         this.savedTransactionStore.addMissingTimestampTransaction(
           transaction,
-          networkName,
+          networkName
         );
         return;
       }
@@ -515,10 +518,10 @@ export class RailgunTransactionHistoryService {
 
   private hasNoFullMatchingSavedTransaction(
     historyItem: TransactionHistoryItem,
-    savedTransactions: SavedTransaction[],
+    savedTransactions: SavedTransaction[]
   ): boolean {
     return (
-      savedTransactions.find(tx => {
+      savedTransactions.find((tx) => {
         return tx.id.toLowerCase() === historyItem.txid.toLowerCase();
       }) == null
     );
@@ -527,23 +530,23 @@ export class RailgunTransactionHistoryService {
   private async updateLocalTransactionsFoundBySync(
     railgunTransactions: TransactionHistoryItem[],
     savedTransactions: SavedTransaction[],
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<void> {
     await Promise.all(
-      savedTransactions.map(tx =>
+      savedTransactions.map((tx) =>
         this.markSavedTransactionFoundBySync(
           railgunTransactions,
           tx,
-          networkName,
-        ),
-      ),
+          networkName
+        )
+      )
     );
   }
 
   private async markSavedTransactionFoundBySync(
     railgunTransactions: TransactionHistoryItem[],
     tx: SavedTransaction,
-    networkName: NetworkName,
+    networkName: NetworkName
   ) {
     if (tx.foundBySync ?? false) {
       return;
@@ -552,13 +555,13 @@ export class RailgunTransactionHistoryService {
       return;
     }
 
-    const found = railgunTransactions.find(railgunTx => {
+    const found = railgunTransactions.find((railgunTx) => {
       return railgunTx.txid.toLowerCase() === tx.id.toLowerCase();
     });
     if (found) {
       await this.savedTransactionStore.updateTransactionFoundBySync(
         tx.id,
-        networkName,
+        networkName
       );
     }
   }

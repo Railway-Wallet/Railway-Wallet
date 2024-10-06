@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   rowWrapper: {
@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   rightView: {
-    width: '100%',
-    alignItems: 'flex-end',
+    width: "100%",
+    alignItems: "flex-end",
   },
   titleIcon: {
     paddingTop: 1,
@@ -33,28 +33,28 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.caption,
   },
   rightWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   rightTextWrapper: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     paddingRight: 12,
     maxWidth: 200,
   },
   rightText: {
     color: styleguide.colors.labelSecondary,
     ...styleguide.typography.paragraph,
-    textAlign: 'right',
+    textAlign: "right",
     lineHeight: 20,
   },
   rightSubtext: {
     color: styleguide.colors.textSecondary,
     ...styleguide.typography.caption,
-    textAlign: 'right',
+    textAlign: "right",
     marginTop: 4,
   },
   headerTextWrapper: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   headerIcon: {
     paddingLeft: 10,

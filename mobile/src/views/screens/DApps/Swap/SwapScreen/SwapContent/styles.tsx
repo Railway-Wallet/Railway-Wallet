@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -10,14 +10,14 @@ export const styles = StyleSheet.create({
   headerText: {
     ...styleguide.typography.heading2,
     fontSize: 30,
-    fontFamily: 'Inconsolata-ExtraBold',
+    fontFamily: "Inconsolata-ExtraBold",
     letterSpacing: 2.4,
     color: styleguide.colors.text(),
     marginHorizontal: 16,
     marginTop: 16,
   },
   thinnerHeader: {
-    fontFamily: 'Inconsolata',
+    fontFamily: "Inconsolata",
     fontSize: isAndroid() ? 27 : 30,
   },
   subheaderText: {
@@ -47,12 +47,12 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   switchButtonContainer: {
-    position: 'relative' as 'relative',
+    position: "relative" as "relative",
     zIndex: 5,
   },
   switchButton: {
-    position: 'absolute' as 'absolute',
-    left: '50%',
+    position: "absolute" as "absolute",
+    left: "50%",
     top: -4,
     marginLeft: -20,
     width: 40,

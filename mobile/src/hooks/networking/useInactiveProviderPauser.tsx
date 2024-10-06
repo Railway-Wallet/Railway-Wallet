@@ -1,14 +1,14 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { useEffect, useRef } from 'react';
-import { AppState } from 'react-native';
+import { NetworkName } from "@railgun-community/shared-models";
+import { useEffect, useRef } from "react";
+import { AppState } from "react-native";
 import {
   ProviderLoader,
   ProviderService,
   useReduxSelector,
-} from '@react-shared';
+} from "@react-shared";
 
 export const useInactiveProviderPauser = () => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const networkNameRef = useRef<NetworkName>(network.current.name);
 
@@ -19,10 +19,10 @@ export const useInactiveProviderPauser = () => {
 
   const resumeProviderForCurrentNetwork = async () => {
     ProviderService.resumeIsolatedPollingProviderForNetwork(
-      networkNameRef.current,
+      networkNameRef.current
     );
     await ProviderLoader.resumeIsolatedBridgePollingProviderForNetwork(
-      networkNameRef.current,
+      networkNameRef.current
     );
   };
 
@@ -33,11 +33,11 @@ export const useInactiveProviderPauser = () => {
   }, [network]);
 
   useEffect(() => {
-    AppState.addEventListener('change', async nextAppState => {
-      if (nextAppState === 'background') {
+    AppState.addEventListener("change", async (nextAppState) => {
+      if (nextAppState === "background") {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         pauseAllPollingProviders();
-      } else if (nextAppState === 'active') {
+      } else if (nextAppState === "active") {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         resumeProviderForCurrentNetwork();
       }

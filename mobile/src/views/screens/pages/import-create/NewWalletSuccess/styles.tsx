@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   titleText: {
     ...styleguide.typography.paragraphSmall,
     color: styleguide.colors.white,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 24,
   },
   lastCard: {

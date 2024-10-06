@@ -1,10 +1,10 @@
-import { compareTokenAddress } from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
-import { SearchableERC20 } from '../../models';
+import { compareTokenAddress } from "@railgun-community/cookbook";
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useState } from "react";
+import { SearchableERC20 } from "../../models";
 
 export const useAddMultipleTokens = (
-  tokensToAdd: Optional<SearchableERC20[]>,
+  tokensToAdd: Optional<SearchableERC20[]>
 ) => {
   const [currentTokenToAdd, setCurrentTokenToAdd] =
     useState<Optional<SearchableERC20>>();
@@ -16,8 +16,8 @@ export const useAddMultipleTokens = (
   }, [tokensToAdd]);
 
   const onTokenAddSuccess = (tokenAddress: string) => {
-    const addedTokenIndex = tokensToAdd?.findIndex(token =>
-      compareTokenAddress(token.address, tokenAddress),
+    const addedTokenIndex = tokensToAdd?.findIndex((token) =>
+      compareTokenAddress(token.address, tokenAddress)
     );
     if (isDefined(addedTokenIndex)) {
       const newTokenToAdd = tokensToAdd?.[addedTokenIndex + 1] ?? undefined;

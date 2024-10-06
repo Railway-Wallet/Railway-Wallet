@@ -1,11 +1,11 @@
-import { isDefined, Network } from '@railgun-community/shared-models';
-import { CoingeckoTokenDetails } from '../../../models/token';
-import { getCoingeckoData } from './coingecko-service';
-import { CoingeckoTokenDetailsCache } from './coingecko-token-details-cache';
+import { isDefined, Network } from "@railgun-community/shared-models";
+import { CoingeckoTokenDetails } from "../../../models/token";
+import { getCoingeckoData } from "./coingecko-service";
+import { CoingeckoTokenDetailsCache } from "./coingecko-token-details-cache";
 
 export const getCoingeckoTokenDetails = async (
   network: Network,
-  address: string,
+  address: string
 ): Promise<CoingeckoTokenDetails> => {
   const urlRoute = `coins/${network.coingeckoId}/contract/${address}`;
   const cached = await CoingeckoTokenDetailsCache.getCached(urlRoute);

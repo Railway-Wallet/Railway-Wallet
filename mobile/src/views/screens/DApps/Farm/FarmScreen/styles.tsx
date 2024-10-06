@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isAndroid } from '@services/util/platform-os-service';
-import { isSmallScreen } from '@services/util/screen-dimensions-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isAndroid } from "@services/util/platform-os-service";
+import { isSmallScreen } from "@services/util/screen-dimensions-service";
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,18 +11,18 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
   },
   scrollView: {
-    height: '100%',
+    height: "100%",
   },
   contentWrapper: {
     padding: 8,
   },
   buttonWrapper: {
     borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonContent: {
-    flexDirection: 'row-reverse',
+    flexDirection: "row-reverse",
     height: 48,
   },
   buttonStyle: {
@@ -32,19 +32,19 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     ...styleguide.typography.caption,
-    textTransform: 'none',
+    textTransform: "none",
   },
   listHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 16,
   },
   listHeaderTextWrapper: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   listHeaderText: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     color: styleguide.colors.text(),
     ...styleguide.typography.label,
   },
@@ -53,10 +53,10 @@ export const styles = StyleSheet.create({
     paddingTop: 2,
   },
   rightBalances: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   titleStyle: {
     color: styleguide.colors.text(),
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
   },
   spinnerContainer: {
     marginTop: 32,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginRight: 12,
   },
   placeholderText: {
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
   },
   horizontalLine: {
     height: 1,
-    width: '100%',
+    width: "100%",
     marginRight: 36,
     backgroundColor: styleguide.colors.inputBorder,
   },
@@ -95,13 +95,13 @@ export const styles = StyleSheet.create({
     marginTop: 24,
   },
   farmSourcesListWrapper: {
-    display: 'flex',
+    display: "flex",
     marginTop: 16,
   },
   farmSourceButton: {
     marginTop: 8,
   },
   farmSourcesListButtonText: {
-    textTransform: 'none',
+    textTransform: "none",
   },
 });

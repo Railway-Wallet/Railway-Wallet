@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type BlockedBroadcaster = {
   railgunAddress: string;
-  blockedTimestamp: number
-  expiration?: number
+  blockedTimestamp: number;
+  expiration?: number;
 };
 
 export type BroadcasterBlocklistState = {
@@ -15,7 +15,7 @@ const initialState = {
 } as BroadcasterBlocklistState;
 
 const slice = createSlice({
-  name: 'broadcaster-blocklist',
+  name: "broadcaster-blocklist",
   initialState,
   reducers: {
     setBlockedBroadcasters(state, action: PayloadAction<BlockedBroadcaster[]>) {

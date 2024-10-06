@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { logDev } from '../../../utils';
-import { StorageService } from '../../storage';
+import { isDefined } from "@railgun-community/shared-models";
+import { logDev } from "../../../utils";
+import { StorageService } from "../../storage";
 
-const COINPAPRIKA_TOKEN_DETAILS = 'COINPAPRIKA_TOKEN_DETAILS';
+const COINPAPRIKA_TOKEN_DETAILS = "COINPAPRIKA_TOKEN_DETAILS";
 export type CoinPaprikaTokenDetails = {
   name: string;
   symbol: string;
@@ -20,15 +20,15 @@ export class CoinPaprikaTokenDetailsCache {
   };
 
   static getCached = async (
-    urlRoute: string,
+    urlRoute: string
   ): Promise<Optional<CoinPaprikaTokenDetails>> => {
     try {
       const storedCoinPaprikaToken = await StorageService.getItem(
-        this.getStorageKey(urlRoute),
+        this.getStorageKey(urlRoute)
       );
       if (isDefined(storedCoinPaprikaToken) && !!storedCoinPaprikaToken) {
         const coinpPaprikaToken: CoinPaprikaTokenDetails = JSON.parse(
-          storedCoinPaprikaToken,
+          storedCoinPaprikaToken
         );
         if (
           isDefined(coinpPaprikaToken.name) &&
@@ -45,27 +45,27 @@ export class CoinPaprikaTokenDetailsCache {
   };
   static store = async (
     urlRoute: string,
-    coinPaprikaToken: CoinPaprikaTokenDetails,
+    coinPaprikaToken: CoinPaprikaTokenDetails
   ): Promise<void> => {
     await StorageService.setItem(
       this.getStorageKey(urlRoute),
-      JSON.stringify(coinPaprikaToken),
+      JSON.stringify(coinPaprikaToken)
     );
   };
   static storeID = async (
     urlRoute: string,
-    coinPaprikaTokenID: string,
+    coinPaprikaTokenID: string
   ): Promise<void> => {
     await StorageService.setItem(
       this.getStorageKey(urlRoute),
-      coinPaprikaTokenID,
+      coinPaprikaTokenID
     );
   };
 
   static getCachedID = async (urlRoute: string): Promise<Optional<string>> => {
     try {
       const storedCoinPaprikaTokenID = await StorageService.getItem(
-        this.getStorageKey(urlRoute),
+        this.getStorageKey(urlRoute)
       );
       if (isDefined(storedCoinPaprikaTokenID) && !!storedCoinPaprikaTokenID) {
         return storedCoinPaprikaTokenID;

@@ -1,14 +1,14 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { ButtonTextOnly } from '@components/buttons/ButtonTextOnly/ButtonTextOnly';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { useSendERC20sNumInput } from '@hooks/inputs/useSendERC20sNumInput';
+} from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { ButtonTextOnly } from "@components/buttons/ButtonTextOnly/ButtonTextOnly";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { FullScreenSpinner } from "@components/loading/FullScreenSpinner/FullScreenSpinner";
+import { useSendERC20sNumInput } from "@hooks/inputs/useSendERC20sNumInput";
 import {
   CalloutType,
   compareTokens,
@@ -29,15 +29,15 @@ import {
   useRailgunShieldSpenderContract,
   useReduxSelector,
   useTopPickERC20,
-} from '@react-shared';
-import { SelectERC20Modal } from '@screens/modals/SelectERC20Modal/SelectERC20Modal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { COMMON_HIT_SLOP } from '@utils/constants';
-import { Icon } from '@views/components/icons/Icon';
-import { Checkbox } from '@views/components/inputs/Checkbox/Checkbox';
-import { ApproveButton } from './ApproveButton/ApproveButton';
-import { ERC20AmountRowView } from './ERC20AmountRowView';
-import { styles } from './styles';
+} from "@react-shared";
+import { SelectERC20Modal } from "@screens/modals/SelectERC20Modal/SelectERC20Modal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { COMMON_HIT_SLOP } from "@utils/constants";
+import { Icon } from "@views/components/icons/Icon";
+import { Checkbox } from "@views/components/inputs/Checkbox/Checkbox";
+import { ApproveButton } from "./ApproveButton/ApproveButton";
+import { ERC20AmountRowView } from "./ERC20AmountRowView";
+import { styles } from "./styles";
 
 type Props = {
   transactionType: TransactionType;
@@ -74,13 +74,13 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
   calculatedTokenAmounts,
   balanceBucketFilter,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
   const { topPickToken } = useTopPickERC20(
     transactionType,
     navigationToken,
     isRailgunBalance,
-    erc20Amounts,
+    erc20Amounts
   );
 
   const [singleFeeChecked, setSingleFeeChecked] = useState(false);
@@ -103,12 +103,12 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
           hasWrappedBaseToken(erc20Amounts, network.current))
       ) {
         Alert.alert(
-          'Incorrect entries',
+          "Incorrect entries",
           `You must ${transactionType} token ${getTokenDisplayNameShort(
             currentToken,
             wallets.available,
-            network.current.name,
-          )} in a transaction by itself. Please remove all other tokens from this transaction.`,
+            network.current.name
+          )} in a transaction by itself. Please remove all other tokens from this transaction.`
         );
       }
     }
@@ -125,7 +125,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     transactionType,
     shieldApproveSpender,
     isRailgunBalance,
-    setError,
+    setError
   );
 
   const onTapTokenSelector =
@@ -140,7 +140,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     activeWallet,
     currentToken,
     isRailgunBalance,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const {
@@ -164,7 +164,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     requiresApproval,
     focused,
     singleFeeChecked,
-    bothFeesChecked,
+    bothFeesChecked
   );
 
   const onRemoveToken = useCallback(() => {
@@ -201,8 +201,8 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
     setNumEntryString(
       formatUnitFromHexString(
         tokenAmount.amountString,
-        tokenAmount.token.decimals,
-      ),
+        tokenAmount.token.decimals
+      )
     );
     setShowAmountEntry(true);
   };
@@ -215,8 +215,8 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
       onPress={() => {
         Alert.alert(title, message, [
           {
-            text: 'Cancel',
-            style: 'destructive',
+            text: "Cancel",
+            style: "destructive",
           },
         ]);
       }}
@@ -249,7 +249,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
 
   const needsShieldBaseTokenCallout =
     transactionType === TransactionType.Shield &&
-    erc20Amounts.some(tokenAmount => tokenAmount.token.isBaseToken);
+    erc20Amounts.some((tokenAmount) => tokenAmount.token.isBaseToken);
 
   return (
     <>
@@ -274,11 +274,11 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
                 <Checkbox
                   selected={singleFeeChecked}
                   rightView={renderFeeCheckboxDisclaimerInfo(
-                    `${isUnshieldView ? 'Unshield' : 'Shield'} fee included`,
-                    'This is useful if you would like the destination 0zk address to receive the amount entered after the fee. If selected, the shield fee amount will be added to your input amount.\n\nIf left unselected, the shield fee will be taken out of your input amount. The destination 0zk address will receive the amount originally entered minus the shield fee.',
+                    `${isUnshieldView ? "Unshield" : "Shield"} fee included`,
+                    "This is useful if you would like the destination 0zk address to receive the amount entered after the fee. If selected, the shield fee amount will be added to your input amount.\n\nIf left unselected, the shield fee will be taken out of your input amount. The destination 0zk address will receive the amount originally entered minus the shield fee."
                   )}
                   label={`Add ${
-                    isUnshieldView ? 'unshield' : 'shield'
+                    isUnshieldView ? "unshield" : "shield"
                   } fee to input`}
                   onPress={() => {
                     setSingleFeeChecked(!singleFeeChecked);
@@ -289,8 +289,8 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
                   <Checkbox
                     selected={bothFeesChecked}
                     rightView={renderFeeCheckboxDisclaimerInfo(
-                      'Shield and unshield fee included',
-                      'This is useful if you would like the destination 0zk address to be able to unshield and end up with the amount you entered after fees are applied. If selected, the shield fee and unshield fee amounts will be added to your input amount.\n\nIf left unselected, only the shield fee will be taken out of your input amount. The destination 0zk address will receive the amount originally entered minus the shield fee.',
+                      "Shield and unshield fee included",
+                      "This is useful if you would like the destination 0zk address to be able to unshield and end up with the amount you entered after fees are applied. If selected, the shield fee and unshield fee amounts will be added to your input amount.\n\nIf left unselected, only the shield fee will be taken out of your input amount. The destination 0zk address will receive the amount originally entered minus the shield fee."
                     )}
                     label="Add shield and unshield fee to input"
                     onPress={() => {
@@ -305,8 +305,8 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
                     <Text style={styles.tokenBalanceWithFeesText}>
                       {`Total with ${
                         bothFeesChecked
-                          ? 'shield and unshield fee'
-                          : `${isShieldView ? 'shield' : 'unshield'} fee`
+                          ? "shield and unshield fee"
+                          : `${isShieldView ? "shield" : "unshield"} fee`
                       }: ${finalEntryString}`}
                     </Text>
                   )}
@@ -321,7 +321,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
                 approveText={
                   currentToken?.isBaseToken ?? false
                     ? `Approve ${network.current.baseToken.wrappedSymbol} to shield ${network.current.baseToken.symbol}`
-                    : 'Approve for shielding'
+                    : "Approve for shielding"
                 }
               />
             )}
@@ -364,7 +364,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
               ))}
               {isDefined(calculatedTokenAmounts) && (
                 <View style={styles.calculatedTokenListWrapper}>
-                  {calculatedTokenAmounts?.map(tokenAmount => (
+                  {calculatedTokenAmounts?.map((tokenAmount) => (
                     <ERC20AmountRowView
                       isCalculated
                       key={tokenAmount.token.address}
@@ -386,7 +386,7 @@ export const ERC20AmountsNumPadView: React.FC<Props> = ({
                   title="Another Token"
                   onPress={() => {
                     triggerHaptic(HapticSurface.SelectItem);
-                    setNumEntryString('');
+                    setNumEntryString("");
                     setShowAmountEntry(true);
                     setCurrentToken(topPickToken);
                   }}

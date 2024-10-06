@@ -1,21 +1,21 @@
-import { RailgunBalanceRefreshTrigger } from '@railgun-community/shared-models';
-import { useEffect } from 'react';
-import { SharedConstants } from '../../config/shared-constants';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
-import { useBalancePriceRefresh } from './useBalancePriceRefresh';
+import { RailgunBalanceRefreshTrigger } from "@railgun-community/shared-models";
+import { useEffect } from "react";
+import { SharedConstants } from "../../config/shared-constants";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
+import { useBalancePriceRefresh } from "./useBalancePriceRefresh";
 
 export const useAppBalancePriceUpdater = (
   railBalanceRefreshTrigger: RailgunBalanceRefreshTrigger,
-  setError: (error: Error) => void,
+  setError: (error: Error) => void
 ) => {
-  const { wallets } = useReduxSelector('wallets');
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { wallets } = useReduxSelector("wallets");
+  const { remoteConfig } = useReduxSelector("remoteConfig");
 
   const dispatch = useAppDispatch();
 
   const { pullPrices, pullBalances } = useBalancePriceRefresh(
     railBalanceRefreshTrigger,
-    setError,
+    setError
   );
 
   useEffect(() => {

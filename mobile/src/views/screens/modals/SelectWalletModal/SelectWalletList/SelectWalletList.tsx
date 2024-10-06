@@ -1,7 +1,7 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { Alert, Text, View } from 'react-native';
-import { ListRow } from '@components/list/ListRow/ListRow';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { Alert, Text, View } from "react-native";
+import { ListRow } from "@components/list/ListRow/ListRow";
 import {
   compareTokenAddress,
   FrontendWallet,
@@ -9,12 +9,12 @@ import {
   shortenWalletAddress,
   styleguide,
   useReduxSelector,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { Icon, IconSource } from '@views/components/icons/Icon';
-import { promptAlert } from '../../../../../services/util/alert-service';
-import { validateWalletAddress } from '../../../../../utils/validation';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { Icon, IconSource } from "@views/components/icons/Icon";
+import { promptAlert } from "../../../../../services/util/alert-service";
+import { validateWalletAddress } from "../../../../../utils/validation";
+import { styles } from "./styles";
 
 type Props = {
   isRailgun: boolean;
@@ -23,7 +23,7 @@ type Props = {
   onSelect: (
     wallet?: FrontendWallet,
     address?: string,
-    removeSelectedWallet?: boolean,
+    removeSelectedWallet?: boolean
   ) => void;
   showBroadcasterOption?: boolean;
   showNoDestinationWalletOption?: boolean;
@@ -43,8 +43,8 @@ export const SelectWalletList: React.FC<Props> = ({
   availableWalletsOnly = false,
   showSavedAddresses = false,
 }) => {
-  const { wallets } = useReduxSelector('wallets');
-  const { savedAddresses } = useReduxSelector('savedAddresses');
+  const { wallets } = useReduxSelector("wallets");
+  const { savedAddresses } = useReduxSelector("savedAddresses");
 
   const renderRightView = (rightText: string) => {
     return (
@@ -61,7 +61,7 @@ export const SelectWalletList: React.FC<Props> = ({
     if (wallet.ethAddress) {
       return wallet.ethAddress;
     }
-    return '';
+    return "";
   };
 
   const savedWalletAddress = (savedAddress: SavedAddress) => {
@@ -71,7 +71,7 @@ export const SelectWalletList: React.FC<Props> = ({
     if (!isRailgun && isDefined(savedAddress.ethAddress)) {
       return savedAddress.ethAddress;
     }
-    return '';
+    return "";
   };
 
   const renderRow = (
@@ -84,7 +84,7 @@ export const SelectWalletList: React.FC<Props> = ({
     removeSelectedWallet: boolean,
     wallet?: FrontendWallet,
     address?: string,
-    customOnSelect?: () => void,
+    customOnSelect?: () => void
   ) => {
     const iconView = () => (
       <View style={styles.leftIconView}>
@@ -113,8 +113,8 @@ export const SelectWalletList: React.FC<Props> = ({
   const renderWallet = (wallet: FrontendWallet, index: number) => {
     const title = wallet.name;
     const address = walletAddress(wallet);
-    const icon = wallet.isViewOnlyWallet ? 'eye-outline' : 'wallet-outline';
-    const rightText = wallet.isViewOnlyWallet ? 'View-only' : 'EVM wallet';
+    const icon = wallet.isViewOnlyWallet ? "eye-outline" : "wallet-outline";
+    const rightText = wallet.isViewOnlyWallet ? "View-only" : "EVM wallet";
     const selected =
       wallet.id === selectedWallet?.id ||
       compareTokenAddress(address, selectedAddress);
@@ -122,53 +122,55 @@ export const SelectWalletList: React.FC<Props> = ({
     return renderRow(
       index,
       title,
-      shortenWalletAddress(address), icon,
+      shortenWalletAddress(address),
+      icon,
       rightText,
       selected,
-      false, wallet,
-      address,
+      false,
+      wallet,
+      address
     );
   };
 
   const renderNoWalletPrivateDestinationRow = () => {
     return renderRow(
       -3,
-      'Private Wallet',
-      'Use active wallet',
-      'lock-outline',
-      '',
+      "Private Wallet",
+      "Use active wallet",
+      "lock-outline",
+      "",
       selectedAddress == null,
-      true,
+      true
     );
   };
 
   const promptCustomAddress = () => {
     promptAlert(
-      isRailgun ? 'Custom private address' : 'Custom public address',
-      isRailgun ? 'Enter a 0zk address.' : 'Enter a 0x address.',
+      isRailgun ? "Custom private address" : "Custom public address",
+      isRailgun ? "Enter a 0zk address." : "Enter a 0x address.",
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
         {
-          text: 'Set',
+          text: "Set",
           onPress: async (customAddress?: string) => {
             if (isDefined(customAddress)) {
               const isValidAddress = await validateWalletAddress(
                 customAddress,
-                isRailgun,
+                isRailgun
               );
               if (!isValidAddress) {
                 Alert.alert(
-                  'Invalid address',
-                  'Please check your entered address.',
+                  "Invalid address",
+                  "Please check your entered address.",
                   [
                     {
-                      text: 'OK',
-                      style: 'cancel',
+                      text: "OK",
+                      style: "cancel",
                     },
-                  ],
+                  ]
                 );
                 return;
               }
@@ -178,20 +180,20 @@ export const SelectWalletList: React.FC<Props> = ({
         },
       ],
       undefined,
-      selectedAddress,
+      selectedAddress
     );
   };
 
   const hasMatchingSelectedWalletOrAddress = () => {
     const hasMatchingAvailableWallet =
-      wallets.available.find(wallet => {
+      wallets.available.find((wallet) => {
         return compareTokenAddress(walletAddress(wallet), selectedAddress);
       }) == null;
     if (hasMatchingAvailableWallet) {
       return true;
     }
     const hasMatchingSavedAddress =
-      savedAddresses.current.find(savedAddress => {
+      savedAddresses.current.find((savedAddress) => {
         const address = savedWalletAddress(savedAddress);
         return compareTokenAddress(address, selectedAddress);
       }) == null;
@@ -211,56 +213,62 @@ export const SelectWalletList: React.FC<Props> = ({
 
     return renderRow(
       -2,
-      'Custom address',
+      "Custom address",
       selected && isDefined(selectedAddress)
         ? shortenWalletAddress(selectedAddress)
         : isRailgun
-        ? 'Enter a private address'
-        : 'Enter a public address',
-      'pencil-outline',
-      '',
+        ? "Enter a private address"
+        : "Enter a public address",
+      "pencil-outline",
+      "",
       selected,
-      false, undefined, undefined, promptCustomAddress,
+      false,
+      undefined,
+      undefined,
+      promptCustomAddress
     );
   };
 
   const renderBroadcasterRow = () => {
     return renderRow(
       -1,
-      'Broadcaster',
-      'Auto-select Broadcaster',
-      'upload-outline',
-      'External',
+      "Broadcaster",
+      "Auto-select Broadcaster",
+      "upload-outline",
+      "External",
       selectedWallet == null,
-      true,
+      true
     );
   };
 
   const renderSavedAddressRow = (savedAddress: SavedAddress, index: number) => {
     const title = savedAddress.name;
     const address = savedWalletAddress(savedAddress);
-    const icon = 'content-save-outline';
-    const rightText = 'Saved address';
+    const icon = "content-save-outline";
+    const rightText = "Saved address";
     const selected =
       !selectedWallet && compareTokenAddress(address, selectedAddress);
 
     return renderRow(
       index,
       title,
-      shortenWalletAddress(address), icon,
+      shortenWalletAddress(address),
+      icon,
       rightText,
       selected,
-      false, undefined, address,
+      false,
+      undefined,
+      address
     );
   };
 
   const savedAddressOptions: SavedAddress[] = savedAddresses.current.filter(
-    savedAddress => {
+    (savedAddress) => {
       return (
         (isRailgun && isDefined(savedAddress.railAddress)) ||
         (!isRailgun && isDefined(savedAddress.ethAddress))
       );
-    },
+    }
   );
 
   const sortedWallets = [...wallets.available].sort((a, b) => {

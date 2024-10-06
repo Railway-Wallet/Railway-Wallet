@@ -3,15 +3,15 @@ import {
   Network,
   NETWORK_CONFIG,
   NetworkName,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import { Dimensions, StatusBar, Text, View } from 'react-native';
-import { Bar as ProgressBar } from 'react-native-progress';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { SwirlBackground } from '@components/images/SwirlBackground/SwirlBackground';
-import { RootStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import { Dimensions, StatusBar, Text, View } from "react-native";
+import { Bar as ProgressBar } from "react-native-progress";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { SwirlBackground } from "@components/images/SwirlBackground/SwirlBackground";
+import { RootStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   delay,
   getWalletTransactionHistory,
@@ -36,15 +36,15 @@ import {
   WalletService,
   WalletStorageService,
   WalletTokenService,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
-import { Constants } from '@utils/constants';
-import { imageHeightFromDesiredWidth } from '@utils/image-utils';
-import { ErrorDetailsModal } from '@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { styles } from './styles';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
+import { Constants } from "@utils/constants";
+import { imageHeightFromDesiredWidth } from "@utils/image-utils";
+import { ErrorDetailsModal } from "@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<RootStackParamList, 'WalletProviderLoading'>;
+  navigation: NavigationProp<RootStackParamList, "WalletProviderLoading">;
 };
 
 const CHECK_PROVIDER_LOADED_DELAY = 400;
@@ -59,12 +59,12 @@ const PROGRESS_END = 100;
 const SWELL_FACTOR = 0.15;
 
 export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
-  const { network } = useReduxSelector('network');
-  StatusBar.setBarStyle('light-content');
+  const { network } = useReduxSelector("network");
+  StatusBar.setBarStyle("light-content");
   const dispatch = useAppDispatch();
 
   const [progress, setProgress] = useState(0);
-  const [progressStatus, setProgressStatus] = useState<string>('Loading...');
+  const [progressStatus, setProgressStatus] = useState<string>("Loading...");
   const [error, setError] = useState<Optional<Error>>();
 
   const [hasWallets, setHasWallets] = useState<boolean>(false);
@@ -105,11 +105,11 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
       NetworkStoredSettingsService.defaultSettingsForNetwork();
     await NetworkStoredSettingsService.storeSettingsForNetwork(
       network.current.name,
-      updatedSettings,
+      updatedSettings
     );
     await ProviderService.loadFrontendProviderForNetwork(
       network.current.name,
-      ProviderNodeType.FullNode,
+      ProviderNodeType.FullNode
     );
     setNetworkStoredSettings(updatedSettings);
     await retryLoadProviderAndWallets();
@@ -120,7 +120,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   };
 
   const swellProgressTowards = (target: number) => {
-    setProgress(current => current + (target / 100 - current) * SWELL_FACTOR);
+    setProgress((current) => current + (target / 100 - current) * SWELL_FACTOR);
   };
 
   const waitForProviderToLoad = async (): Promise<boolean> => {
@@ -137,7 +137,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   const reloadProvider = async (loadNetwork: Network) => {
     const feesSerialized = await ProviderLoader.loadEngineProvider(
       loadNetwork.name,
-      dispatch,
+      dispatch
     );
     const networkService = new NetworkService(dispatch);
     await networkService.selectNetwork(loadNetwork.name, feesSerialized);
@@ -146,14 +146,14 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   const loadNetworkAndWallets = async (loadNetwork: Network) => {
     updateProgress(PROGRESS_START);
 
-    setProgressStatus('Connecting to networks...');
+    setProgressStatus("Connecting to networks...");
     const loaded = await waitForProviderToLoad();
     if (!loaded) {
       setError(
         new Error(
           `Error connecting to ${network.current.shortPublicName} network.`,
-          { cause: ProviderLoader.firstProviderLoadError },
-        ),
+          { cause: ProviderLoader.firstProviderLoadError }
+        )
       );
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       reloadProvider(network.current);
@@ -161,23 +161,23 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
     }
     updateProgress(PROGRESS_PROVIDER_LOADED);
 
-    setProgressStatus('Downloading prover artifacts...');
+    setProgressStatus("Downloading prover artifacts...");
     while (store.getState().artifactsProgress.progress < 1) {
       await delay(CHECK_ARTIFACTS_PROGRESS_DELAY);
       updateProgress(
         store.getState().artifactsProgress.progress *
           (PROGRESS_ARTIFACTS_LOADED - PROGRESS_PROVIDER_LOADED) +
-          PROGRESS_PROVIDER_LOADED,
+          PROGRESS_PROVIDER_LOADED
       );
     }
     updateProgress(PROGRESS_ARTIFACTS_LOADED);
 
     try {
-      setProgressStatus('Loading Railway wallets...');
+      setProgressStatus("Loading Railway wallets...");
 
       const walletService = new WalletService(
         dispatch,
-        new WalletSecureServiceReactNative(),
+        new WalletSecureServiceReactNative()
       );
 
       const hasWallets = await walletService.loadWalletsFromStorage(
@@ -187,9 +187,9 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
             (walletLoadProgress *
               (PROGRESS_WALLETS_LOADED - PROGRESS_ARTIFACTS_LOADED)) /
               100 +
-              PROGRESS_ARTIFACTS_LOADED,
+              PROGRESS_ARTIFACTS_LOADED
           );
-        },
+        }
       );
       updateProgress(PROGRESS_WALLETS_LOADED);
 
@@ -203,7 +203,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
           network.current,
           getWalletTransactionHistory,
           refreshRailgunBalances,
-          Constants.REFRESH_TX_HISTORY_EVERY_LOAD_IN_DEV,
+          Constants.REFRESH_TX_HISTORY_EVERY_LOAD_IN_DEV
         );
       }
 
@@ -212,7 +212,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       navigateNextScreen();
     } catch (cause) {
-      const error = new Error('Could not load Railway wallet.', { cause });
+      const error = new Error("Could not load Railway wallet.", { cause });
       logDevError(error);
       setError(error);
     }
@@ -224,7 +224,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
     }
     const walletService = new WalletService(
       dispatch,
-      new WalletSecureServiceReactNative(),
+      new WalletSecureServiceReactNative()
     );
     await walletService.clearAllWallets();
   };
@@ -234,13 +234,13 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
 
   const navigateNextScreen = async () => {
     const hasSeenOnboarding = await StorageService.getItem(
-      SharedConstants.HAS_SEEN_APP_INTRO,
+      SharedConstants.HAS_SEEN_APP_INTRO
     );
     const shouldShowOnboarding = !isDefined(hasSeenOnboarding);
 
     navigation.reset({
       index: 0,
-      routes: [{ name: shouldShowOnboarding ? 'OnboardingScreen' : 'Tabs' }],
+      routes: [{ name: shouldShowOnboarding ? "OnboardingScreen" : "Tabs" }],
     });
   };
 
@@ -260,15 +260,15 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
   };
 
   const viewRecoveryModeWallets = () => {
-    navigation.navigate('RecoveryWallets', {});
+    navigation.navigate("RecoveryWallets", {});
   };
 
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = Dimensions.get("window").width;
   const swirlWidth = windowWidth * 0.8;
   const swirlHeight = imageHeightFromDesiredWidth(ImageSwirl(), swirlWidth);
 
   return (
-    <SafeAreaView style={styles.container} edges={['right', 'top', 'left']}>
+    <SafeAreaView style={styles.container} edges={["right", "top", "left"]}>
       <SwirlBackground
         style={{
           ...styles.swirlBackground,
@@ -282,7 +282,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
           <>
             <Text style={styles.errorText}>
               {error.message}
-              {'\n'}
+              {"\n"}
               <Text
                 style={styles.errorShowMore}
                 onPress={openErrorDetailsModal}
@@ -351,7 +351,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({ navigation }) => {
           <>
             <Text style={styles.loadingText}>{progressStatus}</Text>
             <Text style={styles.disclaimerText}>
-              {'This process might take some time.'}
+              {"This process might take some time."}
             </Text>
             <View style={styles.progressBarWrapper}>
               <ProgressBar

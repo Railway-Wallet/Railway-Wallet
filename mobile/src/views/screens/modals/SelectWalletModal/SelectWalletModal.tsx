@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { Modal, ScrollView, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { SafeGrayFooter } from '@components/footers/SafeGrayFooter/SafeGrayFooter';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { useModalInteractionManager } from '@hooks/navigation/useModalInteractionManager';
+import React, { useState } from "react";
+import { Modal, ScrollView, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { SafeGrayFooter } from "@components/footers/SafeGrayFooter/SafeGrayFooter";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { useModalInteractionManager } from "@hooks/navigation/useModalInteractionManager";
 import {
   CommonActions,
   TabActions,
   useNavigation,
-} from '@react-navigation/native';
-import { FrontendWallet, styleguide } from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { PublicPrivateSelector } from '../../DApps/Swap/SwapScreen/PublicPrivateSelector/PublicPrivateSelector';
-import { SelectWalletList } from './SelectWalletList/SelectWalletList';
-import { styles } from './styles';
+} from "@react-navigation/native";
+import { FrontendWallet, styleguide } from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { PublicPrivateSelector } from "../../DApps/Swap/SwapScreen/PublicPrivateSelector/PublicPrivateSelector";
+import { SelectWalletList } from "./SelectWalletList/SelectWalletList";
+import { styles } from "./styles";
 
 type Props = {
   show: boolean;
@@ -23,7 +23,7 @@ type Props = {
   onDismiss: (
     wallet?: FrontendWallet,
     address?: string,
-    removeSelectedWallet?: boolean,
+    removeSelectedWallet?: boolean
   ) => void;
   selectedWallet?: FrontendWallet;
   selectedAddress?: string;
@@ -59,17 +59,17 @@ export const SelectWalletModal: React.FC<Props> = ({
   const handleGoToWalletSettings = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     closeModal();
-    navigation.dispatch(TabActions.jumpTo('Settings'));
+    navigation.dispatch(TabActions.jumpTo("Settings"));
     navigation.dispatch(
       CommonActions.reset({
         index: 1,
-        routes: [{ name: 'SettingsScreen' }, { name: 'SettingsWallets' }],
-      }),
+        routes: [{ name: "SettingsScreen" }, { name: "SettingsWallets" }],
+      })
     );
   };
 
   return (
-    (<Modal
+    <Modal
       animationType="slide"
       presentationStyle="formSheet"
       visible={show}
@@ -120,6 +120,6 @@ export const SelectWalletModal: React.FC<Props> = ({
           />
         </View>
       </SafeGrayFooter>
-    </Modal>)
+    </Modal>
   );
 };

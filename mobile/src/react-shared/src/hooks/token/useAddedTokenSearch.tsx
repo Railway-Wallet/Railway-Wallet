@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import { getERC20TokensForNetwork } from '../../services/wallet/wallet-balance-service';
-import { filterTokensBySearchField } from '../../utils/tokens';
-import { useReduxSelector } from '../hooks-redux';
+import { useMemo } from "react";
+import { getERC20TokensForNetwork } from "../../services/wallet/wallet-balance-service";
+import { filterTokensBySearchField } from "../../utils/tokens";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useAddedTokenSearch = (searchText?: string) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const activeWallet = wallets.active;
 

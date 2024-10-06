@@ -1,23 +1,23 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
-    width: '100%',
+    width: "100%",
   },
   pinDots: {
     marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
   },
   pinDotWrapper: {
     width: 36,
     height: 18,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   pinDot: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   pinDotSelected: {
     backgroundColor: styleguide.colors.white,

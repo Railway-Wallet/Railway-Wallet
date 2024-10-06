@@ -7,14 +7,14 @@ import {
   NETWORK_CONFIG,
   NetworkName,
   ProviderJson,
-} from '@railgun-community/shared-models';
-import { ReactConfig } from '../config/react-config';
-import { ImageChainEthereum } from '../images/images';
-import { ProviderNodeType } from '../models/providers';
-import { store } from '../redux-store/store';
-import { NetworkStoredSettingsService } from '../services/network/network-stored-settings';
-import { logDev, logDevError } from './logging';
-import { getNetworkFrontendConfig } from './networks-frontend';
+} from "@railgun-community/shared-models";
+import { ReactConfig } from "../config/react-config";
+import { ImageChainEthereum } from "../images/images";
+import { ProviderNodeType } from "../models/providers";
+import { store } from "../redux-store/store";
+import { NetworkStoredSettingsService } from "../services/network/network-stored-settings";
+import { logDev, logDevError } from "./logging";
+import { getNetworkFrontendConfig } from "./networks-frontend";
 
 const getNetworkProvidersConfig = (providerNodeType: ProviderNodeType) => {
   const remoteConfig = store.getState().remoteConfig;
@@ -28,7 +28,7 @@ const getNetworkProvidersConfig = (providerNodeType: ProviderNodeType) => {
 
 export const getNetworkFallbackProviderJsonConfig = async (
   networkName: NetworkName,
-  providerNodeType: ProviderNodeType,
+  providerNodeType: ProviderNodeType
 ): Promise<Optional<FallbackProviderJsonConfig>> => {
   const networkProvidersConfig = getNetworkProvidersConfig(providerNodeType);
   if (!networkProvidersConfig) {
@@ -55,7 +55,7 @@ export const getNetworkFallbackProviderJsonConfig = async (
     if (!storedSettings.useDefaultRailwayRPCsAsBackup) {
       possibleProviderJSONs.splice(0, possibleProviderJSONs.length);
     }
-    storedSettings.rpcCustomURLs.forEach(url => {
+    storedSettings.rpcCustomURLs.forEach((url) => {
       possibleProviderJSONs.unshift(providerJSONForCustomRPCURL(url));
     });
   }
@@ -63,12 +63,12 @@ export const getNetworkFallbackProviderJsonConfig = async (
   const availableProviderJSONs = await getAvailableProviderJSONs(
     fallbackProviderConfig.chainId,
     possibleProviderJSONs,
-    logDevError,
+    logDevError
   );
   if (!availableProviderJSONs.length) {
-    logDev('possibleProviderJSONs');
+    logDev("possibleProviderJSONs");
     logDev(possibleProviderJSONs);
-    logDev('availableProviderJSONs');
+    logDev("availableProviderJSONs");
     logDev(availableProviderJSONs);
     return undefined;
   }
@@ -90,7 +90,7 @@ export const allNetworks = () => {
 };
 
 export const networkForName = (name: NetworkName): Optional<Network> => {
-  return allNetworks().find(network => network.name === name);
+  return allNetworks().find((network) => network.name === name);
 };
 
 export const getSupportedNetworks = () => {
@@ -99,18 +99,18 @@ export const getSupportedNetworks = () => {
     remoteConfig.current?.availableNetworks ?? {};
 
   return Object.values(NETWORK_CONFIG)
-    .filter(n => {
+    .filter((n) => {
       if (availableNetworksRemoteConfig[n.name]?.isDevOnly ?? false) {
         return ReactConfig.IS_DEV;
       }
       return availableNetworksRemoteConfig[n.name];
     })
-    .filter(n => !(n.deprecated ?? false));
+    .filter((n) => !(n.deprecated ?? false));
 };
 
 export const getSupportedEVMNetworks = () => {
   return getSupportedNetworks()
-    .filter(n => {
+    .filter((n) => {
       switch (n.chain.type) {
         case ChainType.EVM:
           return true;
@@ -135,7 +135,6 @@ export const getSupportedEVMNetworkLogos = (): any[] => {
   const evmLogos: any[] = [];
   const networks = getSupportedEVMNetworks();
   for (const network of networks) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { icon } = getNetworkFrontendConfig(network.name);
     if (isDefined(icon)) {
       evmLogos.push(icon);
@@ -148,21 +147,21 @@ export const getSupportedEVMNetworkLogos = (): any[] => {
 };
 
 export const shouldEnableKoinlyTaxExport = (
-  currentNetworkName: NetworkName,
+  currentNetworkName: NetworkName
 ) => {
   switch (currentNetworkName) {
-  case NetworkName.Ethereum:
-  case NetworkName.BNBChain:
-  case NetworkName.Polygon:
-  case NetworkName.Arbitrum:
-    return true;
-  case NetworkName.EthereumSepolia:
-  case NetworkName.PolygonAmoy:
-  case NetworkName.EthereumRopsten_DEPRECATED:
-  case NetworkName.EthereumGoerli_DEPRECATED:
-  case NetworkName.PolygonMumbai_DEPRECATED:
-  case NetworkName.ArbitrumGoerli_DEPRECATED:
-  case NetworkName.Hardhat:
-    return false;
+    case NetworkName.Ethereum:
+    case NetworkName.BNBChain:
+    case NetworkName.Polygon:
+    case NetworkName.Arbitrum:
+      return true;
+    case NetworkName.EthereumSepolia:
+    case NetworkName.PolygonAmoy:
+    case NetworkName.EthereumRopsten_DEPRECATED:
+    case NetworkName.EthereumGoerli_DEPRECATED:
+    case NetworkName.PolygonMumbai_DEPRECATED:
+    case NetworkName.ArbitrumGoerli_DEPRECATED:
+    case NetworkName.Hardhat:
+      return false;
   }
 };

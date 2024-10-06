@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Text } from 'react-native';
-import { styles } from './styles';
+import React, { useState } from "react";
+import { Text } from "react-native";
+import { styles } from "./styles";
 
 type Props = {
   title: string;

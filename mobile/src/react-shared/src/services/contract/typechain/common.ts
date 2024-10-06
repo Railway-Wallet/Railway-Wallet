@@ -1,5 +1,4 @@
 /* eslint-disable */
-/* eslint-disable */
 import type {
   FunctionFragment,
   Typed,

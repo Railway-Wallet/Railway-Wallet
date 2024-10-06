@@ -1,5 +1,5 @@
-import { ImageSourcePropType } from 'react-native';
-import { DAppsParams } from './navigation-models';
+import { ImageSourcePropType } from "react-native";
+import { DAppsParams } from "./navigation-models";
 
 export type DAppSettings = {
   title: string;

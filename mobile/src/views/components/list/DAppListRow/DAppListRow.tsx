@@ -1,9 +1,9 @@
-import React from 'react';
-import { Image, ImageSourcePropType, View } from 'react-native';
-import { styleguide } from '@react-shared';
-import { Icon } from '@views/components/icons/Icon';
-import { ListRow } from '../ListRow/ListRow';
-import { styles } from './styles';
+import React from "react";
+import { Image, ImageSourcePropType, View } from "react-native";
+import { styleguide } from "@react-shared";
+import { Icon } from "@views/components/icons/Icon";
+import { ListRow } from "../ListRow/ListRow";
+import { styles } from "./styles";
 
 type Props = {
   title: string;
@@ -23,7 +23,7 @@ export const DAppListRow: React.FC<Props> = ({
   onSelect,
 }) => {
   const leftView = () => {
-    const isIconLabel = typeof icon === 'string';
+    const isIconLabel = typeof icon === "string";
     return (
       <View style={styles.dAppIconWrapper}>
         <View style={styles.dAppIconBackground}>

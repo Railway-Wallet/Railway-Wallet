@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { AppDispatch, setBackGesturesEnabled } from '@react-shared';
+import { useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { AppDispatch, setBackGesturesEnabled } from "@react-shared";
 
 export const useDisableBackGesture = (dispatch: AppDispatch) => {
   useFocusEffect(
@@ -8,6 +8,6 @@ export const useDisableBackGesture = (dispatch: AppDispatch) => {
       dispatch(setBackGesturesEnabled(false));
 
       return () => dispatch(setBackGesturesEnabled(true));
-    }, [dispatch]),
+    }, [dispatch])
   );
 };

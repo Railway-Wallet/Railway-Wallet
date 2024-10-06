@@ -1,13 +1,13 @@
-import { versionCompare } from '@railgun-community/shared-models';
-import VersionNumber from 'react-native-version-number';
-import { RemoteConfig } from '@react-shared';
-import { isAndroid } from '../util/platform-os-service';
+import { versionCompare } from "@railgun-community/shared-models";
+import VersionNumber from "react-native-version-number";
+import { RemoteConfig } from "@react-shared";
+import { isAndroid } from "../util/platform-os-service";
 
 export const needsVersionUpdate = (remoteConfig: RemoteConfig): boolean => {
   return (
     versionCompare(
       VersionNumber.appVersion,
-      minVersionForPlatform(remoteConfig),
+      minVersionForPlatform(remoteConfig)
     ) < 0
   );
 };

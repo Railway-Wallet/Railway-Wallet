@@ -1,10 +1,10 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { ReactNode, useCallback } from 'react';
-import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { ListItem } from '@components/list/ListItem/ListItem';
-import { styleguide } from '@react-shared';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { ReactNode, useCallback } from "react";
+import { StyleProp, Text, TextStyle, View, ViewStyle } from "react-native";
+import { ListItem } from "@components/list/ListItem/ListItem";
+import { styleguide } from "@react-shared";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 type Props = {
   title: string;
@@ -77,7 +77,7 @@ export const SelectableListItem: React.FC<Props> = ({
         </View>
         {!disabled && !hideRightIcon && (
           <Icon
-            source={rightIconSource ?? 'chevron-right'}
+            source={rightIconSource ?? "chevron-right"}
             size={24}
             color={styleguide.colors.labelSecondary}
           />

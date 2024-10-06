@@ -1,12 +1,12 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { useCallback, useEffect, useState } from 'react';
-import { ERC20TokenFullInfo } from '../../models';
-import { fetchLiquidity, logDevError } from '../../utils';
-import { useAppDispatch, useReduxSelector } from '../hooks-redux';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { useCallback, useEffect, useState } from "react";
+import { ERC20TokenFullInfo } from "../../models";
+import { fetchLiquidity, logDevError } from "../../utils";
+import { useAppDispatch, useReduxSelector } from "../hooks-redux";
 
 export const useLiquidityFetch = () => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -18,17 +18,17 @@ export const useLiquidityFetch = () => {
   const refreshLiquidityData = useCallback(
     async (
       networkName: NetworkName,
-      walletTokens: Optional<ERC20TokenFullInfo[]>,
+      walletTokens: Optional<ERC20TokenFullInfo[]>
     ) => {
       if (!isDefined(walletTokens)) return;
 
       setLiquidityFetchError(undefined);
       setIsLoading(true);
       try {
-        const tokenAddresses = walletTokens.map(t => t.address);
+        const tokenAddresses = walletTokens.map((t) => t.address);
         await fetchLiquidity(networkName, tokenAddresses, dispatch);
       } catch (err) {
-        const error = new Error('Error refreshing liquidity data', {
+        const error = new Error("Error refreshing liquidity data", {
           cause: err,
         });
         logDevError(error);
@@ -37,7 +37,7 @@ export const useLiquidityFetch = () => {
 
       setIsLoading(false);
     },
-    [dispatch],
+    [dispatch]
   );
 
   useEffect(() => {

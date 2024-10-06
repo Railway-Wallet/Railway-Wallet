@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   horizontalLine: {
     height: 1,
-    width: '100%',
+    width: "100%",
     marginLeft: 16,
     backgroundColor: styleguide.colors.inputBorder,
   },
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.actionText,
     color: styleguide.colors.labelSecondary,
     marginTop: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   walletCreationDateLabel: {
     marginTop: 32,

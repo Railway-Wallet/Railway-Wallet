@@ -1,5 +1,5 @@
-import { ProofProgressEvent } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProofProgressEvent } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type ProofProgressState = {
   progress: Optional<number>;
@@ -12,7 +12,7 @@ const initialState: ProofProgressState = {
 };
 
 const slice = createSlice({
-  name: 'proofProgress',
+  name: "proofProgress",
   initialState,
   reducers: {
     setProofProgress(state, action: PayloadAction<ProofProgressEvent>) {

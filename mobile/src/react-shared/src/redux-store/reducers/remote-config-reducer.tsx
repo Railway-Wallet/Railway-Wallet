@@ -1,17 +1,17 @@
 import {
   FallbackProviderJsonConfig,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NetworkSettings } from '../../models/network';
-import { POIDocumentation } from '../../models/poi';
-import { TempNotification } from './temp-notification-reducer';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { NetworkSettings } from "../../models/network";
+import { POIDocumentation } from "../../models/poi";
+import { TempNotification } from "./temp-notification-reducer";
 
 export type RemoteConfig = {
   minVersionNumberIOS: string;
   minVersionNumberAndroid: string;
   minVersionNumberWeb: string;
-  'bootstrapPeers-': string[];
+  "bootstrapPeers-": string[];
   wakuPubSubTopic: string;
   additionalDirectPeers: Optional<string[]>;
   wakuPeerDiscoveryTimeout: number;
@@ -43,7 +43,7 @@ const initialState = {
 } as RemoteConfigState;
 
 const slice = createSlice({
-  name: 'remoteConfig',
+  name: "remoteConfig",
   initialState,
   reducers: {
     setRemoteConfig(state, action: PayloadAction<RemoteConfig>) {

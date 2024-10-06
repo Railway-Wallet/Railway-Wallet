@@ -1,4 +1,4 @@
-import { InteractionManager } from 'react-native';
+import { InteractionManager } from "react-native";
 
 export class ModalInteractionManager {
   private static interactionHandles: number[] = [];

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { getPOIRequiredForNetwork } from '../../bridge/bridge-poi';
-import { useReduxSelector } from '../hooks-redux';
+import { useEffect, useState } from "react";
+import { getPOIRequiredForNetwork } from "../../bridge/bridge-poi";
+import { useReduxSelector } from "../hooks-redux";
 
 export const usePOIRequiredForCurrentNetwork = () => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const [poiRequired, setPOIRequired] = useState<boolean>(false);
 

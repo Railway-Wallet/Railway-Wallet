@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { Modal, ScrollView, Text, View } from 'react-native';
-import { ButtonTextOnly } from '@components/buttons/ButtonTextOnly/ButtonTextOnly';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { Modal, ScrollView, Text, View } from "react-native";
+import { ButtonTextOnly } from "@components/buttons/ButtonTextOnly/ButtonTextOnly";
+import { styles } from "./styles";
 
 export interface AlertProps {
   show?: boolean;
@@ -38,7 +38,7 @@ export const GenericAlert: React.FC<AlertProps> = ({
             {isDefined(footerView) && footerView}
           </ScrollView>
           <ButtonTextOnly
-            title={submitTitle ?? 'Close'}
+            title={submitTitle ?? "Close"}
             onTap={onSubmit}
             labelStyle={styles.submitButtonText}
           />

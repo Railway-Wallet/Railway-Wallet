@@ -2,27 +2,27 @@ import {
   isDefined,
   NetworkName,
   OFAC_SANCTIONS_LIST_ADDRESSES,
-} from '@railgun-community/shared-models';
-import axios from 'axios';
-import { Contract } from 'ethers';
-import { store } from '../redux-store/store';
-import { ProviderService } from '../services';
-import ABIChainalysisOfacOracle from './abi/ChainalysisOfacOracle.json';
-import { throwErrorCode } from './error-code';
-import { logDev, logDevError } from './logging';
-import { networkForName } from './networks';
+} from "@railgun-community/shared-models";
+import axios from "axios";
+import { Contract } from "ethers";
+import { store } from "../redux-store/store";
+import { ProviderService } from "../services";
+import ABIChainalysisOfacOracle from "./abi/ChainalysisOfacOracle.json";
+import { throwErrorCode } from "./error-code";
+import { logDev, logDevError } from "./logging";
+import { networkForName } from "./networks";
 
 export const hasBlockedAddress = async (
-  addresses: Optional<string>[],
+  addresses: Optional<string>[]
 ): Promise<boolean> => {
   return (
-    await Promise.all(addresses.map(address => isBlockedAddress(address)))
-  ).some(isBlocked => isBlocked);
+    await Promise.all(addresses.map((address) => isBlockedAddress(address)))
+  ).some((isBlocked) => isBlocked);
 };
 
 export const assertHasNoHighSevereRiskAddress = async (
   networkName: NetworkName,
-  addresses: string[],
+  addresses: string[]
 ): Promise<void> => {
   for (const address of addresses) {
     await assertIsNotHighSevereRiskAddress(networkName, address);
@@ -43,11 +43,11 @@ export const isBlockedAddress = async (address?: string): Promise<boolean> => {
 };
 
 export const isSanctionedAddress = async (
-  address: string,
+  address: string
 ): Promise<boolean> => {
   const { remoteConfig } = store.getState();
   if (!remoteConfig.current || !remoteConfig.current.proxyApiUrl) {
-    throw new Error('No remote config for address screening.');
+    throw new Error("No remote config for address screening.");
   }
 
   try {
@@ -62,9 +62,9 @@ export const isSanctionedAddress = async (
     const isSanctioned =
       isDefined(identifications) &&
       identifications.some(
-        id =>
-          id.category.toLowerCase() === 'sanctions' ||
-          id.category.toLowerCase() === 'sanctioned entity',
+        (id) =>
+          id.category.toLowerCase() === "sanctions" ||
+          id.category.toLowerCase() === "sanctioned entity"
       );
 
     return isSanctioned;
@@ -80,29 +80,29 @@ export const isSanctionedAddress = async (
     }
 
     throw new Error(
-      `Could not connect - code 66000. Please try again in a few moments.`,
+      `Could not connect - code 66000. Please try again in a few moments.`
     );
   }
 };
 
 const isSanctionedAddressByOracle = async (
-  address: string,
+  address: string
 ): Promise<Optional<boolean>> => {
   try {
     const networkName = NetworkName.Ethereum;
-    const oracleAddress = '0x40C57923924B5c5c5455c48D93317139ADDaC8fb';
+    const oracleAddress = "0x40C57923924B5c5c5455c48D93317139ADDaC8fb";
 
     const provider = await ProviderService.getProvider(networkName);
     const oracleContract = new Contract(
       oracleAddress,
       ABIChainalysisOfacOracle,
-      provider,
+      provider
     );
 
     const isSanctioned: boolean = await oracleContract.isSanctioned(address);
     return isSanctioned;
   } catch (err) {
-    logDev('Could not connect to ethereum oracle');
+    logDev("Could not connect to ethereum oracle");
     logDevError(err);
     return undefined;
   }
@@ -110,7 +110,7 @@ const isSanctionedAddressByOracle = async (
 
 const registerForWalletScreen = async (
   proxyApiUrl: string,
-  address: string,
+  address: string
 ) => {
   try {
     const registerAddressURL = `${proxyApiUrl}/address/risk/entities`;
@@ -118,14 +118,14 @@ const registerForWalletScreen = async (
   } catch (err) {
     logDevError(err);
     throw new Error(
-      `Could not connect - code 66001. Please try again in a few moments.`,
+      `Could not connect - code 66001. Please try again in a few moments.`
     );
   }
 };
 
 const getRiskAssessment = async (
   proxyApiUrl: string,
-  address: string,
+  address: string
 ): Promise<{
   risk: string;
   riskReason: string;
@@ -137,14 +137,14 @@ const getRiskAssessment = async (
   } catch (err) {
     logDevError(err);
     throw new Error(
-      `Could not connect - code 66002. Please try again in a few moments.`,
+      `Could not connect - code 66002. Please try again in a few moments.`
     );
   }
 };
 
 export const assertIsNotHighSevereRiskAddress = async (
   networkName: NetworkName,
-  address: string,
+  address: string
 ): Promise<void> => {
   const network = networkForName(networkName);
   if (network?.isTestnet === true) {
@@ -153,20 +153,20 @@ export const assertIsNotHighSevereRiskAddress = async (
 
   const { remoteConfig } = store.getState();
   if (!remoteConfig.current || !remoteConfig.current.proxyApiUrl) {
-    throw new Error('No remote config for address screening.');
+    throw new Error("No remote config for address screening.");
   }
 
   await registerForWalletScreen(remoteConfig.current.proxyApiUrl, address);
 
   const riskAssessment = await getRiskAssessment(
     remoteConfig.current.proxyApiUrl,
-    address,
+    address
   );
 
-  if (riskAssessment.risk === 'High') {
-    throwErrorCode('66');
+  if (riskAssessment.risk === "High") {
+    throwErrorCode("66");
   }
-  if (riskAssessment.risk === 'Severe') {
-    throwErrorCode('67');
+  if (riskAssessment.risk === "Severe") {
+    throwErrorCode("67");
   }
 };

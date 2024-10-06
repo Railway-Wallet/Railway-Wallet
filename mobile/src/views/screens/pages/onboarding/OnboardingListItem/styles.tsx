@@ -1,17 +1,17 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     padding: 24,
   },
   text: {
     marginTop: 24,
-    textAlign: 'center',
+    textAlign: "center",
     flex: 1,
-    width: '100%',
+    width: "100%",
     ...styleguide.typography.paragraph,
     color: styleguide.colors.white,
     lineHeight: 24,
@@ -21,6 +21,6 @@ export const styles = StyleSheet.create({
     lineHeight: 28,
   },
   image: {
-    width: '100%',
+    width: "100%",
   },
 });

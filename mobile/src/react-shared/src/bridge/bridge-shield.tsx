@@ -6,27 +6,27 @@ import {
   RailgunTransactionGasEstimateResponse,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { ERC20AmountRecipient } from '../models';
+} from "@railgun-community/shared-models";
+import { ERC20AmountRecipient } from "../models";
 import {
   BridgeCallEvent,
   GasEstimateForShieldBaseTokenParams,
   GasEstimateForShieldParams,
   PopulateShieldBaseTokenParams,
   PopulateShieldParams,
-} from '../models/bridge';
+} from "../models/bridge";
 import {
   compareTokenAddress,
   createRailgunERC20Amount,
   createRailgunERC20AmountRecipients,
   createRailgunNFTAmountRecipients,
-} from '../utils/tokens';
-import { bridgeCall } from './ipc';
+} from "../utils/tokens";
+import { bridgeCall } from "./ipc";
 
 export const getShieldPrivateKeySignatureMessage = (): Promise<string> => {
   return bridgeCall<void, string>(
     BridgeCallEvent.GetShieldPrivateKeySignatureMessage,
-    undefined,
+    undefined
   );
 };
 
@@ -36,10 +36,10 @@ export const populateShield = (
   shieldPrivateKey: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
   nftAmountRecipients: NFTAmountRecipient[],
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   const erc20AmountRecipientsSerialized = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -53,7 +53,7 @@ export const populateShield = (
       erc20AmountRecipients: erc20AmountRecipientsSerialized,
       nftAmountRecipients: nftAmountRecipientsRailgun,
       transactionGasDetails,
-    },
+    }
   );
 };
 
@@ -63,28 +63,28 @@ export const populateShieldBaseToken = async (
   shieldPrivateKey: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
   _nftAmountRecipients: NFTAmountRecipient[],
-  transactionGasDetails: TransactionGasDetails,
+  transactionGasDetails: TransactionGasDetails
 ): Promise<RailgunPopulateTransactionResponse> => {
   if (erc20AmountRecipients.length > 1) {
     throw new Error(
-      'You must shield base token in a transaction by itself. Please remove other tokens from this transaction.',
+      "You must shield base token in a transaction by itself. Please remove other tokens from this transaction."
     );
   }
   if (
     !compareTokenAddress(
       erc20AmountRecipients[0].token.address,
-      NETWORK_CONFIG[networkName].baseToken.wrappedAddress,
+      NETWORK_CONFIG[networkName].baseToken.wrappedAddress
     )
   ) {
     throw new Error(
-      'Incorrect address for wrapped base token. Please reset tokens to defaults through Wallet Settings.',
+      "Incorrect address for wrapped base token. Please reset tokens to defaults through Wallet Settings."
     );
   }
   const wrappedTokenAmountSerialized = createRailgunERC20Amount(
-    erc20AmountRecipients[0],
+    erc20AmountRecipients[0]
   );
   if (!wrappedTokenAmountSerialized) {
-    throw new Error('No token selected for shielding.');
+    throw new Error("No token selected for shielding.");
   }
 
   const railgunAddress = erc20AmountRecipients[0].recipientAddress;
@@ -108,10 +108,10 @@ export const gasEstimateForShield = async (
   fromWalletAddress: string,
   shieldPrivateKey: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
-  nftAmountRecipients: NFTAmountRecipient[],
+  nftAmountRecipients: NFTAmountRecipient[]
 ): Promise<bigint> => {
   const erc20AmountRecipientsSerialized = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -135,33 +135,33 @@ export const gasEstimateForShieldBaseToken = async (
   networkName: NetworkName,
   fromWalletAddress: string,
   shieldPrivateKey: string,
-  erc20AmountRecipients: ERC20AmountRecipient[],
+  erc20AmountRecipients: ERC20AmountRecipient[]
 ): Promise<bigint> => {
   if (erc20AmountRecipients.length > 1) {
     throw new Error(
-      'You must shield base token in a transaction by itself. Please remove other tokens from this transaction.',
+      "You must shield base token in a transaction by itself. Please remove other tokens from this transaction."
     );
   }
   if (
     !compareTokenAddress(
       erc20AmountRecipients[0].token.address,
-      NETWORK_CONFIG[networkName].baseToken.wrappedAddress,
+      NETWORK_CONFIG[networkName].baseToken.wrappedAddress
     )
   ) {
     if (networkName === NetworkName.EthereumRopsten_DEPRECATED) {
       throw new Error(
-        'Incorrect address for wrapped base token (patched issue on Ropsten). Please reset tokens to defaults through Wallet Settings to resolve.',
+        "Incorrect address for wrapped base token (patched issue on Ropsten). Please reset tokens to defaults through Wallet Settings to resolve."
       );
     }
     throw new Error(
-      'Incorrect address for wrapped base token. Please reset tokens to defaults through Wallet Settings.',
+      "Incorrect address for wrapped base token. Please reset tokens to defaults through Wallet Settings."
     );
   }
   const wrappedTokenAmountSerialized = createRailgunERC20Amount(
-    erc20AmountRecipients[0],
+    erc20AmountRecipients[0]
   );
   if (!wrappedTokenAmountSerialized) {
-    throw new Error('No token selected for shielding.');
+    throw new Error("No token selected for shielding.");
   }
 
   const railgunAddress = erc20AmountRecipients[0].recipientAddress;

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SavedAddress } from '../../models/wallet';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SavedAddress } from "../../models/wallet";
 
 export type SavedAddressesState = {
   current: SavedAddress[];
@@ -10,7 +10,7 @@ const initialState = {
 } as SavedAddressesState;
 
 const slice = createSlice({
-  name: 'saved-addresses',
+  name: "saved-addresses",
   initialState,
   reducers: {
     setSavedAddresses(state, action: PayloadAction<SavedAddress[]>) {

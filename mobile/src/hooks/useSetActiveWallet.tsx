@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
   FrontendWallet,
   getWalletTransactionHistory,
@@ -10,13 +10,13 @@ import {
   useReduxSelector,
   WalletService,
   WalletStorageService,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
 
 export const useSetActiveWallet = (
-  updateWallet?: (wallet: Optional<FrontendWallet>) => void,
+  updateWallet?: (wallet: Optional<FrontendWallet>) => void
 ) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [pendingActiveWallet, setPendingActiveWallet] =
@@ -33,7 +33,7 @@ export const useSetActiveWallet = (
       try {
         const walletService = new WalletService(
           dispatch,
-          new WalletSecureServiceReactNative(),
+          new WalletSecureServiceReactNative()
         );
         const walletStorageService = new WalletStorageService(dispatch);
         const newWallet: FrontendWallet = { ...wallet, isActive: true };
@@ -44,25 +44,25 @@ export const useSetActiveWallet = (
         RailgunTransactionHistorySync.safeSyncTransactionHistory(
           dispatch,
           network.current,
-          getWalletTransactionHistory,
+          getWalletTransactionHistory
         );
 
         if (updateWallet) {
           updateWallet(newWallet);
         }
       } catch (cause) {
-        logDevError(new Error('Error selecting wallet', { cause }));
+        logDevError(new Error("Error selecting wallet", { cause }));
         dispatch(
           showImmediateToast({
             message: `Error selecting wallet: ${cause.message}`,
             type: ToastType.Error,
-          }),
+          })
         );
       }
 
       setIsLoading(false);
     },
-    [dispatch, network, updateWallet],
+    [dispatch, network, updateWallet]
   );
 
   useEffect(() => {

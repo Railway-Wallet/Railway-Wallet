@@ -1,7 +1,7 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import React, { useMemo } from 'react';
-import { View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
+import { NetworkName } from "@railgun-community/shared-models";
+import React, { useMemo } from "react";
+import { View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
 import {
   compareTokenAddress,
   ERC20Token,
@@ -10,9 +10,9 @@ import {
   useShouldEnableSwaps,
   useWalletTokenVaultsFilter,
   WalletCardSlideItem,
-} from '@react-shared';
-import { isIOS } from '@services/util/platform-os-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { isIOS } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
   hasWallet: boolean;
@@ -41,14 +41,14 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
   onActionReceiveTokens,
   onActionMintTokens,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const activeWallet = wallets.active;
 
   const swapsUnavailableOnPlatform = isIOS();
   const { shouldEnableSwaps } = useShouldEnableSwaps(
-    swapsUnavailableOnPlatform,
+    swapsUnavailableOnPlatform
   );
 
   const isMintableTestToken =
@@ -62,13 +62,13 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
     return (
       <>
         <ButtonWithTextAndIcon
-          icon={'plus'}
+          icon={"plus"}
           title="Create"
           onPress={onActionCreateWallet}
           additionalStyles={styles.button}
         />
         <ButtonWithTextAndIcon
-          icon={'arrow-down'}
+          icon={"arrow-down"}
           title="Import"
           onPress={onActionImportWallet}
           additionalStyles={styles.button}
@@ -85,12 +85,12 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
       return { isDepositToken: false, isRedeemToken: false };
     }
 
-    const isDepositToken = availableDepositTokens.some(t =>
-      compareTokenAddress(t.address, token.address),
+    const isDepositToken = availableDepositTokens.some((t) =>
+      compareTokenAddress(t.address, token.address)
     );
 
-    const isRedeemToken = availableRedeemTokens.some(t =>
-      compareTokenAddress(t.address, token.address),
+    const isRedeemToken = availableRedeemTokens.some((t) =>
+      compareTokenAddress(t.address, token.address)
     );
 
     return { isDepositToken, isRedeemToken };
@@ -99,23 +99,23 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
   const farmButtonText = !item.isRailgun
     ? undefined
     : isDepositToken
-    ? 'Farm'
+    ? "Farm"
     : isRedeemToken
-    ? 'Redeem'
+    ? "Redeem"
     : undefined;
 
   const buttonsActiveWallet = () => {
     return (
       <>
         <ButtonWithTextAndIcon
-          icon={'upload-outline'}
+          icon={"upload-outline"}
           title="Send"
           onPress={onActionSendERC20s}
           additionalStyles={styles.button}
           disabled={activeWallet?.isViewOnlyWallet}
         />
         <ButtonWithTextAndIcon
-          icon={'download-outline'}
+          icon={"download-outline"}
           title="Receive"
           onPress={onActionReceiveTokens}
           additionalStyles={styles.button}
@@ -130,7 +130,7 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
         )}
         {onActionSwapTokens && (
           <ButtonWithTextAndIcon
-            icon={'swap-vertical'}
+            icon={"swap-vertical"}
             title="Swap"
             onPress={onActionSwapTokens}
             additionalStyles={styles.button}
@@ -139,7 +139,7 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
         )}
         {canMintTestTokens && (
           <ButtonWithTextAndIcon
-            icon={'plus'}
+            icon={"plus"}
             title="Mint tokens"
             onPress={onActionMintTokens}
             additionalStyles={styles.button}

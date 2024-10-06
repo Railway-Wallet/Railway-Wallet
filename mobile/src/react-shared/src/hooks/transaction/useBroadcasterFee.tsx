@@ -3,15 +3,15 @@ import {
   isDefined,
   SelectedBroadcaster,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { GasDetailsBySpeed } from '../../models';
-import { BroadcasterFeeInfo } from '../../models/broadcaster';
-import { ERC20Token } from '../../models/token';
-import { getTokenDisplayName } from '../../utils/tokens';
-import { broadcasterFeeInfoText } from '../../utils/transactions';
-import { useReduxSelector } from '../hooks-redux';
-import { useBroadcasterConnectionStatus } from '../networking/useBroadcasterConnectionStatus';
+} from "@railgun-community/shared-models";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { GasDetailsBySpeed } from "../../models";
+import { BroadcasterFeeInfo } from "../../models/broadcaster";
+import { ERC20Token } from "../../models/token";
+import { getTokenDisplayName } from "../../utils/tokens";
+import { broadcasterFeeInfoText } from "../../utils/transactions";
+import { useReduxSelector } from "../hooks-redux";
+import { useBroadcasterConnectionStatus } from "../networking/useBroadcasterConnectionStatus";
 
 export const useBroadcasterFee = (
   selectedFeeToken: ERC20Token,
@@ -19,11 +19,11 @@ export const useBroadcasterFee = (
   selectedBroadcasterLocked: boolean,
   selectedGasDetails: Optional<TransactionGasDetails>,
   gasDetailsBySpeed: Optional<GasDetailsBySpeed>,
-  gasEstimateError: Optional<Error>,
+  gasEstimateError: Optional<Error>
 ): BroadcasterFeeInfo => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
 
   const { broadcasterConnectionStatus } = useBroadcasterConnectionStatus();
 
@@ -31,14 +31,14 @@ export const useBroadcasterFee = (
     const tokenDisplayName = getTokenDisplayName(
       selectedFeeToken,
       wallets.available,
-      network.current.name,
+      network.current.name
     );
     const broadcasterFeeText = gasDetailsBySpeed
       ? `Paid in ${tokenDisplayName}`
-      : 'Getting current gas prices...';
+      : "Getting current gas prices...";
     return {
       broadcasterFeeText,
-      broadcasterFeeSubtext: 'Please wait',
+      broadcasterFeeSubtext: "Please wait",
       broadcasterFeeERC20Amount: undefined,
       broadcasterFeeIsEstimating: isDefined(gasDetailsBySpeed),
     };
@@ -51,14 +51,14 @@ export const useBroadcasterFee = (
     return getTokenDisplayName(
       selectedFeeToken,
       wallets.available,
-      network.current.name,
+      network.current.name
     );
   }, [network, selectedFeeToken, wallets.available]);
 
   const selectedBroadcasterFee = useCallback(
     (
       selectedBroadcaster: SelectedBroadcaster,
-      gasDetails: TransactionGasDetails,
+      gasDetails: TransactionGasDetails
     ): Optional<BroadcasterFeeInfo> => {
       const showExactCurrencyGasPrice = false;
 
@@ -69,17 +69,17 @@ export const useBroadcasterFee = (
         selectedBroadcaster,
         selectedFeeToken,
         gasDetails,
-        showExactCurrencyGasPrice,
+        showExactCurrencyGasPrice
       );
     },
-    [network, networkPrices, selectedFeeToken, wallets.available],
+    [network, networkPrices, selectedFeeToken, wallets.available]
   );
 
   const noBroadcasterFeeInfo: () => BroadcasterFeeInfo = useCallback(() => {
     if (broadcasterConnectionStatus === BroadcasterConnectionStatus.Searching) {
       return {
         broadcasterFeeText: `Searching for public broadcasters...`,
-        broadcasterFeeSubtext: 'None found. Please wait.',
+        broadcasterFeeSubtext: "None found. Please wait.",
         broadcasterFeeERC20Amount: undefined,
         broadcasterFeeIsEstimating: false,
       };
@@ -88,8 +88,8 @@ export const useBroadcasterFee = (
       broadcasterConnectionStatus === BroadcasterConnectionStatus.Disconnected
     ) {
       return {
-        broadcasterFeeText: 'Public broadcaster network connection was broken',
-        broadcasterFeeSubtext: 'Attempting to re-establish',
+        broadcasterFeeText: "Public broadcaster network connection was broken",
+        broadcasterFeeSubtext: "Attempting to re-establish",
         broadcasterFeeERC20Amount: undefined,
         broadcasterFeeIsEstimating: false,
       };
@@ -99,14 +99,14 @@ export const useBroadcasterFee = (
     ) {
       return {
         broadcasterFeeText: `All ${network.current.shortPublicName} public broadcasters are busy`,
-        broadcasterFeeSubtext: 'Please try again later',
+        broadcasterFeeSubtext: "Please try again later",
         broadcasterFeeERC20Amount: undefined,
         broadcasterFeeIsEstimating: false,
       };
     }
     return {
       broadcasterFeeText: `Finding public broadcaster that accepts ${tokenDisplayName}`,
-      broadcasterFeeSubtext: 'Please wait or select fee token',
+      broadcasterFeeSubtext: "Please wait or select fee token",
       broadcasterFeeERC20Amount: undefined,
       broadcasterFeeIsEstimating: false,
     };
@@ -119,7 +119,7 @@ export const useBroadcasterFee = (
       }
       if (isDefined(gasEstimateError)) {
         return {
-          broadcasterFeeText: 'Error',
+          broadcasterFeeText: "Error",
           broadcasterFeeSubtext: `Gas estimation error with ${tokenDisplayName} fee`,
           broadcasterFeeERC20Amount: undefined,
           broadcasterFeeIsEstimating: false,
@@ -132,7 +132,6 @@ export const useBroadcasterFee = (
         return defaultEstimatingInfo;
       }
       return selectedBroadcasterFee(selectedBroadcaster, selectedGasDetails);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       selectedBroadcasterLocked,
       gasEstimateError,

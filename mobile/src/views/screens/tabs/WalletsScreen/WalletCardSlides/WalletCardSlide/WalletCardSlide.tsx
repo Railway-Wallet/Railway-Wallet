@@ -1,13 +1,13 @@
-import { RailgunWalletBalanceBucket } from '@railgun-community/shared-models';
-import React from 'react';
-import { ImageBackground, View } from 'react-native';
-import { ImageCardBackground } from '@assets/img/ImagesMobile';
-import { WalletCardSlideItem } from '@react-shared';
-import { WalletCardSlideBalance } from '../WalletCardSlideBalance/WalletCardSlideBalance';
-import { WalletCardSlideButtons } from '../WalletCardSlideButtons/WalletCardSlideButtons';
-import { WalletCardSlideFooter } from '../WalletCardSlideFooter/WalletCardSlideFooter';
-import { WalletCardSlideName } from '../WalletCardSlideName/WalletCardSlideName';
-import { styles } from './styles';
+import { RailgunWalletBalanceBucket } from "@railgun-community/shared-models";
+import React from "react";
+import { ImageBackground, View } from "react-native";
+import { ImageCardBackground } from "@assets/img/ImagesMobile";
+import { WalletCardSlideItem } from "@react-shared";
+import { WalletCardSlideBalance } from "../WalletCardSlideBalance/WalletCardSlideBalance";
+import { WalletCardSlideButtons } from "../WalletCardSlideButtons/WalletCardSlideButtons";
+import { WalletCardSlideFooter } from "../WalletCardSlideFooter/WalletCardSlideFooter";
+import { WalletCardSlideName } from "../WalletCardSlideName/WalletCardSlideName";
+import { styles } from "./styles";
 
 type Props = {
   hasWallet: boolean;

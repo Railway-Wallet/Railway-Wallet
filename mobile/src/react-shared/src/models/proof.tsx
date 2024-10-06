@@ -3,9 +3,9 @@ import {
   NFTAmountRecipient,
   ProofType,
   SelectedBroadcaster,
-} from '@railgun-community/shared-models';
-import { ERC20Amount, ERC20AmountRecipient } from './token';
-import { AvailableWallet } from './wallet';
+} from "@railgun-community/shared-models";
+import { ERC20Amount, ERC20AmountRecipient } from "./token";
+import { AvailableWallet } from "./wallet";
 
 export type PerformGenerateProofType = (
   finalERC20AmountRecipients: ERC20AmountRecipient[],
@@ -17,7 +17,7 @@ export type PerformGenerateProofType = (
   memoText: Optional<string>,
   overallBatchMinGasPrice: Optional<bigint>,
   success: () => void,
-  fail: (err: Error) => void,
+  fail: (err: Error) => void
 ) => Promise<void>;
 
 export type ValidateProvedTransactionType = (
@@ -30,5 +30,5 @@ export type ValidateProvedTransactionType = (
   nftAmountRecipients: NFTAmountRecipient[],
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
-  overallBatchMinGasPrice: Optional<bigint>,
+  overallBatchMinGasPrice: Optional<bigint>
 ) => Promise<void>;

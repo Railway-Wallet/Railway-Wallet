@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { useEffect, useRef, useState } from 'react';
-import { SharedConstants } from '../../config/shared-constants';
-import { StorageService } from '../../services/storage/storage-service';
-import { logDev } from '../../utils/logging';
+import { isDefined } from "@railgun-community/shared-models";
+import { useEffect, useRef, useState } from "react";
+import { SharedConstants } from "../../config/shared-constants";
+import { StorageService } from "../../services/storage/storage-service";
+import { logDev } from "../../utils/logging";
 
 export const usePinLockout = (wipeDevice: () => Promise<void>) => {
   const [secondsUntilExpiration, setSecondsUntilExpiration] =
@@ -40,8 +40,8 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
       if (secTilExpiry > 0) {
         logDev(
           `[failed attempt: ${numFailedAttempts}] secTilExpiry: ${Math.ceil(
-            secTilExpiry,
-          )}`,
+            secTilExpiry
+          )}`
         );
         clearTimer();
         timer.current = setInterval(tick, 1000);
@@ -85,7 +85,7 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
     } else if (numFailedAttempts >= 7) {
       return 72 * 60 * 60;
     } else {
-      throw new Error('Unhandled lockout.');
+      throw new Error("Unhandled lockout.");
     }
   };
 
@@ -98,13 +98,13 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
   const updatePinLockoutStart = async (timestamp: number): Promise<void> => {
     await StorageService.setItem(
       SharedConstants.PIN_LOCKOUT_TIMESTAMP,
-      String(timestamp),
+      String(timestamp)
     );
   };
 
   const getPinLockoutStart = async (): Promise<Optional<number>> => {
     const pinLockoutStart = await StorageService.getItem(
-      SharedConstants.PIN_LOCKOUT_TIMESTAMP,
+      SharedConstants.PIN_LOCKOUT_TIMESTAMP
     );
 
     if (!isDefined(pinLockoutStart)) {
@@ -119,16 +119,16 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
     logDev(`Total failed attempts: ${totalFailedAttempts}`);
     await StorageService.setItem(
       SharedConstants.NUM_ENTER_PIN_FAILED_ATTEMPTS,
-      String(totalFailedAttempts),
+      String(totalFailedAttempts)
     );
     if (
       totalFailedAttempts >= SharedConstants.NUM_FAILED_ATTEMPTS_FOR_DEVICE_WIPE
     ) {
-      logDev('DEVICE WIPE');
+      logDev("DEVICE WIPE");
       await wipeDevice();
       await resetFailedPinAttempts();
     } else if (totalFailedAttempts >= 3) {
-      logDev('LOCKOUT START');
+      logDev("LOCKOUT START");
       const timestamp = Date.now();
       setPinLockoutTimestamp(timestamp);
       setNumFailedAttempts(totalFailedAttempts);
@@ -139,19 +139,19 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
   };
 
   const resetFailedPinAttempts = async (): Promise<void> => {
-    logDev('Reset failed pin attempts.');
+    logDev("Reset failed pin attempts.");
     setNumFailedAttempts(0);
     setSecondsUntilExpiration(undefined);
     await StorageService.setItem(
       SharedConstants.NUM_ENTER_PIN_FAILED_ATTEMPTS,
-      String(0),
+      String(0)
     );
     await updatePinLockoutStart(0);
   };
 
   const getFailedPinAttempts = async (): Promise<Optional<number>> => {
     const failedAttemptsString = await StorageService.getItem(
-      SharedConstants.NUM_ENTER_PIN_FAILED_ATTEMPTS,
+      SharedConstants.NUM_ENTER_PIN_FAILED_ATTEMPTS
     );
 
     if (!isDefined(failedAttemptsString)) {
@@ -162,9 +162,7 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
   };
 
   const storedValuesDeleted = async () => {
-    await addFailedPinAttempt(
-      4,
-    );
+    await addFailedPinAttempt(4);
   };
 
   return {
@@ -177,11 +175,11 @@ export const usePinLockout = (wipeDevice: () => Promise<void>) => {
 
 export const lockoutTimeText = (
   secondsUntilLockoutExpiration: number,
-  numFailedAttempts: number,
+  numFailedAttempts: number
 ) => {
-  let text = 'Too many incorrect entries. Locked out for ';
+  let text = "Too many incorrect entries. Locked out for ";
   if (secondsUntilLockoutExpiration < 60) {
-    text += '1 minute.';
+    text += "1 minute.";
   } else if (secondsUntilLockoutExpiration < 60 * 60) {
     const minLowerBound = Math.floor(secondsUntilLockoutExpiration / 60);
     text += `${minLowerBound + 1} minutes.`;

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type DiscreetModeState = {
   enabled: boolean;
@@ -9,7 +9,7 @@ const initialState = {
 } as DiscreetModeState;
 
 const slice = createSlice({
-  name: 'discreetMode',
+  name: "discreetMode",
   initialState,
   reducers: {
     setDiscreetMode(state, action: PayloadAction<boolean>) {

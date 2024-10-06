@@ -1,28 +1,28 @@
-import React from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { TextEntry } from '@components/inputs/TextEntry/TextEntry';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+import React from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { TextEntry } from "@components/inputs/TextEntry/TextEntry";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   AppSettingsService,
   Currency,
   currencyName,
   styleguide,
   SUPPORTED_CURRENCIES,
-} from '@react-shared';
+} from "@react-shared";
 import {
   callActionSheet,
   OptionWithAction,
-} from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { createUpdateSettingsAlert } from '@utils/alerts';
-import { styles } from './styles';
+} from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { createUpdateSettingsAlert } from "@utils/alerts";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsDefaults'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsDefaults">;
 };
 
 export const SettingsDefaultsScreen: React.FC<Props> = () => {
@@ -40,8 +40,8 @@ export const SettingsDefaultsScreen: React.FC<Props> = () => {
     const currencyOptions = SUPPORTED_CURRENCIES.map(createCurrencyOption);
     callActionSheet(
       showActionSheetWithOptions,
-      'Select currency',
-      currencyOptions,
+      "Select currency",
+      currencyOptions
     );
   };
 
@@ -72,7 +72,7 @@ export const SettingsDefaultsScreen: React.FC<Props> = () => {
                 value={currencyName(AppSettingsService.currency)}
                 iconButtons={[
                   {
-                    icon: 'pencil-outline',
+                    icon: "pencil-outline",
                     onTap: onTapEditCurrency,
                   },
                 ]}

@@ -1,5 +1,5 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
 import {
   FlatList,
   NativeScrollEvent,
@@ -7,36 +7,36 @@ import {
   StatusBar,
   Text,
   View,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Icon0xExchange } from '@assets/img/ImagesMobile';
-import { FloatingHeader } from '@components/headers/FloatingHeader/FloatingHeader';
-import { DAppListRow } from '@components/list/DAppListRow/DAppListRow';
-import { TabHeaderText } from '@components/text/TabHeaderText/TabHeaderText';
-import { DAppSettings } from '@models/DApps';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon0xExchange } from "@assets/img/ImagesMobile";
+import { FloatingHeader } from "@components/headers/FloatingHeader/FloatingHeader";
+import { DAppListRow } from "@components/list/DAppListRow/DAppListRow";
+import { TabHeaderText } from "@components/text/TabHeaderText/TabHeaderText";
+import { DAppSettings } from "@models/DApps";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   ReactConfig,
   styleguide,
   useReduxSelector,
   useShouldEnableSwaps,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isIOS } from '@services/util/platform-os-service';
-import { Constants } from '@utils/constants';
-import { calculateFloatingHeaderOpacityFromPageContentOffset } from '../WalletsScreen/WalletFloatingHeader/WalletFloatingHeader';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isIOS } from "@services/util/platform-os-service";
+import { Constants } from "@utils/constants";
+import { calculateFloatingHeaderOpacityFromPageContentOffset } from "../WalletsScreen/WalletFloatingHeader/WalletFloatingHeader";
+import { styles } from "./styles";
 
 type DAppsScreenProps = {
-  navigation: NavigationProp<DAppsStackParamList, 'DApps'>;
+  navigation: NavigationProp<DAppsStackParamList, "DApps">;
 };
 
 export const DAppsScreen: React.FC<DAppsScreenProps> = ({ navigation }) => {
-  StatusBar.setBarStyle('light-content');
+  StatusBar.setBarStyle("light-content");
 
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
 
   const [headerOpacity, setHeaderOpacity] = useState(0);
   const insets = useSafeAreaInsets();
@@ -51,29 +51,29 @@ export const DAppsScreen: React.FC<DAppsScreenProps> = ({ navigation }) => {
   const swapsUnavailableOnPlatform =
     isIOS() && !Constants.ENABLE_SWAPS_PROD_IOS && !ReactConfig.IS_DEV;
   const { shouldEnableSwaps } = useShouldEnableSwaps(
-    swapsUnavailableOnPlatform,
+    swapsUnavailableOnPlatform
   );
 
   const dApps: DAppSettings[] = [
     {
-      title: 'Railway DEX',
-      description: 'Private and public swaps',
+      title: "Railway DEX",
+      description: "Private and public swaps",
       icon: Icon0xExchange(),
-      routeName: 'Swap',
+      routeName: "Swap",
       enabled: shouldEnableSwaps,
     },
     {
-      title: 'Farm',
-      description: 'Earn yield',
-      icon: 'tractor-variant',
-      routeName: 'FarmScreen',
+      title: "Farm",
+      description: "Earn yield",
+      icon: "tractor-variant",
+      routeName: "FarmScreen",
       enabled: true,
     },
     {
-      title: 'Liquidity',
-      description: 'Manage DEX liquidity',
-      icon: 'pool',
-      routeName: 'LiquidityScreen',
+      title: "Liquidity",
+      description: "Manage DEX liquidity",
+      icon: "pool",
+      routeName: "LiquidityScreen",
       enabled: true,
     },
   ];
@@ -95,7 +95,7 @@ export const DAppsScreen: React.FC<DAppsScreenProps> = ({ navigation }) => {
     />
   );
 
-  const enabledDapps = dApps.filter(dapp => dapp.enabled);
+  const enabledDapps = dApps.filter((dapp) => dapp.enabled);
   const hasDapps = enabledDapps.length > 0;
 
   const header = (
@@ -145,7 +145,7 @@ export const DAppsScreen: React.FC<DAppsScreenProps> = ({ navigation }) => {
           contentContainerStyle={styles.tokenListContentContainer}
           data={hasWallet && !isViewOnlyWallet ? enabledDapps : []}
           keyExtractor={(_item: DAppSettings, index: number) => String(index)}
-          renderItem={dApp => renderDApp(dApp.item)}
+          renderItem={(dApp) => renderDApp(dApp.item)}
         />
       </View>
     </>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { ToastWrapperView } from '@components/views/ToastWrapperView/ToastWrapperView';
+import React, { useState } from "react";
+import { View } from "react-native";
+import { ToastWrapperView } from "@components/views/ToastWrapperView/ToastWrapperView";
 import {
   refreshRailgunBalances,
   useAppBalancePriceUpdater,
@@ -8,22 +8,22 @@ import {
   useVaultFetch,
   useVaultRedeemTokenPriceUpdater,
   useWakuBroadcasterChainUpdater,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { ShieldPOICountdownModal } from '@views/screens/modals/ShieldPOICountdownModal/ShieldPOICountdownModal';
-import { useInactiveProviderPauser } from '../hooks/networking/useInactiveProviderPauser';
-import { NavigationStack } from './Navigation';
-import { styles } from './styles';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { ShieldPOICountdownModal } from "@views/screens/modals/ShieldPOICountdownModal/ShieldPOICountdownModal";
+import { useInactiveProviderPauser } from "../hooks/networking/useInactiveProviderPauser";
+import { NavigationStack } from "./Navigation";
+import { styles } from "./styles";
 
 type Props = {
   needsLockScreenOnLaunch: boolean;
 };
 
 export const AppReadyView: React.FC<Props> = ({ needsLockScreenOnLaunch }) => {
-  const { backGestures } = useReduxSelector('backGestures');
+  const { backGestures } = useReduxSelector("backGestures");
   const [errorModal, setErrorModal] =
     useState<Optional<ErrorDetailsModalProps>>(undefined);
 
@@ -32,7 +32,7 @@ export const AppReadyView: React.FC<Props> = ({ needsLockScreenOnLaunch }) => {
       show: true,
       error,
       onDismiss: () => setErrorModal(undefined),
-    }),
+    })
   );
 
   useWakuBroadcasterChainUpdater();

@@ -6,8 +6,8 @@ import {
   RailgunERC20Amount,
   RailgunERC20Recipient,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { ContractTransaction } from 'ethers';
+} from "@railgun-community/shared-models";
+import { ContractTransaction } from "ethers";
 import {
   BridgeCallEvent,
   GenerateTransferProofParams,
@@ -15,8 +15,8 @@ import {
   GenerateUnshieldProofParams,
   GenerateUnshieldToOriginProofParams,
   ValidateCachedProvedTransactionParams,
-} from '../models/bridge';
-import { ERC20Amount, ERC20AmountRecipient } from '../models/token';
+} from "../models/bridge";
+import { ERC20Amount, ERC20AmountRecipient } from "../models/token";
 import {
   createRailgunERC20Amount,
   createRailgunERC20AmountRecipient,
@@ -24,8 +24,8 @@ import {
   createRailgunERC20Amounts,
   createRailgunNFTAmountRecipients,
   createRailgunNFTAmounts,
-} from '../utils/tokens';
-import { bridgeCall } from './ipc';
+} from "../utils/tokens";
+import { bridgeCall } from "./ipc";
 
 export const generateUnshieldProof = (
   txidVersion: TXIDVersion,
@@ -36,10 +36,10 @@ export const generateUnshieldProof = (
   nftAmountRecipients: NFTAmountRecipient[],
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
-  overallBatchMinGasPrice: Optional<bigint>,
+  overallBatchMinGasPrice: Optional<bigint>
 ): Promise<void> => {
   const erc20AmountsRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
@@ -59,7 +59,7 @@ export const generateUnshieldProof = (
         broadcasterFeeERC20AmountRecipientRailgun,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
-    },
+    }
   );
 };
 
@@ -73,10 +73,10 @@ export const generateUnshieldBaseTokenProof = (
   _nftAmountRecipients: NFTAmountRecipient[],
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
-  overallBatchMinGasPrice: Optional<bigint>,
+  overallBatchMinGasPrice: Optional<bigint>
 ): Promise<void> => {
   const wrappedTokenAmountRailgun = createRailgunERC20Amount(
-    wrappedTokenAmount,
+    wrappedTokenAmount
   ) as RailgunERC20Amount;
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
@@ -94,7 +94,7 @@ export const generateUnshieldBaseTokenProof = (
         broadcasterFeeERC20AmountRecipientRailgun,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
-    },
+    }
   );
 };
 
@@ -105,10 +105,10 @@ export const generateUnshieldToOriginProof = (
   railWalletID: string,
   encryptionKey: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
-  nftAmountRecipients: NFTAmountRecipient[],
+  nftAmountRecipients: NFTAmountRecipient[]
 ): Promise<void> => {
   const erc20AmountsRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const nftAmountRecipientsRailgun =
     createRailgunNFTAmountRecipients(nftAmountRecipients);
@@ -123,7 +123,7 @@ export const generateUnshieldToOriginProof = (
       encryptionKey,
       erc20AmountRecipients: erc20AmountsRecipientsRailgun,
       nftAmountRecipients: nftAmountRecipientsRailgun,
-    },
+    }
   );
 };
 
@@ -138,10 +138,10 @@ export const generateTransferProof = async (
   nftAmountRecipients: NFTAmountRecipient[],
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
-  overallBatchMinGasPrice: Optional<bigint>,
+  overallBatchMinGasPrice: Optional<bigint>
 ): Promise<void> => {
   const erc20AmountsRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const broadcasterFeeERC20AmountRecipientRailgun =
     createRailgunERC20AmountRecipient(broadcasterFeeERC20AmountRecipient);
@@ -163,7 +163,7 @@ export const generateTransferProof = async (
         broadcasterFeeERC20AmountRecipientRailgun,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
-    },
+    }
   );
 };
 
@@ -183,10 +183,10 @@ export const validateCachedProvedTransaction = (
   crossContractCalls: Optional<ContractTransaction[]>,
   broadcasterFeeERC20AmountRecipient: Optional<ERC20AmountRecipient>,
   sendWithPublicWallet: boolean,
-  overallBatchMinGasPrice: Optional<bigint>,
+  overallBatchMinGasPrice: Optional<bigint>
 ): Promise<void> => {
   const erc20AmountsRecipientsRailgun = createRailgunERC20AmountRecipients(
-    erc20AmountRecipients,
+    erc20AmountRecipients
   );
   const relayAdaptUnshieldERC20AmountsRailgun = relayAdaptUnshieldERC20Amounts
     ? createRailgunERC20Amounts(relayAdaptUnshieldERC20Amounts)
@@ -222,6 +222,6 @@ export const validateCachedProvedTransaction = (
         broadcasterFeeERC20AmountRecipientRailgun,
       sendWithPublicWallet,
       overallBatchMinGasPrice,
-    },
+    }
   );
 };

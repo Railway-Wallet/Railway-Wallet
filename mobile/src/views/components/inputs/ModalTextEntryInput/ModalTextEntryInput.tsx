@@ -1,8 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
-import { IconSource } from '@views/components/icons/Icon';
-import { TextEntry, TextEntryProps } from '../TextEntry/TextEntry';
-import { styles } from './styles';
+import React from "react";
+import { View } from "react-native";
+import { IconSource } from "@views/components/icons/Icon";
+import { TextEntry, TextEntryProps } from "../TextEntry/TextEntry";
+import { styles } from "./styles";
 
 interface Props extends TextEntryProps {
   invalid?: boolean;
@@ -21,7 +21,7 @@ export const ModalTextEntryInput: React.FC<Props> = ({
   invalid = false,
   maxLength,
   useNumberPad,
-  autoCapitalize = 'words',
+  autoCapitalize = "words",
   editable = true,
   topBorder = false,
   bottomBorder = false,

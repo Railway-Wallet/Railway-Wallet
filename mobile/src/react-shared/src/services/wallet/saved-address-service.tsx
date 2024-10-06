@@ -1,8 +1,8 @@
-import { SharedConstants } from '../../config/shared-constants';
-import { SavedAddress } from '../../models/wallet';
-import { setSavedAddresses } from '../../redux-store/reducers/saved-addresses-reducer';
-import { AppDispatch } from '../../redux-store/store';
-import { StorageService } from '../storage/storage-service';
+import { SharedConstants } from "../../config/shared-constants";
+import { SavedAddress } from "../../models/wallet";
+import { setSavedAddresses } from "../../redux-store/reducers/saved-addresses-reducer";
+import { AppDispatch } from "../../redux-store/store";
+import { StorageService } from "../storage/storage-service";
 
 export class SavedAddressService {
   dispatch: AppDispatch;
@@ -14,7 +14,7 @@ export class SavedAddressService {
   async delete(savedAddress: SavedAddress) {
     const savedAddresses = await this.getSavedAddresses();
     const filteredSavedAddresses = savedAddresses.filter(
-      a => !this.compareSavedAddress(a, savedAddress),
+      (a) => !this.compareSavedAddress(a, savedAddress)
     );
     await this.storeSavedAddresses(filteredSavedAddresses);
   }
@@ -31,7 +31,7 @@ export class SavedAddressService {
     name: string,
     ethAddress?: string,
     railAddress?: string,
-    externalResolvedAddress?: string,
+    externalResolvedAddress?: string
   ): Promise<void> {
     const newSavedAddress: SavedAddress = {
       name,
@@ -43,14 +43,14 @@ export class SavedAddressService {
     for (const savedAddress of savedAddresses) {
       if (this.compareSavedAddress(savedAddress, newSavedAddress)) {
         throw new Error(
-          `You have already saved this address under name "${savedAddress.name}"`,
+          `You have already saved this address under name "${savedAddress.name}"`
         );
       }
       if (
         savedAddress.name.toLowerCase() === newSavedAddress.name.toLowerCase()
       ) {
         throw new Error(
-          `You already have a wallet with name "${savedAddress.name}"`,
+          `You already have a wallet with name "${savedAddress.name}"`
         );
       }
     }
@@ -59,7 +59,7 @@ export class SavedAddressService {
 
   async getSavedAddresses(): Promise<SavedAddress[]> {
     const stored = await StorageService.getItem(
-      SharedConstants.SAVED_ADDRESSES,
+      SharedConstants.SAVED_ADDRESSES
     );
     if (stored == null) {
       return [];
@@ -70,7 +70,7 @@ export class SavedAddressService {
   async storeSavedAddresses(savedAddresses: SavedAddress[]): Promise<void> {
     await StorageService.setItem(
       SharedConstants.SAVED_ADDRESSES,
-      JSON.stringify(savedAddresses),
+      JSON.stringify(savedAddresses)
     );
     this.dispatch(setSavedAddresses(savedAddresses));
   }

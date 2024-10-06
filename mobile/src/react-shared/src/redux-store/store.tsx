@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
 import {
   artifactsProgressReducer,
   authKeyReducer,
@@ -31,7 +31,7 @@ import {
   txidVersionReducer,
   vaultsReducer,
   walletsReducer,
-} from './reducers';
+} from "./reducers";
 
 export const store = configureStore({
   reducer: {

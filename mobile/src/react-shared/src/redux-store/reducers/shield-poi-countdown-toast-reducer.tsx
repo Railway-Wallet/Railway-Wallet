@@ -1,5 +1,5 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type ShieldPOICountdownTx = {
   networkName: NetworkName;
@@ -18,12 +18,12 @@ const initialState: ShieldPOICountdownToast = {
 };
 
 const slice = createSlice({
-  name: 'shield-poi-countdown-toast',
+  name: "shield-poi-countdown-toast",
   initialState,
   reducers: {
     openShieldPOICountdownToast(
       state,
-      action: PayloadAction<ShieldPOICountdownTx>,
+      action: PayloadAction<ShieldPOICountdownTx>
     ) {
       state.isOpen = true;
       state.tx = action.payload;

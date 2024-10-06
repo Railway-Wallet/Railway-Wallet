@@ -1,22 +1,22 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../config/shared-constants';
-import { ERC20Amount } from '../../models/token';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../config/shared-constants";
+import { ERC20Amount } from "../../models/token";
 import {
   SavedTransaction,
   TransactionAction,
   TransactionStatus,
-} from '../../models/transaction';
+} from "../../models/transaction";
 import {
   setTransactions,
   updateTransaction,
-} from '../../redux-store/reducers/saved-transactions-reducer';
+} from "../../redux-store/reducers/saved-transactions-reducer";
 import {
   addMissingTimestampTransaction,
   removeMissingTimestampTransactionByID,
-} from '../../redux-store/reducers/transactions-missing-timestamp-reducer';
-import { AppDispatch, store } from '../../redux-store/store';
-import { StorageService } from '../storage/storage-service';
-import { NonceStorageService } from '../wallet/nonce-storage-service';
+} from "../../redux-store/reducers/transactions-missing-timestamp-reducer";
+import { AppDispatch, store } from "../../redux-store/store";
+import { StorageService } from "../storage/storage-service";
+import { NonceStorageService } from "../wallet/nonce-storage-service";
 
 export class SavedTransactionStore {
   private dispatch: AppDispatch;
@@ -32,7 +32,7 @@ export class SavedTransactionStore {
     gasFee: Optional<bigint>,
     failedErrorMessage?: string,
     cancelling: boolean = false,
-    updatedSwapBuyTokenAmount?: ERC20Amount,
+    updatedSwapBuyTokenAmount?: ERC20Amount
   ): Promise<void> {
     const transactions = await this.fetchTransactions(networkName);
     const toSaveTxs: SavedTransaction[] = [];
@@ -73,33 +73,33 @@ export class SavedTransactionStore {
 
   async addTransactions(
     transactions: SavedTransaction[],
-    networkName: NetworkName,
+    networkName: NetworkName
   ) {
     const existingTransactions = await this.fetchTransactions(networkName);
     await this.overwriteAllTransactions(
       [...transactions, ...existingTransactions],
-      networkName,
+      networkName
     );
     const allTransactions = await this.fetchTransactions(networkName);
     this.removeMissingTimestampTransactionsIfExist(transactions, networkName);
     this.dispatch(
-      setTransactions({ transactions: allTransactions, networkName }),
+      setTransactions({ transactions: allTransactions, networkName })
     );
   }
 
   addMissingTimestampTransaction(
     transaction: SavedTransaction,
-    networkName: NetworkName,
+    networkName: NetworkName
   ) {
     this.dispatch(addMissingTimestampTransaction({ transaction, networkName }));
   }
 
   private removeMissingTimestampTransactionsIfExist(
     transactions: SavedTransaction[],
-    networkName: NetworkName,
+    networkName: NetworkName
   ) {
     const { transactionsMissingTimestamp } = store.getState();
-    const txids = transactions.map(tx => tx.id);
+    const txids = transactions.map((tx) => tx.id);
 
     const missingTimestampTxs =
       transactionsMissingTimestamp.forNetwork[networkName];
@@ -107,10 +107,10 @@ export class SavedTransactionStore {
       return;
     }
 
-    missingTimestampTxs.forEach(tx => {
+    missingTimestampTxs.forEach((tx) => {
       if (txids.includes(tx.id)) {
         this.dispatch(
-          removeMissingTimestampTransactionByID({ id: tx.id, networkName }),
+          removeMissingTimestampTransactionByID({ id: tx.id, networkName })
         );
       }
     });
@@ -118,7 +118,7 @@ export class SavedTransactionStore {
 
   private overwriteAllTransactions(
     transactions: SavedTransaction[],
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<void> {
     const storageKey = SharedConstants.TRANSACTIONS + networkName;
     return StorageService.setItem(storageKey, JSON.stringify(transactions));
@@ -130,20 +130,20 @@ export class SavedTransactionStore {
     walletAddress: string,
     gasFee: Optional<bigint>,
     timedOut: boolean = false,
-    failedErrorMessage?: string,
+    failedErrorMessage?: string
   ) {
     await this.updateTransactionStatus(
       txHash,
       networkName,
       timedOut ? TransactionStatus.timedOut : TransactionStatus.failed,
       gasFee,
-      failedErrorMessage,
+      failedErrorMessage
     );
 
     const nonceStorageService = new NonceStorageService();
     await nonceStorageService.clearLastTransactionNonce(
       walletAddress,
-      networkName,
+      networkName
     );
   }
 
@@ -181,7 +181,7 @@ export class SavedTransactionStore {
   }
 
   async fetchTransactions(
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<SavedTransaction[]> {
     try {
       const storageKey = SharedConstants.TRANSACTIONS + networkName;
@@ -214,17 +214,17 @@ export class SavedTransactionStore {
     ];
     const savedTransactionStore = new SavedTransactionStore(this.dispatch);
     const transactions = await savedTransactionStore.fetchTransactions(
-      networkName,
+      networkName
     );
     const filteredTransactions = transactions.filter(
-      tx => !syncedTransactionActions.includes(tx.action),
+      (tx) => !syncedTransactionActions.includes(tx.action)
     );
     await savedTransactionStore.overwriteAllTransactions(
       filteredTransactions,
-      networkName,
+      networkName
     );
     this.dispatch(
-      setTransactions({ transactions: filteredTransactions, networkName }),
+      setTransactions({ transactions: filteredTransactions, networkName })
     );
   }
 }

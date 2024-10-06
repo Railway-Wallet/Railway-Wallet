@@ -1,20 +1,20 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, RefreshControl, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { TransactionResponse } from 'ethers';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { WalletsStackParamList } from '@models/navigation-models';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert, RefreshControl, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { TransactionResponse } from "ethers";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { WalletsStackParamList } from "@models/navigation-models";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   CommonActions,
   NavigationProp,
   RouteProp,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 import {
   AppSettingsService,
   CalloutType,
@@ -36,30 +36,30 @@ import {
   usePOIRequiredForCurrentNetwork,
   useReduxSelector,
   WalletTokenService,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
 import {
   callActionSheet,
   OptionWithAction,
-} from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { ERC20Card } from './ERC20Card/ERC20Card';
-import { TransactionList } from './TransactionList/TransactionList';
-import { styles } from './styles';
+} from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { ERC20Card } from "./ERC20Card/ERC20Card";
+import { TransactionList } from "./TransactionList/TransactionList";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<WalletsStackParamList, 'TokenInfo'>;
-  route: RouteProp<{ params: WalletsStackParamList['TokenInfo'] }, 'params'>;
+  navigation: NavigationProp<WalletsStackParamList, "TokenInfo">;
+  route: RouteProp<{ params: WalletsStackParamList["TokenInfo"] }, "params">;
 };
 
 export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { networkPrices } = useReduxSelector('networkPrices');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { networkPrices } = useReduxSelector("networkPrices");
 
   const { token, isRailgun, balanceBucketFilter } = route.params;
 
@@ -78,7 +78,7 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
         show: true,
         error,
         onDismiss: () => setErrorModal(undefined),
-      }),
+      })
   );
   const { poiRequired } = usePOIRequiredForCurrentNetwork();
 
@@ -113,7 +113,7 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('NewWallet', { screen: 'CreateWallet' }),
+      CommonActions.navigate("NewWallet", { screen: "CreateWallet" })
     );
   };
 
@@ -121,92 +121,92 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
     triggerHaptic(HapticSurface.NavigationButton);
 
     navigation.dispatch(
-      CommonActions.navigate('NewWallet', { screen: 'ImportWallet' }),
+      CommonActions.navigate("NewWallet", { screen: "ImportWallet" })
     );
   };
 
   const onActionUnshieldERC20s = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'UnshieldERC20s',
+      CommonActions.navigate("Token", {
+        screen: "UnshieldERC20s",
         params: { token },
-      }),
+      })
     );
   };
 
   const onActionShieldTokens = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'ShieldToken',
+      CommonActions.navigate("Token", {
+        screen: "ShieldToken",
         params: { token },
-      }),
+      })
     );
   };
 
   const onActionSwapTokens = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('dApps', {
-        screen: 'Swap',
+      CommonActions.navigate("dApps", {
+        screen: "Swap",
         params: { navigationToken: token, isRailgun },
-      }),
+      })
     );
   };
 
   const onActionFarmERC20s = (isRedeem: boolean) => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('dApps', {
-        screen: 'FarmVaultInitial',
+      CommonActions.navigate("dApps", {
+        screen: "FarmVaultInitial",
         params: {
           currentToken: token,
           cookbookFarmRecipeType: isRedeem
             ? CookbookFarmRecipeType.Redeem
             : CookbookFarmRecipeType.Deposit,
         },
-      }),
+      })
     );
   };
 
   const onActionSendERC20s = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'SendERC20s',
+      CommonActions.navigate("Token", {
+        screen: "SendERC20s",
         params: {
           isRailgun: isRailgun,
           token: token,
         },
-      }),
+      })
     );
   };
 
   const onActionReceiveTokens = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'ReceiveToken',
+      CommonActions.navigate("Token", {
+        screen: "ReceiveToken",
         params: {
           isRailgun: isRailgun,
         },
-      }),
+      })
     );
   };
 
   const onActionMintTokens = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'MintTokensConfirm',
+      CommonActions.navigate("Token", {
+        screen: "MintTokensConfirm",
         params: {
           tokenAmount: {
             token: MINTABLE_TEST_TOKEN_ROPSTEN,
             amount: 10n ** 21n,
           },
         },
-      }),
+      })
     );
   };
 
@@ -215,7 +215,7 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
 
     const options: OptionWithAction[] = [
       {
-        name: 'Remove token',
+        name: "Remove token",
         action: removeToken,
         isDestructive: true,
       },
@@ -225,28 +225,28 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
         name: `Copy ${getTokenDisplayNameShort(
           token,
           wallets.available,
-          network.current.name,
+          network.current.name
         )} contract address`,
         action: copyAddress,
       });
     }
     if (showAddTokenButton) {
       options.unshift({
-        name: 'Add token to wallet',
+        name: "Add token to wallet",
         action: addToken,
       });
     }
-    callActionSheet(showActionSheetWithOptions, 'Token options', options);
+    callActionSheet(showActionSheetWithOptions, "Token options", options);
   };
 
   const addToken = () => {
     navigation.dispatch(
-      CommonActions.navigate('AddTokens', {
-        screen: 'AddTokensScreen',
+      CommonActions.navigate("AddTokens", {
+        screen: "AddTokensScreen",
         params: {
           initialTokenAddress: token.address,
         },
-      }),
+      })
     );
   };
 
@@ -258,18 +258,18 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
         message: `${getTokenDisplayNameShort(
           token,
           wallets.available,
-          network.current.name,
+          network.current.name
         )} contract address copied. Paste elsewhere to share.`,
         type: ToastType.Copy,
-      }),
+      })
     );
   };
 
   const removeToken = () => {
     if (!wallets.active) {
       Alert.alert(
-        'Add wallet',
-        'Please create or import a wallet to customize your tokens.',
+        "Add wallet",
+        "Please create or import a wallet to customize your tokens."
       );
       return;
     }
@@ -278,27 +278,27 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
       (token.disableWalletRemoval ?? false)
     ) {
       Alert.alert(
-        'Cannot remove token',
-        `${token.symbol} is required for this wallet.`,
+        "Cannot remove token",
+        `${token.symbol} is required for this wallet.`
       );
       return;
     }
 
     triggerHaptic(HapticSurface.DangerButton);
     Alert.alert(
-      'Remove this token?',
-      'Any balance will be stored. You may add this token back at any time.',
+      "Remove this token?",
+      "Any balance will be stored. You may add this token back at any time.",
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
         {
-          text: 'Remove token',
+          text: "Remove token",
           onPress: finishRemoveToken,
-          style: 'destructive',
+          style: "destructive",
         },
-      ],
+      ]
     );
   };
   const finishRemoveToken = async () => {
@@ -310,7 +310,7 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
     await walletTokenService.removeTokenFromWallet(
       wallets.active,
       token,
-      network.current,
+      network.current
     );
 
     navigation.goBack();
@@ -342,81 +342,83 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
 
   const onCancelTransaction = (
     transaction: SavedTransaction,
-    txResponse: TransactionResponse,
+    txResponse: TransactionResponse
   ) => {
     navigation.dispatch(
-      CommonActions.navigate('Token', {
-        screen: 'CancelTransactionConfirm',
+      CommonActions.navigate("Token", {
+        screen: "CancelTransactionConfirm",
         params: {
           transaction,
           txResponse,
         },
-      }),
+      })
     );
   };
 
-  return (<>
-    <AppHeader
-      title={getTokenDisplayHeader(
-        token,
-        wallets.available,
-        network.current.name,
-      )}
-      backgroundColor={styleguide.colors.headerBackground}
-      isModal={false}
-      headerLeft={<HeaderBackButton />}
-      headerRight={
-        <ButtonIconOnly
-          icon={isAndroid() ? 'dots-vertical' : 'dots-horizontal'}
-          onTap={onTapOptions}
-          size={24}
-          color={styleguide.colors.white}
-        />
-      }
-    />
-    <View style={styles.wrapper}>
-      <SafeAreaView style={styles.wrapper} edges={['right', 'left']}>
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={styleguide.colors.white}
-            />
-          }
-        >
-          {showPriceUnknown && priceUnknownCallout()}
-          <View style={styles.cardWrapper}>
-            <ERC20Card
-              token={token}
-              tokenPrice={tokenPrice}
-              isRailgun={isRailgun}
-              balanceBucketFilter={balanceBucketFilter}
-              onActionCreateWallet={onActionCreateWallet}
-              onActionImportWallet={onActionImportWallet}
-              onActionUnshieldERC20s={onActionUnshieldERC20s}
-              onActionShieldTokens={onActionShieldTokens}
-              onActionSendERC20s={onActionSendERC20s}
-              onActionSwapTokens={onActionSwapTokens}
-              onActionFarmERC20s={onActionFarmERC20s}
-              onActionReceiveTokens={onActionReceiveTokens}
-              onActionMintTokens={onActionMintTokens}
-            />
-          </View>
-          <View style={styles.transactionsWrapper}>
-            <Text style={styles.transactionsHeaderText}>Transactions</Text>
-            <TransactionList
-              transactionsMissingTimestamp={[]}
-              resyncTransactions={async () => {}}
-              transactions={tokenTransactions}
-              filteredToken={token}
-              onCancelTransaction={onCancelTransaction}
-              poiRequired={poiRequired}
-            />
-          </View>
-        </ScrollView>
-        {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-      </SafeAreaView>
-    </View>
-  </>);
+  return (
+    <>
+      <AppHeader
+        title={getTokenDisplayHeader(
+          token,
+          wallets.available,
+          network.current.name
+        )}
+        backgroundColor={styleguide.colors.headerBackground}
+        isModal={false}
+        headerLeft={<HeaderBackButton />}
+        headerRight={
+          <ButtonIconOnly
+            icon={isAndroid() ? "dots-vertical" : "dots-horizontal"}
+            onTap={onTapOptions}
+            size={24}
+            color={styleguide.colors.white}
+          />
+        }
+      />
+      <View style={styles.wrapper}>
+        <SafeAreaView style={styles.wrapper} edges={["right", "left"]}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={styleguide.colors.white}
+              />
+            }
+          >
+            {showPriceUnknown && priceUnknownCallout()}
+            <View style={styles.cardWrapper}>
+              <ERC20Card
+                token={token}
+                tokenPrice={tokenPrice}
+                isRailgun={isRailgun}
+                balanceBucketFilter={balanceBucketFilter}
+                onActionCreateWallet={onActionCreateWallet}
+                onActionImportWallet={onActionImportWallet}
+                onActionUnshieldERC20s={onActionUnshieldERC20s}
+                onActionShieldTokens={onActionShieldTokens}
+                onActionSendERC20s={onActionSendERC20s}
+                onActionSwapTokens={onActionSwapTokens}
+                onActionFarmERC20s={onActionFarmERC20s}
+                onActionReceiveTokens={onActionReceiveTokens}
+                onActionMintTokens={onActionMintTokens}
+              />
+            </View>
+            <View style={styles.transactionsWrapper}>
+              <Text style={styles.transactionsHeaderText}>Transactions</Text>
+              <TransactionList
+                transactionsMissingTimestamp={[]}
+                resyncTransactions={async () => {}}
+                transactions={tokenTransactions}
+                filteredToken={token}
+                onCancelTransaction={onCancelTransaction}
+                poiRequired={poiRequired}
+              />
+            </View>
+          </ScrollView>
+          {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
+        </SafeAreaView>
+      </View>
+    </>
+  );
 };

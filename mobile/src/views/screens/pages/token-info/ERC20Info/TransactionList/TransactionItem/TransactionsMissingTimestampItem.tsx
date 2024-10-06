@@ -1,15 +1,15 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { SavedTransaction, styleguide, useReduxSelector } from '@react-shared';
+import React from "react";
+import { Text, View } from "react-native";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { SavedTransaction, styleguide, useReduxSelector } from "@react-shared";
 import {
   callActionSheet,
   OptionWithAction,
-} from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+} from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
   transactions: SavedTransaction[];
@@ -20,7 +20,7 @@ export const TransactionsMissingTimestampItem: React.FC<Props> = ({
   transactions,
   resyncTransactions,
 }) => {
-  const { wallets } = useReduxSelector('wallets');
+  const { wallets } = useReduxSelector("wallets");
   const transactionCount = transactions.length;
 
   const { showActionSheetWithOptions } = useActionSheet();
@@ -41,11 +41,11 @@ export const TransactionsMissingTimestampItem: React.FC<Props> = ({
         action: resyncTransactions,
       },
     ];
-    callActionSheet(showActionSheetWithOptions, 'Options', options);
+    callActionSheet(showActionSheetWithOptions, "Options", options);
   };
 
   const message = `${transactionCount} ${
-    transactionCount > 1 ? 'transactions needs' : 'transaction need'
+    transactionCount > 1 ? "transactions needs" : "transaction need"
   } to retrieve timestamps from on-chain data.`;
 
   return (
@@ -61,7 +61,7 @@ export const TransactionsMissingTimestampItem: React.FC<Props> = ({
           <Text style={styles.statusText}>MISSING DATA</Text>
         </View>
         <ButtonIconOnly
-          icon={isAndroid() ? 'dots-vertical' : 'dots-horizontal'}
+          icon={isAndroid() ? "dots-vertical" : "dots-horizontal"}
           onTap={showTransactionMenu}
           size={24}
           color={styleguide.colors.white}

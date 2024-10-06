@@ -4,11 +4,11 @@ import {
   NFTAmount,
   RailgunWalletBalanceBucket,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RailgunTXIDVersionNFTAmountMap } from '../../models/wallet';
-import { cacheNFTBalancesRailgun } from '../../services/wallet/wallet-balance-cache';
-import { copyByValue } from '../../utils/util';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RailgunTXIDVersionNFTAmountMap } from "../../models/wallet";
+import { cacheNFTBalancesRailgun } from "../../services/wallet/wallet-balance-cache";
+import { copyByValue } from "../../utils/util";
 
 export type UpdateRailgunNFTBalancesPayload = {
   networkName: NetworkName;
@@ -46,12 +46,12 @@ const initialState = {
 } as RailgunNFTBalanceState;
 
 const slice = createSlice({
-  name: 'nft-balances-railgun',
+  name: "nft-balances-railgun",
   initialState,
   reducers: {
     updateNFTBalancesRailgun(
       state,
-      action: PayloadAction<UpdateRailgunNFTBalancesPayload>,
+      action: PayloadAction<UpdateRailgunNFTBalancesPayload>
     ) {
       const { networkName, walletID, newTXIDBalanceBucketNFTAmountsMap } =
         action.payload;
@@ -69,14 +69,13 @@ const slice = createSlice({
 
       if (!isDefined(nftWalletBalances.forWallet[walletID])) {
         nftWalletBalances.forWallet[walletID] = copyByValue(
-          DEFAULT_RAILGUN_TXID_BUCKET_MAP,
+          DEFAULT_RAILGUN_TXID_BUCKET_MAP
         );
       }
 
       const txidBalanceBucketNFTAmountsMap =
         nftWalletBalances.forWallet[walletID];
-      if (!txidBalanceBucketNFTAmountsMap)
-        return;
+      if (!txidBalanceBucketNFTAmountsMap) return;
 
       for (const txidVersionKey in newTXIDBalanceBucketNFTAmountsMap) {
         const txidVersion = txidVersionKey as TXIDVersion;
@@ -96,7 +95,7 @@ const slice = createSlice({
       cacheNFTBalancesRailgun(
         networkName,
         walletID,
-        txidBalanceBucketNFTAmountsMap,
+        txidBalanceBucketNFTAmountsMap
       );
 
       state.forNetwork[networkName] = nftWalletBalances;

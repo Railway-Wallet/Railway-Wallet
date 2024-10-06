@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NFTAmountAndMetadata, NFTMetadata } from '../../models/nft';
-import { formatTokenSubID } from '../../utils/nft';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { NFTAmountAndMetadata, NFTMetadata } from "../../models/nft";
+import { formatTokenSubID } from "../../utils/nft";
 
 type NFTsMetadataMap = {
   forSubID: MapType<NFTMetadata>;
@@ -15,7 +15,7 @@ const initialState = {
 } as NFTsMetadataState;
 
 const slice = createSlice({
-  name: 'nfts-metadata',
+  name: "nfts-metadata",
   initialState,
   reducers: {
     addNFTsMetadata(state, action: PayloadAction<NFTAmountAndMetadata[]>) {

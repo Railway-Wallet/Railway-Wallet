@@ -1,5 +1,5 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   Linking,
@@ -7,12 +7,12 @@ import {
   StatusBar,
   Text,
   View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import VersionNumber from 'react-native-version-number';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { SwirlBackground } from '@components/images/SwirlBackground/SwirlBackground';
-import { RecoveryType } from '@models/RecoveryType';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import VersionNumber from "react-native-version-number";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { SwirlBackground } from "@components/images/SwirlBackground/SwirlBackground";
+import { RecoveryType } from "@models/RecoveryType";
 import {
   AppStatus,
   getSupportedNetworks,
@@ -20,12 +20,12 @@ import {
   useAppDispatch,
   useReduxSelector,
   WalletStorageService,
-} from '@react-shared';
-import { ErrorDetailsModal } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { getPlatformDevice } from '@services/util/platform-os-service';
-import { Constants } from '@utils/constants';
-import { imageHeightFromDesiredWidth } from '@utils/image-utils';
-import { styles } from './styles';
+} from "@react-shared";
+import { ErrorDetailsModal } from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { getPlatformDevice } from "@services/util/platform-os-service";
+import { Constants } from "@utils/constants";
+import { imageHeightFromDesiredWidth } from "@utils/image-utils";
+import { styles } from "./styles";
 
 type AppErrorScreenProps = {
   error?: Error;
@@ -40,7 +40,7 @@ export const AppErrorScreen: React.FC<AppErrorScreenProps> = ({
   setRecoveryMode,
   appStatus,
 }) => {
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { remoteConfig } = useReduxSelector("remoteConfig");
   const dispatch = useAppDispatch();
   const [hasWallets, setHasWallets] = useState<boolean>(false);
   const [hasNetworks, setHasNetworks] = useState<boolean>(false);
@@ -69,18 +69,18 @@ export const AppErrorScreen: React.FC<AppErrorScreenProps> = ({
     checkNetworks();
   }, [dispatch, currentConfig]);
 
-  StatusBar.setBarStyle('light-content');
+  StatusBar.setBarStyle("light-content");
 
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = Dimensions.get("window").width;
   const swirlWidth = windowWidth * 0.8;
   const swirlHeight = imageHeightFromDesiredWidth(ImageSwirl(), swirlWidth);
 
   const handleGoToStore = () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     Linking.openURL(
-      Platform.OS === 'android'
+      Platform.OS === "android"
         ? Constants.RAILWAY_PLAY_STORE
-        : Constants.RAILWAY_APP_STORE,
+        : Constants.RAILWAY_APP_STORE
     );
   };
 
@@ -93,7 +93,7 @@ export const AppErrorScreen: React.FC<AppErrorScreenProps> = ({
 
   return (
     <>
-      <SafeAreaView style={styles.container} edges={['right', 'top', 'left']}>
+      <SafeAreaView style={styles.container} edges={["right", "top", "left"]}>
         <SwirlBackground
           style={{
             ...styles.swirlBackground,
@@ -105,7 +105,7 @@ export const AppErrorScreen: React.FC<AppErrorScreenProps> = ({
           {isDefined(error) && (
             <>
               <Text style={styles.errorText}>
-                {error.message}{' '}
+                {error.message}{" "}
                 <Text style={styles.errorShowMore} onPress={showErrorDetails}>
                   (show more)
                 </Text>
@@ -115,9 +115,9 @@ export const AppErrorScreen: React.FC<AppErrorScreenProps> = ({
                   <ButtonWithTextAndIcon
                     icon="link"
                     title={
-                      Platform.OS === 'android'
-                        ? 'Open Google Play Store'
-                        : 'Open App Store'
+                      Platform.OS === "android"
+                        ? "Open Google Play Store"
+                        : "Open App Store"
                     }
                     onPress={handleGoToStore}
                   />

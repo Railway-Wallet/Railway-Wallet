@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
-import { isSmallScreen } from '@services/util/screen-dimensions-service';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
+import { isSmallScreen } from "@services/util/screen-dimensions-service";
 
 const useSmall = isSmallScreen();
 
@@ -13,9 +13,9 @@ export const styles = StyleSheet.create({
     marginTop: 18,
   },
   tokenListBalances: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   tokenListBalance: {
     marginTop: -2,
@@ -39,30 +39,30 @@ export const styles = StyleSheet.create({
   },
   bottomButtons: {
     marginTop: useSmall ? 8 : 26,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   bottomButton: {
     marginHorizontal: 24,
   },
   bottomButtonLabel: {
     ...styleguide.typography.label,
-    textTransform: 'none',
+    textTransform: "none",
   },
   approveButton: {
     marginHorizontal: 16,
   },
   calculatedContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: -8,
-    left: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    left: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 50,
     borderColor: styleguide.colors.gray5(),
     borderWidth: 2,
-    borderStyle: 'solid',
+    borderStyle: "solid",
     backgroundColor: styleguide.colors.gray6(),
     height: 32,
     width: 32,

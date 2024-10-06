@@ -1,15 +1,15 @@
-import { BridgeCallEvent, MnemonicTo0xPKeyParams } from '../models/bridge';
-import { bridgeCall } from './ipc';
+import { BridgeCallEvent, MnemonicTo0xPKeyParams } from "../models/bridge";
+import { bridgeCall } from "./ipc";
 
 export const mnemonicTo0xPKey = async (
   mnemonic: string,
-  derivationIndex?: number,
+  derivationIndex?: number
 ): Promise<string> => {
   const skipBridgeLogs = true;
   const pKey = await bridgeCall<MnemonicTo0xPKeyParams, string>(
     BridgeCallEvent.MnemonicTo0xPKey,
     { mnemonic, derivationIndex },
-    skipBridgeLogs,
+    skipBridgeLogs
   );
   return pKey;
 };

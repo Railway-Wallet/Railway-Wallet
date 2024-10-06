@@ -1,5 +1,5 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { ReactNode } from 'react';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { ReactNode } from "react";
 import {
   StyleProp,
   Text,
@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-} from 'react-native';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+} from "react-native";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
   title: string | ReactNode;
@@ -58,17 +58,17 @@ export const ListItem: React.FC<Props> = ({
     text: string | ReactNode,
     style: StyleProp<TextStyle>,
     numberOfLines?: number,
-    adjustsFontSizeToFit: boolean = false,
+    adjustsFontSizeToFit: boolean = false
   ) => {
-    if (typeof text === 'string') {
+    if (typeof text === "string") {
       return (
-        (<Text
+        <Text
           style={style}
           numberOfLines={numberOfLines}
           adjustsFontSizeToFit={adjustsFontSizeToFit && !isAndroid()}
         >
           {text}
-        </Text>)
+        </Text>
       );
     }
     return text;
@@ -85,14 +85,14 @@ export const ListItem: React.FC<Props> = ({
                 title,
                 [styles.defaultTitleStyle, titleStyle],
                 titleNumberOfLines,
-                titleAdjustsFontSizeToFit,
+                titleAdjustsFontSizeToFit
               )}
             {isDefined(description) &&
               renderText(
                 description,
                 [styles.defaultDescriptionStyle, descriptionStyle],
                 descriptionNumberOfLines,
-                descriptionAdjustsFontSizeToFit,
+                descriptionAdjustsFontSizeToFit
               )}
           </View>
           {rightView && (

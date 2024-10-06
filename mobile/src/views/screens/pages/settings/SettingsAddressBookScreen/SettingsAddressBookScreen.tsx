@@ -1,9 +1,9 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { FlatList, ListRenderItem, Text, View } from 'react-native';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { FlatList, ListRenderItem, Text, View } from "react-native";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   SavedAddress,
   SavedAddressService,
@@ -11,19 +11,19 @@ import {
   styleguide,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { HeaderIconButton } from '@views/components/headers/headerSideComponents/HeaderIconButton/HeaderIconButton';
-import { SettingsListItem } from '@views/screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { HeaderIconButton } from "@views/components/headers/headerSideComponents/HeaderIconButton/HeaderIconButton";
+import { SettingsListItem } from "@views/screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<SettingsStackParamList, 'SettingsAddressBook'>;
+  navigation: NavigationProp<SettingsStackParamList, "SettingsAddressBook">;
 };
 
 export const SettingsAddressBookScreen: React.FC<Props> = ({ navigation }) => {
-  const { savedAddresses } = useReduxSelector('savedAddresses');
+  const { savedAddresses } = useReduxSelector("savedAddresses");
   const dispatch = useAppDispatch();
 
   const deleteAddress = (address: SavedAddress) => {
@@ -35,7 +35,7 @@ export const SettingsAddressBookScreen: React.FC<Props> = ({ navigation }) => {
   const descriptionItem = (savedAddress: SavedAddress) => {
     if (isDefined(savedAddress.railAddress)) {
       return `Private address: ${shortenWalletAddress(
-        savedAddress.railAddress,
+        savedAddress.railAddress
       )}`;
     }
 
@@ -47,7 +47,7 @@ export const SettingsAddressBookScreen: React.FC<Props> = ({ navigation }) => {
       return `Resolved address: ${savedAddress.externalResolvedAddress}`;
     }
 
-    return 'No address found';
+    return "No address found";
   };
 
   const renderSavedAddress: ListRenderItem<SavedAddress> = ({
@@ -67,7 +67,7 @@ export const SettingsAddressBookScreen: React.FC<Props> = ({ navigation }) => {
 
   const addNewAddress = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('SettingsAddSavedAddress');
+    navigation.navigate("SettingsAddSavedAddress");
   };
 
   // eslint-disable-next-line react/no-unstable-nested-components

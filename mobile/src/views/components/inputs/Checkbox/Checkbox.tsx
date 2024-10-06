@@ -1,5 +1,5 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
 import {
   StyleProp,
   Text,
@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-} from 'react-native';
-import { styleguide } from '@react-shared';
-import { COMMON_HIT_SLOP } from '@utils/constants';
-import { Icon } from '@views/components/icons/Icon';
-import { styles } from './styles';
+} from "react-native";
+import { styleguide } from "@react-shared";
+import { COMMON_HIT_SLOP } from "@utils/constants";
+import { Icon } from "@views/components/icons/Icon";
+import { styles } from "./styles";
 
 interface Props {
   onPress?: () => void;

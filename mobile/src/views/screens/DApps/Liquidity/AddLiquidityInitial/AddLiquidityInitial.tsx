@@ -1,18 +1,18 @@
-import { LiquidityV2Pool } from '@railgun-community/cookbook';
+import { LiquidityV2Pool } from "@railgun-community/cookbook";
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { ERC20AmountsNumPadView } from '@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView';
-import { useActionSheet } from '@expo/react-native-action-sheet';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useEffect, useMemo, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { ButtonWithTextAndIcon } from "@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { ERC20AmountsNumPadView } from "@components/views/ERC20AmountsNumPadView/ERC20AmountsNumPadView";
+import { useActionSheet } from "@expo/react-native-action-sheet";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   CalloutType,
   compareTokenAddress,
@@ -31,14 +31,14 @@ import {
   useERC20BalancesSerialized,
   useLiquidityPoolsForPairFilter,
   useReduxSelector,
-} from '@react-shared';
-import { AddCustomTokenModal } from '@screens/modals/AddCustomTokenModal/AddCustomTokenModal';
-import { callActionSheet } from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { AppHeader } from '@views/components/headers/AppHeader/AppHeader';
-import { HeaderTextButton } from '@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { TextEntry } from '@views/components/inputs/TextEntry/TextEntry';
-import { sharedStyles } from '../sharedStyles';
+} from "@react-shared";
+import { AddCustomTokenModal } from "@screens/modals/AddCustomTokenModal/AddCustomTokenModal";
+import { callActionSheet } from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { AppHeader } from "@views/components/headers/AppHeader/AppHeader";
+import { HeaderTextButton } from "@views/components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { TextEntry } from "@views/components/inputs/TextEntry/TextEntry";
+import { sharedStyles } from "../sharedStyles";
 
 type PoolOption = {
   label: string;
@@ -46,16 +46,16 @@ type PoolOption = {
 };
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'AddLiquidityInitial'>;
+  navigation: NavigationProp<DAppsStackParamList, "AddLiquidityInitial">;
   route: RouteProp<
-    { params: DAppsStackParamList['AddLiquidityInitial'] },
-    'params'
+    { params: DAppsStackParamList["AddLiquidityInitial"] },
+    "params"
   >;
 };
 
 export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
   const { pool, initialTokenAmount } = route.params;
   const { tokenA, tokenB } = pool;
   const isRailgun = true;
@@ -63,7 +63,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
   const currentToken = tokenA;
 
   const [erc20Amounts, setERC20Amounts] = useState<ERC20Amount[]>(
-    isDefined(initialTokenAmount) ? [initialTokenAmount] : [],
+    isDefined(initialTokenAmount) ? [initialTokenAmount] : []
   );
   const [showAmountEntry, setShowAmountEntry] = useState(true);
   const [selectedPoolOption, setSelectedPoolOption] = useState<PoolOption>();
@@ -73,19 +73,19 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const { liquidityPoolList } = useLiquidityPoolsForPairFilter(
     pool,
-    network.current.name,
+    network.current.name
   );
   const { tokenUnshieldAmountB } = useAddLiquidityRecipe(
     selectedPool ?? liquidityPoolList[0],
     erc20Amounts[0],
-    SharedConstants.DEFAULT_SLIPPAGE_PRIVATE_TXS,
+    SharedConstants.DEFAULT_SLIPPAGE_PRIVATE_TXS
   );
 
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
 
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const tokenToAdd: Optional<ERC20TokenAddressOnly> = useMemo(
@@ -98,7 +98,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
             decimals: 18,
           }
         : undefined,
-    [selectedPool],
+    [selectedPool]
   );
   const pairTokenAlreadyAdded = useMemo(
     () =>
@@ -107,17 +107,17 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
             findMatchingAddedTokenForWallet(
               tokenToAdd,
               wallets.active,
-              networkName,
-            ),
+              networkName
+            )
           )
         : false,
-    [wallets.active, networkName, tokenToAdd],
+    [wallets.active, networkName, tokenToAdd]
   );
   const poolOptions: Optional<PoolOption[]> = liquidityPoolList?.map(
     ({ pairTokenName, pairAddress }: LiquidityV2Pool) => ({
       label: pairTokenName,
       value: pairAddress,
-    }),
+    })
   );
 
   useEffect(() => {
@@ -125,8 +125,8 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
       setSelectedPoolOption(poolOptions[0]);
     }
 
-    const pool = liquidityPoolList?.find(pool =>
-      compareTokenAddress(pool.pairAddress, selectedPoolOption?.value),
+    const pool = liquidityPoolList?.find((pool) =>
+      compareTokenAddress(pool.pairAddress, selectedPoolOption?.value)
     );
     setSelectedPool(pool);
   }, [liquidityPoolList, poolOptions, selectedPoolOption]);
@@ -137,7 +137,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
     if (isDefined(balance)) {
       const userBalanceDecimal = getDecimalBalance(
         BigInt(balance),
-        tokenB.decimals,
+        tokenB.decimals
       );
 
       return userBalanceDecimal;
@@ -152,7 +152,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
     if (isDefined(userBalanceForTokenB) && isDefined(tokenBAmount)) {
       const calculatedBalanceDecimal = getDecimalBalance(
         BigInt(tokenBAmount.amountString),
-        tokenB.decimals,
+        tokenB.decimals
       );
 
       return userBalanceForTokenB > calculatedBalanceDecimal;
@@ -171,7 +171,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
     }
 
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.navigate('AddLiquidityConfirm', {
+    navigation.navigate("AddLiquidityConfirm", {
       selectedPoolSerialized: convertLiquidityPoolToSerialized(selectedPool),
       tokenAmountA: erc20Amounts[0],
       tokenAmountB: tokenUnshieldAmountB,
@@ -185,14 +185,14 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
   const onTapChangePool = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     const buttons =
-      poolOptions?.map(p => {
+      poolOptions?.map((p) => {
         return {
           name: p.label,
           action: () => setSelectedPoolOption(p),
         };
       }) ?? [];
 
-    callActionSheet(showActionSheetWithOptions, 'Select pool', buttons);
+    callActionSheet(showActionSheetWithOptions, "Select pool", buttons);
   };
 
   const basicTokenToAdd: Optional<ERC20Token> = isDefined(selectedPool)
@@ -209,13 +209,13 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
     isDefined(basicTokenToAdd) && isDefined(selectedPool)
       ? {
           ...basicTokenToAdd,
-          searchStr: '',
+          searchStr: "",
           icon: getTokenIconKeyForPair(selectedPool.uniswapV2Fork),
         }
       : undefined;
   const tokenBAmount: ERC20Amount = tokenUnshieldAmountB ?? {
     token: tokenB,
-    amountString: '0',
+    amountString: "0",
   };
   const addTokenDescription = `When you deposit ${tokenA.symbol} and ${tokenB.symbol} into ${selectedPool?.name}, you will receive ${selectedPool?.pairTokenSymbol}, which represents your position in the liquidity pool.`;
   const showErrorBalance = !hasBalanceForTokenB();
@@ -223,7 +223,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
     showErrorBalance && isDefined(userBalanceForTokenB)
       ? `Shielded balance too low: ${formatNumberToLocaleWithMinDecimals(
           userBalanceForTokenB,
-          2,
+          2
         )} ${tokenB.symbol}.`
       : undefined;
 
@@ -251,7 +251,7 @@ export const AddLiquidityInitial: React.FC<Props> = ({ route, navigation }) => {
             value={selectedPoolOption?.label}
             iconButtons={[
               {
-                icon: 'pencil-outline',
+                icon: "pencil-outline",
                 onTap: onTapChangePool,
               },
             ]}

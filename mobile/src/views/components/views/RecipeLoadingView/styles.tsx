@@ -1,21 +1,21 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   recipeLoadingViewContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    width: "100%",
   },
   errorShowMore: {
     color: styleguide.colors.textSecondary,
   },
   loadingTitle: {
     ...styleguide.typography.caption,
-    textAlign: 'center',
+    textAlign: "center",
     color: styleguide.colors.text(),
     marginVertical: 24,
     marginHorizontal: 16,
@@ -31,21 +31,21 @@ export const styles = StyleSheet.create({
 
   errorMessage: {
     color: styleguide.colors.danger,
-    textAlign: 'center',
+    textAlign: "center",
   },
 
   errorContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '100%',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height: "100%",
     marginHorizontal: 28,
   },
 
   textAndImageContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

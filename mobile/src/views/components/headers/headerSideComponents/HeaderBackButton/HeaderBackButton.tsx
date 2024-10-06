@@ -1,11 +1,11 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React from 'react';
-import { HeaderBackButton as NativeHeaderBackButton } from '@react-navigation/elements';
-import { useNavigation } from '@react-navigation/native';
-import { styleguide } from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+import { isDefined } from "@railgun-community/shared-models";
+import React from "react";
+import { HeaderBackButton as NativeHeaderBackButton } from "@react-navigation/elements";
+import { useNavigation } from "@react-navigation/native";
+import { styleguide } from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 interface HeaderBackButtonProps {
   label?: string;

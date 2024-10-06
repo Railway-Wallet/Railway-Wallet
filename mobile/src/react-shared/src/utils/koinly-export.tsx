@@ -5,10 +5,10 @@ import {
   RailgunHistoryReceiveERC20Amount,
   RailgunHistoryUnshieldERC20Amount,
   TransactionHistoryItemCategory,
-} from '@railgun-community/shared-models';
-import { formatUnits } from 'ethers';
-import { ReactConfig } from '../config/react-config';
-import { SharedConstants } from '../config/shared-constants';
+} from "@railgun-community/shared-models";
+import { formatUnits } from "ethers";
+import { ReactConfig } from "../config/react-config";
+import { SharedConstants } from "../config/shared-constants";
 import {
   KoinlyExportERC20Info,
   KoinlyTransaction,
@@ -17,14 +17,14 @@ import {
   TransactionHistoryItemWithReceiptData,
   TransactionNFTAmountWithMemoText,
   TransactionSentReceivedSingleERC20,
-} from '../models/transaction';
-import { FrontendWallet } from '../models/wallet';
-import { getCoingeckoTokenDetails } from '../services/api/coingecko/coingecko-token';
-import { getERC20Decimals } from '../services/token/erc20';
-import { logDevError } from './logging';
-import { getNFTAmountDisplayName } from './nft';
-import { compareTokenAddress, createSerializedNFTAmount } from './tokens';
-import { truncateStr } from './util';
+} from "../models/transaction";
+import { FrontendWallet } from "../models/wallet";
+import { getCoingeckoTokenDetails } from "../services/api/coingecko/coingecko-token";
+import { getERC20Decimals } from "../services/token/erc20";
+import { logDevError } from "./logging";
+import { getNFTAmountDisplayName } from "./nft";
+import { compareTokenAddress, createSerializedNFTAmount } from "./tokens";
+import { truncateStr } from "./util";
 
 const padDateNumber = (num: number): string => {
   return num < 10 ? `0${num}` : num.toString();
@@ -32,7 +32,7 @@ const padDateNumber = (num: number): string => {
 
 export const timestampToUTC = (timestamp: number): string => {
   if (timestamp === SharedConstants.TIMESTAMP_MISSING_VALUE) {
-    return 'Unknown date';
+    return "Unknown date";
   }
   const date = new Date(timestamp * 1000);
   const year = date.getUTCFullYear();
@@ -44,24 +44,24 @@ export const timestampToUTC = (timestamp: number): string => {
 };
 
 const amountForUnshield = (
-  unshieldERC20Amount: RailgunHistoryUnshieldERC20Amount,
+  unshieldERC20Amount: RailgunHistoryUnshieldERC20Amount
 ): bigint => {
   return (
-    unshieldERC20Amount.amount - BigInt(unshieldERC20Amount.unshieldFee ?? '0')
+    unshieldERC20Amount.amount - BigInt(unshieldERC20Amount.unshieldFee ?? "0")
   );
 };
 
 const amountForShield = (
-  receiveERC20Amount: RailgunHistoryReceiveERC20Amount,
+  receiveERC20Amount: RailgunHistoryReceiveERC20Amount
 ): bigint => {
   return (
-    receiveERC20Amount.amount - BigInt(receiveERC20Amount.shieldFee ?? '0')
+    receiveERC20Amount.amount - BigInt(receiveERC20Amount.shieldFee ?? "0")
   );
 };
 
 const getTokenSymbol = async (
   network: Network,
-  tokenAddress: string,
+  tokenAddress: string
 ): Promise<string> => {
   try {
     const tokenData = await getCoingeckoTokenDetails(network, tokenAddress);
@@ -74,32 +74,32 @@ const getTokenSymbol = async (
 
 const getTokenDecimals = async (
   network: Network,
-  tokenAddress: string,
+  tokenAddress: string
 ): Promise<number> => {
   try {
     const decimals = Number(await getERC20Decimals(network.name, tokenAddress));
     return decimals;
   } catch (err) {
     logDevError(err);
-    throw new Error('Could not get token decimals');
+    throw new Error("Could not get token decimals");
   }
 };
 
 const EMPTY_ERC20_TOKEN_INFO: KoinlyExportERC20Info = {
-  symbol: '',
-  amount: '',
+  symbol: "",
+  amount: "",
 };
 
 const getERC20InfoForKoinly = async (
   wallet: Optional<FrontendWallet>,
   network: Network,
   tokenAddress: string,
-  amount: bigint,
+  amount: bigint
 ): Promise<KoinlyExportERC20Info> => {
   const addedTokens = wallet?.addedTokens[network.name] ?? [];
   const foundToken = addedTokens
-    .filter(token => !(token.isBaseToken ?? false))
-    .find(token => compareTokenAddress(token.address, tokenAddress));
+    .filter((token) => !(token.isBaseToken ?? false))
+    .find((token) => compareTokenAddress(token.address, tokenAddress));
 
   let decimals;
   let symbol = tokenAddress;
@@ -121,11 +121,11 @@ const getReceivedERC20InfoForKoinly = async (
   wallet: Optional<FrontendWallet>,
   network: Network,
   tokenAddress: Optional<string>,
-  amount: Optional<bigint>,
+  amount: Optional<bigint>
 ): Promise<KoinlyExportERC20Info> => {
   if (
     !isDefined(tokenAddress) ||
-    tokenAddress === '' ||
+    tokenAddress === "" ||
     !isDefined(amount) ||
     amount === 0n
   ) {
@@ -136,7 +136,7 @@ const getReceivedERC20InfoForKoinly = async (
     wallet,
     network,
     tokenAddress,
-    amount,
+    amount
   );
 
   return receivedERC20Info;
@@ -146,11 +146,11 @@ const getSentERC20InfoForKoinly = async (
   wallet: Optional<FrontendWallet>,
   network: Network,
   tokenAddress: Optional<string>,
-  amount: Optional<bigint>,
+  amount: Optional<bigint>
 ): Promise<KoinlyExportERC20Info> => {
   if (
     !isDefined(tokenAddress) ||
-    tokenAddress === '' ||
+    tokenAddress === "" ||
     !isDefined(amount) ||
     amount === 0n
   ) {
@@ -161,7 +161,7 @@ const getSentERC20InfoForKoinly = async (
     wallet,
     network,
     tokenAddress,
-    amount,
+    amount
   );
 
   return sentERC20Info;
@@ -172,7 +172,7 @@ const getFeeERC20InfoForKoinly = async (
   network: Network,
   shouldAddTokenFee: boolean,
   broadcasterFeeERC20Amount: Optional<RailgunERC20Amount>,
-  gasFeeString: Optional<string>,
+  gasFeeString: Optional<string>
 ): Promise<KoinlyExportERC20Info> => {
   if (shouldAddTokenFee) {
     if (broadcasterFeeERC20Amount) {
@@ -180,12 +180,12 @@ const getFeeERC20InfoForKoinly = async (
         wallet,
         network,
         broadcasterFeeERC20Amount.tokenAddress,
-        broadcasterFeeERC20Amount.amount,
+        broadcasterFeeERC20Amount.amount
       );
 
       return feeERC20Info;
     }
-    if (isDefined(gasFeeString) && gasFeeString !== '') {
+    if (isDefined(gasFeeString) && gasFeeString !== "") {
       return {
         symbol: network.baseToken.symbol,
         amount: formatUnits(BigInt(gasFeeString), network.baseToken.decimals),
@@ -199,15 +199,15 @@ const getFeeERC20InfoForKoinly = async (
 const createDescriptionText = (
   memoText: Optional<string>,
   category: TransactionHistoryItemCategory,
-  isFirstRowForTransaction: boolean,
+  isFirstRowForTransaction: boolean
 ): string => {
   if (!isFirstRowForTransaction) {
-    return '';
+    return "";
   }
   const memoWithDevPrefix = ReactConfig.IS_DEV
-    ? `[${category}]: ${memoText ?? ''}`
+    ? `[${category}]: ${memoText ?? ""}`
     : memoText;
-  const description = truncateStr(memoWithDevPrefix, 100) ?? '';
+  const description = truncateStr(memoWithDevPrefix, 100) ?? "";
   return description;
 };
 
@@ -218,7 +218,7 @@ const createKoinlyTransactionSent = async (
   sentERC20: RailgunERC20AmountWithMemoText,
   label: KoinlyTransactionLabel,
   isFirstRowForToken: boolean,
-  shouldAddTokenFee: boolean,
+  shouldAddTokenFee: boolean
 ) => {
   const { timestamp, txid, broadcasterFeeERC20Amount, gasFeeString } =
     transaction;
@@ -227,14 +227,14 @@ const createKoinlyTransactionSent = async (
   const description = createDescriptionText(
     memoText,
     transaction.category,
-    isFirstRowForToken,
+    isFirstRowForToken
   );
 
   const sentERC20Info = await getSentERC20InfoForKoinly(
     wallet,
     network,
     tokenAddress,
-    amount,
+    amount
   );
 
   const feeERC20Info = await getFeeERC20InfoForKoinly(
@@ -242,12 +242,12 @@ const createKoinlyTransactionSent = async (
     network,
     shouldAddTokenFee,
     broadcasterFeeERC20Amount,
-    gasFeeString,
+    gasFeeString
   );
 
   const koinlyTransaction: KoinlyTransaction = {
-    receivedAmount: '',
-    receivedCurrency: '',
+    receivedAmount: "",
+    receivedCurrency: "",
     sentAmount: sentERC20Info.amount,
     sentCurrency: sentERC20Info.symbol,
     feeAmount: feeERC20Info.amount,
@@ -269,7 +269,7 @@ const createKoinlyTransactionReceived = async (
   sentERC20: RailgunERC20AmountWithMemoText,
   label: KoinlyTransactionLabel,
   isFirstRowForToken: boolean,
-  shouldAddTokenFee: boolean,
+  shouldAddTokenFee: boolean
 ) => {
   const { timestamp, txid, broadcasterFeeERC20Amount, gasFeeString } =
     transaction;
@@ -278,14 +278,14 @@ const createKoinlyTransactionReceived = async (
   const description = createDescriptionText(
     memoText,
     transaction.category,
-    isFirstRowForToken,
+    isFirstRowForToken
   );
 
   const receivedERC20Info = await getReceivedERC20InfoForKoinly(
     wallet,
     network,
     tokenAddress,
-    amount,
+    amount
   );
 
   const feeERC20Info = await getFeeERC20InfoForKoinly(
@@ -293,14 +293,14 @@ const createKoinlyTransactionReceived = async (
     network,
     shouldAddTokenFee,
     broadcasterFeeERC20Amount,
-    gasFeeString,
+    gasFeeString
   );
 
   const koinlyTransaction: KoinlyTransaction = {
     receivedAmount: receivedERC20Info.amount,
     receivedCurrency: receivedERC20Info.symbol,
-    sentAmount: '',
-    sentCurrency: '',
+    sentAmount: "",
+    sentCurrency: "",
     feeAmount: feeERC20Info.amount,
     feeCurrency: feeERC20Info.symbol,
     utcDate: timestampToUTC(timestamp),
@@ -321,7 +321,7 @@ const createKoinlyTransactionNFT = async (
   isSent: boolean,
   label: KoinlyTransactionLabel,
   isFirstRowForTransaction: boolean,
-  shouldAddTokenFee: boolean,
+  shouldAddTokenFee: boolean
 ): Promise<KoinlyTransaction> => {
   const { timestamp, txid, broadcasterFeeERC20Amount, gasFeeString } =
     transaction;
@@ -330,7 +330,7 @@ const createKoinlyTransactionNFT = async (
   const description = createDescriptionText(
     memoText,
     transaction.category,
-    isFirstRowForTransaction,
+    isFirstRowForTransaction
   );
 
   const feeERC20Info = await getFeeERC20InfoForKoinly(
@@ -338,21 +338,22 @@ const createKoinlyTransactionNFT = async (
     network,
     shouldAddTokenFee,
     broadcasterFeeERC20Amount,
-    gasFeeString,
+    gasFeeString
   );
 
   const nftDisplayName = getNFTAmountDisplayName(
     nftAmountWithMemoText,
-    false, true,
+    false,
+    true
   );
 
   const amountDecimal = BigInt(amountString).toString();
 
   const koinlyTransaction: KoinlyTransaction = {
-    receivedAmount: !isSent ? amountDecimal : '',
-    receivedCurrency: !isSent ? nftDisplayName : '',
-    sentAmount: isSent ? amountDecimal : '',
-    sentCurrency: isSent ? nftDisplayName : '',
+    receivedAmount: !isSent ? amountDecimal : "",
+    receivedCurrency: !isSent ? nftDisplayName : "",
+    sentAmount: isSent ? amountDecimal : "",
+    sentCurrency: isSent ? nftDisplayName : "",
     feeAmount: feeERC20Info.amount,
     feeCurrency: feeERC20Info.symbol,
     utcDate: timestampToUTC(timestamp),
@@ -366,7 +367,7 @@ const createKoinlyTransactionNFT = async (
 };
 
 const labelForTransaction = (
-  transaction: TransactionHistoryItemWithReceiptData,
+  transaction: TransactionHistoryItemWithReceiptData
 ) => {
   switch (transaction.category) {
     case TransactionHistoryItemCategory.ShieldERC20s:
@@ -382,14 +383,14 @@ const labelForTransaction = (
 export const createKoinlyTransactionsForTransactionHistoryItem = async (
   network: Network,
   transaction: TransactionHistoryItemWithReceiptData,
-  wallet: Optional<FrontendWallet>,
+  wallet: Optional<FrontendWallet>
 ): Promise<KoinlyTransaction[]> => {
   const { transferERC20Amounts, receiveERC20Amounts, unshieldERC20Amounts } =
     transaction;
 
   const sentReceivedERC20Map: MapType<TransactionSentReceivedSingleERC20> = {};
 
-  receiveERC20Amounts.forEach(receiveERC20Amount => {
+  receiveERC20Amounts.forEach((receiveERC20Amount) => {
     const { tokenAddress, amount, shieldFee, memoText } = receiveERC20Amount;
     if (!isDefined(sentReceivedERC20Map[tokenAddress])) {
       sentReceivedERC20Map[tokenAddress] = { received: [], sent: [] };
@@ -404,7 +405,7 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
     });
   });
 
-  transferERC20Amounts.forEach(transferERC20Amount => {
+  transferERC20Amounts.forEach((transferERC20Amount) => {
     const { tokenAddress, amount, memoText } = transferERC20Amount;
     if (!isDefined(sentReceivedERC20Map[tokenAddress])) {
       sentReceivedERC20Map[tokenAddress] = { received: [], sent: [] };
@@ -417,7 +418,7 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
     });
   });
 
-  unshieldERC20Amounts.forEach(unshieldERC20Amount => {
+  unshieldERC20Amounts.forEach((unshieldERC20Amount) => {
     const { tokenAddress, memoText } = unshieldERC20Amount;
     if (!isDefined(sentReceivedERC20Map[tokenAddress])) {
       sentReceivedERC20Map[tokenAddress] = { received: [], sent: [] };
@@ -458,9 +459,9 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
             sentERC20,
             label,
             isFirstRowForToken,
-            shouldAddTokenFee,
+            shouldAddTokenFee
           );
-        }),
+        })
       );
 
       const isPrivateReceiveOnly =
@@ -468,7 +469,7 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
         TransactionHistoryItemCategory.TransferReceiveERC20s;
 
       const receivedKoinlyTransaction = await Promise.all(
-        receivedERC20.map(receivedERC20 => {
+        receivedERC20.map((receivedERC20) => {
           const isFirstRowForToken =
             index === 0 && isFirstRowForTransaction && !hasAddedSentRow;
           const shouldAddTokenFee = isFirstRowForToken && !isPrivateReceiveOnly;
@@ -480,26 +481,26 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
             receivedERC20,
             label,
             isFirstRowForToken,
-            shouldAddTokenFee,
+            shouldAddTokenFee
           );
-        }),
+        })
       );
 
       return [...sentKoinlyTransaction, ...receivedKoinlyTransaction];
-    }),
+    })
   );
 
   const nftsSent: TransactionNFTAmountWithMemoText[] =
-    transaction.transferNFTAmounts.map(nftAmount => ({
+    transaction.transferNFTAmounts.map((nftAmount) => ({
       ...createSerializedNFTAmount(nftAmount),
       memoText: nftAmount.memoText,
     }));
   const nftsReceived: TransactionNFTAmountWithMemoText[] = [
-    ...transaction.receiveNFTAmounts.map(nftAmount => ({
+    ...transaction.receiveNFTAmounts.map((nftAmount) => ({
       ...createSerializedNFTAmount(nftAmount),
       memoText: nftAmount.memoText,
     })),
-    ...transaction.unshieldNFTAmounts.map(nftAmount => ({
+    ...transaction.unshieldNFTAmounts.map((nftAmount) => ({
       ...createSerializedNFTAmount(nftAmount),
       memoText: nftAmount.memoText,
     })),
@@ -513,11 +514,12 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
         transaction,
         wallet,
         nftAmountWithMemoText,
-        true, label,
+        true,
+        label,
         isFirstRowForTransaction,
-        shouldAddTokenFee,
+        shouldAddTokenFee
       );
-    }),
+    })
   );
 
   const isPrivateReceiveOnly = nftsSent.length === 0 && nftsReceived.length > 0;
@@ -532,11 +534,12 @@ export const createKoinlyTransactionsForTransactionHistoryItem = async (
         transaction,
         wallet,
         nftAmountWithMemoText,
-        false, label,
+        false,
+        label,
         isFirstRowForTransaction,
-        shouldAddTokenFee,
+        shouldAddTokenFee
       );
-    }),
+    })
   );
 
   return [

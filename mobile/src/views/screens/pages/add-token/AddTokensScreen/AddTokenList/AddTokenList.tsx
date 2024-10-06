@@ -1,13 +1,13 @@
-import React, { ReactNode } from 'react';
-import { FlatList, Text, View } from 'react-native';
-import { TokenListRow } from '@components/list/TokenListRow/TokenListRow';
+import React, { ReactNode } from "react";
+import { FlatList, Text, View } from "react-native";
+import { TokenListRow } from "@components/list/TokenListRow/TokenListRow";
 import {
   compareTokens,
   createERC20TokenFromSearchableERC20,
   ERC20Token,
   SearchableERC20,
-} from '@react-shared';
-import { styles } from './styles';
+} from "@react-shared";
+import { styles } from "./styles";
 
 type Props = {
   searchedTokens: Optional<SearchableERC20[]>;
@@ -36,12 +36,12 @@ export const AddTokenList: React.FC<Props> = ({
     let disabled = false;
     let rightView: Optional<() => ReactNode>;
     const ERC20Token = createERC20TokenFromSearchableERC20(item);
-    if (currentTokens.find(t => compareTokens(t, ERC20Token))) {
+    if (currentTokens.find((t) => compareTokens(t, ERC20Token))) {
       disabled = true;
       rightView = alreadyAddedRightView;
     }
 
-    const selected = selectedTokens.some(t => compareTokens(t, ERC20Token));
+    const selected = selectedTokens.some((t) => compareTokens(t, ERC20Token));
     const token = createERC20TokenFromSearchableERC20(item);
 
     return (
@@ -64,13 +64,13 @@ export const AddTokenList: React.FC<Props> = ({
 
   if (searchedTokens) {
     showTokens = searchedTokens;
-    tokenHeaderText = 'Search results';
+    tokenHeaderText = "Search results";
   } else if (selectedTokens.length) {
     showTokens = selectedTokens;
-    tokenHeaderText = 'Tap to deselect';
+    tokenHeaderText = "Tap to deselect";
   } else {
     showTokens = defaultTokens;
-    tokenHeaderText = 'Popular';
+    tokenHeaderText = "Popular";
   }
 
   return (

@@ -6,13 +6,13 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import {
   AdjustedERC20AmountRecipientGroup,
   ERC20Amount,
   ERC20AmountRecipient,
-} from './token';
-import { AvailableWallet } from './wallet';
+} from "./token";
+import { AvailableWallet } from "./wallet";
 
 export type PerformTransactionType = (
   finalAdjustedERC20AmountRecipientGroup: AdjustedERC20AmountRecipientGroup,
@@ -25,7 +25,7 @@ export type PerformTransactionType = (
   showSenderAddressToRecipient: boolean,
   memoText: Optional<string>,
   success: () => void,
-  error: (err: Error, isBroadcasterError?: boolean) => void,
+  error: (err: Error, isBroadcasterError?: boolean) => void
 ) => Promise<Optional<string>>;
 
 export type GetGasEstimateSelfSigned = (
@@ -33,7 +33,7 @@ export type GetGasEstimateSelfSigned = (
   networkName: NetworkName,
   fromWalletAddress: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
-  nftAmountRecipients: NFTAmountRecipient[],
+  nftAmountRecipients: NFTAmountRecipient[]
 ) => Promise<bigint>;
 
 export type GetGasEstimateProofRequired = (
@@ -45,22 +45,22 @@ export type GetGasEstimateProofRequired = (
   nftAmountRecipients: NFTAmountRecipient[],
   originalGasDetails: TransactionGasDetails,
   feeTokenDetails: Optional<FeeTokenDetails>,
-  sendWithPublicWallet: boolean,
+  sendWithPublicWallet: boolean
 ) => Promise<bigint>;
 
 export type FindBestBroadcaster = (
   chain: Chain,
   tokenAddress: string,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ) => Promise<Optional<SelectedBroadcaster>>;
 
 export type FindAllBroadcastersForToken = (
   chain: Chain,
   tokenAddress: string,
-  useRelayAdapt: boolean,
+  useRelayAdapt: boolean
 ) => Promise<Optional<SelectedBroadcaster[]>>;
 
 export type UpdateBroadcasterAddressFilters = (
   allowlist: Optional<string[]>,
-  blocklist: Optional<string[]>,
+  blocklist: Optional<string[]>
 ) => Promise<void>;

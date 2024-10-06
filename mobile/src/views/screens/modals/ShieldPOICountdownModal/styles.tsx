@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   containerBackground: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
     backgroundColor: styleguide.colors.gray(0.8),
-    height: '100%',
+    height: "100%",
     padding: 16,
   },
   container: {
@@ -19,18 +19,18 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
     borderWidth: 1,
     borderColor: styleguide.colors.gray9(),
-    maxHeight: '80%',
+    maxHeight: "80%",
   },
   title: {
     ...styleguide.typography.paragraph,
     color: styleguide.colors.text(),
     marginTop: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   countdownContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
   countdownEst: {
     ...styleguide.typography.paragraph,
@@ -42,32 +42,32 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.paragraph,
     color: styleguide.colors.text(),
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   disclaimerText: {
     ...styleguide.typography.caption,
     color: styleguide.colors.text(),
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 26,
   },
   txText: {
     marginTop: 4,
     marginBottom: 26,
     color: styleguide.colors.labelSecondary,
-    textDecorationLine: 'underline',
-    textAlign: 'center',
+    textDecorationLine: "underline",
+    textAlign: "center",
   },
   buttonContainer: {
     marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   buttonStyle: {
-    width: '48%',
+    width: "48%",
   },
   buttonTextStyle: {
     ...styleguide.typography.label,
-    textTransform: 'none',
+    textTransform: "none",
   },
 });

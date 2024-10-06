@@ -1,12 +1,12 @@
-import { SwapQuoteData } from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { WideButtonTextOnly } from '@components/buttons/WideButtonTextOnly/WideButtonTextOnly';
-import { InfoCallout } from '@components/callouts/InfoCallout/InfoCallout';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { CommonActions, NavigationProp } from '@react-navigation/native';
+import { SwapQuoteData } from "@railgun-community/cookbook";
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { WideButtonTextOnly } from "@components/buttons/WideButtonTextOnly/WideButtonTextOnly";
+import { InfoCallout } from "@components/callouts/InfoCallout/InfoCallout";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { CommonActions, NavigationProp } from "@react-navigation/native";
 import {
   CalloutType,
   compareTokens,
@@ -19,16 +19,16 @@ import {
   TransactionType,
   useReduxSelector,
   useRelayAdaptPrivateNotice,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { ErrorDetailsModal } from '@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal';
-import { SwapSettings } from '../../SwapSettingsModal/SwapSettingsModal';
-import { SwapBuyERC20Amount } from '../SwapBuyERC20Amount/SwapBuyERC20Amount';
-import { SwapSellTokenAmountEntry } from '../SwapSellTokenAmountEntry/SwapSellTokenAmountEntry';
-import { styles } from './styles';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { ErrorDetailsModal } from "@views/screens/modals/ErrorDetailsModal/ErrorDetailsModal";
+import { SwapSettings } from "../../SwapSettingsModal/SwapSettingsModal";
+import { SwapBuyERC20Amount } from "../SwapBuyERC20Amount/SwapBuyERC20Amount";
+import { SwapSellTokenAmountEntry } from "../SwapSellTokenAmountEntry/SwapSellTokenAmountEntry";
+import { styles } from "./styles";
 
 export type SwapContentProps = {
-  navigation: NavigationProp<DAppsStackParamList, 'Swap'>;
+  navigation: NavigationProp<DAppsStackParamList, "Swap">;
   sellERC20: Optional<ERC20Token>;
   sellERC20Amount: Optional<ERC20Amount>;
   buyERC20: Optional<ERC20Token>;
@@ -75,7 +75,7 @@ export const SharedSwapContent: React.FC<Props> = ({
   setSellTokenEntryString,
   onTapReviewOrder,
 }) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
   const [showErrorDetailsModal, setShowErrorDetailsModal] = useState(false);
 
   const openErrorDetailsModal = () => {
@@ -90,8 +90,8 @@ export const SharedSwapContent: React.FC<Props> = ({
     setSellTokenEntryString(
       formatUnitFromHexString(
         tokenAmount.amountString,
-        tokenAmount.token.decimals,
-      ),
+        tokenAmount.token.decimals
+      )
     );
     setShowAmountEntry(true);
   };
@@ -120,7 +120,7 @@ export const SharedSwapContent: React.FC<Props> = ({
   };
 
   const onApproveSuccessCallback = () => {
-    navigation.dispatch(CommonActions.navigate('Swap', {}));
+    navigation.dispatch(CommonActions.navigate("Swap", {}));
   };
 
   const openApprove = (sellToken: ERC20Token) => {
@@ -129,14 +129,14 @@ export const SharedSwapContent: React.FC<Props> = ({
     }
     triggerHaptic(HapticSurface.NavigationButton);
 
-    navigation.navigate('ApproveTokenConfirm', {
+    navigation.navigate("ApproveTokenConfirm", {
       tokenAmount: {
         token: sellToken,
         amountString: maxBigIntForTransaction().toString(),
       },
       spender: quote.spender,
-      spenderName: '0x Exchange',
-      infoCalloutText: 'Approving token to swap via 0x exchange.',
+      spenderName: "0x Exchange",
+      infoCalloutText: "Approving token to swap via 0x exchange.",
       transactionType: TransactionType.ApproveSpender,
       onSuccessCallback: onApproveSuccessCallback,
     });
@@ -155,27 +155,27 @@ export const SharedSwapContent: React.FC<Props> = ({
   };
 
   const openAddTokens = () => {
-    navigation.dispatch(CommonActions.navigate('AddTokens'));
+    navigation.dispatch(CommonActions.navigate("AddTokens"));
   };
 
   const { notice: privateDisclaimerText } = useRelayAdaptPrivateNotice(
     isRailgun,
-    'swap',
-    '0x Exchange',
-    'Railway DEX swaps are atomic and non-custodial.',
+    "swap",
+    "0x Exchange",
+    "Railway DEX swaps are atomic and non-custodial."
   );
 
   const baseTokenError: Optional<Error> =
     isRailgun &&
     ((sellERC20?.isBaseToken ?? false) || (buyERC20?.isBaseToken ?? false))
       ? new Error(
-          `You may not swap ${network.current.baseToken.symbol} privately, as this base token cannot be shielded. Try wrapped base token ${network.current.baseToken.wrappedSymbol} instead.`,
+          `You may not swap ${network.current.baseToken.symbol} privately, as this base token cannot be shielded. Try wrapped base token ${network.current.baseToken.wrappedSymbol} instead.`
         )
       : undefined;
   const tokenError: Optional<Error> =
     isRailgun && hasRebaseToken()
       ? new Error(
-          'One of your selections is a Rebase Token, which may not be shielded.',
+          "One of your selections is a Rebase Token, which may not be shielded."
         )
       : undefined;
 
@@ -245,7 +245,7 @@ export const SharedSwapContent: React.FC<Props> = ({
             />
             {isDefined(error) && (
               <Text style={styles.errorText}>
-                {error.message}{' '}
+                {error.message}{" "}
                 <Text
                   style={styles.errorShowMore}
                   onPress={openErrorDetailsModal}

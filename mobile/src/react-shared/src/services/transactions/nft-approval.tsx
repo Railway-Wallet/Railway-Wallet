@@ -3,17 +3,17 @@ import {
   NFTAmount,
   NFTTokenType,
   TransactionGasDetails,
-} from '@railgun-community/shared-models';
-import { ContractTransaction, TransactionResponse } from 'ethers';
-import { erc721Contract, erc1155Contract } from '../contract/contract';
-import { ProviderService } from '../providers/provider-service';
-import { executeTransaction } from './execute-service';
-import { getGasEstimate } from './gas-estimate';
+} from "@railgun-community/shared-models";
+import { ContractTransaction, TransactionResponse } from "ethers";
+import { erc721Contract, erc1155Contract } from "../contract/contract";
+import { ProviderService } from "../providers/provider-service";
+import { executeTransaction } from "./execute-service";
+import { getGasEstimate } from "./gas-estimate";
 
 const createERC721ApproveAll = async (
   networkName: NetworkName,
   spender: string,
-  nftAmount: NFTAmount,
+  nftAmount: NFTAmount
 ): Promise<ContractTransaction> => {
   const provider = await ProviderService.getProvider(networkName);
   const erc721 = erc721Contract(nftAmount.nftAddress, provider);
@@ -23,7 +23,7 @@ const createERC721ApproveAll = async (
 const createERC1155ApproveAll = async (
   networkName: NetworkName,
   spender: string,
-  nftAmount: NFTAmount,
+  nftAmount: NFTAmount
 ): Promise<ContractTransaction> => {
   const provider = await ProviderService.getProvider(networkName);
   const erc1155 = erc1155Contract(nftAmount.nftAddress, provider);
@@ -33,7 +33,7 @@ const createERC1155ApproveAll = async (
 const createNFTApproveAll = (
   networkName: NetworkName,
   spender: string,
-  nftAmount: NFTAmount,
+  nftAmount: NFTAmount
 ): Promise<ContractTransaction> => {
   switch (nftAmount.nftTokenType) {
     case NFTTokenType.ERC721: {
@@ -49,12 +49,12 @@ export const getNFTApproveAllGasEstimate = async (
   networkName: NetworkName,
   spender: string,
   fromWalletAddress: string,
-  nftAmount: NFTAmount,
+  nftAmount: NFTAmount
 ): Promise<bigint> => {
   const nftApproveAll = await createNFTApproveAll(
     networkName,
     spender,
-    nftAmount,
+    nftAmount
   );
   return getGasEstimate(networkName, nftApproveAll, fromWalletAddress);
 };
@@ -66,12 +66,12 @@ export const executeNFTApproveAll = async (
   nftAmount: NFTAmount,
   gasDetails?: TransactionGasDetails,
   customNonce?: number,
-  overrideGasLimitForCancel?: bigint,
+  overrideGasLimitForCancel?: bigint
 ): Promise<TransactionResponse> => {
   const nftApproveAll = await createNFTApproveAll(
     networkName,
     spender,
-    nftAmount,
+    nftAmount
   );
   return executeTransaction(
     pKey,
@@ -79,6 +79,6 @@ export const executeNFTApproveAll = async (
     nftApproveAll,
     gasDetails,
     customNonce,
-    overrideGasLimitForCancel,
+    overrideGasLimitForCancel
   );
 };

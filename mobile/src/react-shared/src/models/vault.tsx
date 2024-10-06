@@ -1,5 +1,5 @@
 export enum VaultType {
-  Beefy = 'Beefy',
+  Beefy = "Beefy",
 }
 
 export type Vault = {

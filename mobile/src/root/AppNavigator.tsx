@@ -1,10 +1,10 @@
-import { isDefined } from '@railgun-community/shared-models';
-import React, { useEffect, useState } from 'react';
-import SplashScreen from 'react-native-splash-screen';
-import debug from 'debug';
-import { useInactiveSecurityLockScreen } from '@hooks/security/useInactiveSecurityLockScreen';
-import { RecoveryType } from '@models/RecoveryType';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { isDefined } from "@railgun-community/shared-models";
+import React, { useEffect, useState } from "react";
+import SplashScreen from "react-native-splash-screen";
+import debug from "debug";
+import { useInactiveSecurityLockScreen } from "@hooks/security/useInactiveSecurityLockScreen";
+import { RecoveryType } from "@models/RecoveryType";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   AppStatus,
   logDevError,
@@ -12,16 +12,16 @@ import {
   SharedConstants,
   StorageService,
   useAppDispatch,
-} from '@react-shared';
-import { NodeBridgeService } from '@services/bridge/node-bridge-service';
-import { AppStartService } from '@services/core/app-start-service';
+} from "@react-shared";
+import { NodeBridgeService } from "@services/bridge/node-bridge-service";
+import { AppStartService } from "@services/core/app-start-service";
 import {
   minVersionForPlatform,
   needsVersionUpdate,
-} from '@services/core/version-service';
-import { RemoteConfigService } from '@services/remote-config/remote-config-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { AppView } from './AppView';
+} from "@services/core/version-service";
+import { RemoteConfigService } from "@services/remote-config/remote-config-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { AppView } from "./AppView";
 
 export const AppNavigator = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +36,7 @@ export const AppNavigator = () => {
 
   ReactConfig.IS_ANDROID = isAndroid();
 
-  debug.enable(ReactConfig.IS_DEV ? 'railway:*' : '');
+  debug.enable(ReactConfig.IS_DEV ? "railway:*" : "");
 
   ReactConfig.SHOULD_DISABLE_USER_AGENT = true;
 
@@ -66,7 +66,7 @@ export const AppNavigator = () => {
       if (isDefined(remoteConfig.maintenanceMessage)) {
         triggerAppStatus(
           AppStatus.Maintenance,
-          new Error(remoteConfig.maintenanceMessage),
+          new Error(remoteConfig.maintenanceMessage)
         );
         return;
       }
@@ -75,9 +75,9 @@ export const AppNavigator = () => {
           AppStatus.VersionOutdated,
           new Error(
             `You are using an outdated version of Railway. Please update your app to v${minVersionForPlatform(
-              remoteConfig,
-            )} to continue.`,
-          ),
+              remoteConfig
+            )} to continue.`
+          )
         );
         return;
       }

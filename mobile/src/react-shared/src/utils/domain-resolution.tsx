@@ -1,9 +1,9 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { UnstoppableDataRecordPath } from '../models/address-resolution';
+import { NetworkName } from "@railgun-community/shared-models";
+import { UnstoppableDataRecordPath } from "../models/address-resolution";
 
 export const getUnstoppableRecordPathForNetwork = (
   networkName: NetworkName,
-  isRailgun: boolean,
+  isRailgun: boolean
 ): UnstoppableDataRecordPath => {
   if (isRailgun) {
     return UnstoppableDataRecordPath.Railgun;
@@ -24,6 +24,6 @@ export const getUnstoppableRecordPathForNetwork = (
     case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.Hardhat:
-      throw new Error('Unstoppable Domains unavailable for this network');
+      throw new Error("Unstoppable Domains unavailable for this network");
   }
 };

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Pressable } from 'react-native';
+import React from "react";
+import { ImageSourcePropType, Pressable } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
   withSpring,
   withTiming,
-} from 'react-native-reanimated';
-import chevron from '@assets/img/chevron-right.png';
-import { styles } from './styles';
+} from "react-native-reanimated";
+import chevron from "@assets/img/chevron-right.png";
+import { styles } from "./styles";
 
 type Props = {
   currentIndex: SharedValue<number>;
@@ -64,7 +64,7 @@ export const OnboardingButton = ({
         Let's go!
       </Animated.Text>
       <Animated.Image
-        source={chevron}
+        source={chevron as ImageSourcePropType}
         resizeMode="contain"
         style={[styles.imageStyle, imageAnimatedStyle]}
       />

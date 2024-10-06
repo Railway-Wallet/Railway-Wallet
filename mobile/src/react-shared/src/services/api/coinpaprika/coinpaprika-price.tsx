@@ -1,10 +1,10 @@
-import { delay, isDefined } from '@railgun-community/shared-models';
-import { Currency } from '../../../models';
+import { delay, isDefined } from "@railgun-community/shared-models";
+import { Currency } from "../../../models";
 import {
   CoinPaprikaApiEndpoint,
   getCoinPaprikaData,
-} from './coinpaprika-service';
-import { getCoinPaprikaTokenID } from './coinpaprika-token';
+} from "./coinpaprika-service";
+import { getCoinPaprikaTokenID } from "./coinpaprika-token";
 
 type TokenPrice = {
   price: number;
@@ -20,7 +20,7 @@ export type CoinPaprikaQuery = {
 
 export const paprikaPriceLookup = async (
   tokenQueries: CoinPaprikaQuery[],
-  currency: Currency,
+  currency: Currency
 ): Promise<TokenPrice[]> => {
   const priceResults: TokenPrice[] = [];
   for (const { symbol, tokenAddress } of tokenQueries) {
@@ -31,7 +31,7 @@ export const paprikaPriceLookup = async (
     const tokenTicker = await getCoinPaprikaData(
       CoinPaprikaApiEndpoint.Tickers,
       tokenID,
-      [currency.code],
+      [currency.code]
     );
     await delay(200);
     if (isDefined(tokenTicker)) {

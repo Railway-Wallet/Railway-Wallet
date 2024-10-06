@@ -1,9 +1,9 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useMemo, useState } from 'react';
-import { SendERC20sNumberInput } from '@components/views/ERC20AmountsNumPadView/SendERC20sNumberInput/SendERC20sNumberInput';
+} from "@railgun-community/shared-models";
+import React, { useMemo, useState } from "react";
+import { SendERC20sNumberInput } from "@components/views/ERC20AmountsNumPadView/SendERC20sNumberInput/SendERC20sNumberInput";
 import {
   compareTokens,
   ERC20Amount,
@@ -14,8 +14,8 @@ import {
   TransactionType,
   useRailgunFees,
   useValidateNumEntry,
-} from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
+} from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
 
 export const useSendERC20sNumInput = (
   transactionType: TransactionType,
@@ -33,9 +33,9 @@ export const useSendERC20sNumInput = (
   requiresApproval: boolean,
   focused: boolean,
   singleFeeChecked: boolean,
-  bothFeesChecked: boolean,
+  bothFeesChecked: boolean
 ) => {
-  const [numEntryString, setNumEntryString] = useState('');
+  const [numEntryString, setNumEntryString] = useState("");
   const isShieldView = transactionType === TransactionType.Shield;
   const isUnshieldView = transactionType === TransactionType.Unshield;
 
@@ -43,7 +43,7 @@ export const useSendERC20sNumInput = (
 
   const { finalEntryBigInt, finalEntryString } = useMemo(() => {
     if (!isDefined(currentToken)) {
-      return { finalEntryBigInt: 0n, finalEntryString: '' };
+      return { finalEntryBigInt: 0n, finalEntryString: "" };
     }
 
     const addShieldFee = (singleFeeChecked && isShieldView) || bothFeesChecked;
@@ -54,7 +54,7 @@ export const useSendERC20sNumInput = (
         numEntryString,
         currentToken.decimals,
         addShieldFee ? shieldFee : undefined,
-        addUnshieldFee ? unshieldFee : undefined,
+        addUnshieldFee ? unshieldFee : undefined
       );
 
     return { finalEntryBigInt, finalEntryString };
@@ -76,7 +76,7 @@ export const useSendERC20sNumInput = (
     tokenBalance,
     transactionType,
     currentToken,
-    isRailgunBalance,
+    isRailgunBalance
   );
 
   const onTapMaxButton = () => {
@@ -94,7 +94,7 @@ export const useSendERC20sNumInput = (
 
     const newString = formatUnitFromHexString(
       adjustedMaxAmount,
-      currentToken.decimals,
+      currentToken.decimals
     );
     triggerHaptic(HapticSurface.SelectItem);
     updateAmount(newString);
@@ -102,7 +102,7 @@ export const useSendERC20sNumInput = (
 
   const onTapClearButton = () => {
     triggerHaptic(HapticSurface.SelectItem);
-    updateAmount('');
+    updateAmount("");
   };
 
   const updateAmount = (amount: string) => {

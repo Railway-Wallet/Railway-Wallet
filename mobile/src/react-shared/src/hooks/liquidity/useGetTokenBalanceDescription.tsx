@@ -1,33 +1,33 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { ERC20Token } from '../../models/token';
+} from "@railgun-community/shared-models";
+import { ERC20Token } from "../../models/token";
 import {
   formatNumberToLocaleWithMinDecimals,
   getDecimalBalance,
   getTokenDisplayName,
   truncateStr,
-} from '../../utils';
-import { useERC20BalancesSerialized } from '../balances';
-import { useReduxSelector } from '../hooks-redux';
+} from "../../utils";
+import { useERC20BalancesSerialized } from "../balances";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useGetTokenBalanceDescription = (
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
+  balanceBucketFilter: RailgunWalletBalanceBucket[]
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
   const useRailgunBalances = true;
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     useRailgunBalances,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const getTokenBalanceDescription = (token: ERC20Token) => {
     let description = `${getTokenDisplayName(
       token,
       wallets.available,
-      network.current.name,
+      network.current.name
     )}`;
     const balance = tokenBalancesSerialized[token.address.toLowerCase()];
     const hasBalance = isDefined(balance);
@@ -36,15 +36,14 @@ export const useGetTokenBalanceDescription = (
       const balanceDecimal = getDecimalBalance(BigInt(balance), token.decimals);
       const balanceText = hasBalance
         ? balanceDecimal > 0 && balanceDecimal < 0.0001
-          ? '<' + formatNumberToLocaleWithMinDecimals(0.0001, 4)
+          ? "<" + formatNumberToLocaleWithMinDecimals(0.0001, 4)
           : formatNumberToLocaleWithMinDecimals(balanceDecimal, 4)
         : undefined;
 
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       description = `${truncateStr(balanceText, 12)} ${getTokenDisplayName(
         token,
         wallets.available,
-        network.current.name,
+        network.current.name
       )}`;
     }
     return description;

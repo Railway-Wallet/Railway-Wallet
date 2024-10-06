@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AvailableWallet,
   FrontendWallet,
   ViewOnlyWallet,
-} from '../../models/wallet';
+} from "../../models/wallet";
 
 export type WalletsState = {
   viewOnly: ViewOnlyWallet[];
@@ -18,7 +18,7 @@ const initialState = {
 } as WalletsState;
 
 const slice = createSlice({
-  name: 'wallet',
+  name: "wallet",
   initialState,
   reducers: {
     setActiveWalletByID(state, action: PayloadAction<string>) {
@@ -42,8 +42,8 @@ const slice = createSlice({
     },
     removeWalletByID(state, action: PayloadAction<string>) {
       const id = action.payload;
-      state.available = state.available.filter(wallet => wallet.id !== id);
-      state.viewOnly = state.viewOnly.filter(wallet => wallet.id !== id);
+      state.available = state.available.filter((wallet) => wallet.id !== id);
+      state.viewOnly = state.viewOnly.filter((wallet) => wallet.id !== id);
 
       if (state.active?.id === id) {
         state.active = undefined;

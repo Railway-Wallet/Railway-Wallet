@@ -1,5 +1,5 @@
-import { TXIDVersion } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TXIDVersion } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const DEFAULT_TXID_VERSION = TXIDVersion.V2_PoseidonMerkle;
 
@@ -12,7 +12,7 @@ const initialState = {
 } as TXIDVersionState;
 
 const slice = createSlice({
-  name: 'txidVersion',
+  name: "txidVersion",
   initialState,
   reducers: {
     setTXIDVersion(state, action: PayloadAction<TXIDVersion>) {

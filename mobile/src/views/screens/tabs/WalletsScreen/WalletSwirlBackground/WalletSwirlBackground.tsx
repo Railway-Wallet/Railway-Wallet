@@ -1,7 +1,7 @@
-import React from 'react';
-import { Animated } from 'react-native';
-import { SwirlBackground } from '@components/images/SwirlBackground/SwirlBackground';
-import { SWIRL_DEFAULT_WIDTH_PCT } from '@components/images/SwirlBackground/styles';
+import React from "react";
+import { Animated } from "react-native";
+import { SwirlBackground } from "@components/images/SwirlBackground/SwirlBackground";
+import { SWIRL_DEFAULT_WIDTH_PCT } from "@components/images/SwirlBackground/styles";
 
 type Props = {
   animate: boolean;
@@ -25,7 +25,7 @@ export const WalletSwirlBackground: React.FC<Props> = ({ animate }) => {
           duration: ANIMATION_DURATION,
           useNativeDriver: false,
         }),
-      ]),
+      ])
     ).start();
   } else {
     Animated.timing(widthPct, {
@@ -39,20 +39,20 @@ export const WalletSwirlBackground: React.FC<Props> = ({ animate }) => {
     <Animated.View
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         width: widthPct.interpolate({
           inputRange: [0, 1],
           outputRange: [
-            SWIRL_DEFAULT_WIDTH_PCT + '%',
-            SWIRL_DEFAULT_WIDTH_PCT * 1.05 + '%',
+            SWIRL_DEFAULT_WIDTH_PCT + "%",
+            SWIRL_DEFAULT_WIDTH_PCT * 1.05 + "%",
           ],
         }),
         height: 75,
       }}
     >
       {/* eslint-disable-next-line react-native/no-inline-styles */}
-      <SwirlBackground style={{ width: '100%', marginTop: 12 }} />
+      <SwirlBackground style={{ width: "100%", marginTop: 12 }} />
     </Animated.View>
   );
 };

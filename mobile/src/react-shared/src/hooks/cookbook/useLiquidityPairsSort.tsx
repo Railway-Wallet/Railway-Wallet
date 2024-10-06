@@ -1,19 +1,19 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { useERC20BalancesSerialized } from '../balances';
-import { FrontendLiquidityPair } from './useLiquidityPairsForWalletFilter';
+} from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { useERC20BalancesSerialized } from "../balances";
+import { FrontendLiquidityPair } from "./useLiquidityPairsForWalletFilter";
 
 export const useLiquidityPairsSort = (
   liquidityPairs: Optional<FrontendLiquidityPair[]>,
-  isRailgun: boolean,
+  isRailgun: boolean
 ) => {
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const sortedLiquidityPairs = useMemo(() => {
@@ -67,7 +67,6 @@ export const useLiquidityPairsSort = (
 
       return 0;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liquidityPairs, tokenBalancesSerialized]);
 
   return { sortedLiquidityPairs };

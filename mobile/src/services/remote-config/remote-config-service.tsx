@@ -1,5 +1,5 @@
-import { isDefined } from '@railgun-community/shared-models';
-import * as fs from 'react-native-fs';
+import { isDefined } from "@railgun-community/shared-models";
+import * as fs from "react-native-fs";
 import {
   AppDispatch,
   getLocalRemoteConfigDevOnly,
@@ -8,10 +8,10 @@ import {
   ReactConfig,
   RemoteConfig,
   setRemoteConfig,
-} from '@react-shared';
-import { Constants } from '@utils/constants';
-import { downloadFailed } from '@utils/downloads';
-import { fileExists } from '../util/fs-service';
+} from "@react-shared";
+import { Constants } from "@utils/constants";
+import { downloadFailed } from "@utils/downloads";
+import { fileExists } from "../util/fs-service";
 
 export class RemoteConfigService {
   dispatch: AppDispatch;
@@ -37,7 +37,7 @@ export class RemoteConfigService {
       return path;
     } catch (err) {
       logDevError(
-        new Error('Could not download remote config', { cause: err }),
+        new Error("Could not download remote config", { cause: err })
       );
       if (await fileExists(path)) {
         return path;
@@ -67,7 +67,7 @@ export class RemoteConfigService {
     const path = await this.downloadConfig();
     if (!isDefined(path)) {
       throw new Error(
-        'Could not download resources. Please check your network connection.',
+        "Could not download resources. Please check your network connection."
       );
     }
 
@@ -79,12 +79,12 @@ export class RemoteConfigService {
       return config;
     } catch (err) {
       logDevError(
-        new Error('Could not parse resource files', {
+        new Error("Could not parse resource files", {
           cause: err,
-        }),
+        })
       );
       throw new Error(
-        `Could not parse resource files. Please try again later.`,
+        `Could not parse resource files. Please try again later.`
       );
     }
   }

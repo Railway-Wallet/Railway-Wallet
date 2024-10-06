@@ -2,11 +2,11 @@ import {
   isDefined,
   NFTAmountRecipient,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { ButtonIconOnly } from '@components/buttons/ButtonIconOnly/ButtonIconOnly';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+} from "@railgun-community/shared-models";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { ButtonIconOnly } from "@components/buttons/ButtonIconOnly/ButtonIconOnly";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 import {
   createSerializedERC20AmountRecipients,
   createSerializedNFTAmountRecipients,
@@ -24,22 +24,22 @@ import {
   transactionText,
   useAppDispatch,
   useReduxSelector,
-} from '@react-shared';
+} from "@react-shared";
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
-} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
+} from "@screens/modals/ErrorDetailsModal/ErrorDetailsModal";
 import {
   callActionSheet,
   OptionWithAction,
-} from '@services/util/action-sheet-options-service';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { openInAppBrowserLink } from '@services/util/in-app-browser-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { Icon } from '@views/components/icons/Icon';
-import { FullScreenSpinner } from '../../../../components/loading/FullScreenSpinner/FullScreenSpinner';
-import { SyncProofType } from '../PendingBalancesModal';
-import { styles } from './styles';
+} from "@services/util/action-sheet-options-service";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { openInAppBrowserLink } from "@services/util/in-app-browser-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { Icon } from "@views/components/icons/Icon";
+import { FullScreenSpinner } from "../../../../components/loading/FullScreenSpinner/FullScreenSpinner";
+import { SyncProofType } from "../PendingBalancesModal";
+import { styles } from "./styles";
 
 type Props = {
   txItem: NonSpendableTransaction;
@@ -47,7 +47,7 @@ type Props = {
   syncProofs: (syncType: SyncProofType) => void;
   navigateUnshieldToOrigin: (
     originalShieldTxid: string,
-    erc20AmountRecipients: ERC20AmountRecipient[],
+    erc20AmountRecipients: ERC20AmountRecipient[]
   ) => void;
 };
 
@@ -60,9 +60,9 @@ export const PendingBalancesItem: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const [memoNumberOfLines, setMemoNumberOfLines] =
     useState<Optional<number>>(4);
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { txidVersion } = useReduxSelector('txidVersion');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { txidVersion } = useReduxSelector("txidVersion");
 
   const { showActionSheetWithOptions } = useActionSheet();
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +83,7 @@ export const PendingBalancesItem: React.FC<Props> = ({
   > => {
     try {
       if (!wallets.active) {
-        throw new Error('No active wallet');
+        throw new Error("No active wallet");
       }
 
       const originalShieldTxid = transaction.id;
@@ -92,20 +92,20 @@ export const PendingBalancesItem: React.FC<Props> = ({
           txidVersion.current,
           network.current.name,
           wallets.active.railWalletID,
-          originalShieldTxid,
+          originalShieldTxid
         );
 
       return {
         erc20AmountRecipients: createSerializedERC20AmountRecipients(
           wallets.active,
           network.current.name,
-          erc20AmountRecipients,
+          erc20AmountRecipients
         ),
         nftAmountRecipients:
           createSerializedNFTAmountRecipients(nftAmountRecipients),
       };
     } catch (cause) {
-      const error = new Error('Error getting data to unshield to origin', {
+      const error = new Error("Error getting data to unshield to origin", {
         cause,
       });
       logDevError(error);
@@ -129,7 +129,8 @@ export const PendingBalancesItem: React.FC<Props> = ({
     }
 
     navigateUnshieldToOrigin(
-      transaction.id, unshieldToOriginData.erc20AmountRecipients,
+      transaction.id,
+      unshieldToOriginData.erc20AmountRecipients
     );
   };
 
@@ -163,14 +164,14 @@ export const PendingBalancesItem: React.FC<Props> = ({
 
     if (shouldAllowUnshieldToOrigin) {
       options.push({
-        name: 'Unshield to origin',
+        name: "Unshield to origin",
         action: unshieldToOrigin,
       });
     }
 
     if (isDefined(executeSyncProofs)) {
       options.push({
-        name: 'Resync proofs',
+        name: "Resync proofs",
         action: executeSyncProofs,
       });
     }
@@ -180,7 +181,7 @@ export const PendingBalancesItem: React.FC<Props> = ({
       action: async () => {
         const link = transactionLinkOnExternalScanSite(
           network.current.name,
-          transaction.id,
+          transaction.id
         );
         if (isDefined(link)) {
           await openInAppBrowserLink(link, dispatch);
@@ -191,7 +192,7 @@ export const PendingBalancesItem: React.FC<Props> = ({
     callActionSheet(
       showActionSheetWithOptions,
       `Transaction from ${formatTimestampDate()}`,
-      options,
+      options
     );
   };
 
@@ -212,11 +213,11 @@ export const PendingBalancesItem: React.FC<Props> = ({
   const poiStatusText = getTransactionPOIStatusInfoText(
     balanceBucket,
     transaction,
-    network.current,
+    network.current
   );
 
   return (
-    (<View style={styles.wrapper}>
+    <View style={styles.wrapper}>
       <FullScreenSpinner show={isLoading} />
       <View style={styles.headerRow}>
         <View style={styles.statusContainer}>
@@ -231,7 +232,7 @@ export const PendingBalancesItem: React.FC<Props> = ({
           </Text>
         </View>
         <ButtonIconOnly
-          icon={isAndroid() ? 'dots-vertical' : 'dots-horizontal'}
+          icon={isAndroid() ? "dots-vertical" : "dots-horizontal"}
           onTap={showTransactionMenu}
           size={24}
           color={styleguide.colors.white}
@@ -244,7 +245,7 @@ export const PendingBalancesItem: React.FC<Props> = ({
           network.current,
           wallets.active,
           wallets.available,
-          undefined,
+          undefined
         ).trim()}
       </Text>
       {isDefined(transaction.memoText) && (
@@ -277,6 +278,6 @@ export const PendingBalancesItem: React.FC<Props> = ({
         )}
       </View>
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-    </View>)
+    </View>
   );
 };

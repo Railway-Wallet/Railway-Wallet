@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { BackHandler, ScrollView, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { RecoveryStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { BackHandler, ScrollView, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { RecoveryStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   loadRailgunWalletByID,
   StoredWallet,
   styleguide,
   useAppDispatch,
   WalletStorageService,
-} from '@react-shared';
-import { SettingsListItem } from '@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem';
-import { getOrCreateDbEncryptionKey } from '@services/core/db';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isAndroid } from '@services/util/platform-os-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { SettingsListItem } from "@screens/tabs/SettingsScreen/SettingsListItem/SettingsListItem";
+import { getOrCreateDbEncryptionKey } from "@services/core/db";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { isAndroid } from "@services/util/platform-os-service";
+import { styles } from "./styles";
 
 type Props = {
-  navigation: NavigationProp<RecoveryStackParamList, 'RecoveryWallets'>;
+  navigation: NavigationProp<RecoveryStackParamList, "RecoveryWallets">;
   route: RouteProp<
-    { params?: RecoveryStackParamList['RecoveryWallets'] },
-    'params'
+    { params?: RecoveryStackParamList["RecoveryWallets"] },
+    "params"
   >;
 };
 
@@ -59,8 +59,8 @@ export const RecoveryWalletsScreen: React.FC<Props> = ({
     };
 
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      "hardwareBackPress",
+      backAction
     );
 
     return () => backHandler.remove();
@@ -73,15 +73,15 @@ export const RecoveryWalletsScreen: React.FC<Props> = ({
       await loadRailgunWalletByID(
         await getOrCreateDbEncryptionKey(),
         wallet.railWalletID,
-        true,
+        true
       );
-      navigation.navigate('SeedPhrase', {
-        screen: 'ShowViewingKey',
+      navigation.navigate("SeedPhrase", {
+        screen: "ShowViewingKey",
         params: { wallet },
       });
     } else {
-      navigation.navigate('SeedPhrase', {
-        screen: 'ShowSeedPhrase',
+      navigation.navigate("SeedPhrase", {
+        screen: "ShowSeedPhrase",
         params: { wallet },
       });
     }
@@ -95,8 +95,8 @@ export const RecoveryWalletsScreen: React.FC<Props> = ({
           title={wallet.name}
           description={
             wallet.isViewOnlyWallet ?? false
-              ? 'Show view-only private key'
-              : 'Show seed phrase'
+              ? "Show view-only private key"
+              : "Show seed phrase"
           }
           icon="chevron-right"
           onTap={() => onSelectWallet(wallet)}

@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const HEIGHT_BUTTON_TEXT_ICON_VERTICAL = 48;
 
@@ -15,11 +15,11 @@ export const styles = StyleSheet.create({
     height: HEIGHT_BUTTON_TEXT_ICON_VERTICAL,
   },
   textIconWrapper: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

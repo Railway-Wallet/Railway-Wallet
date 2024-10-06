@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   addButton: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignSelf: "center",
+    flexDirection: "row",
     ...styleguide.typography.button,
     backgroundColor: styleguide.colors.gray6_50,
     borderColor: styleguide.colors.buttonBorder,
@@ -19,18 +19,18 @@ export const styles = StyleSheet.create({
   discreetButtonText: {
     ...styleguide.typography.label,
     lineHeight: 26,
-    justifyContent: 'center',
-    alignSelf: 'center',
+    justifyContent: "center",
+    alignSelf: "center",
   },
   buttonsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
     flex: 1,
   },
   spinner: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 6,
   },
 });

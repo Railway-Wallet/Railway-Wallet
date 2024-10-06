@@ -1,22 +1,22 @@
-import { NetworkName } from '@railgun-community/shared-models';
+import { NetworkName } from "@railgun-community/shared-models";
 
 export enum ToastType {
-  Success = 'Success',
-  Error = 'Error',
-  Info = 'Info',
-  Copy = 'Copy',
+  Success = "Success",
+  Error = "Error",
+  Info = "Info",
+  Copy = "Copy",
 }
 
 export enum ToastAction {
-  Navigate = 'Navigate',
+  Navigate = "Navigate",
 }
 
 export enum ToastActionStack {
-  Wallets = 'Wallets',
+  Wallets = "Wallets",
 }
 
 export enum ToastActionScreen {
-  TokenInfo = 'TokenInfo',
+  TokenInfo = "TokenInfo",
 }
 
 export type ToastActionData = {

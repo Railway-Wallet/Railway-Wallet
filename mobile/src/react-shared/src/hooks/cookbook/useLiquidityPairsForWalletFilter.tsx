@@ -1,8 +1,8 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { ERC20TokenFullInfo, FrontendWallet } from '../../models';
-import { compareTokenAddress } from '../../utils';
-import { useReduxSelector } from '../hooks-redux';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { ERC20TokenFullInfo, FrontendWallet } from "../../models";
+import { compareTokenAddress } from "../../utils";
+import { useReduxSelector } from "../hooks-redux";
 
 export type FrontendLiquidityPair = {
   tokenA: ERC20TokenFullInfo;
@@ -11,10 +11,9 @@ export type FrontendLiquidityPair = {
 
 const checkUnsupportedBaseToken = (
   isRailgun: boolean,
-  token: Optional<ERC20TokenFullInfo>,
+  token: Optional<ERC20TokenFullInfo>
 ) => {
-  if (!isRailgun)
-    return true;
+  if (!isRailgun) return true;
 
   return !(token?.isBaseToken ?? false);
 };
@@ -22,9 +21,9 @@ const checkUnsupportedBaseToken = (
 export const useLiquidityPairsForWalletFilter = (
   wallet: Optional<FrontendWallet>,
   networkName: NetworkName,
-  isRailgun: boolean,
+  isRailgun: boolean
 ) => {
-  const { liquidity } = useReduxSelector('liquidity');
+  const { liquidity } = useReduxSelector("liquidity");
 
   const tokensForNetwork = wallet?.addedTokens[networkName];
   const liquidityPoolsForNetwork = liquidity.forNetwork[networkName]?.allPools;
@@ -46,20 +45,22 @@ export const useLiquidityPairsForWalletFilter = (
 
       for (const lpData of liquidityPoolsForNetwork) {
         const tokenA = tokensForNetwork.find(
-          t => compareTokenAddress(t.address, lpData.tokenAddressA) &&
-          checkUnsupportedBaseToken(isRailgun, t),
+          (t) =>
+            compareTokenAddress(t.address, lpData.tokenAddressA) &&
+            checkUnsupportedBaseToken(isRailgun, t)
         );
 
         const tokenB = tokensForNetwork.find(
-          t => compareTokenAddress(t.address, lpData.tokenAddressB) &&
-          checkUnsupportedBaseToken(isRailgun, t),
+          (t) =>
+            compareTokenAddress(t.address, lpData.tokenAddressB) &&
+            checkUnsupportedBaseToken(isRailgun, t)
         );
 
         if (isDefined(tokenA) && isDefined(tokenB)) {
           const alreadyAdded = liquidityPairList.some(
-            pair =>
+            (pair) =>
               compareTokenAddress(pair.tokenA.address, tokenA.address) &&
-              compareTokenAddress(pair.tokenB.address, tokenB.address),
+              compareTokenAddress(pair.tokenB.address, tokenB.address)
           );
 
           if (!alreadyAdded) {
@@ -67,8 +68,8 @@ export const useLiquidityPairsForWalletFilter = (
           }
         }
 
-        const liquidityToken = tokensForNetwork.find(t =>
-          compareTokenAddress(t.address, lpData.pairAddress),
+        const liquidityToken = tokensForNetwork.find((t) =>
+          compareTokenAddress(t.address, lpData.pairAddress)
         );
         if (isDefined(liquidityToken)) {
           liquidityTokenList.push(liquidityToken);

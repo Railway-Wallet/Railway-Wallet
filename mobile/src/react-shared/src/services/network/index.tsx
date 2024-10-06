@@ -1,2 +1,2 @@
-export * from './network-service';
-export * from './network-stored-settings';
+export * from "./network-service";
+export * from "./network-stored-settings";

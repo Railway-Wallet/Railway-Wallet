@@ -1,4 +1,4 @@
-import { Network, networkForChain } from '@railgun-community/shared-models';
+import { Network, networkForChain } from "@railgun-community/shared-models";
 import {
   AppDispatch,
   BridgeEvent,
@@ -6,7 +6,7 @@ import {
   BroadcasterStatusCallbackData,
   startWakuBroadcasterClient,
   updateBroadcasterConnectionStatus,
-} from '@react-shared';
+} from "@react-shared";
 
 export class WakuBroadcaster {
   static async start(
@@ -15,7 +15,7 @@ export class WakuBroadcaster {
     pubSubTopic: string,
     additionalDirectPeers: Optional<string[]>,
     peerDiscoveryTimeout: Optional<number>,
-    poiActiveListKeys: string[],
+    poiActiveListKeys: string[]
   ) {
     bridgeListen(
       BridgeEvent.OnBroadcasterStatusCallback,
@@ -28,9 +28,9 @@ export class WakuBroadcaster {
           updateBroadcasterConnectionStatus({
             networkName: network.name,
             broadcasterConnectionStatus: status,
-          }),
+          })
         );
-      },
+      }
     );
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -39,7 +39,7 @@ export class WakuBroadcaster {
       pubSubTopic,
       additionalDirectPeers,
       peerDiscoveryTimeout,
-      poiActiveListKeys,
+      poiActiveListKeys
     );
   }
 }

@@ -1,4 +1,4 @@
-import { ZeroXConfig, ZeroXQuote } from '@railgun-community/cookbook';
+import { ZeroXConfig, ZeroXQuote } from "@railgun-community/cookbook";
 import {
   EVMGasType,
   isDefined,
@@ -8,12 +8,12 @@ import {
   SelectedBroadcaster,
   TransactionGasDetails,
   TXIDVersion,
-} from '@railgun-community/shared-models';
-import React, { useRef, useState } from 'react';
-import { ContractTransaction } from 'ethers';
-import { ReviewTransactionView } from '@components/views/ReviewTransactionView/ReviewTransactionView';
-import { DAppsStackParamList } from '@models/navigation-models';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+} from "@railgun-community/shared-models";
+import React, { useRef, useState } from "react";
+import { ContractTransaction } from "ethers";
+import { ReviewTransactionView } from "@components/views/ReviewTransactionView/ReviewTransactionView";
+import { DAppsStackParamList } from "@models/navigation-models";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   AdjustedERC20AmountRecipientGroup,
   AvailableWallet,
@@ -31,21 +31,21 @@ import {
   usePublicSwapAdjustedSellERC20Amount,
   useReduxSelector,
   useUpdatingPublicSwapQuote,
-} from '@react-shared';
-import { WalletSecureServiceReactNative } from '@services/wallet/wallet-secure-service-react-native';
+} from "@react-shared";
+import { WalletSecureServiceReactNative } from "@services/wallet/wallet-secure-service-react-native";
 
 type Props = {
-  navigation: NavigationProp<DAppsStackParamList, 'SwapPublicConfirm'>;
+  navigation: NavigationProp<DAppsStackParamList, "SwapPublicConfirm">;
   route: RouteProp<
-    { params: DAppsStackParamList['SwapPublicConfirm'] },
-    'params'
+    { params: DAppsStackParamList["SwapPublicConfirm"] },
+    "params"
   >;
 };
 
 export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { remoteConfig } = useReduxSelector("remoteConfig");
 
   const {
     sellERC20Amount,
@@ -56,7 +56,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
   } = route.params;
 
   const [slippagePercent, setSlippagePercent] = useState(
-    originalSlippagePercentage,
+    originalSlippagePercentage
   );
 
   const dispatch = useAppDispatch();
@@ -70,20 +70,20 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
 
   const sellERC20AmountRecipient: ERC20AmountRecipient = {
     ...sellERC20Amount,
-    recipientAddress: '0x API',
+    recipientAddress: "0x API",
     externalUnresolvedToWalletAddress: undefined,
   };
 
   const { sellERC20AmountAdjusted, finalSellTokenAmount } =
     usePublicSwapAdjustedSellERC20Amount(
       sellERC20AmountRecipient,
-      currentGasDetails,
+      currentGasDetails
     );
 
   const sellERC20AmountRecipients: ERC20AmountRecipient[] =
     useMemoCustomCompare(
       [sellERC20AmountAdjusted ?? sellERC20AmountRecipient],
-      compareERC20AmountRecipientArrays,
+      compareERC20AmountRecipientArrays
     );
 
   ZeroXConfig.PROXY_API_DOMAIN = remoteConfig.current?.proxyApiUrl;
@@ -93,11 +93,11 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
       sellERC20AmountAdjusted,
       buyERC20,
       slippagePercentage,
-      ZeroXQuote.getSwapQuote,
+      ZeroXQuote.getSwapQuote
     );
 
   const onTransactionGasDetailsUpdate = (
-    gasDetails: Optional<TransactionGasDetails>,
+    gasDetails: Optional<TransactionGasDetails>
   ) => {
     setCurrentGasDetails(gasDetails);
   };
@@ -106,7 +106,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
   const buyERC20AmountRecipient: ERC20AmountRecipient = {
     token: buyERC20,
     amountString: buyERC20Amount.amount.toString(),
-    recipientAddress: '0x API',
+    recipientAddress: "0x API",
     externalUnresolvedToWalletAddress: undefined,
   };
 
@@ -135,7 +135,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
     _showSenderAddressToRecipient: boolean,
     _memoText: Optional<string>,
     success: () => void,
-    error: (err: Error) => void,
+    error: (err: Error) => void
   ): Promise<Optional<string>> => {
     try {
       const transactionWithGas: ContractTransaction = {
@@ -165,7 +165,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
         provider,
         fromWalletAddress,
         network.current.name,
-        customNonce,
+        customNonce
       );
       transactionWithGas.nonce = nonce;
 
@@ -176,17 +176,26 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
       ]);
       const transactionService = new SavedTransactionService(dispatch);
       await transactionService.saveSwapTransaction(
-        undefined, txResponse.hash,
+        undefined,
+        txResponse.hash,
         fromWalletAddress,
-        fromWalletAddress, finalSellTokenAmount ?? sellERC20Amount,
+        fromWalletAddress,
+        finalSellTokenAmount ?? sellERC20Amount,
         buyERC20AmountRecipient,
-        undefined, network.current,
-        false, false, false, undefined, undefined, undefined, txResponse.nonce,
+        undefined,
+        network.current,
+        false,
+        false,
+        false,
+        undefined,
+        undefined,
+        undefined,
+        txResponse.nonce
       );
       success();
       return txResponse.hash;
     } catch (cause) {
-      error(new Error('Failed to execute public swap.', { cause }));
+      error(new Error("Failed to execute public swap.", { cause }));
       return undefined;
     }
   };
@@ -195,7 +204,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
     _txidVersion: TXIDVersion,
     networkName: NetworkName,
     fromWalletAddress: string,
-    _erc20Amounts: ERC20Amount[],
+    _erc20Amounts: ERC20Amount[]
   ) => {
     const provider = await ProviderService.getProvider(networkName);
     return provider.estimateGas({
@@ -209,7 +218,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
   };
 
   const infoCalloutText = `Swapping tokens via public wallet.`;
-  const processingText = 'Swapping tokens...';
+  const processingText = "Swapping tokens...";
 
   return (
     <ReviewTransactionView

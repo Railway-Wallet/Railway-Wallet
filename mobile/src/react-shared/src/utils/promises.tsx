@@ -1,11 +1,11 @@
 export const delay = (delayInMS: number): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, delayInMS));
+  return new Promise((resolve) => setTimeout(resolve, delayInMS));
 };
 
 export function promiseTimeout<T>(
   promise: Promise<T>,
   ms: number,
-  customTimeoutError?: Error,
+  customTimeoutError?: Error
 ): Promise<T> {
   const timeout = new Promise((_resolve, reject) => {
     const id = setTimeout(() => {
@@ -15,12 +15,12 @@ export function promiseTimeout<T>(
   });
 
   return Promise.race([promise, timeout])
-    .then(result => result as T)
-    .catch(err => {
+    .then((result) => result as T)
+    .catch((err) => {
       if (!(err instanceof Error)) {
         throw err;
       }
-      if (err.message.startsWith('Timed out')) {
+      if (err.message.startsWith("Timed out")) {
         throw customTimeoutError ?? err;
       }
       throw err;
@@ -31,7 +31,7 @@ export async function poll<T>(
   fn: () => Promise<T>,
   passCondition: (result: T) => boolean,
   delayInMS: number,
-  allowedAttempts: number = 1,
+  allowedAttempts: number = 1
 ): Promise<Optional<T>> {
   let result = await fn();
   let attempts = 1;

@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { FooterButtonAndroid } from '@components/footers/FooterButtonAndroid/FooterButtonAndroid';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { HeaderTextButton } from '@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton';
-import { TextEntry } from '@components/inputs/TextEntry/TextEntry';
-import { useSetPinWarning } from '@hooks/alerts/useSetPinWarning';
-import { NewWalletStackParamList } from '@models/navigation-models';
-import { NavigationProp } from '@react-navigation/native';
+import React, { useState } from "react";
+import { View } from "react-native";
+import { FooterButtonAndroid } from "@components/footers/FooterButtonAndroid/FooterButtonAndroid";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { HeaderTextButton } from "@components/headers/headerSideComponents/HeaderTextButton/HeaderTextButton";
+import { TextEntry } from "@components/inputs/TextEntry/TextEntry";
+import { useSetPinWarning } from "@hooks/alerts/useSetPinWarning";
+import { NewWalletStackParamList } from "@models/navigation-models";
+import { NavigationProp } from "@react-navigation/native";
 import {
   FrontendWallet,
   SharedConstants,
   validateWalletName,
-} from '@react-shared';
-import { ProcessNewWalletModal } from '@screens/modals/ProcessNewWalletModal/ProcessNewWalletModal';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+} from "@react-shared";
+import { ProcessNewWalletModal } from "@screens/modals/ProcessNewWalletModal/ProcessNewWalletModal";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 interface CreateWalletScreenProps {
-  navigation: NavigationProp<NewWalletStackParamList, 'CreateWallet'>;
+  navigation: NavigationProp<NewWalletStackParamList, "CreateWallet">;
 }
 
 export const CreateWalletScreen: React.FC<CreateWalletScreenProps> = ({
@@ -26,7 +26,7 @@ export const CreateWalletScreen: React.FC<CreateWalletScreenProps> = ({
 }) => {
   const [showProcessModal, setShowProcessModal] = useState(false);
   const [hasValidEntries, setHasValidEntries] = useState(false);
-  const [walletName, setWalletName] = useState('');
+  const [walletName, setWalletName] = useState("");
 
   const { createPinModal } = useSetPinWarning();
 
@@ -37,7 +37,7 @@ export const CreateWalletScreen: React.FC<CreateWalletScreenProps> = ({
 
   const onSuccess = (wallet: FrontendWallet) => {
     setShowProcessModal(false);
-    navigation.navigate('SeedPhraseCallout', {
+    navigation.navigate("SeedPhraseCallout", {
       wallet,
     });
   };
@@ -84,7 +84,7 @@ export const CreateWalletScreen: React.FC<CreateWalletScreenProps> = ({
           <TextEntry
             viewStyles={[
               styles.walletNameInput,
-              walletName && walletName !== '' && !hasValidEntries
+              walletName && walletName !== "" && !hasValidEntries
                 ? styles.walletInputError
                 : undefined,
             ]}

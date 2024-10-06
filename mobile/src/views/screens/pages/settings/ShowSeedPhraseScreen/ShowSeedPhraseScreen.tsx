@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { AppHeader } from '@components/headers/AppHeader/AppHeader';
-import { HeaderBackButton } from '@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton';
-import { SeedPhraseView } from '@components/views/SeedPhraseView/SeedPhraseView';
-import { useSecurityAuthorization } from '@hooks/security/useSecurityAuthorization';
-import { SettingsStackParamList } from '@models/navigation-models';
-import { RouteProp } from '@react-navigation/native';
-import { styleguide } from '@react-shared';
-import { EnterPinModal } from '@screens/modals/EnterPinModal/EnterPinModal';
-import { SettingsListHeader } from '@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader';
-import { styles } from './styles';
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { AppHeader } from "@components/headers/AppHeader/AppHeader";
+import { HeaderBackButton } from "@components/headers/headerSideComponents/HeaderBackButton/HeaderBackButton";
+import { SeedPhraseView } from "@components/views/SeedPhraseView/SeedPhraseView";
+import { useSecurityAuthorization } from "@hooks/security/useSecurityAuthorization";
+import { SettingsStackParamList } from "@models/navigation-models";
+import { RouteProp } from "@react-navigation/native";
+import { styleguide } from "@react-shared";
+import { EnterPinModal } from "@screens/modals/EnterPinModal/EnterPinModal";
+import { SettingsListHeader } from "@screens/tabs/SettingsScreen/SettingsListHeader/SettingsListHeader";
+import { styles } from "./styles";
 
 type Props = {
   route: RouteProp<
-    { params: SettingsStackParamList['ShowSeedPhrase'] },
-    'params'
+    { params: SettingsStackParamList["ShowSeedPhrase"] },
+    "params"
   >;
 };
 

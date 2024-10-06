@@ -1,7 +1,7 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { SpinnerCubes } from '../../../../../components/loading/SpinnerCubes/SpinnerCubes';
-import { styles } from './styles';
+import React from "react";
+import { Text, View } from "react-native";
+import { SpinnerCubes } from "../../../../../components/loading/SpinnerCubes/SpinnerCubes";
+import { styles } from "./styles";
 
 type Props = {
   title: string;

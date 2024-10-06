@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   container: {
@@ -16,25 +16,25 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.text(),
   },
   progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginBottom: 20,
   },
   progressBarWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   warningText: {
     color: styleguide.colors.text(),
     ...styleguide.typography.caption,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 20,
   },
   errorText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 10,
   },
   errorShowMore: {
@@ -48,22 +48,22 @@ export const styles = StyleSheet.create({
     gap: 8,
     borderWidth: 1,
     borderColor: styleguide.colors.gray2(),
-    position: 'relative',
+    position: "relative",
   },
   copyButtonContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
     borderRadius: 5,
     backgroundColor: styleguide.colors.gray2(),
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     padding: 5,
   },
   loadingContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   tryAgain: {
     marginBottom: 20,

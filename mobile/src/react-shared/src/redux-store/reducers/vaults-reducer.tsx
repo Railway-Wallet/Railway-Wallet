@@ -1,7 +1,7 @@
-import { NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Vault } from '../../models/vault';
-import { logDevRedux } from '../../utils/logging';
+import { NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Vault } from "../../models/vault";
+import { logDevRedux } from "../../utils/logging";
 
 export type NetworkVaultsPayload = {
   networkName: NetworkName;
@@ -29,7 +29,7 @@ const initialState = {
 } as NetworkTokenVaultsState;
 
 const slice = createSlice({
-  name: 'vaults',
+  name: "vaults",
   initialState,
   reducers: {
     updateVaults(state, action: PayloadAction<NetworkVaultsPayload>) {

@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
-    flexDirection: 'column',
-    width: '100%',
+    flexDirection: "column",
+    width: "100%",
     marginTop: 8,
     paddingHorizontal: 12,
     paddingBottom: 12,
@@ -18,17 +18,17 @@ export const styles = StyleSheet.create({
     opacity: 0.6,
   },
   headerRow: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   statusContainer: {
     height: 24,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginLeft: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   statusIndicator: {
     height: 8,
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   memoText: {
     color: styleguide.colors.labelSecondary,
     ...styleguide.typography.caption,
-    fontStyle: 'italic',
+    fontStyle: "italic",
     marginTop: 4,
     marginBottom: 4,
     lineHeight: 20,
@@ -59,8 +59,8 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   footerWrapper: {
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
+    justifyContent: "space-between",
+    alignItems: "baseline",
   },
   footerText: {
     color: styleguide.colors.labelSecondary,
@@ -76,6 +76,6 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.heading3,
   },
   pendingBalancesButton: {
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
 });

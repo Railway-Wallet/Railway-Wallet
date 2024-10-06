@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   infoAlertWrapper: {
@@ -13,12 +13,12 @@ export const styles = StyleSheet.create({
   content: {
     paddingVertical: 12,
     paddingHorizontal: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    backgroundColor: 'black',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "black",
     borderRadius: 4,
-    alignItems: 'center',
+    alignItems: "center",
   },
   icon: {
     color: styleguide.colors.text(),
@@ -34,11 +34,11 @@ export const styles = StyleSheet.create({
   ctaButton: {
     ...styleguide.typography.caption,
     color: styleguide.colors.text(),
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
   expandableBorderView: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
   },
 });

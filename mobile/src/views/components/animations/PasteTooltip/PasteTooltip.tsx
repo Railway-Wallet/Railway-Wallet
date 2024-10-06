@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import {
   Animated,
   StyleProp,
@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-} from 'react-native';
-import { useClickOutside } from 'react-native-click-outside';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { styles } from './styles';
+} from "react-native";
+import { useClickOutside } from "react-native-click-outside";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { styles } from "./styles";
 
 const TOAST_ANIMATION_SPEED = 200;
 

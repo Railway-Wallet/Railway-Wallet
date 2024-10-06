@@ -1,32 +1,32 @@
-import { LiquidityV2Pool } from '@railgun-community/cookbook';
+import { LiquidityV2Pool } from "@railgun-community/cookbook";
 import {
   isDefined,
   Network,
   NFTAmountRecipient,
   TXIDVersion,
-} from '@railgun-community/shared-models';
+} from "@railgun-community/shared-models";
 import {
   ERC20Amount,
   ERC20AmountRecipient,
   ERC20Token,
-} from '../../models/token';
+} from "../../models/token";
 import {
   SavedTransaction,
   TransactionAction,
   TransactionStatus,
   TransactionType,
-} from '../../models/transaction';
-import { Vault } from '../../models/vault';
-import { AvailableWallet } from '../../models/wallet';
-import { AppDispatch, store } from '../../redux-store/store';
-import { convertLiquidityPoolToSerialized } from '../../utils';
-import { isWrappedBaseTokenForNetwork } from '../../utils/tokens';
-import { PendingTransactionWatcher } from '../transactions/pending-transaction-watcher';
+} from "../../models/transaction";
+import { Vault } from "../../models/vault";
+import { AvailableWallet } from "../../models/wallet";
+import { AppDispatch, store } from "../../redux-store/store";
+import { convertLiquidityPoolToSerialized } from "../../utils";
+import { isWrappedBaseTokenForNetwork } from "../../utils/tokens";
+import { PendingTransactionWatcher } from "../transactions/pending-transaction-watcher";
 import {
   getBaseTokenForNetwork,
   getWrappedTokenForNetwork,
-} from '../wallet/wallet-balance-service';
-import { SavedTransactionStore } from './saved-transaction-store';
+} from "../wallet/wallet-balance-service";
+import { SavedTransactionStore } from "./saved-transaction-store";
 
 export class SavedTransactionService {
   private savedTransactionStore: SavedTransactionStore;
@@ -48,10 +48,10 @@ export class SavedTransactionService {
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
     nonce: Optional<number>,
-    memoText: Optional<string>,
+    memoText: Optional<string>
   ): Promise<SavedTransaction> {
     if (sentViaBroadcaster && !broadcasterFeeERC20Amount) {
-      throw new Error('Expected to save gas fee (via broadcaster).');
+      throw new Error("Expected to save gas fee (via broadcaster).");
     }
 
     const action = TransactionAction.send;
@@ -87,7 +87,7 @@ export class SavedTransactionService {
     erc20AmountRecipients: ERC20AmountRecipient[],
     nftAmountRecipients: NFTAmountRecipient[],
     network: Network,
-    nonce: number,
+    nonce: number
   ): Promise<SavedTransaction> {
     const action = TransactionAction.receive;
     const status = TransactionStatus.completed;
@@ -123,7 +123,7 @@ export class SavedTransactionService {
     network: Network,
     spender: string,
     spenderName: string,
-    nonce: number,
+    nonce: number
   ): Promise<SavedTransaction> {
     const action = TransactionAction.approve;
     const status = TransactionStatus.pending;
@@ -156,7 +156,7 @@ export class SavedTransactionService {
     walletAddress: string,
     tokenAmount: ERC20Amount,
     network: Network,
-    nonce: number,
+    nonce: number
   ): Promise<SavedTransaction> {
     const action = TransactionAction.mint;
     const status = TransactionStatus.pending;
@@ -188,7 +188,7 @@ export class SavedTransactionService {
     originalTokenAmounts: ERC20Amount[],
     network: Network,
     cancelTransactionID: string,
-    nonce: number,
+    nonce: number
   ): Promise<SavedTransaction> {
     const action = TransactionAction.cancel;
     const status = TransactionStatus.pending;
@@ -215,7 +215,9 @@ export class SavedTransactionService {
       cancelTransactionID,
       network.name,
       status,
-      undefined, undefined, true,
+      undefined,
+      undefined,
+      true
     );
 
     await this.storeNewTransaction(tx, network);
@@ -237,7 +239,7 @@ export class SavedTransactionService {
     railgunFeeERC20Amounts: Optional<ERC20Amount[]>,
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ): Promise<SavedTransaction> {
     const action = TransactionAction.swap;
     const status = TransactionStatus.pending;
@@ -287,7 +289,7 @@ export class SavedTransactionService {
     railgunFeeERC20Amounts: Optional<ERC20Amount[]>,
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ): Promise<SavedTransaction> {
     const action =
       transactionType === TransactionType.FarmDeposit
@@ -337,7 +339,7 @@ export class SavedTransactionService {
     railgunFeeERC20Amounts: Optional<ERC20Amount[]>,
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ): Promise<SavedTransaction> {
     const action =
       transactionType === TransactionType.AddLiquidity
@@ -375,7 +377,7 @@ export class SavedTransactionService {
   private createShieldDestinationTokenAmounts = (
     outputERC20AmountRecipients: ERC20AmountRecipient[],
     isBaseTokenDeposit: boolean,
-    network: Network,
+    network: Network
   ): ERC20AmountRecipient[] => {
     if (!isBaseTokenDeposit) {
       return outputERC20AmountRecipients;
@@ -384,7 +386,7 @@ export class SavedTransactionService {
       return [];
     }
     const anyWallet = store.getState().wallets.available[0];
-    return outputERC20AmountRecipients.map(ta => {
+    return outputERC20AmountRecipients.map((ta) => {
       if (ta.token.isBaseToken ?? false) {
         return {
           token: getWrappedTokenForNetwork(anyWallet, network) as ERC20Token,
@@ -402,7 +404,7 @@ export class SavedTransactionService {
     activeWallet: AvailableWallet,
     outputERC20AmountRecipients: ERC20AmountRecipient[],
     isBaseTokenWithdraw: boolean,
-    network: Network,
+    network: Network
   ): ERC20AmountRecipient[] => {
     if (!isBaseTokenWithdraw) {
       return outputERC20AmountRecipients;
@@ -410,7 +412,7 @@ export class SavedTransactionService {
     if (!outputERC20AmountRecipients.length) {
       return [];
     }
-    return outputERC20AmountRecipients.map(ta => {
+    return outputERC20AmountRecipients.map((ta) => {
       if (isWrappedBaseTokenForNetwork(ta.token, network)) {
         return {
           token: getBaseTokenForNetwork(activeWallet, network) as ERC20Token,
@@ -433,7 +435,7 @@ export class SavedTransactionService {
     nftAmountRecipients: NFTAmountRecipient[],
     network: Network,
     isBaseTokenDeposit: boolean,
-    nonce: number,
+    nonce: number
   ): Promise<SavedTransaction> {
     const now = Date.now();
     const timestamp = now / 1000;
@@ -442,7 +444,7 @@ export class SavedTransactionService {
       this.createShieldDestinationTokenAmounts(
         outputERC20AmountRecipients,
         isBaseTokenDeposit,
-        network,
+        network
       );
 
     const tx: SavedTransaction = {
@@ -481,7 +483,7 @@ export class SavedTransactionService {
     isBaseTokenWithdraw: boolean,
     broadcasterFeeERC20Amount: Optional<ERC20Amount>,
     broadcasterRailgunAddress: Optional<string>,
-    nonce: Optional<number>,
+    nonce: Optional<number>
   ): Promise<SavedTransaction> {
     const networkName = network.name;
     const now = Date.now();
@@ -492,7 +494,7 @@ export class SavedTransactionService {
         activeWallet,
         outputERC20AmountRecipients,
         isBaseTokenWithdraw,
-        network,
+        network
       );
 
     const tx: SavedTransaction = {
@@ -537,7 +539,7 @@ export class SavedTransactionService {
     const networkName = network.name;
     await this.savedTransactionStore.addTransactions(
       [transaction],
-      networkName,
+      networkName
     );
     if (transaction.status === TransactionStatus.pending) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises

@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ShowToastProps } from '../../models/toast';
-import { generateKey } from '../../utils/util';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ShowToastProps } from "../../models/toast";
+import { generateKey } from "../../utils/util";
 
 type ReduxToastProps = ShowToastProps & {
   id: string;
@@ -17,7 +17,7 @@ const initialState = {
 } as ToastState;
 
 const slice = createSlice({
-  name: 'toast',
+  name: "toast",
   initialState,
   reducers: {
     showImmediateToast(state, action: PayloadAction<ShowToastProps>) {

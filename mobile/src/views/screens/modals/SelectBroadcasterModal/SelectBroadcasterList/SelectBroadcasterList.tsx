@@ -1,20 +1,20 @@
 import {
   isDefined,
   SelectedBroadcaster,
-} from '@railgun-community/shared-models';
-import React from 'react';
-import { FlatList, Text, View } from 'react-native';
-import { formatUnits } from 'ethers';
+} from "@railgun-community/shared-models";
+import React from "react";
+import { FlatList, Text, View } from "react-native";
+import { formatUnits } from "ethers";
 import {
   AppSettingsService,
   IconPublic,
   renderBroadcasterReliability,
   styleguide,
   useReduxSelector,
-} from '@react-shared';
-import { Icon } from '@views/components/icons/Icon';
-import { ListRow } from '@views/components/list/ListRow/ListRow';
-import { styles } from './styles';
+} from "@react-shared";
+import { Icon } from "@views/components/icons/Icon";
+import { ListRow } from "@views/components/list/ListRow/ListRow";
+import { styles } from "./styles";
 
 type Props = {
   selectedBroadcaster: Optional<SelectedBroadcaster>;
@@ -33,8 +33,8 @@ export const SelectBroadcasterList: React.FC<Props> = ({
   onSelect,
   onSelectRandom,
 }) => {
-  const { network } = useReduxSelector('network');
-  const { networkPrices } = useReduxSelector('networkPrices');
+  const { network } = useReduxSelector("network");
+  const { networkPrices } = useReduxSelector("networkPrices");
   const tokenPrices =
     networkPrices.forNetwork[network.current.name]?.forCurrency[
       AppSettingsService.currency.code
@@ -62,7 +62,7 @@ export const SelectBroadcasterList: React.FC<Props> = ({
     const reliabilityTag = `${renderBroadcasterReliability(reliability)}`;
     const reliabilityDescription = isDefined(reliability)
       ? reliability
-      : 'New broadcaster';
+      : "New broadcaster";
 
     if (isDefined(tokenPrices)) {
       const currentTokenPrice = tokenPrices[broadcaster.tokenAddress];
@@ -93,7 +93,7 @@ export const SelectBroadcasterList: React.FC<Props> = ({
           <Text
             style={styles.titleStyle}
           >{`Fee Ratio\n(${formattedParsedFee} ${feeTokenName} : 1 ${wrappedSymbol.slice(
-            1,
+            1
           )})`}</Text>
         }
         description={
@@ -121,10 +121,10 @@ export const SelectBroadcasterList: React.FC<Props> = ({
 
     return (
       <ListRow
-        title={<Text style={styles.titleStyle}>{'Random Broadcaster'}</Text>}
+        title={<Text style={styles.titleStyle}>{"Random Broadcaster"}</Text>}
         description={
           <Text style={styles.descriptionTextStyle}>
-            {'Auto-select random Public Broadcaster'}
+            {"Auto-select random Public Broadcaster"}
           </Text>
         }
         leftView={leftView}
@@ -140,7 +140,7 @@ export const SelectBroadcasterList: React.FC<Props> = ({
       contentContainerStyle={styles.contentContainer}
       data={allBroadcasters}
       renderItem={renderBroadcaster}
-      keyExtractor={item => item.railgunAddress}
+      keyExtractor={(item) => item.railgunAddress}
       ListHeaderComponent={
         noBroadcasters ? undefined : renderRandomBroadcasterRow
       }

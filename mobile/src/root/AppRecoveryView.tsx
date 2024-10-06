@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { ToastWrapperView } from '@components/views/ToastWrapperView/ToastWrapperView';
-import { RecoveryType } from '@models/RecoveryType';
-import { useAppDispatch, useReduxSelector } from '@react-shared';
-import { AppStartService } from '@services/core/app-start-service';
-import { RecoveryNavigationStack } from './RecoveryNavigation';
-import { styles } from './styles';
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import { ToastWrapperView } from "@components/views/ToastWrapperView/ToastWrapperView";
+import { RecoveryType } from "@models/RecoveryType";
+import { useAppDispatch, useReduxSelector } from "@react-shared";
+import { AppStartService } from "@services/core/app-start-service";
+import { RecoveryNavigationStack } from "./RecoveryNavigation";
+import { styles } from "./styles";
 
 type Props = {
   recoveryType: RecoveryType;
@@ -16,7 +16,7 @@ export const AppRecoveryView: React.FC<Props> = ({
   recoveryType,
   resetRecoveryMode,
 }) => {
-  const { backGestures } = useReduxSelector('backGestures');
+  const { backGestures } = useReduxSelector("backGestures");
 
   const [needsLockScreenOnLaunch, setNeedsLockScreenOnLaunch] = useState(false);
   const [recoveryReady, setRecoveryReady] = useState(false);

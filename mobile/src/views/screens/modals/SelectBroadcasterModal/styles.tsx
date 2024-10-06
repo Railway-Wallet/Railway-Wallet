@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { styleguide } from '@react-shared';
+import { StyleSheet } from "react-native";
+import { styleguide } from "@react-shared";
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.label,
     color: styleguide.colors.text(),
     marginVertical: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   footer: {
     paddingHorizontal: 16,
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   footerText: {
     marginVertical: 16,
-    textAlign: 'center',
+    textAlign: "center",
     color: styleguide.colors.text(),
   },
 });

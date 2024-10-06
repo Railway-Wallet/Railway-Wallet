@@ -1,8 +1,8 @@
 import {
   BroadcasterConnectionStatus,
   NetworkName,
-} from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+} from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Payload = {
   networkName: NetworkName;
@@ -22,7 +22,7 @@ const initialState = {
 } as BroadcasterStatusState;
 
 const slice = createSlice({
-  name: 'broadcaster-status',
+  name: "broadcaster-status",
   initialState,
   reducers: {
     updateBroadcasterConnectionStatus(state, action: PayloadAction<Payload>) {

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import Slider from '@react-native-community/slider';
-import { styleguide } from '@react-shared';
-import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { styles } from './styles';
+import React from "react";
+import { Text, View } from "react-native";
+import Slider from "@react-native-community/slider";
+import { styleguide } from "@react-shared";
+import { HapticSurface, triggerHaptic } from "@services/util/haptic-service";
+import { styles } from "./styles";
 
 type Props = {
   slippagePercentage: number;
@@ -17,7 +17,7 @@ export const SlippageSelector: React.FC<Props> = ({
   slippagePercentage,
 }) => {
   return (
-    (<View style={styles.content}>
+    <View style={styles.content}>
       <Text style={styles.sectionHeader}>
         Slippage: {(slippagePercentage * 100).toFixed(1)} %
       </Text>
@@ -39,6 +39,6 @@ export const SlippageSelector: React.FC<Props> = ({
         />
       </View>
       <Text style={styles.slippageDisclaimer}>{slippageDisclaimer}</Text>
-    </View>)
+    </View>
   );
 };

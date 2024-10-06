@@ -1,13 +1,13 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { SharedConstants } from '../../config/shared-constants';
-import { TransactionType } from '../../models/transaction';
-import { WalletAddressType } from '../../models/wallet-type';
-import { AppDispatch } from '../../redux-store/store';
-import { SavedAddressService } from '../../services/wallet/saved-address-service';
-import { shortenWalletAddress } from '../../utils/util';
-import { useReduxSelector } from '../hooks-redux';
-import { useKnownWalletName } from './useKnownWalletName';
+import { isDefined } from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { SharedConstants } from "../../config/shared-constants";
+import { TransactionType } from "../../models/transaction";
+import { WalletAddressType } from "../../models/wallet-type";
+import { AppDispatch } from "../../redux-store/store";
+import { SavedAddressService } from "../../services/wallet/saved-address-service";
+import { shortenWalletAddress } from "../../utils/util";
+import { useReduxSelector } from "../hooks-redux";
+import { useKnownWalletName } from "./useKnownWalletName";
 
 export const useSavedAddresses = (
   dispatch: AppDispatch,
@@ -16,34 +16,34 @@ export const useSavedAddresses = (
   address: string,
   transactionType: TransactionType,
   setAddressText: (address: string) => void,
-  saveAddressError: (error: Error) => void,
+  saveAddressError: (error: Error) => void
 ) => {
-  const { wallets } = useReduxSelector('wallets');
-  const { savedAddresses } = useReduxSelector('savedAddresses');
+  const { wallets } = useReduxSelector("wallets");
+  const { savedAddresses } = useReduxSelector("savedAddresses");
 
   const availableWalletChoices = wallets.available;
   const availableWalletOptions = useMemo(
     () =>
       availableWalletChoices
-        .filter(w => {
+        .filter((w) => {
           switch (transactionType) {
-          case TransactionType.ApproveShield:
-          case TransactionType.ApproveSpender:
-          case TransactionType.Cancel:
-          case TransactionType.Mint:
-          case TransactionType.Shield:
-          case TransactionType.Unshield:
-          case TransactionType.FarmDeposit:
-          case TransactionType.FarmRedeem:
-          case TransactionType.AddLiquidity:
-          case TransactionType.RemoveLiquidity:
-          case TransactionType.Swap:
-            return true;
-          case TransactionType.Send:
-            return !w.isActive;
+            case TransactionType.ApproveShield:
+            case TransactionType.ApproveSpender:
+            case TransactionType.Cancel:
+            case TransactionType.Mint:
+            case TransactionType.Shield:
+            case TransactionType.Unshield:
+            case TransactionType.FarmDeposit:
+            case TransactionType.FarmRedeem:
+            case TransactionType.AddLiquidity:
+            case TransactionType.RemoveLiquidity:
+            case TransactionType.Swap:
+              return true;
+            case TransactionType.Send:
+              return !w.isActive;
           }
         })
-        .map(w => {
+        .map((w) => {
           let walletAddress: string;
           switch (walletAddressType) {
             case WalletAddressType.Railgun:
@@ -59,26 +59,21 @@ export const useSavedAddresses = (
             action: () => setAddressText(walletAddress),
           };
         }),
-    [
-      availableWalletChoices,
-      setAddressText,
-      walletAddressType,
-      transactionType,
-    ],
+    [availableWalletChoices, setAddressText, walletAddressType, transactionType]
   );
 
   const savedAddressChoicesForWalletType = useMemo(() => {
     switch (walletAddressType) {
       case WalletAddressType.Railgun:
-        return savedAddresses.current.filter(w => isDefined(w.railAddress));
+        return savedAddresses.current.filter((w) => isDefined(w.railAddress));
       case WalletAddressType.Ethereum:
-        return savedAddresses.current.filter(w => isDefined(w.ethAddress));
+        return savedAddresses.current.filter((w) => isDefined(w.ethAddress));
     }
   }, [savedAddresses, walletAddressType]);
 
   const savedAddressOptionsForWalletType = useMemo(
     () =>
-      savedAddressChoicesForWalletType.map(w => {
+      savedAddressChoicesForWalletType.map((w) => {
         let walletAddress: string;
         switch (walletAddressType) {
           case WalletAddressType.Railgun:
@@ -93,21 +88,21 @@ export const useSavedAddresses = (
           action: () => setAddressText(walletAddress),
         };
       }),
-    [savedAddressChoicesForWalletType, setAddressText, walletAddressType],
+    [savedAddressChoicesForWalletType, setAddressText, walletAddressType]
   );
 
   const savedAddressOptionsForExternalResolved = useMemo(
     () =>
       savedAddresses.current
-        .filter(w => isDefined(w.externalResolvedAddress))
-        .map(w => {
+        .filter((w) => isDefined(w.externalResolvedAddress))
+        .map((w) => {
           const walletAddress = w.externalResolvedAddress as string;
           return {
             name: `${w.name}: ${walletAddress}`,
             action: () => setAddressText(walletAddress),
           };
         }),
-    [savedAddresses, setAddressText],
+    [savedAddresses, setAddressText]
   );
 
   const savedAddressOptions = useMemo(() => {
@@ -123,10 +118,10 @@ export const useSavedAddresses = (
   const saveWalletAddress = async (
     address: string,
     name: string,
-    walletAddressType: WalletAddressType,
+    walletAddressType: WalletAddressType
   ) => {
     if (name.length > SharedConstants.MAX_LENGTH_WALLET_NAME) {
-      throw new Error('Address name is too long.');
+      throw new Error("Address name is too long.");
     }
 
     let ethAddress, railAddress, externalResolvedAddress;
@@ -147,13 +142,13 @@ export const useSavedAddresses = (
         name,
         ethAddress,
         railAddress,
-        externalResolvedAddress,
+        externalResolvedAddress
       );
     } catch (cause) {
       if (!(cause instanceof Error)) {
-        throw new Error('Unexpected non-error thrown', { cause });
+        throw new Error("Unexpected non-error thrown", { cause });
       }
-      saveAddressError(new Error('Failed to save wallet address', { cause }));
+      saveAddressError(new Error("Failed to save wallet address", { cause }));
     }
   };
 

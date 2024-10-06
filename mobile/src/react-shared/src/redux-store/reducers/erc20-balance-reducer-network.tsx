@@ -1,13 +1,13 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   BASE_TOKEN_ADDRESS,
   ERC20Balance,
   ERC20BalancesSerialized,
-} from '../../models/token';
-import { cacheERC20Balances } from '../../services/wallet/wallet-balance-cache';
-import { logDevRedux } from '../../utils/logging';
-import { copyByValue } from '../../utils/util';
+} from "../../models/token";
+import { cacheERC20Balances } from "../../services/wallet/wallet-balance-cache";
+import { logDevRedux } from "../../utils/logging";
+import { copyByValue } from "../../utils/util";
 
 export type UpdateTokenBalancesPayload = {
   networkName: NetworkName;
@@ -30,12 +30,12 @@ const initialState = {
 } as NetworkWalletBalanceState;
 
 const slice = createSlice({
-  name: 'erc20-balances-network',
+  name: "erc20-balances-network",
   initialState,
   reducers: {
     updateERC20BalancesNetwork(
       state,
-      action: PayloadAction<UpdateTokenBalancesPayload>,
+      action: PayloadAction<UpdateTokenBalancesPayload>
     ) {
       const { networkName, walletID, updatedTokenBalances } = action.payload;
       if (

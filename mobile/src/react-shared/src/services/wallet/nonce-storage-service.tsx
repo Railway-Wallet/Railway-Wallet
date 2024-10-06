@@ -1,15 +1,15 @@
-import { isDefined, NetworkName } from '@railgun-community/shared-models';
-import { Provider } from 'ethers';
-import { SharedConstants } from '../../config/shared-constants';
-import { logDevError } from '../../utils/logging';
-import { StorageService } from '../storage/storage-service';
+import { isDefined, NetworkName } from "@railgun-community/shared-models";
+import { Provider } from "ethers";
+import { SharedConstants } from "../../config/shared-constants";
+import { logDevError } from "../../utils/logging";
+import { StorageService } from "../storage/storage-service";
 
 export class NonceStorageService {
   getNextTransactionNonce = async (
     provider: Provider,
     walletAddress: string,
     networkName: NetworkName,
-    customNonce?: number,
+    customNonce?: number
   ): Promise<number> => {
     if (isDefined(customNonce)) {
       return customNonce;
@@ -17,7 +17,7 @@ export class NonceStorageService {
 
     const [lastTransactionNonce, transactionCount] = await Promise.all([
       this.getLastTransactionNonce(walletAddress, networkName),
-      provider.getTransactionCount(walletAddress, 'pending'),
+      provider.getTransactionCount(walletAddress, "pending"),
     ]);
     if (isDefined(lastTransactionNonce)) {
       return Math.max(lastTransactionNonce + 1, transactionCount);
@@ -27,18 +27,18 @@ export class NonceStorageService {
 
   private getStorageKeyLastNonce = (
     walletAddress: string,
-    networkName: NetworkName,
+    networkName: NetworkName
   ) => {
     return `${SharedConstants.LAST_TRANSACTION_NONCE}|${walletAddress}|${networkName}}`;
   };
 
   private getLastTransactionNonce = async (
     walletAddress: string,
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<Optional<number>> => {
     try {
       const lastNonce = await StorageService.getItem(
-        this.getStorageKeyLastNonce(walletAddress, networkName),
+        this.getStorageKeyLastNonce(walletAddress, networkName)
       );
       if (isDefined(lastNonce)) {
         return parseInt(lastNonce, 10);
@@ -53,20 +53,20 @@ export class NonceStorageService {
   storeLastTransactionNonce = async (
     walletAddress: string,
     networkName: NetworkName,
-    nonce: number,
+    nonce: number
   ): Promise<void> => {
     await StorageService.setItem(
       this.getStorageKeyLastNonce(walletAddress, networkName),
-      nonce.toString(),
+      nonce.toString()
     );
   };
 
   clearLastTransactionNonce = async (
     walletAddress: string,
-    networkName: NetworkName,
+    networkName: NetworkName
   ): Promise<void> => {
     await StorageService.removeItem(
-      this.getStorageKeyLastNonce(walletAddress, networkName),
+      this.getStorageKeyLastNonce(walletAddress, networkName)
     );
   };
 }

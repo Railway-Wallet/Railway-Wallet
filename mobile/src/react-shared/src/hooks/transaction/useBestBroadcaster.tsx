@@ -1,20 +1,20 @@
 import {
   isDefined,
   SelectedBroadcaster,
-} from '@railgun-community/shared-models';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+} from "@railgun-community/shared-models";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   FindAllBroadcastersForToken,
   FindBestBroadcaster,
   UpdateBroadcasterAddressFilters,
-} from '../../models/callbacks';
-import { ERC20Token } from '../../models/token';
-import { TransactionType } from '../../models/transaction';
-import { compareTokenAddress } from '../../utils';
-import { shouldReplaceCurrentBroadcaster } from '../../utils/broadcaster';
-import { logDev } from '../../utils/logging';
-import { useReduxSelector } from '../hooks-redux';
-import { useBroadcasterAddressFilterUpdater } from './useBroadcasterAddressFilterUpdater';
+} from "../../models/callbacks";
+import { ERC20Token } from "../../models/token";
+import { TransactionType } from "../../models/transaction";
+import { compareTokenAddress } from "../../utils";
+import { shouldReplaceCurrentBroadcaster } from "../../utils/broadcaster";
+import { logDev } from "../../utils/logging";
+import { useReduxSelector } from "../hooks-redux";
+import { useBroadcasterAddressFilterUpdater } from "./useBroadcasterAddressFilterUpdater";
 
 const REFRESH_SELECTED_BROADCASTER_DELAY = 30000;
 const FIND_FIRST_BROADCASTER_DELAY = 2000;
@@ -28,9 +28,9 @@ export const useBestBroadcaster = (
   findBestBroadcaster: FindBestBroadcaster,
   findAllBroadcastersForToken: FindAllBroadcastersForToken,
   updateBroadcasterAddressFilters: UpdateBroadcasterAddressFilters,
-  forceBroadcaster: Optional<SelectedBroadcaster>,
+  forceBroadcaster: Optional<SelectedBroadcaster>
 ) => {
-  const { network } = useReduxSelector('network');
+  const { network } = useReduxSelector("network");
 
   const [selectedBroadcaster, setSelectedBroadcaster] =
     useState<Optional<SelectedBroadcaster>>();
@@ -40,7 +40,7 @@ export const useBestBroadcaster = (
     useState<Optional<SelectedBroadcaster[]>>();
 
   const { blocklist } = useBroadcasterAddressFilterUpdater(
-    updateBroadcasterAddressFilters,
+    updateBroadcasterAddressFilters
   );
 
   const requiresBroadcaster = useMemo(() => {
@@ -71,7 +71,7 @@ export const useBestBroadcaster = (
     const allBroadcastersForToken = await findAllBroadcastersForToken(
       network.current.chain,
       selectedFeeToken.address,
-      useRelayAdapt,
+      useRelayAdapt
     );
 
     setAllBroadcasters(allBroadcastersForToken ?? []);
@@ -80,7 +80,7 @@ export const useBestBroadcaster = (
   const refreshSelectedBroadcaster = useCallback(
     async (
       forceNewBroadcaster: Optional<boolean>,
-      forceBroadcaster: Optional<SelectedBroadcaster>,
+      forceBroadcaster: Optional<SelectedBroadcaster>
     ) => {
       if (selectedBroadcasterLocked) {
         return;
@@ -102,7 +102,7 @@ export const useBestBroadcaster = (
       const bestBroadcaster = await findBestBroadcaster(
         network.current.chain,
         selectedFeeToken.address,
-        useRelayAdapt,
+        useRelayAdapt
       );
       if (!bestBroadcaster) {
         setSelectedBroadcaster(undefined);
@@ -119,11 +119,11 @@ export const useBestBroadcaster = (
         (forceNewBroadcaster ?? false) ||
         shouldReplaceCurrentBroadcaster(
           newSelectedBroadcaster,
-          selectedBroadcaster,
+          selectedBroadcaster
         )
       ) {
         logDev(
-          `Selected Broadcaster: ${JSON.stringify(newSelectedBroadcaster)}`,
+          `Selected Broadcaster: ${JSON.stringify(newSelectedBroadcaster)}`
         );
         setSelectedBroadcaster(newSelectedBroadcaster);
       }
@@ -136,7 +136,7 @@ export const useBestBroadcaster = (
       selectedFeeToken.address,
       useRelayAdapt,
       selectedBroadcaster,
-    ],
+    ]
   );
 
   useEffect(() => {
@@ -154,7 +154,7 @@ export const useBestBroadcaster = (
           forceBroadcaster.railgunAddress) ||
       !compareTokenAddress(
         selectedBroadcaster.tokenAddress,
-        selectedFeeToken.address,
+        selectedFeeToken.address
       ) ||
       blocklist?.includes(selectedBroadcaster.railgunAddress);
 
@@ -168,15 +168,13 @@ export const useBestBroadcaster = (
 
     const refresh = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      refreshSelectedBroadcaster(
-        false, forceBroadcaster,
-      );
+      refreshSelectedBroadcaster(false, forceBroadcaster);
     };
     const interval = setInterval(
       refresh,
       selectedBroadcaster
         ? REFRESH_SELECTED_BROADCASTER_DELAY
-        : FIND_FIRST_BROADCASTER_DELAY,
+        : FIND_FIRST_BROADCASTER_DELAY
     );
 
     return () => clearInterval(interval);

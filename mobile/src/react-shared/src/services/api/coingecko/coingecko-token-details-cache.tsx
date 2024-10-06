@@ -1,8 +1,8 @@
-import { isDefined } from '@railgun-community/shared-models';
-import { SharedConstants } from '../../../config/shared-constants';
-import { CoingeckoTokenDetails } from '../../../models/token';
-import { logDevError } from '../../../utils/logging';
-import { StorageService } from '../../storage/storage-service';
+import { isDefined } from "@railgun-community/shared-models";
+import { SharedConstants } from "../../../config/shared-constants";
+import { CoingeckoTokenDetails } from "../../../models/token";
+import { logDevError } from "../../../utils/logging";
+import { StorageService } from "../../storage/storage-service";
 
 export class CoingeckoTokenDetailsCache {
   private static getStorageKey = (urlRoute: string) => {
@@ -10,11 +10,11 @@ export class CoingeckoTokenDetailsCache {
   };
 
   static getCached = async (
-    urlRoute: string,
+    urlRoute: string
   ): Promise<Optional<CoingeckoTokenDetails>> => {
     try {
       const storedCoingeckoToken = await StorageService.getItem(
-        CoingeckoTokenDetailsCache.getStorageKey(urlRoute),
+        CoingeckoTokenDetailsCache.getStorageKey(urlRoute)
       );
       if (isDefined(storedCoingeckoToken) && !!storedCoingeckoToken) {
         const coingeckoToken: CoingeckoTokenDetails =
@@ -35,11 +35,11 @@ export class CoingeckoTokenDetailsCache {
 
   static store = async (
     urlRoute: string,
-    coingeckoToken: CoingeckoTokenDetails,
+    coingeckoToken: CoingeckoTokenDetails
   ): Promise<void> => {
     await StorageService.setItem(
       this.getStorageKey(urlRoute),
-      JSON.stringify(coingeckoToken),
+      JSON.stringify(coingeckoToken)
     );
   };
 

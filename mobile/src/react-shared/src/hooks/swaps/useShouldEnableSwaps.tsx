@@ -1,13 +1,13 @@
-import { ZeroXQuote } from '@railgun-community/cookbook';
-import { useMemo } from 'react';
-import { useReduxSelector } from '../hooks-redux';
+import { ZeroXQuote } from "@railgun-community/cookbook";
+import { useMemo } from "react";
+import { useReduxSelector } from "../hooks-redux";
 
 export const useShouldEnableSwaps = (
-  unavailableOnPlatform: boolean = false,
+  unavailableOnPlatform: boolean = false
 ) => {
-  const { network } = useReduxSelector('network');
-  const { wallets } = useReduxSelector('wallets');
-  const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { network } = useReduxSelector("network");
+  const { wallets } = useReduxSelector("wallets");
+  const { remoteConfig } = useReduxSelector("remoteConfig");
 
   const shouldEnableSwaps = useMemo(() => {
     if (unavailableOnPlatform) {

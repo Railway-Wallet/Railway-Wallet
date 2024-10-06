@@ -1,19 +1,19 @@
 import {
   isDefined,
   RailgunWalletBalanceBucket,
-} from '@railgun-community/shared-models';
-import { useMemo } from 'react';
-import { ERC20TokenFullInfo } from '../../models';
-import { useERC20BalancesSerialized } from '../balances';
+} from "@railgun-community/shared-models";
+import { useMemo } from "react";
+import { ERC20TokenFullInfo } from "../../models";
+import { useERC20BalancesSerialized } from "../balances";
 
 export const useLiquidityTokensSort = (
   liquidityTokens: Optional<ERC20TokenFullInfo[]>,
-  isRailgun: boolean,
+  isRailgun: boolean
 ) => {
   const balanceBucketFilter = [RailgunWalletBalanceBucket.Spendable];
   const { tokenBalancesSerialized } = useERC20BalancesSerialized(
     isRailgun,
-    balanceBucketFilter,
+    balanceBucketFilter
   );
 
   const sortedLiquidityTokens = useMemo(() => {
@@ -21,10 +21,10 @@ export const useLiquidityTokensSort = (
 
     return liquidityTokens.sort((a, b) => {
       const balanceA = BigInt(
-        tokenBalancesSerialized[a.address.toLowerCase()] ?? 0,
+        tokenBalancesSerialized[a.address.toLowerCase()] ?? 0
       );
       const balanceB = BigInt(
-        tokenBalancesSerialized[b.address.toLowerCase()] ?? 0,
+        tokenBalancesSerialized[b.address.toLowerCase()] ?? 0
       );
 
       if (balanceA > balanceB) {
@@ -35,7 +35,6 @@ export const useLiquidityTokensSort = (
 
       return 0;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liquidityTokens, tokenBalancesSerialized]);
 
   return { sortedLiquidityTokens };

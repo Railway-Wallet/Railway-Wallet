@@ -1,4 +1,4 @@
-import { NetworkName } from '@railgun-community/shared-models';
+import { NetworkName } from "@railgun-community/shared-models";
 
 export type NetworkSettings = {
   canSendPublic: boolean;
@@ -13,11 +13,11 @@ export type NetworkSettings = {
 };
 
 export enum NetworkFeeSelection {
-  Slower = 'Slower',
-  Standard = 'Standard',
-  Faster = 'Faster',
-  Aggressive = 'Aggressive',
-  Custom = 'Custom',
+  Slower = "Slower",
+  Standard = "Standard",
+  Faster = "Faster",
+  Aggressive = "Aggressive",
+  Custom = "Custom",
 }
 
 export type SettingsForNetwork = {
