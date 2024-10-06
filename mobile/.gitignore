@@ -1,6 +1,6 @@
 node_modules
 .yarn
-Pods
+ios/Pods
 ios/build/generated/***
 .gradle
 android/build/
@@ -11,3 +11,6 @@ nodejs-assets
 *.keystore
 android/local.properties
 .yarnrc.yml
+
+# Probably we need to remove this in the future
+nodejs-src/nodejs-project/***/***.js***

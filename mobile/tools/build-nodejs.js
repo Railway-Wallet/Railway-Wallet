@@ -77,7 +77,7 @@ async function runAndReport(label, task) {
   } else {
     await runAndReport(
       'Install backend node modules',
-      spawn('yarn', ['--ignore-optional'], {
+      spawn('yarn', [], {
         cwd: `./nodejs-assets/nodejs-project`,
         env: {
           DONT_COMPILE_NODE_ADDON: [
