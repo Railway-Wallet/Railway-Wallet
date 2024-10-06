@@ -2,3 +2,12 @@ node_modules
 .yarn
 Pods
 ios/build/generated/***
+.gradle
+android/build/
+android/app/build/***
+nodejs-assets
+.idea
+.xcode.env.local
+*.keystore
+android/local.properties
+.yarnrc.yml

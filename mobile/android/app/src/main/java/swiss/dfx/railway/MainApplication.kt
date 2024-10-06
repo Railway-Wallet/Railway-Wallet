@@ -1,4 +1,4 @@
-package com.railway.rtp
+package swiss.dfx.railway
 
 import android.app.Application
 import com.facebook.react.PackageList

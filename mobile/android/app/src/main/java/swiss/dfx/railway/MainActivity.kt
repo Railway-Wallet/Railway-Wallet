@@ -1,4 +1,4 @@
-package com.railway.rtp
+package swiss.dfx.railway
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
