@@ -1,8 +1,6 @@
 {
-  "name": "railway-react-native",
-  "version": "5.6.0",
-  "private": true,
-  "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
+  "name": "dfx-railway-react-native",
+  "version": "1.0.0",
   "license": "AGPL-3.0-only",
   "scripts": {
     "test": "tsc --noEmit; jest",
