@@ -1,5 +1,5 @@
 import {
-  GetSwapQuote,
+  type GetSwapQuoteV2,
   RecipeERC20Amount,
   RecipeERC20Info,
   SwapQuoteData,
@@ -8,14 +8,14 @@ import { delay } from '@railgun-community/shared-models';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ERC20Amount, ERC20Token } from '../../models/token';
 import { logDevError } from '../../utils';
-import { generateKey, getSlippageBasisPoints } from '../../utils/util';
+import { generateKey, getSlippageBasisPointsNumber } from '../../utils/util';
 import { useReduxSelector } from '../hooks-redux';
 
 export const usePublicSwapQuote = (
   sellERC20Amount: Optional<ERC20Amount>,
   buyERC20: Optional<ERC20Token>,
   slippagePercentage: number,
-  getSwapQuote: GetSwapQuote,
+  getSwapQuote: GetSwapQuoteV2,
 ) => {
   const { network } = useReduxSelector('network');
 
@@ -25,7 +25,7 @@ export const usePublicSwapQuote = (
 
   const latestQuoteID = useRef<Optional<string>>();
   const slippageBasisPoints = useMemo(
-    () => getSlippageBasisPoints(slippagePercentage),
+    () => getSlippageBasisPointsNumber(slippagePercentage),
     [slippagePercentage],
   );
 

@@ -1,4 +1,4 @@
-import { ZeroXConfig, ZeroXQuote } from '@railgun-community/cookbook';
+import { ZeroXConfig, ZeroXV2Quote } from '@railgun-community/cookbook';
 import {
   ERC20Amount,
   usePublicSwapQuote,
@@ -25,7 +25,7 @@ export const ZeroXPublicSwapContent: React.FC<SwapContentProps> = ({
     sellERC20Amount,
     buyERC20,
     slippagePercentage,
-    ZeroXQuote.getSwapQuote,
+    ZeroXV2Quote.getSwapQuote,
   );
 
   const buyERC20Amount: Optional<ERC20Amount> =

@@ -31,11 +31,13 @@ export const getNetworkFallbackProviderJsonConfig = async (
   providerNodeType: ProviderNodeType,
 ): Promise<Optional<FallbackProviderJsonConfig>> => {
   const networkProvidersConfig = getNetworkProvidersConfig(providerNodeType);
+
   if (!networkProvidersConfig) {
     logDev(`No network providers in remote config`);
     return undefined;
   }
   const fallbackProviderConfig = networkProvidersConfig[networkName];
+
   if (!isDefined(fallbackProviderConfig)) {
     logDev(`No network providers for ${networkName} in remote config`);
     return undefined;
@@ -65,6 +67,7 @@ export const getNetworkFallbackProviderJsonConfig = async (
     possibleProviderJSONs,
     logDevError,
   );
+
   if (!availableProviderJSONs.length) {
     logDev('possibleProviderJSONs');
     logDev(possibleProviderJSONs);

@@ -44,7 +44,7 @@ export class AppStartService {
       this.dispatch,
       network,
       wakuPubSubTopic,
-      additionalDirectPeers,
+      [],
       wakuPeerDiscoveryTimeout,
       poiActiveListKeys,
     );
