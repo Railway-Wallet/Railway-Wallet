@@ -1,4 +1,7 @@
-import { GetSwapQuote, SwapQuoteData } from '@railgun-community/cookbook';
+import {
+  type GetSwapQuoteV2,
+  SwapQuoteData,
+} from '@railgun-community/cookbook';
 import { useRef, useState } from 'react';
 import { ERC20Amount, ERC20Token } from '../../models/token';
 import { usePublicSwapQuote } from './usePublicSwapQuote';
@@ -9,7 +12,7 @@ export const useUpdatingPublicSwapQuote = (
   sellERC20Amount: Optional<ERC20Amount>,
   buyERC20: ERC20Token,
   slippagePercentage: number,
-  getSwapQuote: GetSwapQuote,
+  getSwapQuote: GetSwapQuoteV2,
 ) => {
   const [lockedQuote, setLockedQuote] = useState<SwapQuoteData>(originalQuote);
 

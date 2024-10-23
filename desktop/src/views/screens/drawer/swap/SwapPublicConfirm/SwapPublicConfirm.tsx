@@ -1,4 +1,4 @@
-import { ZeroXConfig, ZeroXQuote } from '@railgun-community/cookbook';
+import { ZeroXConfig, ZeroXV2Quote } from '@railgun-community/cookbook';
 import {
   EVMGasType,
   isDefined,
@@ -84,7 +84,7 @@ export const SwapPublicConfirm = ({
       sellERC20AmountAdjusted,
       buyERC20,
       slippagePercent,
-      ZeroXQuote.getSwapQuote,
+      ZeroXV2Quote.getSwapQuote,
     );
 
   if (!isDefined(authKey)) {

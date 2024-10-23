@@ -372,6 +372,12 @@ export const getSlippageBasisPoints = (slippagePercentage: number): bigint => {
   return BigInt(Math.round(slippagePercentage * 10000));
 };
 
+export const getSlippageBasisPointsNumber = (
+  slippagePercentage: number,
+): number => {
+  return Math.round(slippagePercentage * 10000);
+};
+
 export const formatEntryAmountWithFeesIfNeeded = (
   numEntryString: string,
   tokenDecimals: number,

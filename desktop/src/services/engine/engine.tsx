@@ -33,6 +33,8 @@ import { isElectron } from '@utils/user-agent';
 
 const DB_PATH = 'lepton.db';
 
+let displayBatchListCallback: () => Promise<void>;
+
 export const startEngine = async (
   dispatch: AppDispatch,
   remoteConfig?: RemoteConfig,
@@ -125,13 +127,17 @@ const handleBalancesUpdate = async (
     },
   };
 
-  await updateWalletBalancesRailgun(
-    dispatch,
-    chain,
-    railgunWalletID,
-    erc20AmountsMap,
-    nftAmountsMap,
-  );
+  displayBatchListCallback = async () => {
+    await updateWalletBalancesRailgun(
+      dispatch,
+      chain,
+      railgunWalletID,
+      erc20AmountsMap,
+      nftAmountsMap,
+    );
+  };
+
+  await displayBatchListCallback();
 };
 
 const handlePOIProofProgress = (
@@ -182,31 +188,32 @@ const handleMerkletreeScanUpdate = async (
     return;
   }
 
-  const progressRounded = progress.toFixed(5);
+  const progressRounded = progress.toFixed(2);
   logDev(
     `Scan status for ${merkletreeType} merkletree: ${scanStatus}, progress ${progressRounded}. Chain: ${chain.id}`,
   );
 
   const merkletreeStatus =
     store.getState().merkletreeHistoryScan.forNetwork[network.name]?.forType[
-    merkletreeType
+      merkletreeType
     ];
   if (
     isDefined(merkletreeStatus) &&
     merkletreeStatus.status === MerkletreeScanStatus.Complete &&
-    progressRounded === (1).toFixed(5)
+    progressRounded === (1).toFixed(2)
   ) {
     return;
   }
 
-  dispatch(
-    setMerkletreeHistoryScanStatus({
-      merkletreeType,
-      networkName: network.name,
-      status: scanStatus,
-      progress,
-    }),
-  );
+    dispatch(
+      setMerkletreeHistoryScanStatus({
+        merkletreeType,
+        networkName: network.name,
+        status: scanStatus,
+        progress: parseFloat(progressRounded),
+      }),
+    );
+
 
   if (scanStatus === MerkletreeScanStatus.Complete) {
     await RailgunTransactionHistorySync.safeSyncTransactionHistory(
@@ -217,20 +224,38 @@ const handleMerkletreeScanUpdate = async (
   }
 };
 
-const handleProofProgress = (
+const handleProofProgress = async (
   progressEvent: ProofProgressEvent,
   dispatch: AppDispatch,
 ) => {
+  const progressRounded = progressEvent.progress.toFixed(5);
+  
+  if (
+    isDefined(displayBatchListCallback) &&
+    progressRounded === (100).toFixed(5)
+  ) {
+    await displayBatchListCallback();
+  }
+
   dispatch(setProofProgress(progressEvent));
 };
 
 const handleBatchListCallback = async (
   event: BatchListUpdateEvent,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) => {
-  const proofProgess = {
+  const proofProgress = {
     progress: event.percent,
     status: event.status,
+  };
+  const progressRounded = proofProgress.progress.toFixed(5);
+
+  if (
+    isDefined(displayBatchListCallback) &&
+    progressRounded === (100).toFixed(5)
+  ) {
+    await displayBatchListCallback();
   }
-  dispatch(setProofBatchProgress(proofProgess));
-}
+
+  dispatch(setProofBatchProgress(proofProgress));
+};

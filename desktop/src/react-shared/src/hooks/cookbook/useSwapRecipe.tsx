@@ -1,9 +1,8 @@
 import {
   RecipeERC20Info,
-  SwapQuoteData,
-  SwapRecipe,
+  type SwapQuoteData,
   ZeroXConfig,
-  ZeroXSwapRecipe,
+  ZeroXV2SwapRecipe,
 } from '@railgun-community/cookbook';
 import { useEffect, useMemo, useState } from 'react';
 import { CookbookSwapRecipeType } from '../../models/cookbook';
@@ -42,17 +41,21 @@ export const useSwapRecipe = (
     buyERC20 ? getRecipeERC20Info(buyERC20) : undefined,
     compareRecipeERC20Info,
   );
-
-  const swapRecipe: Optional<SwapRecipe> = useMemo(() => {
+  const swapRecipe: Optional<ZeroXV2SwapRecipe> = useMemo(() => {
     if (!sellERC20Info || !buyERC20Info) {
       return undefined;
     }
+    const slippageBasisPointsNumber = parseInt(
+      slippageBasisPoints.toString(),
+      10,
+    );
     switch (swapRecipeType) {
       case CookbookSwapRecipeType.ZeroX:
-        return new ZeroXSwapRecipe(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
+        return new ZeroXV2SwapRecipe(
           sellERC20Info,
           buyERC20Info,
-          slippageBasisPoints,
+          slippageBasisPointsNumber,
           swapDestinationAddress,
         );
     }
