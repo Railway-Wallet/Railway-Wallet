@@ -4,7 +4,7 @@
 
 ## 1. Setup dev environment
 
-Ensure you have Xcode installed, `nvm`, Node.js 18.x, yarn, Homebrew, and [other dependencies that React Native needs](https://reactnative.dev/docs/environment-setup). To build native dependencies such as the native-prover, you probably need:
+Ensure you have Xcode installed, `nvm`, Node.js 18.17.1, yarn, Homebrew, and [other dependencies that React Native needs](https://reactnative.dev/docs/environment-setup). To build native dependencies such as the native-prover, you probably need:
 
 ```
 brew install ruby
@@ -77,5 +77,13 @@ And select a development team in Xcode.
 - `npx react-native run-ios`
 
 ---
+
+# Troubleshooting
+
+## hermes-engine: Command PhaseScriptExecution failed with a nonzero exit code
+
+- Delete xcode.env.local
+- pod install
+
 
 Copyright (C) Right to Privacy Foundation

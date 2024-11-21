@@ -1,0 +1,16 @@
+node_modules
+.yarn
+ios/Pods
+ios/build/generated/***
+.gradle
+android/build/
+android/app/build/***
+nodejs-assets
+.idea
+.xcode.env.local
+*.keystore
+android/local.properties
+.yarnrc.yml
+
+# Probably we need to remove this in the future
+nodejs-src/nodejs-project/***/***.js***

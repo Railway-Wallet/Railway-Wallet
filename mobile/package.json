@@ -13,7 +13,7 @@
     "prettier": "prettier src --write",
     "build-nodejs-android": "./tools/build-nodejs.js --android --verbose",
     "build-nodejs-ios": "./tools/build-nodejs.js --ios",
-    "postinstall": "node -e \"if(!process.env.SKIP_POSTINSTALL){process.exit(1)}\" || (npx patch-package && npx react-native setup-ios-permissions && npx pod-install && npx jetify && yarn react-shared && yarn lint)",
+    "postinstall": "node -e \"if(!process.env.SKIP_POSTINSTALL){process.exit(1)}\" || (npx patch-package && npx react-native setup-ios-permissions && npx pod-install && npx jetify && yarn react-shared)",
     "ios-clean": "xcodebuild clean -workspace ios/Railway.xcworkspace -scheme Railway",
     "ios-archive": "xcodebuild archive -workspace ios/Railway.xcworkspace -scheme Railway",
     "watch": "tsc --watch --noEmit --project './tsconfig.json'",
