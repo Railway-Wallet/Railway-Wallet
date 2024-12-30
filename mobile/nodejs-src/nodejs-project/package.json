@@ -14,19 +14,19 @@
     "check-circular-deps": "madge --circular .",
     "eslint": "eslint src --ext .ts,.tsx --fix",
     "remove-optional-breaking-deps": "rm -rf node_modules/bufferutil/ && rm -rf node_modules/utf-8-validate/ && rm -rf node_modules/@railgun-community/curve25519-scalarmult-wasm && rm -rf node_modules/@railgun-community/poseidon-hash-wasm",
-    "postinstall": "node -e \"if(!process.env.SKIP_POSTINSTALL){process.exit(1)}\" || (yarn remove-optional-breaking-deps && patch-package)",
+    "postinstall": "node -e \"if(!process.env.SKIP_POSTINSTALL){process.exit(1)}\" || (npm run remove-optional-breaking-deps && patch-package)",
     "lint": "yarn check-circular-deps; yarn eslint; yarn tsc"
   },
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
     "@railgun-community/curve25519-scalarmult-rsjs": "0.2.4",
     "@railgun-community/poseidon-hash-rsjs": "1.0.1",
-    "@railgun-community/shared-models": "7.4.3",
-    "@railgun-community/waku-broadcaster-client-node": "7.2.4",
-    "@railgun-community/wallet": "10.2.4",
+    "@railgun-community/shared-models": "^7.5.0",
+    "@railgun-community/waku-broadcaster-client-node": "^8.2.4",
+    "@railgun-community/wallet": "^10.3.3",
     "@railgun-privacy/native-prover": "https://ipfs-lb.b-cdn.net/ipfs/QmWRy7e57xSfeKfck6hLSFyJe9DNafpSZ3Af5bRFscHano/railgun-privacy-native-prover-4.0.2.tgz",
     "bindings-noderify-nodejs-mobile": "^10.5.0",
-    "ethers": "github:Railgun-Community/ethers.js#v6.7.10",
+    "ethers": "6.13.1",
     "leveldown-nodejs-mobile": "6.0.1-1",
     "no-op": "1.0.3",
     "nodejs-mobile-ipc2": "1.1.0",
@@ -35,6 +35,7 @@
   "engines": {
     "node": "18"
   },
+  "packageManager": "yarn@4.5.1+sha512.341db9396b6e289fecc30cd7ab3af65060e05ebff4b3b47547b278b9e67b08f485ecd8c79006b405446262142c7a38154445ef7f17c1d5d1de7d90bf9ce7054d",
   "devDependencies": {
     "@types/chai": "4.3.5",
     "@types/chai-as-promised": "^7.1.5",

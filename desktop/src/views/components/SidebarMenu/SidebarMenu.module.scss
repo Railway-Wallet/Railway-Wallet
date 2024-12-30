@@ -1,29 +1,5 @@
 @import '@scss/styleguide';
 
-@mixin scanContainer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 25px;
-  z-index: 2;
-}
-.proofBatchContainer {
-  @include scanContainer;
-  bottom: 160px;
-}
-.historyScanContainer {
-  @include scanContainer;
-  bottom: 100px;
-}
-
-.txidScanContainer {
-  @include scanContainer;
-  bottom: 130px;
-}
-
 .sideBarMenuContainer {
   padding: 32px 0 24px 0;
   display: flex;
@@ -34,6 +10,12 @@
   border-width: 0px;
   border-right: 1px solid gray6();
   position: relative;
+  transition: width 0.2s ease;
+}
+
+.sideBarMenuContainer.smallMenuContainer {
+  width: 70px;
+  min-width: 70px;
 }
 
 .imageLink {
@@ -48,6 +30,10 @@
 .logoContainer {
   padding: 0 24px;
   z-index: 3;
+}
+
+.logoContainer.smallLogoContainer {
+  padding: 2vh 14px;
 }
 
 .railwayLogoText {
@@ -80,6 +66,10 @@
   z-index: 2;
   flex: 1;
   padding-top: 10vh;
+}
+
+.linksContainer.linksContainerSmall {
+  padding-top: 8vh;
 }
 
 .settingsLink {
@@ -132,19 +122,26 @@
   padding-top: 20px;
 }
 
-.settingsButtonContainer {
+.footerButtonsContainer {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  flex: 0;
+  justify-content: center;
   z-index: 2;
+  gap: 12px;
+  padding: 0 24px;
+}
+
+.footerButtonsContainer.footerButtonsContainerSmall {
+  flex-direction: column;
 }
 
 .settingsButton {
+  max-width: fit-content;
   background-color: gray3();
   border-width: 0px;
   box-shadow: none;
   justify-content: flex-start;
+  height: inherit;
 }
 
 .settingsButtonText {
@@ -166,11 +163,4 @@
   bottom: 10vh;
   background-size: cover;
   background-repeat: none;
-}
-
-.historyScanText {
-  @include caption;
-  font-size: 13px;
-  margin-left: 12px;
-  color: $textSecondary;
 }

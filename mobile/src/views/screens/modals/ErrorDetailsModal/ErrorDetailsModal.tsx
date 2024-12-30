@@ -57,9 +57,12 @@ export const ErrorDetailsModal: React.FC<ErrorDetailsModalProps> = ({
   };
 
   const renderErrorMessage = (message: string, index: number) => (
-    <TouchableOpacity onPress={copyErrorMessage(message)}>
+    <TouchableOpacity
+      key={`${index}-${message}`}
+      onPress={copyErrorMessage(message)}
+    >
       {index > 0 && <Text style={styles.causedBy}>caused by</Text>}
-      <View key={index} style={styles.errorContainer}>
+      <View key={`view-${index}-${message}`} style={styles.errorContainer}>
         <Icon source="content-copy" size={14} color={styleguide.colors.white} />
         <Text style={styles.errorMessage}>{message}</Text>
       </View>

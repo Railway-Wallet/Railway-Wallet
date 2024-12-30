@@ -10,24 +10,26 @@ function onFailure() {
   exit 1
 }
 
-cd ./nodejs-assets/nodejs-project;
+pushd nodejs-assets/nodejs-project
 
-../../node_modules/.bin/esbuild \
-  main.js --bundle \
-  --platform=node \
-  --target=node18 \
-  --alias:bindings=bindings-noderify-nodejs-mobile \
-  --alias:default-gateway=no-op \
-  --alias:@achingbrain/ssdp=no-op \
-  --alias:@railgun-community/curve25519-scalarmult-wasm=@railgun-community/curve25519-scalarmult-rsjs \
-  --alias:@railgun-community/poseidon-hash-wasm=@railgun-community/poseidon-hash-rsjs \
-  --alias:urlpattern-polyfill=urlpattern-polyfill-no-unicode \
-  --external:rn-bridge \
-  --minify-whitespace \
-  --minify-identifiers \
-  --outfile=main.js.bundled
+npx patch-package
+
+npx esbuild \
+	main.js --bundle \
+	--platform=node \
+	--target=node18 \
+	--alias:bindings=bindings-noderify-nodejs-mobile \
+	--alias:default-gateway=no-op \
+	--alias:@achingbrain/ssdp=no-op \
+	--alias:@railgun-community/curve25519-scalarmult-wasm=@railgun-community/curve25519-scalarmult-rsjs \
+	--alias:@railgun-community/poseidon-hash-wasm=@railgun-community/poseidon-hash-rsjs \
+	--alias:urlpattern-polyfill=urlpattern-polyfill-no-unicode \
+	--external:rn-bridge \
+	--minify-whitespace \
+	--minify-identifiers \
+	--outfile=main.js.bundled
 
 rm -rf main.js
 mv main.js.bundled main.js
 
-cd ../..;
+popd

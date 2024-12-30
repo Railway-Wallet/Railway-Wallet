@@ -1,4 +1,5 @@
 import '@ethersproject/shims';
+import './custom-event-polyfill.js'
 
 import { sendErrorMessage, setLoggers } from '@railgun-community/wallet';
 import './services/bridge/node-ipc-service';

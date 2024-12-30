@@ -21,6 +21,7 @@ export type TabOptionType = {
   tab: Tab;
   disabled?: boolean;
   badge?: number;
+  small?: boolean;
 };
 
 export const TabOption = ({
@@ -30,6 +31,7 @@ export const TabOption = ({
   tab,
   disabled = false,
   badge,
+  small = false,
 }: TabOptionType) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -76,29 +78,32 @@ export const TabOption = ({
         className={cn(styles.sidebarLinkContainer, {
           [styles.selectedLink]: !disabled && selected,
           [styles.disabled]: disabled,
+          [styles.sidebarLinkContainerSmall]: small,
         })}
       >
         {renderIcon(icon, iconSize, getIconColor())}
-        <div className={cn(styles.link, { [styles.disabled]: disabled })}>
-          <Text
-            className={cn(
-              styles.text,
-              disabled ? styles.disabledText : styles.enabledText,
+        {!small && (
+          <div className={cn(styles.link, { [styles.disabled]: disabled })}>
+            <Text
+              className={cn(
+                styles.text,
+                disabled ? styles.disabledText : styles.enabledText,
+              )}
+            >
+              {tab}
+              {isDefined(selectedDAppRoute) && (
+                <Text className={styles.selectedDApp}>
+                  {getTabFromTabRoute(selectedDAppRoute)}
+                </Text>
+              )}
+            </Text>
+            {isDefined(badge) && (
+              <div className={styles.badgeContainer}>
+                <Text className={styles.badge}>{badge}</Text>
+              </div>
             )}
-          >
-            {tab}
-            {isDefined(selectedDAppRoute) && (
-              <Text className={styles.selectedDApp}>
-                {getTabFromTabRoute(selectedDAppRoute)}
-              </Text>
-            )}
-          </Text>
-          {isDefined(badge) && (
-            <div className={styles.badgeContainer}>
-              <Text className={styles.badge}>{badge}</Text>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
       {openDappsModal && (
         <DAppsModal onClose={() => setOpenDappsModal(false)} />

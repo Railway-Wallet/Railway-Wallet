@@ -16,7 +16,7 @@ import {
 } from '../../models/callbacks';
 import { GasDetailsBySpeed, GasHistoryPercentile } from '../../models/gas';
 import { NetworkFeeSelection } from '../../models/network';
-import { ERC20AmountRecipient } from '../../models/token';
+import { ERC20AmountRecipient, ERC20Token } from '../../models/token';
 import { ProgressService } from '../../services';
 import { promiseTimeout } from '../../utils';
 import {
@@ -27,7 +27,11 @@ import {
 } from '../../utils/gas-by-speed';
 import { logDev, logDevError } from '../../utils/logging';
 import { networkGasText } from '../../utils/transactions';
-import { generateKey, valuesWithinThresholdBigNumber } from '../../utils/util';
+import {
+  formatUnitFromHexString,
+  generateKey,
+  valuesWithinThresholdBigNumber,
+} from '../../utils/util';
 import { useGasTokenBalanceError } from '../alerts/useGasTokenBalanceError';
 import { useReduxSelector } from '../hooks-redux';
 
@@ -52,7 +56,7 @@ export const useNetworkFeeGasEstimator = (
   sendWithPublicWallet: boolean,
   isMounted: () => boolean,
   gasEstimateProgressCallback: (progress: number) => void,
-  selectedFeeTokenAddress: string,
+  selectedFeeToken: ERC20Token,
   recipeOutput: Optional<RecipeOutput>,
 ) => {
   const { network } = useReduxSelector('network');
@@ -253,7 +257,7 @@ export const useNetworkFeeGasEstimator = (
       gasEstimateProgressCallback(10);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFeeTokenAddress]);
+  }, [selectedFeeToken.address]);
 
   const refreshGasEstimate = useCallback(async () => {
     if (!activeWallet) {
@@ -372,6 +376,34 @@ export const useNetworkFeeGasEstimator = (
       if (!(err instanceof Error)) {
         throw err;
       }
+
+      if (
+        err.message.includes('Private balance too low to pay broadcaster fee.')
+      ) {
+        const cause = err.cause?.toString();
+
+        if (isDefined(cause)) {
+          const hasSymbol = 'symbol' in selectedFeeToken;
+          const tokenBalance = cause.split('Balance: ')[1]?.split('.')[0];
+          const amountRequiredMessage = cause
+            .split('Amount required: ')[1]
+            ?.split(' ')[0];
+
+          if (hasSymbol) {
+            const tokenBalanceFormatted = formatUnitFromHexString(
+              tokenBalance,
+              selectedFeeToken.decimals,
+            );
+            const formattedAmountRequired = formatUnitFromHexString(
+              amountRequiredMessage,
+              selectedFeeToken.decimals,
+            );
+
+            err.message = `Your balance of ${tokenBalanceFormatted} ${selectedFeeToken.symbol} is too low to pay the broadcaster fee of ${formattedAmountRequired} ${selectedFeeToken.symbol}.`;
+          }
+        }
+      }
+
       logDevError(err);
       handleGasError(err);
     }

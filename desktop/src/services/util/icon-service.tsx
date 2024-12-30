@@ -2,6 +2,8 @@ import { ReactElement } from 'react';
 import {
   AiOutlineAppstore as NFTIcon,
   AiOutlineArrowDown as ArrowDownIcon,
+  AiOutlineArrowLeft as ArrowLeftIcon,
+  AiOutlineArrowRight as ArrowRightIcon,
   AiOutlineEye as EyeIcon,
   AiOutlinePlus as PlusIcon,
   AiOutlinePlusCircle as PlusCircleIcon,
@@ -109,6 +111,8 @@ export enum IconType {
   Wallet = 'Wallet',
   Ellipsis = 'Ellipsis',
   ArrowDown = 'ArrowDown',
+  ArrowRight = 'ArrowRightIcon',
+  ArrowLeft = 'ArrowLeftIcon',
   Swap = 'Swap',
   DApps = 'DApps',
   NFT = 'NFT',
@@ -218,6 +222,10 @@ export const renderIcon = (
       return <EllipsisIcon {...props} />;
     case IconType.ArrowDown:
       return <ArrowDownIcon {...props} />;
+    case IconType.ArrowLeft:
+      return <ArrowLeftIcon {...props} />;
+    case IconType.ArrowRight:
+      return <ArrowRightIcon {...props} />;
     case IconType.Swap:
       return <SwapIcon {...props} />;
     case IconType.DApps:

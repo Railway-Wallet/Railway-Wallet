@@ -16,10 +16,15 @@ export const ImageTokenWeth = () => require('../../assets/img/tokens/WETH.png');
 export const ImageTokenWbnb = () => require('../../assets/img/tokens/WBNB.png');
 export const ImageTokenWmatic = () =>
   require('../../assets/img/tokens/WMATIC.png');
+export const ImageTokenArb = () => require('../../assets/img/tokens/ARB.png');
 export const ImageTokenWbtc = () => require('../../assets/img/tokens/WBTC.png');
 export const ImageTokenDai = () => require('../../assets/img/tokens/DAI.png');
 export const ImageTokenBusd = () => require('../../assets/img/tokens/BUSD.png');
 export const ImageTokenUsdt = () => require('../../assets/img/tokens/USDT.png');
+export const ImageTokenSepolia = () =>
+  require('../../assets/img/tokens/SEPOLIA.png');
+export const ImageTokenHardhat = () =>
+  require('../../assets/img/tokens/HARDHAT.png');
 export const ImageTokenPlaceholder = () =>
   require('../../assets/img/tokens/placeholder.png');
 
@@ -42,6 +47,10 @@ export const ImageChainPolygon = () =>
   require('../../assets/img/chains/polygon.png');
 export const ImageChainArbitrum = () =>
   require('../../assets/img/chains/arbitrum.png');
+export const ImageChainSepolia = () =>
+  require('../../assets/img/chains/sepolia.png');
+export const ImageChainHardhat = () =>
+  require('../../assets/img/chains/hardhat.png');
 
 export const IconShielded = () =>
   require('../../assets/img/icons/shielded.png');

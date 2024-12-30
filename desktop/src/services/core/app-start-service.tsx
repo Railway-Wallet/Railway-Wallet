@@ -1,6 +1,4 @@
-import {
-  POI_REQUIRED_LISTS,
-} from '@railgun-community/shared-models';
+import { POI_REQUIRED_LISTS } from '@railgun-community/shared-models';
 import {
   AppDispatch,
   AppSettingsService,
@@ -44,12 +42,14 @@ export class AppStartService {
       this.dispatch,
       network,
       wakuPubSubTopic,
-      [],
+      additionalDirectPeers,
       wakuPeerDiscoveryTimeout,
       poiActiveListKeys,
     );
 
-    const blockedBroadcasterService = new BlockedBroadcasterService(this.dispatch);
+    const blockedBroadcasterService = new BlockedBroadcasterService(
+      this.dispatch,
+    );
     await blockedBroadcasterService.loadBlockedBroadcastersFromStorage();
 
     await startEngine(this.dispatch, remoteConfig);

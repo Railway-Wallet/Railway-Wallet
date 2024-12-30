@@ -16,6 +16,7 @@ export interface ButtonProps {
   buttonActiveClassName?: string;
   buttonClassName?: string;
   textClassName?: string;
+  iconClassName?: string;
   type?: ButtonTypes;
   alt?: string;
   children?: React.ReactNode;
@@ -39,6 +40,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       buttonClassName,
       buttonActiveClassName,
+      iconClassName,
       textClassName,
       alt,
       children,
@@ -94,19 +96,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <>
               {startIcon && (
                 <div
-                  className={cn(styles.icon, { [styles.iconLeft]: !iconOnly })}
+                  className={cn(
+                    styles.icon,
+                    { [styles.iconLeft]: !iconOnly },
+                    iconClassName,
+                  )}
                 >
                   {renderIcon(startIcon, iconSize)}
                 </div>
               )}
-              <div className={styles.columnContainer}>
-                <Text className={cn(styles.text, textClassName)}>
-                  {children ?? ''}
-                </Text>
-                {isDefined(subText) && (
-                  <Text className={styles.subText}>{subText}</Text>
-                )}
-              </div>
+              {(isDefined(children) || isDefined(subText)) && (
+                <div className={styles.columnContainer}>
+                  <Text className={cn(styles.text, textClassName)}>
+                    {children}
+                  </Text>
+                  {isDefined(subText) && (
+                    <Text className={styles.subText}>{subText}</Text>
+                  )}
+                </div>
+              )}
               {isDefined(endIcon) && (
                 <div
                   className={cn(styles.icon, { [styles.iconRight]: !iconOnly })}

@@ -33,6 +33,7 @@ export const styles = {
     borderRadius: 4,
     padding: 0,
     border: `1px solid ${styleguide.colors.gray9()}`,
+    backgroundColor: styleguide.colors.gray3(),
   },
   menuList: {
     padding: 0,
@@ -50,10 +51,33 @@ export const styles = {
     color: styleguide.colors.white,
     backgroundColor: styleguide.colors.gray3(),
   },
+  optionSmall: {
+    padding: '8px 4px',
+    cursor: 'pointer',
+    fontFamily: typography.fontFamily,
+    color: styleguide.colors.white,
+    backgroundColor: styleguide.colors.gray3(),
+  },
   selectedOption: {
     backgroundColor: styleguide.colors.gray5(),
   },
   focusedOption: {
     backgroundColor: styleguide.colors.gray6(),
+  },
+  menuListSmall: {
+    overflowY: 'unset' as 'unset',
+    justifyItems: 'center',
+  },
+  valueContainerSmall: {
+    padding: '0px',
+    justifyContent: 'center',
+  },
+  singleValueSmall: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: '42px',
+    minHeight: '42px',
+    cursor: 'pointer',
   },
 };

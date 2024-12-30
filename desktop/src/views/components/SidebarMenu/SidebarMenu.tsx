@@ -1,25 +1,24 @@
 import {
   isDefined,
-  MerkletreeScanStatus,
   NetworkName,
   TXIDVersion,
 } from '@railgun-community/shared-models';
 import { useEffect, useMemo, useState } from 'react';
+import cn from 'classnames';
 import { Button } from '@components/Button/Button';
 import { Drawer } from '@components/Drawer/Drawer';
 import { SlideDirection } from '@components/Drawer/DrawerContent/DrawerContent';
 import { FullScreenSpinner } from '@components/loading/FullScreenSpinner/FullScreenSpinner';
-import { Spinner } from '@components/loading/Spinner/Spinner';
 import { Selector } from '@components/Selector/Selector';
 import { Text } from '@components/Text/Text';
+import { useWindowSize } from '@hooks/useWindowSize';
 import { EVENT_CLOSE_DRAWER } from '@models/drawer-types';
 import {
   AppSettingsService,
+  getNetworkFrontendConfig,
   getSupportedNetworks,
   ImageSwirl,
   logDevError,
-  MerkletreeScanCurrentStatus,
-  MerkletreeType,
   networkForName,
   NetworkService,
   ReactConfig,
@@ -46,6 +45,7 @@ import {
 } from '@services/navigation/app-events';
 import { drawerEventsBus } from '@services/navigation/drawer-events';
 import { IconType } from '@services/util/icon-service';
+import { isSmallDevice } from '@utils/platform';
 import { TabOption, TabOptionType } from './TabOption/TabOption';
 import styles from './SidebarMenu.module.scss';
 
@@ -60,27 +60,12 @@ type TXIDOption = {
 };
 
 export const SidebarMenu = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const windowSize = useWindowSize();
   const { network } = useReduxSelector('network');
   const { txidVersion } = useReduxSelector('txidVersion');
-  const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
-  const { proofBatcher } = useReduxSelector('proofBatcher');
-
-
-  const [showLoadingText, setShowLoadingText] = useState<Optional<string>>();
-  const [errorModal, setErrorModal] = useState<
-    ErrorDetailsModalProps | undefined
-  >(undefined);
-
-  const networkOptions: NetworkOption[] = useMemo(() => {
-    const supportedNetworks = getSupportedNetworks();
-    return supportedNetworks.map(network => ({
-      value: network.name,
-      label:
-        network.isDevOnlyNetwork === true
-          ? `[DEV] ${network.publicName}`
-          : network.publicName,
-    }));
-  }, []);
+  const { pendingTransactionCount } = usePendingTransactionCount();
+  const { shouldEnableNFTs } = useShouldEnableNFTs();
 
   const txidOptions: TXIDOption[] = useMemo(() => {
     const txidVersions = Object.values(TXIDVersion);
@@ -89,26 +74,44 @@ export const SidebarMenu = (): JSX.Element => {
       label: textForTXIDVersion(txidVersion),
     }));
   }, []);
+  const networkOptions: NetworkOption[] = useMemo(() => {
+    const supportedNetworks = getSupportedNetworks();
+    return supportedNetworks.map(network => {
+      const { symbolIcon } = getNetworkFrontendConfig(network.name);
 
-  const initialNetworkOption =
-    networkOptions.find(n => n.value === network.current.name) ??
-    networkOptions[0];
-  const [currentNetworkOption, setCurrentNetworkOption] =
-    useState(initialNetworkOption);
-
+      return {
+        value: network.name,
+        icon: symbolIcon,
+        label:
+          network.isDevOnlyNetwork === true
+            ? `[DEV] ${network.publicName}`
+            : network.publicName,
+      };
+    });
+  }, []);
+  const currentDeviceIsSmall = isSmallDevice(windowSize);
   const currentTxidVersion = txidVersion.current;
   const initialTXIDOption =
     txidOptions.find(n => n.value === currentTxidVersion) ?? txidOptions[0];
+  const initialNetworkOption =
+    networkOptions.find(n => n.value === network.current.name) ??
+    networkOptions[0];
+
+  const [currentNetworkOption, setCurrentNetworkOption] =
+    useState(initialNetworkOption);
   const [currentTXIDOption, setCurrentTXIDOption] = useState(initialTXIDOption);
-
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
-
-  const dispatch = useAppDispatch();
+  const [isSmallMenu, setIsSmallMenu] = useState(currentDeviceIsSmall);
+  const [showLoadingText, setShowLoadingText] = useState<Optional<string>>();
+  const [errorModal, setErrorModal] = useState<
+    ErrorDetailsModalProps | undefined
+  >(undefined);
 
   useEffect(() => {
     setCurrentTXIDOption(
       txidOptions.find(n => n.value === currentTxidVersion) ?? txidOptions[0],
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTxidVersion]);
 
   const { pullPrices, pullBalances } = useBalancePriceRefresh(
@@ -119,10 +122,6 @@ export const SidebarMenu = (): JSX.Element => {
         onDismiss: () => setErrorModal(undefined),
       }),
   );
-
-  const { pendingTransactionCount } = usePendingTransactionCount();
-
-  const { shouldEnableNFTs } = useShouldEnableNFTs();
 
   const setNetworkOption = (networkName: NetworkName) => {
     const option = networkOptions.find(({ value }) => value === networkName);
@@ -190,9 +189,11 @@ export const SidebarMenu = (): JSX.Element => {
   };
 
   const changeNetworkViaEventsBus = async (data: AppEventData) => {
+    const appData = data as AppEventChangeNetworkData;
+
     await updateSelectedNetwork(
-      (data as AppEventChangeNetworkData).networkName,
-      (data as AppEventChangeNetworkData).forceChangeNetwork,
+      appData.networkName,
+      appData.forceChangeNetwork,
     );
   };
 
@@ -207,32 +208,6 @@ export const SidebarMenu = (): JSX.Element => {
   const closeSettings = () => setSettingsModalOpen(false);
 
   const openSettings = () => setSettingsModalOpen(true);
-
-  const utxoMerkletreeScanData: Optional<MerkletreeScanCurrentStatus> =
-    merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
-    MerkletreeType.UTXO
-    ];
-  const railgunBalancesUpdating =
-    utxoMerkletreeScanData?.status === MerkletreeScanStatus.Started ||
-    utxoMerkletreeScanData?.status === MerkletreeScanStatus.Updated;
-  const balanceScanProgress = utxoMerkletreeScanData?.progress ?? 0;
-
-  const txidMerkletreeScanData: Optional<MerkletreeScanCurrentStatus> =
-    merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
-    MerkletreeType.TXID
-    ];
-  const txidsUpdating =
-    txidMerkletreeScanData?.status === MerkletreeScanStatus.Started ||
-    txidMerkletreeScanData?.status === MerkletreeScanStatus.Updated;
-  const txidScanProgress = txidMerkletreeScanData?.progress ?? 0;
-
-  const batchListUpdating =
-    isDefined(proofBatcher) === true &&
-    isDefined(proofBatcher.status) === true &&
-    proofBatcher.status !== '' &&
-    // @ts-ignore - TS doesn't like the includes method
-    proofBatcher.status.includes('100.00%') === false;
-  const batchListProgress = proofBatcher?.status ?? '';
 
   const tabs: TabOptionType[] = useMemo(
     () => [
@@ -263,15 +238,25 @@ export const SidebarMenu = (): JSX.Element => {
   );
 
   const renderTabOption = (tab: TabOptionType, index: number) => (
-    <TabOption key={index} {...tab} />
+    <TabOption key={index} {...tab} small={isSmallMenu} iconSize={28} />
   );
 
   return (
     <>
-      <div className={styles.sideBarMenuContainer}>
+      <div
+        className={cn(styles.sideBarMenuContainer, {
+          [styles.smallMenuContainer]: isSmallMenu,
+        })}
+      >
         <div className={styles.innerContainer}>
-          <div className={styles.logoContainer}>
-            <Text className={styles.railwayLogoText}>RAILWAY</Text>
+          <div
+            className={cn(styles.logoContainer, {
+              [styles.smallLogoContainer]: isSmallMenu,
+            })}
+          >
+            {!isSmallMenu && (
+              <Text className={styles.railwayLogoText}>RAILWAY</Text>
+            )}
             <div className={styles.selectorsWrapper}>
               <Selector
                 options={networkOptions}
@@ -282,6 +267,7 @@ export const SidebarMenu = (): JSX.Element => {
                 }
                 containerClassName={styles.selector}
                 testId="network-selector"
+                small={isSmallMenu}
               />
               {ReactConfig.ENABLE_V3 && network.current.supportsV3 && (
                 <Selector
@@ -297,54 +283,39 @@ export const SidebarMenu = (): JSX.Element => {
               )}
             </div>
           </div>
-          <div className={styles.linksContainer}>
+          <div
+            className={cn(styles.linksContainer, {
+              [styles.linksContainerSmall]: isSmallMenu,
+            })}
+          >
             {tabs.map(renderTabOption)}
           </div>
           <div
             className={styles.swirl}
             style={{ backgroundImage: `url(${ImageSwirl()})` }}
           />
-          {railgunBalancesUpdating && (
-            <div className={styles.historyScanContainer}>
-              <Spinner size={20} />
-              <div>
-                <Text className={styles.historyScanText}>
-                  RAILGUN balances updating:{' '}
-                  {(balanceScanProgress * 100).toFixed(0)}%
-                </Text>
-              </div>
-            </div>
-          )}
-          {txidsUpdating && (
-            <div className={styles.txidScanContainer}>
-              <Spinner size={20} />
-              <div>
-                <Text className={styles.historyScanText}>
-                  RAILGUN TXIDs updating: {(txidScanProgress * 100).toFixed(0)}%
-                </Text>
-              </div>
-            </div>
-          )}
-          {batchListUpdating && (
-            <div className={styles.proofBatchContainer}>
-              <Spinner size={20} />
-              <div>
-                <Text className={styles.historyScanText}>
-                  {batchListProgress}
-                </Text>
-              </div>
-            </div>
-          )}
-          <div className={styles.settingsButtonContainer}>
+          <div
+            className={cn(styles.footerButtonsContainer, {
+              [styles.footerButtonsContainerSmall]: isSmallMenu,
+            })}
+          >
             <Button
+              children={isSmallMenu ? undefined : 'Settings'}
+              iconOnly={isSmallMenu}
               startIcon={IconType.Settings}
               onClick={openSettings}
               buttonClassName={styles.settingsButton}
               textClassName={styles.settingsButtonText}
-              iconSize={18}
-            >
-              Settings
-            </Button>
+              iconSize={20}
+            />
+            <Button
+              iconOnly
+              startIcon={isSmallMenu ? IconType.ArrowRight : IconType.ArrowLeft}
+              onClick={() => setIsSmallMenu(!isSmallMenu)}
+              buttonClassName={styles.settingsButton}
+              textClassName={styles.settingsButtonText}
+              iconSize={20}
+            />
           </div>
         </div>
       </div>

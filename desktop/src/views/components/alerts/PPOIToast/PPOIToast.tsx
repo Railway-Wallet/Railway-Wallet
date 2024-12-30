@@ -170,6 +170,10 @@ export const PPOIToast = () => {
                 : 'Loading next batch...'}
             </Text>
           </div>
+          <Text className={styles.descriptionText}>
+            Private POI checks that your tokens are not associated with known
+            bad activity
+          </Text>
           <Text className={styles.warningText}>
             Do not close the app while processing
           </Text>
@@ -204,6 +208,10 @@ export const PPOIToast = () => {
           <Text className={styles.progressText}>{progressText}</Text>
         </div>
         <ProgressBar progress={progress} className={styles.progressBar} />
+        <Text className={styles.descriptionText}>
+          Generating a proof to ensure your funds are not associated with known
+          bad activity source
+        </Text>
         <Text className={styles.warningText}>
           Do not close the app while processing
         </Text>

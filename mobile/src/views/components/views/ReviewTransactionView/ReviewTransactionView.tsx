@@ -389,7 +389,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
     sendWithPublicWallet,
     isMounted,
     updateGasEstimateProgress,
-    selectedFeeToken.address,
+    selectedFeeToken,
     recipeOutput,
   );
 
@@ -735,6 +735,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
   const skipBroadcaster = (pubKey?: string) => {
     if (isDefined(pubKey)) {
       dispatch(addSkippedBroadcaster(pubKey));
+      setForceBroadcaster(undefined);
     }
     resetProofAndGas();
   };

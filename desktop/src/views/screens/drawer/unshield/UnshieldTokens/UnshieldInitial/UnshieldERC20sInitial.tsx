@@ -19,9 +19,11 @@ import {
   getTokenDisplayName,
   hasOnlyWrappedBaseToken,
   SharedConstants,
- StorageService,  TransactionType,
+  StorageService,
+  TransactionType,
   useReduxSelector,
-  WalletAddressType } from '@react-shared';
+  WalletAddressType,
+} from '@react-shared';
 import { validateWalletAddress } from '@utils/validation';
 import {
   UnshieldERC20sConfirmData,

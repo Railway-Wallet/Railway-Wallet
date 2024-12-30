@@ -17,6 +17,11 @@
   }
 }
 
+.sidebarLinkContainer.sidebarLinkContainerSmall {
+  max-width: fit-content;
+  padding: 6px;
+}
+
 .selectedLink {
   background-color: gray2();
   border-color: gray8();

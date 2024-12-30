@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 import { ButtonWithTextAndIcon } from '@components/buttons/ButtonWithTextAndIcon/ButtonWithTextAndIcon';
 import { SecurityView } from '@components/views/SecurityView.tsx/SecurityView';
@@ -8,6 +8,7 @@ import { RootStackParamList } from '@models/navigation-models';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { setAuthKey, useAppDispatch } from '@react-shared';
 import { EnterPinModal } from '@screens/modals/EnterPinModal/EnterPinModal';
+import { LockedDeviceContext } from 'context/lockedDevice';
 import { styles } from './styles';
 
 type Props = {
@@ -16,12 +17,18 @@ type Props = {
 };
 
 export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
+  const lockedContext = useContext(LockedDeviceContext);
   const [showEnterPinModal, setShowEnterPinModal] = useState(false);
   const dispatch = useAppDispatch();
 
   useDisableHardwareBackButton();
 
-  const authorizeSession = (key: string) => {
+  useEffect(() => {
+    lockedContext?.setIsDeviceLocked(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const authSuccess = (key: string) => {
     dispatch(setAuthKey(key));
     setShowEnterPinModal(false);
     if (route.params?.goBackOnDismiss) {
@@ -31,11 +38,15 @@ export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
     } else {
       navigateToWalletProviderLoading();
     }
+
+    lockedContext?.setIsDeviceLocked(false);
   };
 
-  const { authenticate } = useSecurityAuthorization(authorizeSession, () => {
+  const authFail = () => {
     setShowEnterPinModal(true);
-  });
+  };
+
+  const { authenticate } = useSecurityAuthorization(authSuccess, authFail);
 
   useEffect(() => {
     if (!route.params?.skipAuthOnMount) {
@@ -96,10 +107,7 @@ export const LockedScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <>
-      <EnterPinModal
-        show={showEnterPinModal}
-        authorizeSession={authorizeSession}
-      />
+      <EnterPinModal show={showEnterPinModal} authorizeSession={authSuccess} />
       <SecurityView>
         <ButtonWithTextAndIcon
           additionalStyles={styles.unlockButton}

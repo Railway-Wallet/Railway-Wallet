@@ -5,6 +5,7 @@ import {
   ERC20Token,
   SearchableERC20,
   usePendingBalancePriceLabel,
+  useReduxSelector,
 } from '@react-shared';
 import { styles } from './styles';
 
@@ -17,6 +18,7 @@ export const POIPendingBalanceCallout: React.FC<Props> = ({
   onPress,
   token,
 }) => {
+  const { discreetMode } = useReduxSelector('discreetMode');
   const { pendingBalancePriceLabel } = usePendingBalancePriceLabel(
     true, token,
   );
@@ -32,7 +34,9 @@ export const POIPendingBalanceCallout: React.FC<Props> = ({
     >
       {'*'}
       {title}
-      <Text style={styles.balanceCTA}>{label}</Text>
+      <Text style={styles.balanceCTA}>
+        {discreetMode.enabled ? '***' : label}
+      </Text>
     </Text>
   );
 };

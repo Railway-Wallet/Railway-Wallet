@@ -135,7 +135,7 @@ export const WalletInfoButtonsCard = ({
                 setShowPendingBalancesModal(true);
               }}
             >
-              *Pending balances: {pendingBalancePriceLabel}
+              *Pending balances: {discreet ? '***' : pendingBalancePriceLabel}
             </Text>
           )}
           <WalletActionButtons

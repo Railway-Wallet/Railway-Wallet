@@ -62,7 +62,7 @@ async function runAndReport(label, task) {
   if (targetPlatform === 'ios') {
     await runAndReport(
       'Install backend node modules',
-      spawn('yarn', ['--ignore-optional'], {
+      spawn('yarn', [], {
         cwd: `./nodejs-assets/nodejs-project`,
         env: {
           PLATFORM_NAME: 'iphoneos',
@@ -77,7 +77,7 @@ async function runAndReport(label, task) {
   } else {
     await runAndReport(
       'Install backend node modules',
-      spawn('yarn', ['--ignore-optional'], {
+      spawn('yarn', [], {
         cwd: `./nodejs-assets/nodejs-project`,
         env: {
           DONT_COMPILE_NODE_ADDON: [
@@ -141,7 +141,6 @@ async function runAndReport(label, task) {
           'init.js.map',
           'main.js.map',
           'tsconfig.json',
-          'yarn.lock',
         ],
         {
           cwd: `./nodejs-assets/nodejs-project`,
@@ -161,7 +160,6 @@ async function runAndReport(label, task) {
           'init.js.map',
           'main.js.map',
           'tsconfig.json',
-          'yarn.lock',
         ],
         {
           cwd: `./nodejs-assets/nodejs-project`,

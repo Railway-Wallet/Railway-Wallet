@@ -19,6 +19,7 @@ export class NodeBridgeService {
     if (this.isRunning) {
       return;
     }
+    this.isRunning = true;
     nodejs.start('init.js');
     bridgeSetup(
       (event, result) => {
@@ -29,13 +30,9 @@ export class NodeBridgeService {
       },
     );
     this.addListeners();
-    this.isRunning = true;
   }
 
   private static addListeners() {
-    if (this.isRunning) {
-      return;
-    }
     bridgeListen(BridgeEvent.Message, this.handleMessage);
     bridgeListen(BridgeEvent.Error, this.handleError);
     bridgeListen(BridgeEvent.UncaughtException, this.handleUncaughtException);

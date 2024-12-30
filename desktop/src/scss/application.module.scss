@@ -16,6 +16,12 @@ $z-index-alerts: 60;
   zIndexAlerts: 60;
 }
 
+$breakpoint-mobile: 440px;
+$breakpoint-big-mobile: 645px;
+$breakpoint-tablet: 1140px;
+$breakpoint-desktop: 1440px;
+$breakpoint-desktop-4k: 2560px;
+
 .selectable-text {
   -webkit-user-select: inherit;
   -moz-user-select: inherit;

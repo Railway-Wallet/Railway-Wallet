@@ -1,4 +1,4 @@
-import { ZeroXConfig, ZeroXQuote } from '@railgun-community/cookbook';
+import { ZeroXConfig, ZeroXV2Quote } from '@railgun-community/cookbook';
 import {
   EVMGasType,
   isDefined,
@@ -93,7 +93,7 @@ export const SwapPublicConfirm: React.FC<Props> = ({ navigation, route }) => {
       sellERC20AmountAdjusted,
       buyERC20,
       slippagePercentage,
-      ZeroXQuote.getSwapQuote,
+      ZeroXV2Quote.getSwapQuote,
     );
 
   const onTransactionGasDetailsUpdate = (

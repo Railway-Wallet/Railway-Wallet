@@ -18,6 +18,7 @@ export const usePublicSwapQuote = (
   getSwapQuote: GetSwapQuoteV2,
 ) => {
   const { network } = useReduxSelector('network');
+  const { wallets } = useReduxSelector('wallets');
 
   const [quote, setQuote] = useState<Optional<SwapQuoteData>>();
   const [quoteError, setQuoteError] = useState<Optional<Error>>();
@@ -59,12 +60,17 @@ export const usePublicSwapQuote = (
           return;
         }
 
+        const activeWalletAddress = wallets.available.find(
+          wallet => wallet.isActive,
+        )?.ethAddress;
+
         const quote = await getSwapQuote({
           networkName: network.current.name,
           sellERC20Amount: sellRecipeERC20Amount,
           buyERC20Info,
           slippageBasisPoints,
           isRailgun: false,
+          activeWalletAddress,
         });
         if (currentQuoteID === latestQuoteID.current) {
           setQuote(quote);

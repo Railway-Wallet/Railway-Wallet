@@ -63,6 +63,13 @@
 
 .warningText {
   @include paragraphSmall;
+  color: $labelSecondary;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.descriptionText {
+  @include paragraphSmall;
   color: $white;
   text-align: center;
 }

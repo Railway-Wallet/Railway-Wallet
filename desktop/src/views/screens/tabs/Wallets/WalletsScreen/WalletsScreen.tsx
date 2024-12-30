@@ -1,5 +1,6 @@
 import {
   isDefined,
+  MerkletreeScanStatus,
   RailgunWalletBalanceBucket,
   TXIDVersion,
 } from '@railgun-community/shared-models';
@@ -12,6 +13,8 @@ import { MainPagePaddedContainer } from '@components/MainPagePaddedContainer/Mai
 import { useMainScreenAlertMessage } from '@hooks/useMainScreenAlertMessage';
 import { useWalletCreationModals } from '@hooks/useWalletCreationModals';
 import {
+  MerkletreeScanCurrentStatus,
+  MerkletreeType,
   refreshRailgunBalances,
   SharedConstants,
   StorageService,
@@ -28,6 +31,7 @@ import { OmittedPrivateTokensModal } from '@views/screens/modals/OmittedPrivateT
 import { RPCsSetUpModal } from '@views/screens/modals/RPCsSetUpModal/RPCsSetUpModal';
 import { ERC20BasicList } from './ERC20BasicList/ERC20BasicList';
 import { ERC20BasicListHeader } from './ERC20BasicList/ERC20BasicListHeader/ERC20BasicListHeader';
+import { ERC20TokenListLoading } from './ERC20TokenListLoading/ERC20TokenListLoading';
 import { WalletInfoButtonsCard } from './WalletInfoButtonsCard/WalletInfoButtonsCard';
 import { WalletStatusBar } from './WalletStatusBar/WalletStatusBar';
 import styles from './WalletsScreen.module.scss';
@@ -62,6 +66,8 @@ export const WalletsScreen = ({
       shouldShowOmittedPrivateTokensModal,
     },
   } = useReduxSelector('omittedPrivateTokens');
+  const { proofBatcher } = useReduxSelector('proofBatcher');
+  const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
   const { discreetMode } = useReduxSelector('discreetMode');
 
   const { isRailgun } = slideItem;
@@ -132,7 +138,10 @@ export const WalletsScreen = ({
 
     setIsRefreshing(true);
     await pullPrices();
-    await pullBalances();
+
+    if (isDefined(wallets.active)) {      
+      await pullBalances();
+    }
     setIsRefreshing(false);
     if (
       txidVersion.current === TXIDVersion.V2_PoseidonMerkle &&
@@ -145,6 +154,31 @@ export const WalletsScreen = ({
 
   const hideBroadcasterStatus =
     isDefined(wallets.active) && wallets.active.isViewOnlyWallet;
+
+  const utxoMerkletreeScanData: Optional<MerkletreeScanCurrentStatus> =
+    merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+      MerkletreeType.UTXO
+    ];
+  const railgunBalancesUpdating =
+    utxoMerkletreeScanData?.status === MerkletreeScanStatus.Started ||
+    utxoMerkletreeScanData?.status === MerkletreeScanStatus.Updated;
+  const balanceScanProgress = utxoMerkletreeScanData?.progress ?? 0;
+
+  const txidMerkletreeScanData: Optional<MerkletreeScanCurrentStatus> =
+    merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+      MerkletreeType.TXID
+    ];
+  const txidsUpdating =
+    txidMerkletreeScanData?.status === MerkletreeScanStatus.Started ||
+    txidMerkletreeScanData?.status === MerkletreeScanStatus.Updated;
+  const txidScanProgress = txidMerkletreeScanData?.progress ?? 0;
+
+  const batchListUpdating =
+    isDefined(proofBatcher) &&
+    isDefined(proofBatcher.status) &&
+    proofBatcher.status !== '' &&
+    !proofBatcher.status?.includes('100.00%');
+  const batchListProgress = proofBatcher?.status ?? '';
 
   return (
     <div className={styles.walletScreenContainer}>
@@ -174,6 +208,21 @@ export const WalletsScreen = ({
             refreshBalances={refreshBalances}
             onSearchChange={text => setTokenSearchText(text)}
           />
+          {railgunBalancesUpdating && isRailgun && (
+            <ERC20TokenListLoading
+              title="RAILGUN balances updating"
+              progress={balanceScanProgress}
+            />
+          )}
+          {!railgunBalancesUpdating && txidsUpdating && isRailgun && (
+            <ERC20TokenListLoading
+              title="RAILGUN TXIDs updating"
+              progress={txidScanProgress}
+            />
+          )}
+          {!railgunBalancesUpdating && !txidsUpdating && batchListUpdating && (
+            <ERC20TokenListLoading title={batchListProgress} />
+          )}
         </MainPagePaddedContainer>
         <ERC20BasicList
           isRailgun={isRailgun}

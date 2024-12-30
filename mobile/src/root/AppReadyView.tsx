@@ -14,6 +14,7 @@ import {
   ErrorDetailsModalProps,
 } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
 import { ShieldPOICountdownModal } from '@views/screens/modals/ShieldPOICountdownModal/ShieldPOICountdownModal';
+import { LockedDeviceContext } from 'context/lockedDevice';
 import { useInactiveProviderPauser } from '../hooks/networking/useInactiveProviderPauser';
 import { NavigationStack } from './Navigation';
 import { styles } from './styles';
@@ -24,6 +25,7 @@ type Props = {
 
 export const AppReadyView: React.FC<Props> = ({ needsLockScreenOnLaunch }) => {
   const { backGestures } = useReduxSelector('backGestures');
+  const [isDeviceLocked, setIsDeviceLocked] = useState(false);
   const [errorModal, setErrorModal] =
     useState<Optional<ErrorDetailsModalProps>>(undefined);
 
@@ -41,16 +43,19 @@ export const AppReadyView: React.FC<Props> = ({ needsLockScreenOnLaunch }) => {
   useVaultFetch();
 
   useVaultRedeemTokenPriceUpdater();
-
   return (
     <View style={styles.appWrapper}>
-      <NavigationStack
-        showLockedScreen={needsLockScreenOnLaunch}
-        backGesturesEnabled={backGestures.enabled}
-      />
-      {errorModal && <ErrorDetailsModal {...errorModal} />}
-      <ShieldPOICountdownModal />
-      <ToastWrapperView />
+      <LockedDeviceContext.Provider
+        value={{ isDeviceLocked, setIsDeviceLocked }}
+      >
+        <NavigationStack
+          showLockedScreen={needsLockScreenOnLaunch}
+          backGesturesEnabled={backGestures.enabled}
+        />
+        {errorModal && <ErrorDetailsModal {...errorModal} />}
+        {!isDeviceLocked && <ShieldPOICountdownModal />}
+        <ToastWrapperView />
+      </LockedDeviceContext.Provider>
     </View>
   );
 };

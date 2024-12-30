@@ -25,6 +25,7 @@ export const ButtonIconOnly: React.FC<Props> = ({
 }) => {
   return (
     <Button
+      testID="ButtonIconOnly-Native"
       onPress={onTap}
       style={[styles.button, style]}
       contentStyle={contentStyle}
