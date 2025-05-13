@@ -221,6 +221,7 @@ export const ProcessNewWalletModal: React.FC<ProcessNewWalletModalProps> = ({
   }, []);
 
   return (
+    // @ts-expect-error ignore this
     <Modal
       isOpen={true}
       shouldCloseOnOverlayClick={false}

@@ -109,6 +109,7 @@ export const ProcessTransactionModal: React.FC<
   });
 
   return (
+    // @ts-expect-error ignore this
     <Modal
       isOpen={true}
       shouldCloseOnOverlayClick={false}

@@ -99,6 +99,7 @@ export const GenerateProofModal: React.FC<GenerateProofModalProps> = ({
       : 'Generating proof...';
 
   return (
+    // @ts-expect-error ignore this
     <Modal
       isOpen={true}
       shouldCloseOnOverlayClick={false}

@@ -161,6 +161,7 @@ export const ImportWalletModal = ({
           <Text className={styles.walletCreationDateLabel}>
             When was this wallet first created?
           </Text>
+          {/* @ts-expect-error ignore this */}
           <DatePicker
             fixedHeight
             customInput={

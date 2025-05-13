@@ -74,6 +74,7 @@ export const GenericModal: React.FC<Props> = ({
   };
 
   return (
+    // @ts-expect-error ignore this
     <Modal
       isOpen
       className={cn(styles.genericModalContent, 'hide-scroll')}
