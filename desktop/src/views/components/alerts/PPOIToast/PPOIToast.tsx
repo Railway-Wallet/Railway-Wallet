@@ -4,7 +4,7 @@ import {
   POIProofEventStatus,
   TXIDVersion,
 } from '@railgun-community/shared-models';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
 import cn from 'classnames';
 import { Button } from '@components/Button/Button';
@@ -16,6 +16,7 @@ import {
   generateAllPOIsForWallet,
   logDevError,
   POIProofEventStatusUI,
+  PPOI_UI_LONG_WAIT_THRESHOLD,
   refreshRailgunBalances,
   showImmediateToast,
   styleguide,
@@ -34,6 +35,8 @@ import { IconType, renderIcon } from '@services/util/icon-service';
 import { copyToClipboard } from '@utils/clipboard';
 import styles from './PPOIToast.module.scss';
 
+const DELAYED_PROOF_MESSAGE_SEEN_TIMEOUT = 30 * 1000;
+
 export const PPOIToast = () => {
   const dispatch = useAppDispatch();
   const { network } = useReduxSelector('network');
@@ -41,9 +44,16 @@ export const PPOIToast = () => {
   const { txidVersion } = useReduxSelector('txidVersion');
   const { poiProofProgressStatus, shouldShowAllProofsCompleted } =
     usePOIProofStatus();
+  const railWalletID = wallets.active?.railWalletID;
+
+  const [loadingTryAgain, setLoadingTryAgain] = useState(false);
+  const [delayedProof, setDelayedProof] = useState(false);
+  const [delayedMessageHasBeenSeen, setDelayedMessageHasBeenSeen] =
+    useState(false);
   const [errorModal, setErrorModal] = useState<
     ErrorDetailsModalProps | undefined
   >(undefined);
+
   const { pullBalances } = useBalancePriceRefresh(
     refreshRailgunBalances,
     (error: Error) =>
@@ -52,9 +62,6 @@ export const PPOIToast = () => {
         onDismiss: () => setErrorModal(undefined),
       }),
   );
-
-  const [loadingTryAgain, setLoadingTryAgain] = useState(false);
-  const railWalletID = wallets.active?.railWalletID;
 
   useEffect(() => {
     const runPullBalanceCheck = async () => {
@@ -100,7 +107,41 @@ export const PPOIToast = () => {
     ? 'Private Proof of Innocence completed'
     : 'Private Proof of Innocence';
 
-  const shouldShowPOIToast = () => {
+  useEffect(() => {
+    let delayedTimer: ReturnType<typeof setTimeout>;
+
+    if (newTrxProcessing) {
+      delayedTimer = setTimeout(() => {
+        setDelayedProof(true);
+      }, PPOI_UI_LONG_WAIT_THRESHOLD);
+    }
+
+    return () => {
+      clearTimeout(delayedTimer);
+      setDelayedProof(false);
+    };
+  }, [newTrxProcessing]);
+
+  useEffect(() => {
+    let messageTimer: ReturnType<typeof setTimeout>;
+
+    if (delayedProof) {
+      messageTimer = setTimeout(() => {
+        setDelayedMessageHasBeenSeen(true);
+      }, DELAYED_PROOF_MESSAGE_SEEN_TIMEOUT);
+    }
+
+    return () => {
+      clearTimeout(messageTimer);
+      setDelayedMessageHasBeenSeen(false);
+    };
+  }, [delayedProof]);
+
+  const shouldShowPOIToast = useCallback(() => {
+    if (delayedProof && delayedMessageHasBeenSeen) {
+      return false;
+    }
+
     if (shouldShowAllProofsCompleted || newTrxProcessing) {
       return true;
     }
@@ -113,7 +154,14 @@ export const PPOIToast = () => {
     }
 
     return false;
-  };
+  }, [
+    delayedMessageHasBeenSeen,
+    delayedProof,
+    inProgress,
+    newTrxProcessing,
+    poiProofProgressStatus,
+    shouldShowAllProofsCompleted,
+  ]);
 
   if (!shouldShowPOIToast()) {
     return null;
@@ -160,6 +208,20 @@ export const PPOIToast = () => {
     }
 
     if (loadingState) {
+      if (delayedProof) {
+        return (
+          <div className={styles.delayedProofContainer}>
+            <Text className={styles.descriptionText}>
+              PPOI is taking longer than expected please check back later or
+              restart the app
+            </Text>
+            <Text className={styles.warningText}>
+              This toast will close automatically
+            </Text>
+          </div>
+        );
+      }
+
       return (
         <>
           <div className={styles.loadingBatchContainer}>

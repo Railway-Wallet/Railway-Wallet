@@ -20,6 +20,7 @@ import {
   IconShielded,
   logDevError,
   POIProofEventStatusUI,
+  PPOI_UI_LONG_WAIT_THRESHOLD,
   refreshRailgunBalances,
   showImmediateToast,
   styleguide,
@@ -55,6 +56,7 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
   const railWalletID = wallets.active?.railWalletID;
   const networkShortPublicName = network.current.shortPublicName;
 
+  const [delayedProof, setDelayedProof] = useState(false);
   const [loadingTryAgain, setLoadingTryAgain] = useState(false);
   const [showErrorDetailsModal, setShowErrorDetailsModal] = useState(false);
   const [errorModal, setErrorModal] =
@@ -114,7 +116,25 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
     isDefined(poiProofProgressStatus?.index) ? currentPOIIndex + 1 : 0
   } of ${totalPOIs}...`;
   const hideInfo =
-    loadingNextBatch || newTrxProcessing || shouldShowAllProofsCompleted;
+    loadingNextBatch ||
+    newTrxProcessing ||
+    shouldShowAllProofsCompleted ||
+    delayedProof;
+
+  useEffect(() => {
+    let delayedTimer: ReturnType<typeof setTimeout>;
+
+    if (newTrxProcessing) {
+      delayedTimer = setTimeout(() => {
+        setDelayedProof(true);
+      }, PPOI_UI_LONG_WAIT_THRESHOLD);
+    }
+
+    return () => {
+      clearTimeout(delayedTimer);
+      setDelayedProof(false);
+    };
+  }, [newTrxProcessing]);
 
   const handleTryAgain = async () => {
     if (loadingTryAgain || !isDefined(railWalletID)) {
@@ -148,6 +168,15 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
     }
 
     if (loadingNextBatch || newTrxProcessing) {
+      if (delayedProof) {
+        return (
+          <Text style={styles.descriptionText}>
+            PPOI is taking longer than expected please check back later or
+            restart the app
+          </Text>
+        );
+      }
+
       return (
         <>
           <View style={styles.loadingContainer}>
@@ -158,6 +187,9 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
                 : 'Loading next batch...'}
             </Text>
           </View>
+          <Text style={styles.descriptionText}>
+            {'PPOI ensures that your funds are coming from a compliant source'}
+          </Text>
           <Text style={styles.warningText}>
             {'Do not close the app while processing'}
           </Text>
@@ -213,6 +245,11 @@ export const POIProgressModal = ({ showPOIModalInfo, closeModal }: Props) => {
             width={300}
           />
         </View>
+        <Text style={styles.descriptionText}>
+          {
+            'Generating a proof to ensure your funds are coming from a compliant source'
+          }
+        </Text>
         <Text style={styles.warningText}>
           {'Do not close the app while processing'}
         </Text>

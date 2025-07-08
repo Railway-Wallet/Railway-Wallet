@@ -31,6 +31,6 @@ export const styles = StyleSheet.create({
   spinner: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 6,
+    marginRight: 0,
   },
 });

@@ -1,10 +1,14 @@
-import { isDefined } from '@railgun-community/shared-models';
+import {
+  isDefined,
+  RailgunWalletBalanceBucket,
+} from '@railgun-community/shared-models';
 import React from 'react';
 import { Alert, Text, View } from 'react-native';
 import { ListRow } from '@components/list/ListRow/ListRow';
 import {
   compareTokenAddress,
   FrontendWallet,
+  getTotalBalanceCurrencyForWallet,
   SavedAddress,
   shortenWalletAddress,
   styleguide,
@@ -43,13 +47,28 @@ export const SelectWalletList: React.FC<Props> = ({
   availableWalletsOnly = false,
   showSavedAddresses = false,
 }) => {
-  const { wallets } = useReduxSelector('wallets');
+  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
+  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
   const { savedAddresses } = useReduxSelector('savedAddresses');
+  const { networkPrices } = useReduxSelector('networkPrices');
+  const { discreetMode } = useReduxSelector('discreetMode');
+  const { txidVersion } = useReduxSelector('txidVersion');
+  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector('network');
 
-  const renderRightView = (rightText: string) => {
+  const currentNetworkName = network.current.name;
+  const currentTxidVersion = txidVersion.current;
+
+  const renderRightView = (
+    rightTextTitle: string,
+    rightTextSubtitle?: string,
+  ) => {
     return (
       <View style={styles.rightBalances}>
-        <Text style={styles.rightTextStyle}>{rightText}</Text>
+        <Text style={styles.rightTextStyle}>{rightTextTitle}</Text>
+        {isDefined(rightTextSubtitle) && (
+          <Text style={styles.rightTextStyle}>{rightTextSubtitle}</Text>
+        )}
       </View>
     );
   };
@@ -85,6 +104,7 @@ export const SelectWalletList: React.FC<Props> = ({
     wallet?: FrontendWallet,
     address?: string,
     customOnSelect?: () => void,
+    rightTextSubtitle?: string,
   ) => {
     const iconView = () => (
       <View style={styles.leftIconView}>
@@ -99,7 +119,7 @@ export const SelectWalletList: React.FC<Props> = ({
         description={description}
         selected={selected}
         leftView={iconView}
-        rightView={() => renderRightView(rightText)}
+        rightView={() => renderRightView(rightText, rightTextSubtitle)}
         onSelect={() => {
           triggerHaptic(HapticSurface.SelectItem);
           customOnSelect
@@ -111,22 +131,35 @@ export const SelectWalletList: React.FC<Props> = ({
   };
 
   const renderWallet = (wallet: FrontendWallet, index: number) => {
-    const title = wallet.name;
+    const { name, isViewOnlyWallet, id } = wallet;
+
+    const totalBalanceCurrency = getTotalBalanceCurrencyForWallet(
+      true, [RailgunWalletBalanceBucket.Spendable],
+      wallet,
+      currentNetworkName,
+      networkPrices,
+      currentTxidVersion,
+      erc20BalancesNetwork,
+      erc20BalancesRailgun,
+    );
     const address = walletAddress(wallet);
-    const icon = wallet.isViewOnlyWallet ? 'eye-outline' : 'wallet-outline';
-    const rightText = wallet.isViewOnlyWallet ? 'View-only' : 'EVM wallet';
+    const icon = isViewOnlyWallet ? 'eye-outline' : 'wallet-outline';
+    const rightText = isViewOnlyWallet ? 'View-only' : 'EVM wallet';
+    const rightTextSubtitle = `$${
+      discreetMode.enabled ? '***' : totalBalanceCurrency.toFixed(2)
+    } on ${currentNetworkName}`;
     const selected =
-      wallet.id === selectedWallet?.id ||
+      id === selectedWallet?.id ||
       compareTokenAddress(address, selectedAddress);
 
     return renderRow(
       index,
-      title,
-      shortenWalletAddress(address), icon,
+      name, shortenWalletAddress(address), icon,
       rightText,
       selected,
       false, wallet,
       address,
+      undefined, rightTextSubtitle,
     );
   };
 

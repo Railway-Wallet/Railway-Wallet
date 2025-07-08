@@ -64,3 +64,16 @@ index c6280bf..7e40f4f 100644
      }
      return envelope;
    };
+diff --git a/node_modules/nodejs-mobile-react-native/scripts/ios-build-native-modules.sh b/node_modules/nodejs-mobile-react-native/scripts/ios-build-native-modules.sh
+index e743704..0812704 100644
+--- a/node_modules/nodejs-mobile-react-native/scripts/ios-build-native-modules.sh
++++ b/node_modules/nodejs-mobile-react-native/scripts/ios-build-native-modules.sh
+@@ -111,7 +111,7 @@ fi
+ NODEJS_HEADERS_DIR="$( cd "$PROJECT_DIR" && cd ../node_modules/nodejs-mobile-react-native/ios/libnode/ && pwd )"
+ pushd $NODEPROJ
+ if [ "$PLATFORM_NAME" == "iphoneos" ]; then
+-  GYP_DEFINES="OS=ios" \
++  GYP_DEFINES="OS=ios target_arch=arm64 iossim=false" \
+   CARGO_BUILD_TARGET="aarch64-apple-ios iossim=false" \
+   NODEJS_MOBILE_GYP="$NODEJS_MOBILE_GYP_BIN_FILE" \
+   npm_config_node_gyp="$NODEJS_MOBILE_GYP_BIN_FILE" \

@@ -5,7 +5,7 @@ export class Constants {
     isNpmStartBuild || process.env.REACT_APP_DEV_BUILD === '1';
   static readonly STAG_MODE = process.env.REACT_APP_STAG_BUILD === '1';
 
-  static readonly USE_LOCAL_REMOTE_CONFIG_IN_DEV = false;
+  static readonly USE_LOCAL_REMOTE_CONFIG_IN_DEV = true;
   static readonly SHOW_BROADCASTER_OVERRIDE_IN_DEV = false;
   static readonly REFRESH_TX_HISTORY_EVERY_LOAD_IN_DEV = false;
   static readonly PERFORM_FULL_BALANCE_REFRESH_ON_BUTTON_IN_DEV = false;
@@ -23,7 +23,7 @@ export class Constants {
 
   static readonly RAILWAY_USER_GUIDE = 'https://help.railway.xyz';
   static readonly RAILWAY_DOWNLOADS_PAGE = 'https://railway.xyz/download';
-  static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/RailwayWalletBot';
+  static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/railwaywallet';
   static readonly ABOUT_RAILGUN_URL = 'https://railgun.org';
   static readonly DESKTOP_DOWNLOADS_URL =
     'https://github.com/Railway-Wallet/Railway-Wallet/releases';
@@ -49,4 +49,7 @@ export class Constants {
   static readonly POI_CUSTOM_LISTS = 'POI_CUSTOM_LISTS';
 
   static readonly SHOULD_WIPE_DEVICES = false;
+
+  static readonly MIN_PROGRESS_UPDATE = 0.01;
+  static readonly DEBOUNCE_MS = 50;
 }

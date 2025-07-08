@@ -102,13 +102,16 @@ export const AppProtectView: React.FC<AppProtectViewProps> = ({
       {isLoginView && (
         <div>
           <div className={styles.inputContainer}>
-            <input
-              value={password}
-              type="password"
-              onChange={e => setPassword(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className={styles.input}
-            />
+            <form>
+              <input
+                autoComplete="off"
+                value={password}
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className={styles.input}
+              />
+            </form>
           </div>
           <div
             ref={refBlur}

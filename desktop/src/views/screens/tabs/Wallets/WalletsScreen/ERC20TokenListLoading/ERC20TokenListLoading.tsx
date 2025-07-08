@@ -11,8 +11,8 @@ type Props = {
 
 export const ERC20TokenListLoading: React.FC<Props> = ({ title, progress }) => {
   const text = isDefined(progress)
-    ? `${title}: ${(progress * 100).toFixed(0)}%`
-    : title;
+  ? `${title}: ${(progress * 100).toFixed(0)}%`
+  : title;
 
   return (
     <div className={styles.scanContainer}>

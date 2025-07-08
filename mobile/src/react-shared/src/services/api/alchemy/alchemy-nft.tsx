@@ -48,7 +48,7 @@ type AlchemyNFTMetadata = {
     };
   };
   spamInfo: {
-    isSpam?: boolean;
+    isSpam?: 'true' | 'false';
   };
 };
 
@@ -210,7 +210,7 @@ const filterAlchemyNFTs = (
       );
     })
     .filter(nftMetadata => {
-      return nftMetadata.spamInfo?.isSpam !== false;
+      return nftMetadata.spamInfo?.isSpam === 'false';
     });
 };
 
@@ -257,7 +257,8 @@ const getNFTVerificationStatus = (
   if (manuallyApproved.includes(nftAmount.nftAddress)) {
     return NFTVerificationStatus.Verified;
   }
-  if (nftMetadata.spamInfo?.isSpam ?? false) {
+
+  if (nftMetadata.spamInfo.isSpam === 'true') {
     return NFTVerificationStatus.Spam;
   }
 

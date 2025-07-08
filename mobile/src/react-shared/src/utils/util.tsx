@@ -174,14 +174,6 @@ export const stringEntryToBigInt = (
   }
 };
 
-export const endsWithAny = (text: string, suffixList: string[]): boolean => {
-  return isDefined(
-    suffixList.find(suffix => {
-      return text.endsWith(suffix);
-    }),
-  );
-};
-
 export const requiresTokenApproval = (
   transactionType: TransactionType,
   isPrivate: boolean,

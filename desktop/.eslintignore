@@ -2,3 +2,4 @@ cypress/
 craco.config.js
 electron/*.js
 src/assets/libs/*.js
+afterSignHook.js

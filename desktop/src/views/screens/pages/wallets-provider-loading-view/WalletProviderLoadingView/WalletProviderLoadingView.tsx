@@ -12,6 +12,7 @@ import {
   delay,
   getWalletTransactionHistory,
   logDev,
+  logDevError,
   NetworkService,
   NetworkStoredSettingsService,
   ProviderLoader,
@@ -22,18 +23,24 @@ import {
   refreshRailgunBalances,
   setNetworkByName,
   SettingsForNetwork,
+  showImmediateToast,
+  ToastType,
   useAppDispatch,
   useReduxSelector,
   WalletService,
   WalletStorageService,
   WalletTokenService,
 } from '@react-shared';
-import { ErrorDetailsModal } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
+import {
+  ErrorDetailsModal,
+  ErrorDetailsModalProps,
+} from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
 import { RecoveryWalletsModal } from '@screens/modals/recovery/RecoveryWalletsModal/RecoveryWalletsModal';
 import { IconType } from '@services/util/icon-service';
 import { WalletSecureStorageWeb } from '@services/wallet/wallet-secure-service-web';
 import { Constants } from '@utils/constants';
 import { ProgressBar } from '@views/components/ProgressBar/ProgressBar';
+import { AddCustomRPCModal } from '@views/screens/modals/settings/AddCustomRPCModal/AddCustomRPCModal';
 import styles from './WalletProviderLoadingView.module.scss';
 
 const CHECK_PROVIDER_LOADED_DELAY = 100;
@@ -47,19 +54,20 @@ export const WalletProviderLoadingView: React.FC<Props> = ({
   authKey,
   loadComplete,
 }) => {
+  const dispatch = useAppDispatch();
   const { network } = useReduxSelector('network');
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const selectedNetwork = network.current;
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<Optional<Error>>();
   const [hasWallets, setHasWallets] = useState<boolean>(false);
   const [errorDetailsOpen, setErrorDetailsOpen] = useState(false);
   const [showRecoveryMode, setShowRecoveryMode] = useState(false);
-
-  const dispatch = useAppDispatch();
-  const [error, setError] = useState<Optional<Error>>();
-
+  const [showAddCustomRPCModal, setShowAddCustomRPCModal] = useState(false);
   const [networkStoredSettings, setNetworkStoredSettings] =
     useState<Optional<SettingsForNetwork>>();
+  const [errorModal, setErrorModal] = useState<
+    ErrorDetailsModalProps | undefined
+  >(undefined);
 
   useEffect(() => {
     const checkWallets = async () => {
@@ -106,6 +114,62 @@ export const WalletProviderLoadingView: React.FC<Props> = ({
     );
     setNetworkStoredSettings(updatedSettings);
     await retryLoadProviderAndWallets();
+  };
+
+  const reloadProviders = async () => {
+    try {
+      dispatch(
+        showImmediateToast({
+          message: `Reloading RPC providers...`,
+          type: ToastType.Info,
+        }),
+      );
+
+      await ProviderService.loadFrontendProviderForNetwork(
+        selectedNetwork.name,
+        ProviderNodeType.FullNode,
+      );
+      await ProviderLoader.loadEngineProvider(selectedNetwork.name, dispatch);
+
+      dispatch(
+        showImmediateToast({
+          message: `RPC Providers loaded successfully`,
+          type: ToastType.Info,
+        }),
+      );
+    } catch (cause) {
+      const error = new Error('Failed re-connecting to network', { cause });
+      logDevError(error);
+      setErrorModal({
+        error,
+        onDismiss: () => setErrorModal(undefined),
+      });
+    }
+  };
+
+  const updateSettings = async (updatedSettings: SettingsForNetwork) => {
+    await NetworkStoredSettingsService.storeSettingsForNetwork(
+      selectedNetwork.name,
+      updatedSettings,
+    );
+    setNetworkStoredSettings(updatedSettings);
+  };
+
+  const addRPCCustomURL = async (rpcCustomURL: string) => {
+    if (!networkStoredSettings) {
+      logDev('No networkStoredSettings');
+      return;
+    }
+    if (networkStoredSettings.rpcCustomURLs.includes(rpcCustomURL)) {
+      logDev('Duplicate');
+      return;
+    }
+    const settings: SettingsForNetwork = {
+      ...networkStoredSettings,
+      rpcCustomURLs: [...networkStoredSettings.rpcCustomURLs, rpcCustomURL],
+    };
+    await updateSettings(settings);
+    await reloadProviders();
   };
 
   const updateProgress = (amount: number) => {
@@ -270,12 +334,18 @@ export const WalletProviderLoadingView: React.FC<Props> = ({
                   buttonClassName={styles.button}
                 />
               )}
+              <Button
+                startIcon={IconType.Edit}
+                children="Change selected RPC"
+                onClick={() => setShowAddCustomRPCModal(true)}
+                buttonClassName={styles.button}
+              />
               {networkStoredSettings &&
                 (!networkStoredSettings.useDefaultRailwayRPCsAsBackup ||
                   networkStoredSettings.rpcCustomURLs.length) && (
                   <Button
                     startIcon={IconType.Refresh}
-                    children={`Reset to default RPCs`}
+                    children="Reset to default RPCs"
                     onClick={useDefaultRailwayRPCs}
                     buttonClassName={styles.button}
                   />
@@ -284,7 +354,7 @@ export const WalletProviderLoadingView: React.FC<Props> = ({
                 network.current.name !== NetworkName.Hardhat && (
                   <Button
                     startIcon={IconType.Swap}
-                    children={`[Dev] Switch to Hardhat`}
+                    children="[Dev] Switch to Hardhat"
                     onClick={switchToHardhat}
                     buttonClassName={styles.button}
                   />
@@ -326,5 +396,19 @@ export const WalletProviderLoadingView: React.FC<Props> = ({
     {errorDetailsOpen && isDefined(error) && (
       <ErrorDetailsModal error={error} onDismiss={hideErrorDetails} />
     )}
+    {showAddCustomRPCModal && isDefined(selectedNetwork) && (
+      <>
+        <AddCustomRPCModal
+          network={selectedNetwork}
+          onClose={async (customRPCURL?: string) => {
+            setShowAddCustomRPCModal(false);
+            if (isDefined(customRPCURL)) {
+              await addRPCCustomURL(customRPCURL);
+            }
+          }}
+        />
+      </>
+    )}
+    {errorModal && <ErrorDetailsModal {...errorModal} />}
   </>);
 };

@@ -47,7 +47,7 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
   const activeWallet = wallets.active;
 
   const swapsUnavailableOnPlatform = isIOS();
-  const { shouldEnableSwaps } = useShouldEnableSwaps(
+  const { shouldEnableSwaps: shouldEnableDEX } = useShouldEnableSwaps(
     swapsUnavailableOnPlatform,
   );
 
@@ -120,7 +120,7 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
           onPress={onActionReceiveTokens}
           additionalStyles={styles.button}
         />
-        {onActionFarmERC20s && farmButtonText && (
+        {shouldEnableDEX && onActionFarmERC20s && farmButtonText && (
           <ButtonWithTextAndIcon
             icon="tractor-variant"
             title={farmButtonText}
@@ -128,13 +128,12 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
             additionalStyles={styles.button}
           />
         )}
-        {onActionSwapTokens && (
+        {shouldEnableDEX && onActionSwapTokens && (
           <ButtonWithTextAndIcon
             icon={'swap-vertical'}
             title="Swap"
             onPress={onActionSwapTokens}
             additionalStyles={styles.button}
-            disabled={!shouldEnableSwaps}
           />
         )}
         {canMintTestTokens && (

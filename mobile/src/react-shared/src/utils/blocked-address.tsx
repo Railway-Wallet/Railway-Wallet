@@ -12,6 +12,11 @@ import { throwErrorCode } from './error-code';
 import { logDev, logDevError } from './logging';
 import { networkForName } from './networks';
 
+interface ChainalysisRiskAssessment {
+  risk: 'Low' | 'High' | 'Severe';
+  riskReason: string | null;
+}
+
 export const hasBlockedAddress = async (
   addresses: Optional<string>[],
 ): Promise<boolean> => {
@@ -108,31 +113,14 @@ const isSanctionedAddressByOracle = async (
   }
 };
 
-const registerForWalletScreen = async (
-  proxyApiUrl: string,
-  address: string,
-) => {
-  try {
-    const registerAddressURL = `${proxyApiUrl}/address/risk/entities`;
-    await axios.post(registerAddressURL, { address });
-  } catch (err) {
-    logDevError(err);
-    throw new Error(
-      `Could not connect - code 66001. Please try again in a few moments.`,
-    );
-  }
-};
-
 const getRiskAssessment = async (
   proxyApiUrl: string,
   address: string,
-): Promise<{
-  risk: string;
-  riskReason: string;
-}> => {
+): Promise<ChainalysisRiskAssessment> => {
   try {
     const screenAddressURL = `${proxyApiUrl}/address/risk/entities/${address}`;
-    const { data } = await axios.get(screenAddressURL);
+    const response = await axios.get(screenAddressURL);
+    const data: ChainalysisRiskAssessment = response.data;
     return data;
   } catch (err) {
     logDevError(err);
@@ -155,8 +143,6 @@ export const assertIsNotHighSevereRiskAddress = async (
   if (!remoteConfig.current || !remoteConfig.current.proxyApiUrl) {
     throw new Error('No remote config for address screening.');
   }
-
-  await registerForWalletScreen(remoteConfig.current.proxyApiUrl, address);
 
   const riskAssessment = await getRiskAssessment(
     remoteConfig.current.proxyApiUrl,

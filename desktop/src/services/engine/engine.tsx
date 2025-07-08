@@ -8,6 +8,7 @@ import {
   RailgunBalancesEvent,
 } from '@railgun-community/shared-models';
 import { BatchListUpdateEvent } from '@railgun-community/wallet';
+import debounce from 'debounce';
 import {
   AppDispatch,
   BridgeEvent,
@@ -29,6 +30,7 @@ import {
   updatePOIProofProgress,
   updateWalletBalancesRailgun,
 } from '@react-shared';
+import { Constants } from '@utils/constants';
 import { isElectron } from '@utils/user-agent';
 
 const DB_PATH = 'lepton.db';
@@ -178,7 +180,7 @@ const handlePOIProofProgress = (
   );
 };
 
-const handleMerkletreeScanUpdate = async (
+const handleMerkletreeScanUpdate = debounce(async (
   { scanStatus, chain, progress }: MerkletreeScanUpdateEvent,
   merkletreeType: MerkletreeType,
   dispatch: AppDispatch,
@@ -188,23 +190,50 @@ const handleMerkletreeScanUpdate = async (
     return;
   }
 
-  const progressRounded = progress.toFixed(2);
-  logDev(
-    `Scan status for ${merkletreeType} merkletree: ${scanStatus}, progress ${progressRounded}. Chain: ${chain.id}`,
-  );
-
   const merkletreeStatus =
     store.getState().merkletreeHistoryScan.forNetwork[network.name]?.forType[
       merkletreeType
     ];
-  if (
-    isDefined(merkletreeStatus) &&
-    merkletreeStatus.status === MerkletreeScanStatus.Complete &&
-    progressRounded === (1).toFixed(2)
-  ) {
+
+  if (merkletreeStatus?.status === MerkletreeScanStatus.Complete && 
+      scanStatus === MerkletreeScanStatus.Updated) {
+    console.log('Ignoring Updated event after Complete for', merkletreeType);
     return;
   }
 
+  if (scanStatus === MerkletreeScanStatus.Complete) {
+    dispatch(
+      setMerkletreeHistoryScanStatus({
+        merkletreeType,
+        networkName: network.name,
+        status: scanStatus,
+        progress: 1.0,
+      }),
+    );
+    await RailgunTransactionHistorySync.safeSyncTransactionHistory(
+      dispatch,
+      network,
+      getWalletTransactionHistory,
+    );
+    return;
+  }
+
+  const progressRounded = progress.toFixed(2);
+  const currentProgress = merkletreeStatus?.progress ?? 0;
+  const progressDiff = Math.abs(parseFloat(progressRounded) - currentProgress);
+
+
+  logDev(
+    `Scan status for ${merkletreeType} merkletree: ${scanStatus}, progress ${progressRounded}. Chain: ${chain.id}`,
+  );
+  if (
+    (progressDiff - currentProgress) < Constants.MIN_PROGRESS_UPDATE
+  ) {
+    return;
+  }
+  
+
+  if (scanStatus === MerkletreeScanStatus.Updated) {
     dispatch(
       setMerkletreeHistoryScanStatus({
         merkletreeType,
@@ -214,15 +243,13 @@ const handleMerkletreeScanUpdate = async (
       }),
     );
 
-
-  if (scanStatus === MerkletreeScanStatus.Complete) {
     await RailgunTransactionHistorySync.safeSyncTransactionHistory(
       dispatch,
       network,
       getWalletTransactionHistory,
     );
   }
-};
+}, Constants.DEBOUNCE_MS);
 
 const handleProofProgress = async (
   progressEvent: ProofProgressEvent,

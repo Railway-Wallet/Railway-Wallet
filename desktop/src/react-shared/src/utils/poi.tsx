@@ -17,6 +17,8 @@ import { networkForName } from './networks';
 import { isNonSpendableBucket } from './util';
 import { styleguide } from '../styles/styleguide';
 
+export const PPOI_UI_LONG_WAIT_THRESHOLD = 10 * 60 * 1000;
+
 export const getShieldingPOIDisclaimerMessage = (network: Network) => {
   const validationTimeText =
     network.isTestnet === true

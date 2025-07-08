@@ -408,6 +408,7 @@ export const WalletsScreen: React.FC<WalletsScreenProps> = ({ navigation }) => {
           onScroll={onPageScroll}
           scrollEventThrottle={16}
           ref={scrollViewRef}
+          bounces={false}
         >
           <View style={[styles.titleRow, { opacity: 1 - headerOpacity }]}>
             <TabHeaderText

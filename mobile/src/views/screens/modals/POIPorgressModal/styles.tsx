@@ -27,11 +27,17 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  warningText: {
+  descriptionText: {
     color: styleguide.colors.text(),
     ...styleguide.typography.caption,
     textAlign: 'center',
     marginVertical: 20,
+  },
+  warningText: {
+    color: styleguide.colors.labelSecondary,
+    ...styleguide.typography.paragraphSmall,
+    textAlign: 'center',
+    marginVertical: 10,
   },
   errorText: {
     textAlign: 'center',

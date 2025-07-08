@@ -1,4 +1,7 @@
-import { isDefined } from '@railgun-community/shared-models';
+import {
+  isDefined,
+  RailgunWalletBalanceBucket,
+} from '@railgun-community/shared-models';
 import React, { useState } from 'react';
 import cn from 'classnames';
 import { ListRow } from '@components/ListRow/ListRow';
@@ -6,6 +9,7 @@ import { Text } from '@components/Text/Text';
 import {
   compareTokenAddress,
   FrontendWallet,
+  getTotalBalanceCurrencyForWallet,
   SavedAddress,
   shortenWalletAddress,
   styleguide,
@@ -42,16 +46,31 @@ export const SelectWalletList: React.FC<Props> = ({
   availableWalletsOnly = false,
   showSavedAddresses = false,
 }) => {
-  const { wallets } = useReduxSelector('wallets');
+  const { erc20BalancesRailgun } = useReduxSelector('erc20BalancesRailgun');
+  const { erc20BalancesNetwork } = useReduxSelector('erc20BalancesNetwork');
   const { savedAddresses } = useReduxSelector('savedAddresses');
+  const { networkPrices } = useReduxSelector('networkPrices');
+  const { discreetMode } = useReduxSelector('discreetMode');
+  const { txidVersion } = useReduxSelector('txidVersion');
+  const { wallets } = useReduxSelector('wallets');
+  const { network } = useReduxSelector('network');
+
+  const currentNetworkName = network.current.name;
+  const currentTxidVersion = txidVersion.current;
 
   const [showCustomWalletAddressModal, setShowCustomWalletAddressModal] =
     useState(false);
 
-  const renderRightView = (rightText: string) => {
+  const renderRightView = (
+    rightTextTitle: string,
+    rightTextSubtitle?: string,
+  ) => {
     return (
       <div className={styles.rightBalances}>
-        <Text className={styles.rightTextStyle}>{rightText}</Text>
+        <Text className={styles.rightTextStyle}>{rightTextTitle}</Text>
+        {isDefined(rightTextSubtitle) && (
+          <Text className={styles.rightTextStyle}>{rightTextSubtitle}</Text>
+        )}
       </div>
     );
   };
@@ -81,12 +100,13 @@ export const SelectWalletList: React.FC<Props> = ({
     title: string,
     description: string,
     icon: React.ReactElement,
-    rightText: string,
+    rightTextTitle: string,
     selected: boolean,
     removeSelectedWallet: boolean,
     wallet?: FrontendWallet,
     address?: string,
     customOnSelect?: () => void,
+    rightTextSubtitle?: string,
   ) => {
     return (
       <ListRow
@@ -100,7 +120,7 @@ export const SelectWalletList: React.FC<Props> = ({
         descriptionClassName={styles.descriptionStyle}
         selected={selected}
         leftView={() => <div className={styles.iconContainer}>{icon}</div>}
-        rightView={() => renderRightView(rightText)}
+        rightView={() => renderRightView(rightTextTitle, rightTextSubtitle)}
         onSelect={
           customOnSelect ??
           (() => onSelect(wallet, address, removeSelectedWallet))
@@ -110,26 +130,39 @@ export const SelectWalletList: React.FC<Props> = ({
   };
 
   const renderWallet = (wallet: FrontendWallet, index: number) => {
-    const title = wallet.name;
+    const { name, isViewOnlyWallet, id } = wallet;
+
+    const totalBalanceCurrency = getTotalBalanceCurrencyForWallet(
+      true, [RailgunWalletBalanceBucket.Spendable],
+      wallet,
+      currentNetworkName,
+      networkPrices,
+      currentTxidVersion,
+      erc20BalancesNetwork,
+      erc20BalancesRailgun,
+    );
     const address = walletAddress(wallet);
     const icon = renderIcon(
-      wallet.isViewOnlyWallet ? IconType.Eye : IconType.Wallet,
+      isViewOnlyWallet ? IconType.Eye : IconType.Wallet,
       22,
       styleguide.colors.lighterLabelSecondary,
     );
-    const rightText = wallet.isViewOnlyWallet ? 'View-only' : 'EVM wallet';
+    const rightTextTitle = isViewOnlyWallet ? 'View-only' : 'EVM wallet';
+    const rightTextSubtitle = `$${
+      discreetMode.enabled ? '***' : totalBalanceCurrency.toFixed(2)
+    } on ${currentNetworkName}`;
     const selected =
-      wallet.id === selectedWallet?.id ||
+      id === selectedWallet?.id ||
       compareTokenAddress(address, selectedAddress);
 
     return renderRow(
       index,
-      title,
-      shortenWalletAddress(address), icon,
-      rightText,
+      name, shortenWalletAddress(address), icon,
+      rightTextTitle,
       selected,
       false, wallet,
       address,
+      undefined, rightTextSubtitle,
     );
   };
 
