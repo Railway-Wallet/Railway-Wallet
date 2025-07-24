@@ -204,101 +204,103 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
     </View>
   );
 
-  return (<>
-    <AppHeader
-      title={network.publicName}
-      backgroundColor={styleguide.colors.headerBackground}
-      headerLeft={<HeaderBackButton label="Networks" />}
-      isModal={false}
-    />
-    <View style={styles.wrapper}>
-      <ScrollView>
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
-        <View style={[styles.itemRow, { marginTop: 16 }]}>
-          <SettingsListHeader title="Details" />
-          <View style={styles.items}>
-            <SettingsListItem
-              title="Chain ID"
-              description={`${network.chain.id}`}
-            />
-          </View>
-          <View style={styles.items}>
-            <SettingsListItem
-              title="Reload providers"
-              icon="refresh"
-              onTap={reloadProviders}
-            />
-          </View>
-        </View>
-        <View style={styles.itemRow}>
-          <SettingsListHeader title="Default RPC Providers" />
-          <View style={styles.items}>
-            {defaultRPCProvidersForChain.map((provider, index) => (
-              <SettingsListItem
-                key={index}
-                centerStyle={styles.listItemCenter}
-                titleStyle={styles.listItemTitle}
-                title={
-                  provider.provider.includes('railwayapi')
-                    ? 'Alchemy Proxy'
-                    : provider.provider
-                }
-              />
-            ))}
-          </View>
-        </View>
-        <View style={styles.itemRow}>
-          <SettingsListHeader title="Custom RPC Providers" />
-          <View
-            style={[
-              styles.items,
-              hasCustomRPCs ? styles.extraItemsTopPadding : {},
-            ]}
-          >
-            {!hasCustomRPCs && (
-              <Text style={styles.placeholderText}>
-                No custom RPCs added.
-              </Text>
-            )}
-            {networkStoredSettings?.rpcCustomURLs.map(
-              (rpcCustomURL, index) => (
-                <SettingsListItem
-                  key={index}
-                  title={rpcCustomURL}
-                  centerStyle={styles.listItemCenter}
-                  titleStyle={styles.listItemTitle}
-                  icon="minus-circle"
-                  onTap={() => promptRemoveRPCCustomURL(rpcCustomURL)}
-                />
-              ),
-            )}
-          </View>
-          <View style={styles.items}>
-            <SettingsListItem
-              title="Set custom provider"
-              icon="plus"
-              onTap={onAddRpc}
-            />
-          </View>
-        </View>
-        {networkStoredSettings && hasCustomRPCs && (
-          // eslint-disable-next-line react-native/no-inline-styles
-          (<View style={[styles.itemRow, { marginBottom: 20 }]}>
+  return (
+    <>
+      <AppHeader
+        title={network.publicName}
+        backgroundColor={styleguide.colors.headerBackground}
+        headerLeft={<HeaderBackButton label="Networks" />}
+        isModal={false}
+      />
+      <View style={styles.wrapper}>
+        <ScrollView>
+          {/* eslint-disable-next-line react-native/no-inline-styles */}
+          <View style={[styles.itemRow, { marginTop: 16 }]}>
+            <SettingsListHeader title="Details" />
             <View style={styles.items}>
               <SettingsListItem
-                title="Default RPCs"
-                rightView={defaultRPCsRightView}
-                onTap={() =>
-                  setUseDefaultRailwayRPCsAsBackup(
-                    !networkStoredSettings.useDefaultRailwayRPCsAsBackup,
-                  )
-                }
+                title="Chain ID"
+                description={`${network.chain.id}`}
               />
             </View>
-          </View>)
-        )}
-      </ScrollView>
-    </View>
-    {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-  </>);
+            <View style={styles.items}>
+              <SettingsListItem
+                title="Reload providers"
+                icon="refresh"
+                onTap={reloadProviders}
+              />
+            </View>
+          </View>
+          <View style={styles.itemRow}>
+            <SettingsListHeader title="Default RPC Providers" />
+            <View style={styles.items}>
+              {defaultRPCProvidersForChain.map((provider, index) => (
+                <SettingsListItem
+                  key={index}
+                  centerStyle={styles.listItemCenter}
+                  titleStyle={styles.listItemTitle}
+                  title={
+                    provider.provider.includes('railwayapi')
+                      ? 'Alchemy Proxy'
+                      : provider.provider
+                  }
+                />
+              ))}
+            </View>
+          </View>
+          <View style={styles.itemRow}>
+            <SettingsListHeader title="Custom RPC Providers" />
+            <View
+              style={[
+                styles.items,
+                hasCustomRPCs ? styles.extraItemsTopPadding : {},
+              ]}
+            >
+              {!hasCustomRPCs && (
+                <Text style={styles.placeholderText}>
+                  No custom RPCs added.
+                </Text>
+              )}
+              {networkStoredSettings?.rpcCustomURLs.map(
+                (rpcCustomURL, index) => (
+                  <SettingsListItem
+                    key={index}
+                    title={rpcCustomURL}
+                    centerStyle={styles.listItemCenter}
+                    titleStyle={styles.listItemTitle}
+                    icon="minus-circle"
+                    onTap={() => promptRemoveRPCCustomURL(rpcCustomURL)}
+                  />
+                ),
+              )}
+            </View>
+            <View style={styles.items}>
+              <SettingsListItem
+                title="Set custom provider"
+                icon="plus"
+                onTap={onAddRpc}
+              />
+            </View>
+          </View>
+          {networkStoredSettings && hasCustomRPCs && (
+            // eslint-disable-next-line react-native/no-inline-styles
+            (<View style={[styles.itemRow, { marginBottom: 20 }]}>
+              <View style={styles.items}>
+                <SettingsListItem
+                  title="Default RPCs"
+                  rightView={defaultRPCsRightView}
+                  onTap={() =>
+                    setUseDefaultRailwayRPCsAsBackup(
+                      !networkStoredSettings.useDefaultRailwayRPCsAsBackup,
+                    )
+                  }
+                />
+              </View>
+            </View>)
+          )}
+        </ScrollView>
+      </View>
+      {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
+    </>
+  );
 };

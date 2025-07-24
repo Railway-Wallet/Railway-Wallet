@@ -61,7 +61,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   };
 
   return (
-    (<NativeHeader
+    <NativeHeader
       title={title}
       headerTitle={props => titleView({ ...props, allowFontScaling })}
       modal={isModal}
@@ -73,6 +73,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       headerRight={() => headerButtonWithModalPadding(headerRight)}
       headerLeft={() => headerButtonWithModalPadding(headerLeft)}
       headerStatusBarHeight={headerStatusBarHeight}
-    />)
+    />
   );
 };

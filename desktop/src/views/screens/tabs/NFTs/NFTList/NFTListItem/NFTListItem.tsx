@@ -117,88 +117,90 @@ export const NFTListItem = ({
           )
       : undefined;
 
-  return (<>
-    {}
-    {!metadata && (
-      <div className={styles.container}>
-        <div className={styles.imageWrapper}>
-          <div className={styles.loadingImage}>
-            <Spinner size={36} />
+  return (
+    <>
+      {}
+      {!metadata && (
+        <div className={styles.container}>
+          <div className={styles.imageWrapper}>
+            <div className={styles.loadingImage}>
+              <Spinner size={36} />
+            </div>
+          </div>
+          <div className={styles.textWrapper}>
+            <Text className={styles.title}>Loading...</Text>
           </div>
         </div>
-        <div className={styles.textWrapper}>
-          <Text className={styles.title}>Loading...</Text>
-        </div>
-      </div>
-    )}
-    {}
-    {metadata && (
-      <div
-        className={styles.container}
-        onMouseEnter={() => setIsHoveringContainer(true)}
-        onMouseLeave={() => setIsHoveringContainer(false)}
-      >
+      )}
+      {}
+      {metadata && (
         <div
-          className={cn(styles.imageWrapper, {
-            [styles.imageWrapperHovered]: isHoveringContainer,
-          })}
+          className={styles.container}
+          onMouseEnter={() => setIsHoveringContainer(true)}
+          onMouseLeave={() => setIsHoveringContainer(false)}
         >
-          <NFTImageBackground className={styles.image} imageURL={imageURL} />
-        </div>
-        {isHoveringContainer && (
-          <div className={styles.buttonsWrapper}>
-            <Button
-              endIcon={IconType.Send}
-              children="Send"
-              onClick={onActionSend}
-              buttonClassName={styles.button}
-              disabled={activeWallet?.isViewOnlyWallet}
-            />
-            {isRailgun ? (
-              <Button
-                endIcon={IconType.Public}
-                children="Unshield"
-                onClick={onActionUnshield}
-                buttonClassName={styles.button}
-                disabled={activeWallet?.isViewOnlyWallet}
-              />
-            ) : (
-              <Button
-                endIcon={IconType.Shield}
-                children="Shield"
-                onClick={onActionShield}
-                buttonClassName={styles.button}
-                disabled={activeWallet?.isViewOnlyWallet}
-              />
-            )}
-          </div>
-        )}
-        <div className={styles.textWrapper}>
-          <div className={styles.titleBadgeWrapper}>
-            <Text className={styles.title}>{metadata.name}</Text>
-            {badgeIcon()}
-          </div>
           <div
-            onMouseEnter={() =>
-              onClickCollectionName && setIsHoveringCollectionName(true)
-            }
-            onMouseLeave={() =>
-              onClickCollectionName && setIsHoveringCollectionName(false)
-            }
-            onClick={onClickCollectionName}
+            className={cn(styles.imageWrapper, {
+              [styles.imageWrapperHovered]: isHoveringContainer,
+            })}
           >
-            <Text
-              className={cn(styles.subtitle, {
-                [styles.hoveringSubtitle]: isHoveringCollectionName,
-              })}
+            <NFTImageBackground className={styles.image} imageURL={imageURL} />
+          </div>
+          {isHoveringContainer && (
+            <div className={styles.buttonsWrapper}>
+              <Button
+                endIcon={IconType.Send}
+                children="Send"
+                onClick={onActionSend}
+                buttonClassName={styles.button}
+                disabled={activeWallet?.isViewOnlyWallet}
+              />
+              {isRailgun ? (
+                <Button
+                  endIcon={IconType.Public}
+                  children="Unshield"
+                  onClick={onActionUnshield}
+                  buttonClassName={styles.button}
+                  disabled={activeWallet?.isViewOnlyWallet}
+                />
+              ) : (
+                <Button
+                  endIcon={IconType.Shield}
+                  children="Shield"
+                  onClick={onActionShield}
+                  buttonClassName={styles.button}
+                  disabled={activeWallet?.isViewOnlyWallet}
+                />
+              )}
+            </div>
+          )}
+          <div className={styles.textWrapper}>
+            <div className={styles.titleBadgeWrapper}>
+              <Text className={styles.title}>{metadata.name}</Text>
+              {badgeIcon()}
+            </div>
+            <div
+              onMouseEnter={() =>
+                onClickCollectionName && setIsHoveringCollectionName(true)
+              }
+              onMouseLeave={() =>
+                onClickCollectionName && setIsHoveringCollectionName(false)
+              }
+              onClick={onClickCollectionName}
             >
-              {metadata.collectionName}
-            </Text>
+              <Text
+                className={cn(styles.subtitle, {
+                  [styles.hoveringSubtitle]: isHoveringCollectionName,
+                })}
+              >
+                {metadata.collectionName}
+              </Text>
+            </div>
           </div>
         </div>
-      </div>
-    )}
-    {alert && <GenericAlert {...alert} />}
-    <Tooltip id="tooltip" place="top" className={styles.tooltip} />
-  </>);
+      )}
+      {alert && <GenericAlert {...alert} />}
+      <Tooltip id="tooltip" place="top" className={styles.tooltip} />
+    </>
+  );
 };

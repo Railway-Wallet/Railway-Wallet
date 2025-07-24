@@ -180,120 +180,122 @@ export const SettingsNetworkInfoModal = ({
   const hasNoCustomProviders =
     (networkStoredSettings?.rpcCustomURLs.length ?? 0) === 0;
 
-  return (<>
-    <GenericModal
-      onClose={() => onClose(false)}
-      isBackChevron={true}
-      title={selectedNetwork.publicName}
-    >
-      <Text className={styles.sectionHeader}>Details</Text>
-      <div className={styles.itemCard}>
-        <div className={styles.itemInnerContainer}>
-          <div className={styles.flexContainer}>
-            <Text className={styles.subheader}>Chain ID</Text>
-            {}
+  return (
+    <>
+      <GenericModal
+        onClose={() => onClose(false)}
+        isBackChevron={true}
+        title={selectedNetwork.publicName}
+      >
+        <Text className={styles.sectionHeader}>Details</Text>
+        <div className={styles.itemCard}>
+          <div className={styles.itemInnerContainer}>
+            <div className={styles.flexContainer}>
+              <Text className={styles.subheader}>Chain ID</Text>
+              {}
+            </div>
+          </div>
+          <Text className={styles.label}>{selectedNetwork.chain.id}</Text>
+        </div>
+        <div
+          className={cn(
+            styles.itemCard,
+            styles.itemContainerUpperSpacing,
+            styles.clickable,
+          )}
+          onClick={() => reloadProviders()}
+        >
+          <div className={styles.phraseHeader}>
+            <Text>Reload providers</Text>
+            {renderIcon(IconType.Refresh, 20)}
           </div>
         </div>
-        <Text className={styles.label}>{selectedNetwork.chain.id}</Text>
-      </div>
-      <div
-        className={cn(
-          styles.itemCard,
-          styles.itemContainerUpperSpacing,
-          styles.clickable,
-        )}
-        onClick={() => reloadProviders()}
-      >
-        <div className={styles.phraseHeader}>
-          <Text>Reload providers</Text>
-          {renderIcon(IconType.Refresh, 20)}
+
+        <Text className={styles.sectionHeader}>Default RPC Providers</Text>
+        <div className={styles.itemCard}>
+          {defaultRPCProvidersForChain.map(provider => {
+            return (
+              <Text className={styles.label}>
+                {provider.provider.includes('railwayapi')
+                  ? 'Alchemy Proxy'
+                  : provider.provider}
+              </Text>
+            );
+          })}
         </div>
-      </div>
-
-      <Text className={styles.sectionHeader}>Default RPC Providers</Text>
-      <div className={styles.itemCard}>
-        {defaultRPCProvidersForChain.map(provider => {
-          return (
-            <Text className={styles.label}>
-              {provider.provider.includes('railwayapi')
-                ? 'Alchemy Proxy'
-                : provider.provider}
-            </Text>
-          );
-        })}
-      </div>
-      {networkStoredSettings &&
-        !!networkStoredSettings?.rpcCustomURLs.length && (
-          <div className={styles.itemContainerUpperSpacing}>
-            <SelectableListItem
-              title="Status"
-              rightText={
-                networkStoredSettings.useDefaultRailwayRPCsAsBackup
-                  ? 'Enabled'
-                  : 'Disabled'
-              }
-              rightSubtext={
-                networkStoredSettings.useDefaultRailwayRPCsAsBackup
-                  ? 'Using default RPCs as backups'
-                  : 'Only connecting to custom RPCs'
-              }
-              onTap={() =>
-                setUseDefaultRailwayRPCsAsBackup(
-                  !networkStoredSettings.useDefaultRailwayRPCsAsBackup,
-                )
-              }
-              hideRightIcon={true}
-            />
-          </div>
-        )}
-
-      <Text className={styles.sectionHeader}>Custom RPC Providers</Text>
-      <div className={cn(styles.itemCard)}>
-        {hasNoCustomProviders && (
-          <Text className={styles.label}>No custom RPCs added.</Text>
-        )}
-        {networkStoredSettings?.rpcCustomURLs.map((rpcCustomURL, index) => (
-          <TextButton
-            key={index}
-            text={rpcCustomURL}
-            textClassName={styles.label}
-            action={() => promptRemoveRPCCustomURL(rpcCustomURL)}
-          />
-        ))}
-      </div>
-      <div
-        className={cn(
-          styles.itemCard,
-          styles.itemContainerUpperSpacing,
-          styles.clickable,
-        )}
-        onClick={() => setShowAddCustomRPCModal(true)}
-      >
-        <div className={styles.phraseHeader}>
-          {hasNoCustomProviders ? (
-            <Text>Set custom provider</Text>
-          ) : (
-            <Text>Add custom provider</Text>
+        {networkStoredSettings &&
+          !!networkStoredSettings?.rpcCustomURLs.length && (
+            <div className={styles.itemContainerUpperSpacing}>
+              <SelectableListItem
+                title="Status"
+                rightText={
+                  networkStoredSettings.useDefaultRailwayRPCsAsBackup
+                    ? 'Enabled'
+                    : 'Disabled'
+                }
+                rightSubtext={
+                  networkStoredSettings.useDefaultRailwayRPCsAsBackup
+                    ? 'Using default RPCs as backups'
+                    : 'Only connecting to custom RPCs'
+                }
+                onTap={() =>
+                  setUseDefaultRailwayRPCsAsBackup(
+                    !networkStoredSettings.useDefaultRailwayRPCsAsBackup,
+                  )
+                }
+                hideRightIcon={true}
+              />
+            </div>
           )}
 
-          {renderIcon(IconType.PlusCircle, 20)}
+        <Text className={styles.sectionHeader}>Custom RPC Providers</Text>
+        <div className={cn(styles.itemCard)}>
+          {hasNoCustomProviders && (
+            <Text className={styles.label}>No custom RPCs added.</Text>
+          )}
+          {networkStoredSettings?.rpcCustomURLs.map((rpcCustomURL, index) => (
+            <TextButton
+              key={index}
+              text={rpcCustomURL}
+              textClassName={styles.label}
+              action={() => promptRemoveRPCCustomURL(rpcCustomURL)}
+            />
+          ))}
         </div>
-      </div>
-    </GenericModal>
-    {showAddCustomRPCModal && isDefined(selectedNetwork) && (
-      <>
-        <AddCustomRPCModal
-          network={selectedNetwork}
-          onClose={async (customRPCURL?: string) => {
-            setShowAddCustomRPCModal(false);
-            if (isDefined(customRPCURL)) {
-              await addRPCCustomURL(customRPCURL);
-            }
-          }}
-        />
-      </>
-    )}
-    {alert && <GenericAlert {...alert} />}
-    {errorModal && <ErrorDetailsModal {...errorModal} />}
-  </>);
+        <div
+          className={cn(
+            styles.itemCard,
+            styles.itemContainerUpperSpacing,
+            styles.clickable,
+          )}
+          onClick={() => setShowAddCustomRPCModal(true)}
+        >
+          <div className={styles.phraseHeader}>
+            {hasNoCustomProviders ? (
+              <Text>Set custom provider</Text>
+            ) : (
+              <Text>Add custom provider</Text>
+            )}
+
+            {renderIcon(IconType.PlusCircle, 20)}
+          </div>
+        </div>
+      </GenericModal>
+      {showAddCustomRPCModal && isDefined(selectedNetwork) && (
+        <>
+          <AddCustomRPCModal
+            network={selectedNetwork}
+            onClose={async (customRPCURL?: string) => {
+              setShowAddCustomRPCModal(false);
+              if (isDefined(customRPCURL)) {
+                await addRPCCustomURL(customRPCURL);
+              }
+            }}
+          />
+        </>
+      )}
+      {alert && <GenericAlert {...alert} />}
+      {errorModal && <ErrorDetailsModal {...errorModal} />}
+    </>
+  );
 };

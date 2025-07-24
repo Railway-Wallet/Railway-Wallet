@@ -16,13 +16,13 @@ export const SeedPhraseTextBox: React.FC<Props> = ({
   blur = false,
 }) => {
   return (
-    (<TouchableHighlight onPress={onTap}>
+    <TouchableHighlight onPress={onTap}>
       <View style={styles.box}>
         <Text style={styles.text}>{text}</Text>
         {blur && !isAndroid() && (
             (<BlurView style={styles.blur} blurAmount={6} />)
           )}
       </View>
-    </TouchableHighlight>)
+    </TouchableHighlight>
   );
 };

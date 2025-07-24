@@ -252,7 +252,7 @@ export const renderIcon = (
       return <DesktopIcon {...props} />;
     default:
       return (
-        (<img
+        <img
           src={iconTypeOrSrc}
           alt="icon"
           height={size}
@@ -261,7 +261,7 @@ export const renderIcon = (
             currentTarget.onerror = null;
             currentTarget.src = ImageSwirl();
           }}
-        />)
+        />
       );
   }
 };

@@ -119,7 +119,7 @@ export const TextEntry: React.FC<TextEntryProps> = ({
   };
 
   return (
-    (<View ref={clickOutsideRef} style={[styles.wrapper, ...viewStyles]}>
+    <View ref={clickOutsideRef} style={[styles.wrapper, ...viewStyles]}>
       <View style={styles.topWrapper}>
         {labelText()}
         {rightIconButtons()}
@@ -142,6 +142,6 @@ export const TextEntry: React.FC<TextEntryProps> = ({
         {...props}
         pointerEvents={props.editable === false ? 'none' : 'auto'}
       />
-    </View>)
+    </View>
   );
 };

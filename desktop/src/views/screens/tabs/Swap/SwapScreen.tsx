@@ -36,7 +36,7 @@ export const SwapScreen: React.FC<Props> = ({ isRailgun, setIsRailgun }) => {
   }
 
   return (
-    (<div className={cn(styles.pageContainer, 'hide-scroll')}>
+    <div className={cn(styles.pageContainer, 'hide-scroll')}>
       <MainPagePaddedContainer maxWidth={760} minWidth={520}>
         <div className={styles.content}>
           <div className={styles.headerRow}>
@@ -56,6 +56,6 @@ export const SwapScreen: React.FC<Props> = ({ isRailgun, setIsRailgun }) => {
           />
         </div>
       </MainPagePaddedContainer>
-    </div>)
+    </div>
   );
 };

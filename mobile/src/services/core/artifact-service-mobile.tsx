@@ -8,17 +8,17 @@ import {
 } from '@react-shared';
 
 const PRELOAD_INITIAL_ARTIFACTS: string[] = [
-  '1x1',
-  '1x2',
-  '1x3',
-  '2x1',
-  '2x2',
-  '3x1',
-  '3x2',
-  '4x1',
-  '4x2',
-  '5x1',
-  '5x2',
+  '01x01',
+  '01x02',
+  '01x03',
+  '02x01',
+  '02x02',
+  '03x01',
+  '03x02',
+  '04x01',
+  '04x02',
+  '05x01',
+  '05x02',
 ];
 
 export class ArtifactServiceMobile {

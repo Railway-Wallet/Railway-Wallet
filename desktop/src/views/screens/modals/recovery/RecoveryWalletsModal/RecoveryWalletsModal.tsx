@@ -103,41 +103,43 @@ export const RecoveryWalletsModal: React.FC<Props> = ({ onClose }) => {
     );
   };
 
-  return (<>
-    <GenericModal onClose={onClose} title="Wallets">
-      <div
-        className={cn(
-          styles.walletItemContainer,
-          styles.recoveryWalletItemContainer,
-          'hide-scroll',
-        )}
-      >
-        {wallets.map(walletItem)}
-      </div>
-    </GenericModal>
-    {showSeedPhrase && selectedWallet && (
-      <>
-        {}
-        <ShowSeedPhraseModal
-          onClose={() => {
-            setShowSeedPhrase(false);
-            setSelectedWallet(undefined);
-          }}
-          wallet={selectedWallet}
-        />
-      </>
-    )}
-    {showShareableViewingKey && selectedWallet && (
-      <>
-        {}
-        <ShowShareableViewingKeyModal
-          onClose={() => {
-            setShowShareableViewingKey(false);
-            setSelectedWallet(undefined);
-          }}
-          wallet={selectedWallet}
-        />
-      </>
-    )}
-  </>);
+  return (
+    <>
+      <GenericModal onClose={onClose} title="Wallets">
+        <div
+          className={cn(
+            styles.walletItemContainer,
+            styles.recoveryWalletItemContainer,
+            'hide-scroll',
+          )}
+        >
+          {wallets.map(walletItem)}
+        </div>
+      </GenericModal>
+      {showSeedPhrase && selectedWallet && (
+        <>
+          {}
+          <ShowSeedPhraseModal
+            onClose={() => {
+              setShowSeedPhrase(false);
+              setSelectedWallet(undefined);
+            }}
+            wallet={selectedWallet}
+          />
+        </>
+      )}
+      {showShareableViewingKey && selectedWallet && (
+        <>
+          {}
+          <ShowShareableViewingKeyModal
+            onClose={() => {
+              setShowShareableViewingKey(false);
+              setSelectedWallet(undefined);
+            }}
+            wallet={selectedWallet}
+          />
+        </>
+      )}
+    </>
+  );
 };

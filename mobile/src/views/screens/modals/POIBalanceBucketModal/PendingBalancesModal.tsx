@@ -200,7 +200,7 @@ export const PendingBalancesModal: React.FC<Props> = ({
   );
 
   return (
-    (<Modal animationType="slide" presentationStyle="formSheet" visible={show}>
+    <Modal animationType="slide" presentationStyle="formSheet" visible={show}>
       <ActionSheetProvider>
         <>
           <View style={styles.wrapper}>
@@ -275,6 +275,6 @@ export const PendingBalancesModal: React.FC<Props> = ({
           <GenericAlert {...alert} />
         </>
       </ActionSheetProvider>
-    </Modal>)
+    </Modal>
   );
 };

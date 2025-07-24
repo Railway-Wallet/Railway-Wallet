@@ -221,7 +221,7 @@ const TabNavigator = () => {
   );
 
   return (
-    (<Tab.Navigator
+    <Tab.Navigator
       detachInactiveScreens={false}
       screenOptions={({ route }) => ({
         poiProgressData: poiProofProgressStatus,
@@ -287,7 +287,7 @@ const TabNavigator = () => {
         component={SettingsNavigator}
         listeners={hapticOnTabPress}
       />
-    </Tab.Navigator>)
+    </Tab.Navigator>
   );
 };
 

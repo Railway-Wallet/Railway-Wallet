@@ -69,7 +69,7 @@ export const SelectWalletModal: React.FC<Props> = ({
   };
 
   return (
-    (<Modal
+    <Modal
       animationType="slide"
       presentationStyle="formSheet"
       visible={show}
@@ -120,6 +120,6 @@ export const SelectWalletModal: React.FC<Props> = ({
           />
         </View>
       </SafeGrayFooter>
-    </Modal>)
+    </Modal>
   );
 };

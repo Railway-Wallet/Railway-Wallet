@@ -45,55 +45,57 @@ export const SelectWalletModal: React.FC<Props> = ({
 
   const [walletSettingsOpen, setWalletSettingsOpen] = useState(false);
 
-  return (<>
-    {walletSettingsOpen && (
-      <SettingsWalletsModal onClose={() => setWalletSettingsOpen(false)} />
-    )}
-    <GenericModal
-      onClose={() => onDismiss()}
-      title={title}
-      accessoryView={
-        showPublicPrivateToggle ? (
-          <Button
-            buttonClassName={styles.privatePublicButton}
-            endIcon={isRailgun ? IconType.Shield : IconType.Public}
-            alt="switch private or public"
-            onClick={() => setIsRailgun(!isRailgun)}
-          >
-            {isRailgun ? 'Private' : 'Public'}
-          </Button>
-        ) : undefined
-      }
-    >
-      <div className={styles.wrapper}>
-        <SelectWalletList
-          isRailgun={isRailgun}
-          selectedWallet={selectedWallet}
-          selectedAddress={selectedAddress}
-          onSelect={onDismiss}
-          showBroadcasterOption={showBroadcasterOption}
-          showNoDestinationWalletOption={showNoDestinationWalletOption}
-          showCustomAddressDestinationOption={
-            showCustomAddressDestinationOption
-          }
-          availableWalletsOnly={availableWalletsOnly}
-          showSavedAddresses={showSavedAddresses}
-        />
-        {onShowWalletSettings && (
-          <div className={styles.footer}>
-            <div className={styles.footerContent}>
-              {}
-              <div className={styles.footerTextButtonWrapper}>
-                <TextButton
-                  textClassName={styles.footerTextButton}
-                  text="Open wallet settings"
-                  action={onShowWalletSettings}
-                />
+  return (
+    <>
+      {walletSettingsOpen && (
+        <SettingsWalletsModal onClose={() => setWalletSettingsOpen(false)} />
+      )}
+      <GenericModal
+        onClose={() => onDismiss()}
+        title={title}
+        accessoryView={
+          showPublicPrivateToggle ? (
+            <Button
+              buttonClassName={styles.privatePublicButton}
+              endIcon={isRailgun ? IconType.Shield : IconType.Public}
+              alt="switch private or public"
+              onClick={() => setIsRailgun(!isRailgun)}
+            >
+              {isRailgun ? 'Private' : 'Public'}
+            </Button>
+          ) : undefined
+        }
+      >
+        <div className={styles.wrapper}>
+          <SelectWalletList
+            isRailgun={isRailgun}
+            selectedWallet={selectedWallet}
+            selectedAddress={selectedAddress}
+            onSelect={onDismiss}
+            showBroadcasterOption={showBroadcasterOption}
+            showNoDestinationWalletOption={showNoDestinationWalletOption}
+            showCustomAddressDestinationOption={
+              showCustomAddressDestinationOption
+            }
+            availableWalletsOnly={availableWalletsOnly}
+            showSavedAddresses={showSavedAddresses}
+          />
+          {onShowWalletSettings && (
+            <div className={styles.footer}>
+              <div className={styles.footerContent}>
+                {}
+                <div className={styles.footerTextButtonWrapper}>
+                  <TextButton
+                    textClassName={styles.footerTextButton}
+                    text="Open wallet settings"
+                    action={onShowWalletSettings}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-    </GenericModal>
-  </>);
+          )}
+        </div>
+      </GenericModal>
+    </>
+  );
 };

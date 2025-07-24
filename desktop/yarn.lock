@@ -4773,9 +4773,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/cookbook@npm:^2.10.2":
-  version: 2.10.2
-  resolution: "@railgun-community/cookbook@npm:2.10.2"
+"@railgun-community/cookbook@npm:^2.10.3":
+  version: 2.10.3
+  resolution: "@railgun-community/cookbook@npm:2.10.3"
   dependencies:
     "@0x/contract-addresses": "npm:^8.13.0"
     "@graphql-mesh/cache-localforage": "npm:^0.7.20"
@@ -4792,7 +4792,7 @@ __metadata:
     custom-uniswap-v2-sdk: "npm:^3.2.0"
     ethers: "npm:6.13.1"
     graphql: "npm:^16.6.0"
-  checksum: 10/02d4da69fd50f3526632e979bfd63cdf008a91f00b128173076e162003d12017c33f4ead85aaac407d74afb3409be2126df95a8f98a31798f7ae27e251990a52
+  checksum: 10/fb4bbcd9f10b53d86cdc4e4edffd55c805edaa78044e8a8c90874d5dcfc8b5313083cd962ede25ed5dca0687c3c8768a91c8cb25bf958c626c7b2d2fcdcbc68d
   languageName: node
   linkType: hard
 
@@ -4878,9 +4878,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/wallet@npm:^10.4.0":
-  version: 10.4.0
-  resolution: "@railgun-community/wallet@npm:10.4.0"
+"@railgun-community/wallet@npm:^10.4.1":
+  version: 10.4.1
+  resolution: "@railgun-community/wallet@npm:10.4.1"
   dependencies:
     "@graphql-mesh/cache-localforage": "npm:^0.7.20"
     "@graphql-mesh/cross-helpers": "npm:^0.3.4"
@@ -4906,7 +4906,7 @@ __metadata:
     events: "npm:3.3.0"
     graphql: "npm:^16.6.0"
     stream-browserify: "npm:3.0.0"
-  checksum: 10/2e92d78cc778e1af0066b7b6174060770754daadcf69710948f07c20fd171098ce8b5b9a6d8b5d5b754e6765f90c0c4304a536128548a5e3ce98e2ce7c06a420
+  checksum: 10/f711dc5bbf99963fd57fa10593c47981ff3413d5e7756ec31f1ffbca291462b5d447ddf5ce9696ae6d8249ebf2444a8ff15330eff041ae72887225bd2caff257
   languageName: node
   linkType: hard
 
@@ -19545,10 +19545,10 @@ __metadata:
     "@electron/notarize": "npm:^2.5.0"
     "@fingerprintjs/fingerprintjs": "npm:^3.3.6"
     "@multiformats/multiaddr": "npm:12.1.3"
-    "@railgun-community/cookbook": "npm:^2.10.2"
+    "@railgun-community/cookbook": "npm:^2.10.3"
     "@railgun-community/shared-models": "npm:^7.6.1"
     "@railgun-community/waku-broadcaster-client-web": "npm:^8.2.7"
-    "@railgun-community/wallet": "npm:^10.4.0"
+    "@railgun-community/wallet": "npm:^10.4.1"
     "@railway-developer/actionsheet-react": "github:railway-developer/actionsheet-react"
     "@reduxjs/toolkit": "npm:1.9.5"
     "@simbathesailor/use-what-changed": "npm:^2.0.0"

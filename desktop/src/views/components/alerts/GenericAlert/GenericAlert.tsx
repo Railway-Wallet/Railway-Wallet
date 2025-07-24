@@ -88,7 +88,7 @@ export const GenericAlert: React.FC<AlertProps> = ({
       submitStyles = styles.bottomSubmitStyles;
     }
     return (
-      (<Button
+      <Button
         loading={buttonLoading}
         disabled={buttonDisabled}
         buttonClassName={cn(submitStyles, submitButtonClassName)}
@@ -97,7 +97,7 @@ export const GenericAlert: React.FC<AlertProps> = ({
         }}
       >
         {formatSubmitButtonTitle()}
-      </Button>)
+      </Button>
     );
   };
 

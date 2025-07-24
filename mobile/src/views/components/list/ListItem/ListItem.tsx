@@ -62,13 +62,13 @@ export const ListItem: React.FC<Props> = ({
   ) => {
     if (typeof text === 'string') {
       return (
-        (<Text
+        <Text
           style={style}
           numberOfLines={numberOfLines}
           adjustsFontSizeToFit={adjustsFontSizeToFit && !isAndroid()}
         >
           {text}
-        </Text>)
+        </Text>
       );
     }
     return text;

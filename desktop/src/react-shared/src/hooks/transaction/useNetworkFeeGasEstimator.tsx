@@ -5,6 +5,7 @@ import {
   getEVMGasTypeForTransaction,
   isDefined,
   NFTAmountRecipient,
+  type RailgunWalletBalanceBucket,
   SelectedBroadcaster,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
@@ -58,6 +59,7 @@ export const useNetworkFeeGasEstimator = (
   gasEstimateProgressCallback: (progress: number) => void,
   selectedFeeToken: ERC20Token,
   recipeOutput: Optional<RecipeOutput>,
+  balanceBucketFilter: RailgunWalletBalanceBucket[],
 ) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
@@ -66,21 +68,19 @@ export const useNetworkFeeGasEstimator = (
   const { txidVersion } = useReduxSelector('txidVersion');
 
   const railWalletID = wallets.active?.railWalletID;
+  const activeWallet = wallets.active;
 
-  const pollGasFeeData = useRef<() => Promise<void>>();
-
-  const progressServiceGasEstimate = useRef<Optional<ProgressService>>();
-
+  const [gasDetailsBySpeed, setGasDetailsBySpeed] =
+    useState<Optional<GasDetailsBySpeed>>();
+  const [gasEstimate, setGasEstimate] = useState<Optional<bigint>>();
+  const [gasEstimateError, setGasEstimateError] = useState<Optional<Error>>();
   const [networkFeeSelection, setNetworkFeeSelection] = useState(
     NetworkFeeSelection.Standard,
   );
 
-  const [gasDetailsBySpeed, setGasDetailsBySpeed] =
-    useState<Optional<GasDetailsBySpeed>>();
+  const pollGasFeeData = useRef<() => Promise<void>>();
 
-  const [gasEstimate, setGasEstimate] = useState<Optional<bigint>>();
-
-  const [gasEstimateError, setGasEstimateError] = useState<Optional<Error>>();
+  const progressServiceGasEstimate = useRef<Optional<ProgressService>>();
 
   const latestGasEstimateID = useRef<Optional<string>>();
   const latestSelectedBroadcasterLocked = useRef<Optional<boolean>>(
@@ -245,11 +245,11 @@ export const useNetworkFeeGasEstimator = (
   }, [networkFeeSelection, validGasDetailsForNetworkFeeSelection]);
 
   const { gasTokenBalanceError } = useGasTokenBalanceError(
-    requiresProofGeneration,
+    selectedFeeToken,
+    sendWithPublicWallet,
+    balanceBucketFilter,
     selectedGasDetails,
   );
-
-  const activeWallet = wallets.active;
 
   useEffect(() => {
     if (progressServiceGasEstimate.current) {

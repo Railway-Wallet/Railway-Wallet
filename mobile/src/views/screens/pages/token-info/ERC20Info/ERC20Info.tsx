@@ -355,68 +355,70 @@ export const ERC20Info: React.FC<Props> = ({ navigation, route }) => {
     );
   };
 
-  return (<>
-    <AppHeader
-      title={getTokenDisplayHeader(
-        token,
-        wallets.available,
-        network.current.name,
-      )}
-      backgroundColor={styleguide.colors.headerBackground}
-      isModal={false}
-      headerLeft={<HeaderBackButton />}
-      headerRight={
-        <ButtonIconOnly
-          icon={isAndroid() ? 'dots-vertical' : 'dots-horizontal'}
-          onTap={onTapOptions}
-          size={24}
-          color={styleguide.colors.white}
-        />
-      }
-    />
-    <View style={styles.wrapper}>
-      <SafeAreaView style={styles.wrapper} edges={['right', 'left']}>
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={styleguide.colors.white}
-            />
-          }
-        >
-          {showPriceUnknown && priceUnknownCallout()}
-          <View style={styles.cardWrapper}>
-            <ERC20Card
-              token={token}
-              tokenPrice={tokenPrice}
-              isRailgun={isRailgun}
-              balanceBucketFilter={balanceBucketFilter}
-              onActionCreateWallet={onActionCreateWallet}
-              onActionImportWallet={onActionImportWallet}
-              onActionUnshieldERC20s={onActionUnshieldERC20s}
-              onActionShieldTokens={onActionShieldTokens}
-              onActionSendERC20s={onActionSendERC20s}
-              onActionSwapTokens={onActionSwapTokens}
-              onActionFarmERC20s={onActionFarmERC20s}
-              onActionReceiveTokens={onActionReceiveTokens}
-              onActionMintTokens={onActionMintTokens}
-            />
-          </View>
-          <View style={styles.transactionsWrapper}>
-            <Text style={styles.transactionsHeaderText}>Transactions</Text>
-            <TransactionList
-              transactionsMissingTimestamp={[]}
-              resyncTransactions={async () => {}}
-              transactions={tokenTransactions}
-              filteredToken={token}
-              onCancelTransaction={onCancelTransaction}
-              poiRequired={poiRequired}
-            />
-          </View>
-        </ScrollView>
-        {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-      </SafeAreaView>
-    </View>
-  </>);
+  return (
+    <>
+      <AppHeader
+        title={getTokenDisplayHeader(
+          token,
+          wallets.available,
+          network.current.name,
+        )}
+        backgroundColor={styleguide.colors.headerBackground}
+        isModal={false}
+        headerLeft={<HeaderBackButton />}
+        headerRight={
+          <ButtonIconOnly
+            icon={isAndroid() ? 'dots-vertical' : 'dots-horizontal'}
+            onTap={onTapOptions}
+            size={24}
+            color={styleguide.colors.white}
+          />
+        }
+      />
+      <View style={styles.wrapper}>
+        <SafeAreaView style={styles.wrapper} edges={['right', 'left']}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={styleguide.colors.white}
+              />
+            }
+          >
+            {showPriceUnknown && priceUnknownCallout()}
+            <View style={styles.cardWrapper}>
+              <ERC20Card
+                token={token}
+                tokenPrice={tokenPrice}
+                isRailgun={isRailgun}
+                balanceBucketFilter={balanceBucketFilter}
+                onActionCreateWallet={onActionCreateWallet}
+                onActionImportWallet={onActionImportWallet}
+                onActionUnshieldERC20s={onActionUnshieldERC20s}
+                onActionShieldTokens={onActionShieldTokens}
+                onActionSendERC20s={onActionSendERC20s}
+                onActionSwapTokens={onActionSwapTokens}
+                onActionFarmERC20s={onActionFarmERC20s}
+                onActionReceiveTokens={onActionReceiveTokens}
+                onActionMintTokens={onActionMintTokens}
+              />
+            </View>
+            <View style={styles.transactionsWrapper}>
+              <Text style={styles.transactionsHeaderText}>Transactions</Text>
+              <TransactionList
+                transactionsMissingTimestamp={[]}
+                resyncTransactions={async () => {}}
+                transactions={tokenTransactions}
+                filteredToken={token}
+                onCancelTransaction={onCancelTransaction}
+                poiRequired={poiRequired}
+              />
+            </View>
+          </ScrollView>
+          {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
+        </SafeAreaView>
+      </View>
+    </>
+  );
 };

@@ -181,124 +181,126 @@ export const NFTAmountsEntry: React.FC<Props> = ({
 
   const showingLoadingNFTApproval = requiresApproval && nftApproved == null;
 
-  return (<>
-    {showSelectNFTModal && (
-      <SelectNFTModal
-        onDismiss={onDismissSelectNFTModal}
-        isRailgun={isRailgunBalance}
-        balanceBucketFilter={balanceBucketFilter}
-        selectedNFTAmounts={nftAmounts}
-      />
-    )}
-    <div className={styles.tokenListWrapper}>
-      {nftAmounts.map((nftAmount, index) => (
-        <NFTAmountRowView
-          nftAmount={nftAmount}
-          onSelectNFTAmount={() => onSelectNFTAmount(nftAmount)}
-          index={index}
-          key={nftAmount.nftAddress + nftAmount.tokenSubID}
+  return (
+    <>
+      {showSelectNFTModal && (
+        <SelectNFTModal
+          onDismiss={onDismissSelectNFTModal}
+          isRailgun={isRailgunBalance}
+          balanceBucketFilter={balanceBucketFilter}
+          selectedNFTAmounts={nftAmounts}
         />
-      ))}
-    </div>
-    {showAmountEntry && (
-      <>
-        <div className={styles.addTokenContainer}>
-          {currentTokenCanSelectAmount && (
-            <div className={styles.amountInputContainer}>
-              <Input
-                onChange={e => setNumEntryString(e.target.value)}
-                placeholder="Amount"
-                type="number"
-                value={numEntryString}
-                hasError={numEntryString.length > 0 && !hasValidNumEntry}
-                rightView={
-                  <Button
-                    children="MAX"
-                    onClick={onTapMaxButton}
-                    textClassName={styles.bottomButtonLabel}
-                    buttonClassName={styles.inputInsetButton}
-                  />
-                }
-              />
-              <Button
-                children={currentNFTMetadata?.name}
-                onClick={onTapNFTSelector}
-                textClassName={styles.bottomButtonLabel}
-                buttonClassName={styles.selectTokenButton}
-                endIcon={thumbnailURL}
-              />
-            </div>
-          )}
-          {!currentTokenCanSelectAmount && (
-            <SelectedNFTHighlight
-              nftAmount={currentNFTAmount}
-              onClick={onTapNFTSelector}
-            />
-          )}
-          {nftAmounts.length > 0 && (
-            <div className={styles.closeIcon} onClick={onCancelERC1155Amount}>
-              {renderIcon(IconType.Close, 18)}
-            </div>
-          )}
-        </div>
-        {currentNFTAmount && currentTokenCanSelectAmount && (
-          <Text className={styles.tokenBalanceText}>
-            {isRailgunBalance ? 'Spendable private' : 'Public'} balance:{' '}
-            {nftBalanceString}
-          </Text>
-        )}
-        {isDefined(error) && (
-          <Text className={styles.errorAddressText}>
-            {error.message}{' '}
-            <Text className={styles.errorShowMore} onClick={showErrorDetails}>
-              (show more)
-            </Text>
-          </Text>
-        )}
-        {!showTokenApproveForShielding && !showingLoadingNFTApproval && (
-          <div className={styles.buttonGroup}>
-            <Button
-              children="Confirm NFT selection"
-              disabled={!hasValidNumEntry}
-              onClick={onSaveAmount}
-              textClassName={styles.bottomButtonLabel}
-              buttonClassName={styles.amountActionButton}
-            />
-          </div>
-        )}
-        {showTokenApproveForShielding && (
-          <ApproveButton
-            pendingApproveTransaction={pendingApproveNFTCollectionTransaction}
-            textClassName={styles.bottomButtonLabel}
-            buttonClassName={styles.approveTokenButton}
-            approve={() => {
-              if (!openApproveForShielding) {
-                return;
-              }
-              openApproveForShielding(currentNFTAmount);
-            }}
-            approveText="Approve NFT for shielding"
-            disabled={isDefined(error)}
+      )}
+      <div className={styles.tokenListWrapper}>
+        {nftAmounts.map((nftAmount, index) => (
+          <NFTAmountRowView
+            nftAmount={nftAmount}
+            onSelectNFTAmount={() => onSelectNFTAmount(nftAmount)}
+            index={index}
+            key={nftAmount.nftAddress + nftAmount.tokenSubID}
           />
-        )}
-        {showingLoadingNFTApproval && (
-          <FullScreenSpinner text="Loading NFT details..." />
-        )}
-      </>
-    )}
-    {!showAmountEntry && canSendMultipleNFTs && (
-      <Button
-        endIcon={IconType.Plus}
-        children="Add NFT"
-        onClick={onTapNFTSelector}
-        buttonClassName={styles.newTokenButton}
-        textClassName={styles.bottomButtonLabel}
-        disabled={showTokenApproveForShielding}
-      />
-    )}
-    {}
-    {errorDetailsOpen && isDefined(error) && (
-      <ErrorDetailsModal error={error} onDismiss={hideErrorDetails} />
-    )}
-  </>);
+        ))}
+      </div>
+      {showAmountEntry && (
+        <>
+          <div className={styles.addTokenContainer}>
+            {currentTokenCanSelectAmount && (
+              <div className={styles.amountInputContainer}>
+                <Input
+                  onChange={e => setNumEntryString(e.target.value)}
+                  placeholder="Amount"
+                  type="number"
+                  value={numEntryString}
+                  hasError={numEntryString.length > 0 && !hasValidNumEntry}
+                  rightView={
+                    <Button
+                      children="MAX"
+                      onClick={onTapMaxButton}
+                      textClassName={styles.bottomButtonLabel}
+                      buttonClassName={styles.inputInsetButton}
+                    />
+                  }
+                />
+                <Button
+                  children={currentNFTMetadata?.name}
+                  onClick={onTapNFTSelector}
+                  textClassName={styles.bottomButtonLabel}
+                  buttonClassName={styles.selectTokenButton}
+                  endIcon={thumbnailURL}
+                />
+              </div>
+            )}
+            {!currentTokenCanSelectAmount && (
+              <SelectedNFTHighlight
+                nftAmount={currentNFTAmount}
+                onClick={onTapNFTSelector}
+              />
+            )}
+            {nftAmounts.length > 0 && (
+              <div className={styles.closeIcon} onClick={onCancelERC1155Amount}>
+                {renderIcon(IconType.Close, 18)}
+              </div>
+            )}
+          </div>
+          {currentNFTAmount && currentTokenCanSelectAmount && (
+            <Text className={styles.tokenBalanceText}>
+              {isRailgunBalance ? 'Spendable private' : 'Public'} balance:{' '}
+              {nftBalanceString}
+            </Text>
+          )}
+          {isDefined(error) && (
+            <Text className={styles.errorAddressText}>
+              {error.message}{' '}
+              <Text className={styles.errorShowMore} onClick={showErrorDetails}>
+                (show more)
+              </Text>
+            </Text>
+          )}
+          {!showTokenApproveForShielding && !showingLoadingNFTApproval && (
+            <div className={styles.buttonGroup}>
+              <Button
+                children="Confirm NFT selection"
+                disabled={!hasValidNumEntry}
+                onClick={onSaveAmount}
+                textClassName={styles.bottomButtonLabel}
+                buttonClassName={styles.amountActionButton}
+              />
+            </div>
+          )}
+          {showTokenApproveForShielding && (
+            <ApproveButton
+              pendingApproveTransaction={pendingApproveNFTCollectionTransaction}
+              textClassName={styles.bottomButtonLabel}
+              buttonClassName={styles.approveTokenButton}
+              approve={() => {
+                if (!openApproveForShielding) {
+                  return;
+                }
+                openApproveForShielding(currentNFTAmount);
+              }}
+              approveText="Approve NFT for shielding"
+              disabled={isDefined(error)}
+            />
+          )}
+          {showingLoadingNFTApproval && (
+            <FullScreenSpinner text="Loading NFT details..." />
+          )}
+        </>
+      )}
+      {!showAmountEntry && canSendMultipleNFTs && (
+        <Button
+          endIcon={IconType.Plus}
+          children="Add NFT"
+          onClick={onTapNFTSelector}
+          buttonClassName={styles.newTokenButton}
+          textClassName={styles.bottomButtonLabel}
+          disabled={showTokenApproveForShielding}
+        />
+      )}
+      {}
+      {errorDetailsOpen && isDefined(error) && (
+        <ErrorDetailsModal error={error} onDismiss={hideErrorDetails} />
+      )}
+    </>
+  );
 };

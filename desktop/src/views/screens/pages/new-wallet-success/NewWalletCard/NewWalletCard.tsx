@@ -54,53 +54,55 @@ export const NewWalletCard: React.FC<Props> = ({
     );
   };
 
-  return (<>
-    <div className={cn(styles.newWalletCardContainer, className)}>
-      <RailgunGradient
-        className={styles.headerBackground}
-        gradient={gradient}
-      >
-        {renderIcon(headerIcon)}
-        <Text className={styles.sectionHeaderText}>{walletType}</Text>
-      </RailgunGradient>
-      <div className={styles.bottomSection}>
-        <Text className={styles.fieldName}>Address</Text>
-        <div className={styles.addressQrWrapper}>
-          <Text className={styles.field}>{address}</Text>
-          <div className={styles.buttons}>
-            <Button
-              endIcon={IconType.Copy}
-              onClick={onTapCopyAddress}
-              buttonClassName={styles.button}
-              iconOnly
-            />
-            {}
-            {}
+  return (
+    <>
+      <div className={cn(styles.newWalletCardContainer, className)}>
+        <RailgunGradient
+          className={styles.headerBackground}
+          gradient={gradient}
+        >
+          {renderIcon(headerIcon)}
+          <Text className={styles.sectionHeaderText}>{walletType}</Text>
+        </RailgunGradient>
+        <div className={styles.bottomSection}>
+          <Text className={styles.fieldName}>Address</Text>
+          <div className={styles.addressQrWrapper}>
+            <Text className={styles.field}>{address}</Text>
+            <div className={styles.buttons}>
+              <Button
+                endIcon={IconType.Copy}
+                onClick={onTapCopyAddress}
+                buttonClassName={styles.button}
+                iconOnly
+              />
+              {}
+              {}
+            </div>
+          </div>
+          {isViewOnlyWallet && (
+            <>
+              <Text className={styles.fieldName}>Wallet type</Text>
+              <div className={styles.addressQrWrapper}>
+                <Text className={styles.field}>View-only</Text>
+              </div>
+            </>
+          )}
+          <Text className={styles.fieldName}>Networks</Text>
+          <div className={styles.logoWrapper}>
+            {logos.map((logo, index) => {
+              return (
+                <img
+                  key={index}
+                  src={logo}
+                  className={styles.logo}
+                  width={120}
+                  alt=""
+                />
+              );
+            })}
           </div>
         </div>
-        {isViewOnlyWallet && (
-          <>
-            <Text className={styles.fieldName}>Wallet type</Text>
-            <div className={styles.addressQrWrapper}>
-              <Text className={styles.field}>View-only</Text>
-            </div>
-          </>
-        )}
-        <Text className={styles.fieldName}>Networks</Text>
-        <div className={styles.logoWrapper}>
-          {logos.map((logo, index) => {
-            return (
-              <img
-                key={index}
-                src={logo}
-                className={styles.logo}
-                width={120}
-                alt=""
-              />
-            );
-          })}
-        </div>
       </div>
-    </div>
-  </>);
+    </>
+  );
 };

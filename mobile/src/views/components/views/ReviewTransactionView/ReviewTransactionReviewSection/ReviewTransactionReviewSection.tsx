@@ -533,162 +533,164 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   const showSwapSlippageSelector =
     isSwap && isDefined(slippagePercent) && isDefined(setSlippagePercent);
 
-  return (<>
-    <SelectWalletModal
-      show={showSelectSwapDestinationModal}
-      title="Select swap destination"
-      isRailgunInitial={showPrivateSwapDestination()}
-      onDismiss={dismissSelectSwapDestinationModal}
-      selectedAddress={swapDestinationAddress}
-      availableWalletsOnly
-      showNoDestinationWalletOption
-      showCustomAddressDestinationOption
-      showSavedAddresses
-      showPublicPrivateToggle
-      closeModal={() => setShowSelectSwapDestinationModal(false)}
-    />
-    {showLiquiditySlippageSelector && (
-      <LiquiditySettingsModal
-        show={showLiquiditySettingsModal}
-        setFinalSlippagePercentage={setSlippagePercent}
-        initialSlippagePercentage={slippagePercent}
-        onClose={() => setShowLiquiditySettingsModal(false)}
+  return (
+    <>
+      <SelectWalletModal
+        show={showSelectSwapDestinationModal}
+        title="Select swap destination"
+        isRailgunInitial={showPrivateSwapDestination()}
+        onDismiss={dismissSelectSwapDestinationModal}
+        selectedAddress={swapDestinationAddress}
+        availableWalletsOnly
+        showNoDestinationWalletOption
+        showCustomAddressDestinationOption
+        showSavedAddresses
+        showPublicPrivateToggle
+        closeModal={() => setShowSelectSwapDestinationModal(false)}
       />
-    )}
-    {showSwapSlippageSelector && (
-      <SwapSettingsModal
-        show={showSwapSettingsModal}
-        isRailgun={isRailgunAddress(fromWalletAddress)}
-        currentSettings={{ slippagePercentage: slippagePercent }}
-        onDismiss={onDismissSwapSettings}
-      />
-    )}
-    <View style={styles.reviewSection}>
-      <View style={styles.walletNameIconWrapper}>
-        {walletIcon(isShieldedFromAddress)}
-        <Text style={styles.walletNameText}>
-          {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
-        </Text>
-      </View>
-      <View style={styles.erc20AmountsWrapper}>
-        {recipeFinalERC20Amounts
-          ? inputERC20AmountRecipients.map((tokenAmount, index) => {
-              return reviewTokenAmount(tokenAmount, index);
-            })
-          : adjustedERC20AmountRecipients.map(
-              (adjustedTokenAmount, index) => {
-                return reviewTokenAmount(
-                  adjustedTokenAmount.input,
-                  index,
-                  adjustedTokenAmount.fee,
+      {showLiquiditySlippageSelector && (
+        <LiquiditySettingsModal
+          show={showLiquiditySettingsModal}
+          setFinalSlippagePercentage={setSlippagePercent}
+          initialSlippagePercentage={slippagePercent}
+          onClose={() => setShowLiquiditySettingsModal(false)}
+        />
+      )}
+      {showSwapSlippageSelector && (
+        <SwapSettingsModal
+          show={showSwapSettingsModal}
+          isRailgun={isRailgunAddress(fromWalletAddress)}
+          currentSettings={{ slippagePercentage: slippagePercent }}
+          onDismiss={onDismissSwapSettings}
+        />
+      )}
+      <View style={styles.reviewSection}>
+        <View style={styles.walletNameIconWrapper}>
+          {walletIcon(isShieldedFromAddress)}
+          <Text style={styles.walletNameText}>
+            {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
+          </Text>
+        </View>
+        <View style={styles.erc20AmountsWrapper}>
+          {recipeFinalERC20Amounts
+            ? inputERC20AmountRecipients.map((tokenAmount, index) => {
+                return reviewTokenAmount(tokenAmount, index);
+              })
+            : adjustedERC20AmountRecipients.map(
+                (adjustedTokenAmount, index) => {
+                  return reviewTokenAmount(
+                    adjustedTokenAmount.input,
+                    index,
+                    adjustedTokenAmount.fee,
+                  );
+                },
+              )}
+        </View>
+        {showReceiverWallets() &&
+          outputTokenRecipientGroups.map(tokenRecipientGroup => {
+            return (
+              <View key={tokenRecipientGroup.recipientAddress}>
+                <View style={styles.arrowIconWrapper}>
+                  <Icon source={transactionIcon()} size={24} color="white" />
+                </View>
+                {showOutputAddress &&
+                  outputAddress(
+                    isFullyPrivateTransaction,
+                    tokenRecipientGroup.recipientAddress,
+                  )}
+                <View style={styles.erc20AmountsWrapper}>
+                  {tokenRecipientGroup.tokenAmounts.map(
+                    (outputTokenAmount, index) => {
+                      return reviewTokenAmount(
+                        outputTokenAmount,
+                        index,
+                        undefined, true,
+                      );
+                    },
+                  )}
+                </View>
+              </View>
+            );
+          })}
+        {isSwap && swapQuote && swapBuyTokenAmount && (
+          <>
+            <View style={styles.arrowIconWrapper}>
+              <Icon source={transactionIcon()} size={24} color="white" />
+            </View>
+            {isDefined(swapDestinationAddress) &&
+              outputAddress(false, swapDestinationAddress)}
+            <View style={styles.erc20AmountsWrapper}>
+              {reviewTokenAmount(
+                swapBuyTokenAmount,
+                0, undefined, true,
+              )}
+              {modifySwapDestinationAddress()}
+              {modifySlippagePercent(openSwapSettings)}
+              {minimumReceivedTokenAmounts()}
+            </View>
+            {(swapQuoteOutdated ?? false) && updateSwapQuote && (
+              <View style={styles.swapPriceUpdatedContainer}>
+                <Text
+                  onPress={updateSwapQuote}
+                  style={styles.swapPriceUpdatedButton}
+                >
+                  Price outdated. Tap to refresh.
+                </Text>
+              </View>
+            )}
+          </>
+        )}
+        {isFarmFeature && (
+          <View style={styles.vaultTextWrapper}>
+            <Text style={styles.vaultExchangeRateText}>
+              {getVaultExchangeRateDisplayText(vault, transactionType)}
+            </Text>
+            <Text
+              style={styles.vaultApyText}
+            >{`Current APY: ${expectedVaultApy}%`}</Text>
+          </View>
+        )}
+        {isLiquidity && (
+          <>
+            <View style={styles.vaultTextWrapper}>
+              <Text style={styles.vaultExchangeRateText}>
+                {getPairExchangeRateDisplayText(pool)}
+              </Text>
+            </View>
+            {modifySlippagePercent(openLiquiditySettings)}
+            {minimumReceivedTokenAmounts()}
+          </>
+        )}
+        {(recipeFinalERC20Amounts?.feeERC20AmountRecipients?.length ?? 0) >
+          0 && (
+          <View style={styles.recipeFeeWrapper}>
+            {recipeFinalERC20Amounts?.feeERC20AmountRecipients.map(
+              (feeERC20Amount, index) => {
+                const { amountString, recipientAddress, token } =
+                  feeERC20Amount;
+                const amount = formatUnitFromHexStringToLocale(
+                  amountString,
+                  token.decimals,
+                );
+                return (
+                  <View style={styles.recipeFeeTextWrapper} key={index}>
+                    <Text style={styles.sectionItemTitle}>
+                      {recipientAddress}
+                    </Text>
+                    <Text
+                      style={styles.recipeFeeAmount}
+                    >{`${amount} ${getTokenDisplayName(
+                      token,
+                      wallets.available,
+                      network.current.name,
+                    )}`}</Text>
+                  </View>
                 );
               },
             )}
+          </View>
+        )}
       </View>
-      {showReceiverWallets() &&
-        outputTokenRecipientGroups.map(tokenRecipientGroup => {
-          return (
-            (<View key={tokenRecipientGroup.recipientAddress}>
-              <View style={styles.arrowIconWrapper}>
-                <Icon source={transactionIcon()} size={24} color="white" />
-              </View>
-              {showOutputAddress &&
-                outputAddress(
-                  isFullyPrivateTransaction,
-                  tokenRecipientGroup.recipientAddress,
-                )}
-              <View style={styles.erc20AmountsWrapper}>
-                {tokenRecipientGroup.tokenAmounts.map(
-                  (outputTokenAmount, index) => {
-                    return reviewTokenAmount(
-                      outputTokenAmount,
-                      index,
-                      undefined, true,
-                    );
-                  },
-                )}
-              </View>
-            </View>)
-          );
-        })}
-      {isSwap && swapQuote && swapBuyTokenAmount && (
-        <>
-          <View style={styles.arrowIconWrapper}>
-            <Icon source={transactionIcon()} size={24} color="white" />
-          </View>
-          {isDefined(swapDestinationAddress) &&
-            outputAddress(false, swapDestinationAddress)}
-          <View style={styles.erc20AmountsWrapper}>
-            {reviewTokenAmount(
-              swapBuyTokenAmount,
-              0, undefined, true,
-            )}
-            {modifySwapDestinationAddress()}
-            {modifySlippagePercent(openSwapSettings)}
-            {minimumReceivedTokenAmounts()}
-          </View>
-          {(swapQuoteOutdated ?? false) && updateSwapQuote && (
-            <View style={styles.swapPriceUpdatedContainer}>
-              <Text
-                onPress={updateSwapQuote}
-                style={styles.swapPriceUpdatedButton}
-              >
-                Price outdated. Tap to refresh.
-              </Text>
-            </View>
-          )}
-        </>
-      )}
-      {isFarmFeature && (
-        <View style={styles.vaultTextWrapper}>
-          <Text style={styles.vaultExchangeRateText}>
-            {getVaultExchangeRateDisplayText(vault, transactionType)}
-          </Text>
-          <Text
-            style={styles.vaultApyText}
-          >{`Current APY: ${expectedVaultApy}%`}</Text>
-        </View>
-      )}
-      {isLiquidity && (
-        <>
-          <View style={styles.vaultTextWrapper}>
-            <Text style={styles.vaultExchangeRateText}>
-              {getPairExchangeRateDisplayText(pool)}
-            </Text>
-          </View>
-          {modifySlippagePercent(openLiquiditySettings)}
-          {minimumReceivedTokenAmounts()}
-        </>
-      )}
-      {(recipeFinalERC20Amounts?.feeERC20AmountRecipients?.length ?? 0) >
-        0 && (
-        <View style={styles.recipeFeeWrapper}>
-          {recipeFinalERC20Amounts?.feeERC20AmountRecipients.map(
-            (feeERC20Amount, index) => {
-              const { amountString, recipientAddress, token } =
-                feeERC20Amount;
-              const amount = formatUnitFromHexStringToLocale(
-                amountString,
-                token.decimals,
-              );
-              return (
-                <View style={styles.recipeFeeTextWrapper} key={index}>
-                  <Text style={styles.sectionItemTitle}>
-                    {recipientAddress}
-                  </Text>
-                  <Text
-                    style={styles.recipeFeeAmount}
-                  >{`${amount} ${getTokenDisplayName(
-                    token,
-                    wallets.available,
-                    network.current.name,
-                  )}`}</Text>
-                </View>
-              );
-            },
-          )}
-        </View>
-      )}
-    </View>
-  </>);
+    </>
+  );
 };

@@ -167,7 +167,7 @@ export const Toast: React.FC<ToastProps> = ({
   }
 
   return (
-    (<View style={styles.toastContainer}>
+    <View style={styles.toastContainer}>
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.8}
@@ -206,6 +206,6 @@ export const Toast: React.FC<ToastProps> = ({
           </View>
         </AnimatedWrapper.View>
       </TouchableOpacity>
-    </View>)
+    </View>
   );
 };

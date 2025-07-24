@@ -89,7 +89,7 @@ export const WalletCardSlides: React.FC<Props> = ({
   };
 
   return (
-    (<View style={styles.cardsWrapper}>
+    <View style={styles.cardsWrapper}>
       {}
       {isAndroid() ? (
         (<CarouselBeta
@@ -116,6 +116,6 @@ export const WalletCardSlides: React.FC<Props> = ({
           activeAnimationType="spring"
         />)
       )}
-    </View>)
+    </View>
   );
 };

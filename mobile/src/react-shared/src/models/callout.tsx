@@ -7,3 +7,8 @@ export enum CalloutType {
   Unlock = 'Unlock',
   Create = 'Create',
 }
+
+export type RemoteConfigCallout = {
+  message: string;
+  type: string
+};

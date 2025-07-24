@@ -101,7 +101,7 @@ export const ImportWalletModal = ({
     isDefined(walletCreationTimestamp) && walletCreationTimestamp !== 0;
 
   return (
-    (<GenericModal
+    <GenericModal
       onClose={handleClose}
       onBack={onBack}
       title="Import Wallet"
@@ -204,6 +204,6 @@ export const ImportWalletModal = ({
           originalCreationTimestamp={walletCreationTimestamp}
         />
       )}
-    </GenericModal>)
+    </GenericModal>
   );
 };

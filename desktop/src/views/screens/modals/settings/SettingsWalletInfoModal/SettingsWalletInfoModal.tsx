@@ -196,93 +196,69 @@ export const SettingsWalletInfoModal = ({
     </>
   );
 
-  return (<>
-    <GenericModal
-      onClose={() => onClose(false)}
-      isBackChevron={true}
-      setModalContentRef={setModalContentRef}
-    >
-      {wallet && (
-        <>
-          <div
-            className={cn(
-              {
-                [styles.activeWalletButton]: true,
-                [styles.disabled]: isDefined(wallet) && wallet.isActive,
-              },
-              styles.itemCard,
-              styles.activeWalletCard,
-              styles.clickable,
-            )}
-            onClick={() => setActiveWallet(wallet)}
-          >
-            <div className={styles.cardHeaderContainer}>
-              <Text className={styles.headerText}>{activeHeader}</Text>
-              {wallet.isActive &&
-                renderIcon(
-                  wallet.isViewOnlyWallet ? IconType.Eye : IconType.Wallet,
-                  18,
-                )}
-            </div>
-            <Text className={styles.label}>{activeSubheader}</Text>
-          </div>
-          <Text className={styles.sectionHeader}>Name</Text>
-          <Input
-            value={wallet.name ?? ''}
-            onPress={() => {
-              setShowEditWalletNameModal(true);
-            }}
-            onChange={() => {}}
-            endIcon={IconType.Edit}
-            iconSize={18}
-            iconClassName={styles.editIcon}
-          />
-          <Text className={styles.sectionHeader}>Details</Text>
-          <div className={styles.itemCard}>
-            <div className={styles.itemInnerContainer}>
-              <div className={styles.flexContainer}>
-                <Text className={styles.subheader}>Shielded Address</Text>
-                {renderIcon(IconType.Shield, 18)}
+  return (
+    <>
+      <GenericModal
+        onClose={() => onClose(false)}
+        isBackChevron={true}
+        setModalContentRef={setModalContentRef}
+      >
+        {wallet && (
+          <>
+            <div
+              className={cn(
+                {
+                  [styles.activeWalletButton]: true,
+                  [styles.disabled]: isDefined(wallet) && wallet.isActive,
+                },
+                styles.itemCard,
+                styles.activeWalletCard,
+                styles.clickable,
+              )}
+              onClick={() => setActiveWallet(wallet)}
+            >
+              <div className={styles.cardHeaderContainer}>
+                <Text className={styles.headerText}>{activeHeader}</Text>
+                {wallet.isActive &&
+                  renderIcon(
+                    wallet.isViewOnlyWallet ? IconType.Eye : IconType.Wallet,
+                    18,
+                  )}
               </div>
-              <div
-                className={styles.cursor}
-                onClick={() =>
-                  onTapCopyAddress(wallet.railAddress, 'RAILGUN')
-                }
-              >
-                {renderIcon(IconType.Copy)}
-              </div>
+              <Text className={styles.label}>{activeSubheader}</Text>
             </div>
-            <Text className={styles.label}>{wallet.railAddress}</Text>
-          </div>
-
-          {!wallet.isViewOnlyWallet && (
-            <>
-              <div
-                className={cn(
-                  styles.itemCard,
-                  styles.itemContainerUpperSpacing,
-                )}
-              >
-                <div className={styles.itemInnerContainer}>
-                  <div className={styles.flexContainer}>
-                    <Text className={styles.subheader}>
-                      Public Address (EVM)
-                    </Text>
-                    {renderIcon(IconType.Public, 18)}
-                  </div>
-                  <div
-                    className={styles.cursor}
-                    onClick={() =>
-                      onTapCopyAddress(wallet.ethAddress, 'Public EVM')
-                    }
-                  >
-                    {renderIcon(IconType.Copy)}
-                  </div>
+            <Text className={styles.sectionHeader}>Name</Text>
+            <Input
+              value={wallet.name ?? ''}
+              onPress={() => {
+                setShowEditWalletNameModal(true);
+              }}
+              onChange={() => {}}
+              endIcon={IconType.Edit}
+              iconSize={18}
+              iconClassName={styles.editIcon}
+            />
+            <Text className={styles.sectionHeader}>Details</Text>
+            <div className={styles.itemCard}>
+              <div className={styles.itemInnerContainer}>
+                <div className={styles.flexContainer}>
+                  <Text className={styles.subheader}>Shielded Address</Text>
+                  {renderIcon(IconType.Shield, 18)}
                 </div>
-                <Text className={styles.label}>{wallet.ethAddress}</Text>
+                <div
+                  className={styles.cursor}
+                  onClick={() =>
+                    onTapCopyAddress(wallet.railAddress, 'RAILGUN')
+                  }
+                >
+                  {renderIcon(IconType.Copy)}
+                </div>
               </div>
-              {isDefined(wallet.derivationIndex) && (
+              <Text className={styles.label}>{wallet.railAddress}</Text>
+            </div>
+
+            {!wallet.isViewOnlyWallet && (
+              <>
                 <div
                   className={cn(
                     styles.itemCard,
@@ -292,157 +268,183 @@ export const SettingsWalletInfoModal = ({
                   <div className={styles.itemInnerContainer}>
                     <div className={styles.flexContainer}>
                       <Text className={styles.subheader}>
-                        Derivation index
+                        Public Address (EVM)
                       </Text>
+                      {renderIcon(IconType.Public, 18)}
+                    </div>
+                    <div
+                      className={styles.cursor}
+                      onClick={() =>
+                        onTapCopyAddress(wallet.ethAddress, 'Public EVM')
+                      }
+                    >
+                      {renderIcon(IconType.Copy)}
                     </div>
                   </div>
-                  <Text className={cn(styles.label, styles.marginTop)}>
-                    {wallet.derivationIndex}
+                  <Text className={styles.label}>{wallet.ethAddress}</Text>
+                </div>
+                {isDefined(wallet.derivationIndex) && (
+                  <div
+                    className={cn(
+                      styles.itemCard,
+                      styles.itemContainerUpperSpacing,
+                    )}
+                  >
+                    <div className={styles.itemInnerContainer}>
+                      <div className={styles.flexContainer}>
+                        <Text className={styles.subheader}>
+                          Derivation index
+                        </Text>
+                      </div>
+                    </div>
+                    <Text className={cn(styles.label, styles.marginTop)}>
+                      {wallet.derivationIndex}
+                    </Text>
+                  </div>
+                )}
+              </>
+            )}
+            {!wallet.isViewOnlyWallet && (
+              <>
+                <Text className={styles.sectionHeader}>Backup options</Text>
+                <div
+                  className={cn(styles.itemCard, styles.clickable)}
+                  onClick={() => setShowSeedPhrase(true)}
+                >
+                  <div className={styles.phraseHeader}>
+                    <Text>Show Seed Phrase</Text>
+                    {renderIcon(IconType.ChevronRight, 16)}
+                  </div>
+                  <Text className={styles.label}>
+                    If you lose access to this device, your funds could be lost.
+                    Please make copies of your seed phrase offline.
                   </Text>
                 </div>
-              )}
-            </>
-          )}
-          {!wallet.isViewOnlyWallet && (
-            <>
-              <Text className={styles.sectionHeader}>Backup options</Text>
-              <div
-                className={cn(styles.itemCard, styles.clickable)}
-                onClick={() => setShowSeedPhrase(true)}
-              >
-                <div className={styles.phraseHeader}>
-                  <Text>Show Seed Phrase</Text>
-                  {renderIcon(IconType.ChevronRight, 16)}
+                <div
+                  className={cn(
+                    styles.itemCard,
+                    styles.marginTop,
+                    styles.clickable,
+                  )}
+                  onClick={() => setShowExportWalletAlert(true)}
+                >
+                  <div className={styles.phraseHeader}>
+                    <Text>Export Wallet</Text>
+                    {renderIcon(IconType.ChevronRight, 16)}
+                  </div>
+                  <Text className={styles.label}>
+                    This option will export your wallet into a backup file so
+                    you can import it again whenever is needed.
+                  </Text>
                 </div>
-                <Text className={styles.label}>
-                  If you lose access to this device, your funds could be lost.
-                  Please make copies of your seed phrase offline.
-                </Text>
-              </div>
-              <div
-                className={cn(
-                  styles.itemCard,
-                  styles.marginTop,
-                  styles.clickable,
-                )}
-                onClick={() => setShowExportWalletAlert(true)}
-              >
-                <div className={styles.phraseHeader}>
-                  <Text>Export Wallet</Text>
-                  {renderIcon(IconType.ChevronRight, 16)}
-                </div>
-                <Text className={styles.label}>
-                  This option will export your wallet into a backup file so
-                  you can import it again whenever is needed.
-                </Text>
-              </div>
-            </>
-          )}
-          <Text className={styles.sectionHeader}>Sharing options</Text>
-          <div
-            className={cn(styles.itemCard, styles.clickable)}
-            onClick={() => setShowShareableViewingKey(true)}
-          >
-            <div className={styles.phraseHeader}>
-              <Text>Show View-Only Private Key</Text>
-              {renderIcon(IconType.ChevronRight, 16)}
-            </div>
-            <Text className={styles.label}>
-              This key gives full viewing access to your entire transaction
-              history. Once shared, it cannot be revoked.
-            </Text>
-          </div>
-          <Text className={styles.sectionHeader}>Reset wallet</Text>
-          <div
-            className={cn(styles.itemCard, styles.clickable)}
-            onClick={promptResetTokens}
-          >
-            <div className={styles.flexContainer}>
-              <Text className={styles.subheader}>
-                Reset tokens to defaults
-              </Text>
-              {renderIcon(IconType.Refresh, 18)}
-            </div>
-          </div>
-          <div
-            className={cn(
-              styles.itemCard,
-              styles.marginTop,
-              styles.clickable,
+              </>
             )}
-            onClick={() => setShowDeleteWallet(true)}
-          >
-            <div className={styles.flexContainer}>
-              <Text className={styles.danger}>Remove this wallet</Text>
-              {renderIcon(IconType.Trash, 18)}
+            <Text className={styles.sectionHeader}>Sharing options</Text>
+            <div
+              className={cn(styles.itemCard, styles.clickable)}
+              onClick={() => setShowShareableViewingKey(true)}
+            >
+              <div className={styles.phraseHeader}>
+                <Text>Show View-Only Private Key</Text>
+                {renderIcon(IconType.ChevronRight, 16)}
+              </div>
+              <Text className={styles.label}>
+                This key gives full viewing access to your entire transaction
+                history. Once shared, it cannot be revoked.
+              </Text>
             </div>
-          </div>
+            <Text className={styles.sectionHeader}>Reset wallet</Text>
+            <div
+              className={cn(styles.itemCard, styles.clickable)}
+              onClick={promptResetTokens}
+            >
+              <div className={styles.flexContainer}>
+                <Text className={styles.subheader}>
+                  Reset tokens to defaults
+                </Text>
+                {renderIcon(IconType.Refresh, 18)}
+              </div>
+            </div>
+            <div
+              className={cn(
+                styles.itemCard,
+                styles.marginTop,
+                styles.clickable,
+              )}
+              onClick={() => setShowDeleteWallet(true)}
+            >
+              <div className={styles.flexContainer}>
+                <Text className={styles.danger}>Remove this wallet</Text>
+                {renderIcon(IconType.Trash, 18)}
+              </div>
+            </div>
+          </>
+        )}
+        {isLoading && <FullScreenSpinner />}
+      </GenericModal>
+      {showDeleteWallet && (
+        <>
+          {isDefined(authKey) && (
+            <DeleteWalletModal
+              onRequestClose={() => setShowDeleteWallet(false)}
+              handleDeleteWallet={deleteWallet}
+            />
+          )}
+          {}
+          {enterPasswordModal}
         </>
       )}
-      {isLoading && <FullScreenSpinner />}
-    </GenericModal>
-    {showDeleteWallet && (
-      <>
-        {isDefined(authKey) && (
-          <DeleteWalletModal
-            onRequestClose={() => setShowDeleteWallet(false)}
-            handleDeleteWallet={deleteWallet}
+      {showSeedPhrase && wallet && (
+        <>
+          {}
+          <ShowSeedPhraseModal
+            onClose={() => setShowSeedPhrase(false)}
+            wallet={wallet}
           />
-        )}
-        {}
-        {enterPasswordModal}
-      </>
-    )}
-    {showSeedPhrase && wallet && (
-      <>
-        {}
-        <ShowSeedPhraseModal
-          onClose={() => setShowSeedPhrase(false)}
-          wallet={wallet}
-        />
-      </>
-    )}
-    {showExportWalletAlert && wallet && (
-      <>
-        {}
-        <ExportWalletAlert
-          onClose={() => setShowExportWalletAlert(false)}
-          wallet={wallet}
-        />
-      </>
-    )}
-    {showShareableViewingKey && wallet && (
-      <>
-        {}
-        <ShowShareableViewingKeyModal
-          onClose={() => setShowShareableViewingKey(false)}
-          wallet={wallet}
-        />
-      </>
-    )}
-    {showEditWalletNameModal && wallet && (
-      <>
-        {isDefined(authKey) && (
-          <EditWalletNameModal
-            previousWalletName={wallet.name}
-            onClose={() => setShowEditWalletNameModal(false)}
-            onComplete={updateWalletName}
+        </>
+      )}
+      {showExportWalletAlert && wallet && (
+        <>
+          {}
+          <ExportWalletAlert
+            onClose={() => setShowExportWalletAlert(false)}
+            wallet={wallet}
           />
-        )}
-        {}
-        {enterPasswordModal}
-      </>
-    )}
-    {alert && <GenericAlert {...alert} />}
-    {showEnterPassword && !isDefined(authKey) && (
-      <EnterPasswordModal
-        success={authKey => {
-          setAuthKey(authKey);
-          setShowEnterPassword(false);
-        }}
-        onDismiss={() => setShowEnterPassword(false)}
-        descriptionText="Your password is required to load this encrypted wallet."
-      />
-    )}
-  </>);
+        </>
+      )}
+      {showShareableViewingKey && wallet && (
+        <>
+          {}
+          <ShowShareableViewingKeyModal
+            onClose={() => setShowShareableViewingKey(false)}
+            wallet={wallet}
+          />
+        </>
+      )}
+      {showEditWalletNameModal && wallet && (
+        <>
+          {isDefined(authKey) && (
+            <EditWalletNameModal
+              previousWalletName={wallet.name}
+              onClose={() => setShowEditWalletNameModal(false)}
+              onComplete={updateWalletName}
+            />
+          )}
+          {}
+          {enterPasswordModal}
+        </>
+      )}
+      {alert && <GenericAlert {...alert} />}
+      {showEnterPassword && !isDefined(authKey) && (
+        <EnterPasswordModal
+          success={authKey => {
+            setAuthKey(authKey);
+            setShowEnterPassword(false);
+          }}
+          onDismiss={() => setShowEnterPassword(false)}
+          descriptionText="Your password is required to load this encrypted wallet."
+        />
+      )}
+    </>
+  );
 };

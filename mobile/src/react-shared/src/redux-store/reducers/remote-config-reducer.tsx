@@ -3,6 +3,7 @@ import {
   NetworkName,
 } from '@railgun-community/shared-models';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RemoteConfigCallout } from '../../models/callout';
 import { NetworkSettings } from '../../models/network';
 import { POIDocumentation } from '../../models/poi';
 import { TempNotification } from './temp-notification-reducer';
@@ -16,6 +17,7 @@ export type RemoteConfig = {
   additionalDirectPeers: Optional<string[]>;
   wakuPeerDiscoveryTimeout: number;
   defaultNetworkName: string;
+  callout: RemoteConfigCallout;
   tempNotification?: TempNotification;
   availableNetworks: Partial<Record<NetworkName, NetworkSettings>>;
   networkProvidersConfig: Partial<

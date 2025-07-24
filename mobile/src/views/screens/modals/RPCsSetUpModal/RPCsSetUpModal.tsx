@@ -184,7 +184,7 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
   const hasCustomRPCs = (networkStoredSettings?.rpcCustomURLs ?? []).length > 0;
 
   return (
-    (<Modal animationType="slide" presentationStyle="formSheet" visible>
+    <Modal animationType="slide" presentationStyle="formSheet" visible>
       <AppHeader
         title={`${selectedNetwork.publicName} RPC Providers`}
         headerStatusBarHeight={16}
@@ -275,6 +275,6 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
         </ScrollView>
       </View>
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-    </Modal>)
+    </Modal>
   );
 };

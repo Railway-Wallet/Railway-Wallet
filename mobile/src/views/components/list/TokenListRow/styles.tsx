@@ -27,10 +27,10 @@ export const styles = StyleSheet.create({
     ...styleguide.typography.label,
   },
   tokenIcon: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     alignSelf: 'center',
-    marginHorizontal: 12,
+    marginHorizontal: 5,
     borderRadius: 15,
   },
   rightView: {

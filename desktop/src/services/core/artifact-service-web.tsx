@@ -7,14 +7,14 @@ import {
 } from '@react-shared';
 
 const PRELOADED_ARTIFACT_VARIANT_STRINGS: string[] = [
-  '1x1',
-  '1x2',
-  '2x1',
-  '2x2',
-  '2x3',
-  '3x1',
-  '4x1',
-  '5x1',
+  '01x01',
+  '01x02',
+  '02x01',
+  '02x02',
+  '02x03',
+  '03x01',
+  '04x01',
+  '05x01',
 ];
 
 export class ArtifactServiceWeb {

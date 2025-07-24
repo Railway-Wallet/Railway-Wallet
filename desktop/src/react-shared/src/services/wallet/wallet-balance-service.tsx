@@ -886,7 +886,7 @@ const tokenBalancesForWalletAndStateNetwork = (
   return tokenBalances ?? {};
 };
 
-const tokenBalancesForWalletAndStateRailgun = (
+export const tokenBalancesForWalletAndStateRailgun = (
   wallet: Optional<FrontendWallet>,
   railgunWalletBalances: Optional<RailgunWalletBalances>,
   txidVersion: TXIDVersion,

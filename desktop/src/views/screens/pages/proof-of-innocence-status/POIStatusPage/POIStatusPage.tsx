@@ -197,61 +197,63 @@ export const POIStatusPage = () => {
     await refreshPOIsForWallet(railgunTxid);
   };
 
-  return (<>
-    <div className={styles.poiStatusContainer}>
-      <WalletStatusBar
-        isRailgun
-        hidePrivatePublicButton
-        displayingAssetDescription="Private POI Status"
-        setShowWalletSelectorModal={setShowWalletSelectorModal}
-      />
-      <WalletsSelectionContainer
-        isRailgun
-        showWalletSelectorModal={showWalletSelectorModal}
-        setShowWalletSelectorModal={setShowWalletSelectorModal}
-      />
-      <div className={styles.contentContainer}>
-        <Text className={styles.poiTitle}>Private POI Status</Text>
-        <Text className={styles.poiSubtitle}>
-          View private proof-of-innocence status of your transactions.
-        </Text>
-        <div className={styles.content}>
-          <div className={styles.buttonsContainer}>
-            <Button
-              alt="switch sent received"
-              onClick={handleToggleView}
-              buttonClassName={styles.switchViewTypeButton}
-            >
-              {viewType}
-            </Button>
-            <Button
-              endIcon={IconType.Refresh}
-              alt="refresh all"
-              onClick={handleRefreshAll}
-            >
-              Update
-            </Button>
-            <Button
-              endIcon={IconType.Calculator}
-              alt="generate all"
-              onClick={promptGenerateAllPOIs}
-              buttonClassName={styles.generateAllButton}
-            >
-              Generate all Private POIs
-            </Button>
-            {}
+  return (
+    <>
+      <div className={styles.poiStatusContainer}>
+        <WalletStatusBar
+          isRailgun
+          hidePrivatePublicButton
+          displayingAssetDescription="Private POI Status"
+          setShowWalletSelectorModal={setShowWalletSelectorModal}
+        />
+        <WalletsSelectionContainer
+          isRailgun
+          showWalletSelectorModal={showWalletSelectorModal}
+          setShowWalletSelectorModal={setShowWalletSelectorModal}
+        />
+        <div className={styles.contentContainer}>
+          <Text className={styles.poiTitle}>Private POI Status</Text>
+          <Text className={styles.poiSubtitle}>
+            View private proof-of-innocence status of your transactions.
+          </Text>
+          <div className={styles.content}>
+            <div className={styles.buttonsContainer}>
+              <Button
+                alt="switch sent received"
+                onClick={handleToggleView}
+                buttonClassName={styles.switchViewTypeButton}
+              >
+                {viewType}
+              </Button>
+              <Button
+                endIcon={IconType.Refresh}
+                alt="refresh all"
+                onClick={handleRefreshAll}
+              >
+                Update
+              </Button>
+              <Button
+                endIcon={IconType.Calculator}
+                alt="generate all"
+                onClick={promptGenerateAllPOIs}
+                buttonClassName={styles.generateAllButton}
+              >
+                Generate all Private POIs
+              </Button>
+              {}
+            </div>
+            <POITable
+              data={data ?? []}
+              columns={columns}
+              viewType={viewType}
+              readType={tableReadType}
+              handleRefreshRow={refreshRow}
+              handleGeneratePOI={generatePOIsForRailgunTxid}
+            />
           </div>
-          <POITable
-            data={data ?? []}
-            columns={columns}
-            viewType={viewType}
-            readType={tableReadType}
-            handleRefreshRow={refreshRow}
-            handleGeneratePOI={generatePOIsForRailgunTxid}
-          />
         </div>
       </div>
-    </div>
-    {alert && <GenericAlert {...alert} />}
-  </>);
+      {alert && <GenericAlert {...alert} />}
+    </>
+  );
 };

@@ -32,34 +32,36 @@ export const SeedPhraseCalloutScreen: React.FC<
     });
   };
 
-  return (<>
-    <AppHeader
-      title="Save Seed Phrase"
-      headerRight={
-        <HeaderTextButton
-          disabled={isLoadingMnemonic}
-          text="Next"
-          onPress={onContinue}
-        />
-      }
-      isModal={false}
-    />
-    <InfoCallout
-      type={CalloutType.Warning}
-      text="WARNING: Store your seed phrase in order to recover this wallet. If you delete the app or restore your phone from a backup, your wallet will be deleted."
-      ctaButton="View&nbsp;Seed&nbsp;Phrase"
-      borderColor={styleguide.colors.danger}
-    />
-    <SeedPhraseView
-      wallet={wallet}
-      blurSeedPhrase={true}
-      isLoadingMnemonic={isLoadingMnemonic}
-      setIsLoadingMnemonic={setIsLoadingMnemonic}
-    />
-    <FooterButtonAndroid
-      disabled={isLoadingMnemonic}
-      buttonAction={onContinue}
-      buttonTitle="Next"
-    />
-  </>);
+  return (
+    <>
+      <AppHeader
+        title="Save Seed Phrase"
+        headerRight={
+          <HeaderTextButton
+            disabled={isLoadingMnemonic}
+            text="Next"
+            onPress={onContinue}
+          />
+        }
+        isModal={false}
+      />
+      <InfoCallout
+        type={CalloutType.Warning}
+        text="WARNING: Store your seed phrase in order to recover this wallet. If you delete the app or restore your phone from a backup, your wallet will be deleted."
+        ctaButton="View&nbsp;Seed&nbsp;Phrase"
+        borderColor={styleguide.colors.danger}
+      />
+      <SeedPhraseView
+        wallet={wallet}
+        blurSeedPhrase={true}
+        isLoadingMnemonic={isLoadingMnemonic}
+        setIsLoadingMnemonic={setIsLoadingMnemonic}
+      />
+      <FooterButtonAndroid
+        disabled={isLoadingMnemonic}
+        buttonAction={onContinue}
+        buttonTitle="Next"
+      />
+    </>
+  );
 };

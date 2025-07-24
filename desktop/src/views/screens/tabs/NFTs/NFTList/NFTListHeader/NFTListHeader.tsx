@@ -17,7 +17,7 @@ export const NFTListHeader = ({
   refreshBalances,
 }: Props) => {
   return (
-    (<div className={styles.innerContainer}>
+    <div className={styles.innerContainer}>
       <div className={styles.titleAndIcon}>
         <Text fontSize={18} fontWeight={900} className={styles.headerText}>
           {isRailgun ? 'Shielded' : 'Public'} NFTs
@@ -44,6 +44,6 @@ export const NFTListHeader = ({
         />
         {}
       </div>
-    </div>)
+    </div>
   );
 };

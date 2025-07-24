@@ -19,7 +19,7 @@ export const TokenIcon: React.FC<Props> = ({ token, className }) => {
   const availableWallets = wallets.available;
 
   return (
-    (<img
+    <img
       src={parseTokenIcon(imageForToken(token))}
       className={className}
       alt={getTokenDisplayName(token, availableWallets, network.current.name)}
@@ -27,6 +27,6 @@ export const TokenIcon: React.FC<Props> = ({ token, className }) => {
         currentTarget.onerror = null;
         currentTarget.src = ImageTokenPlaceholder();
       }}
-    />)
+    />
   );
 };

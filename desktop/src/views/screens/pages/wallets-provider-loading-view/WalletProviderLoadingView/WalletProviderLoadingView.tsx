@@ -304,111 +304,113 @@ export const WalletProviderLoadingView: React.FC<Props> = ({
     await loadNetworkAndWallets(network.current);
   };
 
-  return (<>
-    <div className="overlay-container">
-      <div className={styles.textWrapper}>
-        {isDefined(error) && (
-          <>
-            <Text className={styles.errorText}>{error.message}</Text>
-            <TextButton text="Show more" action={showErrorDetails} />
-            <div className={styles.retryButtonContainer}>
-              <Button
-                startIcon={IconType.Retry}
-                children="Retry"
-                onClick={retryLoadProviderAndWallets}
-                buttonClassName={styles.button}
-              />
-              {hasWallets && (
+  return (
+    <>
+      <div className="overlay-container">
+        <div className={styles.textWrapper}>
+          {isDefined(error) && (
+            <>
+              <Text className={styles.errorText}>{error.message}</Text>
+              <TextButton text="Show more" action={showErrorDetails} />
+              <div className={styles.retryButtonContainer}>
                 <Button
-                  startIcon={IconType.Wallet}
-                  children="View Wallets"
-                  onClick={() => setShowRecoveryMode(true)}
+                  startIcon={IconType.Retry}
+                  children="Retry"
+                  onClick={retryLoadProviderAndWallets}
                   buttonClassName={styles.button}
                 />
-              )}
-              {network.current.name !== defaultNetworkName && (
-                <Button
-                  startIcon={IconType.Swap}
-                  children={`Switch to ${defaultNetwork.shortPublicName}`}
-                  onClick={switchToDefaultNetwork}
-                  buttonClassName={styles.button}
-                />
-              )}
-              <Button
-                startIcon={IconType.Edit}
-                children="Change selected RPC"
-                onClick={() => setShowAddCustomRPCModal(true)}
-                buttonClassName={styles.button}
-              />
-              {networkStoredSettings &&
-                (!networkStoredSettings.useDefaultRailwayRPCsAsBackup ||
-                  networkStoredSettings.rpcCustomURLs.length) && (
+                {hasWallets && (
                   <Button
-                    startIcon={IconType.Refresh}
-                    children="Reset to default RPCs"
-                    onClick={useDefaultRailwayRPCs}
+                    startIcon={IconType.Wallet}
+                    children="View Wallets"
+                    onClick={() => setShowRecoveryMode(true)}
                     buttonClassName={styles.button}
                   />
                 )}
-              {ReactConfig.IS_DEV &&
-                network.current.name !== NetworkName.Hardhat && (
+                {network.current.name !== defaultNetworkName && (
                   <Button
                     startIcon={IconType.Swap}
-                    children="[Dev] Switch to Hardhat"
-                    onClick={switchToHardhat}
+                    children={`Switch to ${defaultNetwork.shortPublicName}`}
+                    onClick={switchToDefaultNetwork}
                     buttonClassName={styles.button}
                   />
                 )}
-              {ReactConfig.IS_DEV && (
                 <Button
-                  startIcon={IconType.Trash}
-                  children="[Dev] Delete all wallets"
-                  onClick={deleteWallets_DevOnly}
+                  startIcon={IconType.Edit}
+                  children="Change selected RPC"
+                  onClick={() => setShowAddCustomRPCModal(true)}
                   buttonClassName={styles.button}
                 />
-              )}
-            </div>
-          </>
-        )}
-        {!isDefined(error) && (
-          <>
-            <Text className={styles.loadingText}>
-              Loading Railway wallets, connecting to networks and scanning
-              transactions...
-            </Text>
-            <div className={styles.progressBarContainer}>
-              <ProgressBar progress={progress} />
-            </div>
-          </>
-        )}
+                {networkStoredSettings &&
+                  (!networkStoredSettings.useDefaultRailwayRPCsAsBackup ||
+                    networkStoredSettings.rpcCustomURLs.length) && (
+                    <Button
+                      startIcon={IconType.Refresh}
+                      children="Reset to default RPCs"
+                      onClick={useDefaultRailwayRPCs}
+                      buttonClassName={styles.button}
+                    />
+                  )}
+                {ReactConfig.IS_DEV &&
+                  network.current.name !== NetworkName.Hardhat && (
+                    <Button
+                      startIcon={IconType.Swap}
+                      children="[Dev] Switch to Hardhat"
+                      onClick={switchToHardhat}
+                      buttonClassName={styles.button}
+                    />
+                  )}
+                {ReactConfig.IS_DEV && (
+                  <Button
+                    startIcon={IconType.Trash}
+                    children="[Dev] Delete all wallets"
+                    onClick={deleteWallets_DevOnly}
+                    buttonClassName={styles.button}
+                  />
+                )}
+              </div>
+            </>
+          )}
+          {!isDefined(error) && (
+            <>
+              <Text className={styles.loadingText}>
+                Loading Railway wallets, connecting to networks and scanning
+                transactions...
+              </Text>
+              <div className={styles.progressBarContainer}>
+                <ProgressBar progress={progress} />
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-    {showRecoveryMode && (
-      <>
-        {}
-        <RecoveryWalletsModal
-          onClose={() => {
-            setShowRecoveryMode(false);
-          }}
-        />
-      </>
-    )}
-    {errorDetailsOpen && isDefined(error) && (
-      <ErrorDetailsModal error={error} onDismiss={hideErrorDetails} />
-    )}
-    {showAddCustomRPCModal && isDefined(selectedNetwork) && (
-      <>
-        <AddCustomRPCModal
-          network={selectedNetwork}
-          onClose={async (customRPCURL?: string) => {
-            setShowAddCustomRPCModal(false);
-            if (isDefined(customRPCURL)) {
-              await addRPCCustomURL(customRPCURL);
-            }
-          }}
-        />
-      </>
-    )}
-    {errorModal && <ErrorDetailsModal {...errorModal} />}
-  </>);
+      {showRecoveryMode && (
+        <>
+          {}
+          <RecoveryWalletsModal
+            onClose={() => {
+              setShowRecoveryMode(false);
+            }}
+          />
+        </>
+      )}
+      {errorDetailsOpen && isDefined(error) && (
+        <ErrorDetailsModal error={error} onDismiss={hideErrorDetails} />
+      )}
+      {showAddCustomRPCModal && isDefined(selectedNetwork) && (
+        <>
+          <AddCustomRPCModal
+            network={selectedNetwork}
+            onClose={async (customRPCURL?: string) => {
+              setShowAddCustomRPCModal(false);
+              if (isDefined(customRPCURL)) {
+                await addRPCCustomURL(customRPCURL);
+              }
+            }}
+          />
+        </>
+      )}
+      {errorModal && <ErrorDetailsModal {...errorModal} />}
+    </>
+  );
 };

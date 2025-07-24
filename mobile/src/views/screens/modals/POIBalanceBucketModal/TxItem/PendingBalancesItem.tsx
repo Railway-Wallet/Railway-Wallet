@@ -216,7 +216,7 @@ export const PendingBalancesItem: React.FC<Props> = ({
   );
 
   return (
-    (<View style={styles.wrapper}>
+    <View style={styles.wrapper}>
       <FullScreenSpinner show={isLoading} />
       <View style={styles.headerRow}>
         <View style={styles.statusContainer}>
@@ -277,6 +277,6 @@ export const PendingBalancesItem: React.FC<Props> = ({
         )}
       </View>
       {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-    </View>)
+    </View>
   );
 };

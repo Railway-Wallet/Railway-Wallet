@@ -26,7 +26,7 @@ export const ScanQRCodeModal: React.FC<Props> = ({
   const bottomContent = <></>;
 
   return (
-    (<Modal animationType="slide" presentationStyle="formSheet" visible={show}>
+    <Modal animationType="slide" presentationStyle="formSheet" visible={show}>
       <View style={styles.wrapper}>
         <AppHeader
           title="Scan QR code"
@@ -54,6 +54,6 @@ export const ScanQRCodeModal: React.FC<Props> = ({
         />
         {createQrScanner(onDismiss, topContent, bottomContent)}
       </View>
-    </Modal>)
+    </Modal>
   );
 };

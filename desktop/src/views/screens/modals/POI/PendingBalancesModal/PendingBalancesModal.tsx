@@ -196,59 +196,61 @@ export const PendingBalancesModal = ({
     },
   );
 
-  return (<>
-    <GenericModal
-      onClose={onClose}
-      title="Pending balances"
-      contentOverrideStyles={modalContentOverrideStyles}
-      accessoryView={
-        <Button
-          textClassName={styles.fullLengthButtonStyle}
-          onClick={() => {
-            createPOIDisclaimerAlert(
-              'About Pending Balances',
-              getPOIBalancesDisclaimerMessage(),
-              setAlert,
-              setExternalLinkAlert,
-              dispatch,
-              remoteConfig?.current?.poiDocumentation,
-              undefined, "Okay",
-            );
-          }}
-        >
-          What is this?
-        </Button>
-      }
-    >
-      <PendingBalancesTabs
-        selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-        showRestrictedTab={showRestrictedTab}
-      />
-      {isLoading && (
-        <div className={styles.loadingContainer}>
-          <Spinner size={44} />
-        </div>
-      )}
-      {!isLoading && (
-        <div className={styles.itemList}>
-          {filteredTxItems.map((txItem, index) => (
-            <PendingBalancesItem
-              txItem={txItem}
-              syncProofs={syncProofs}
-              key={index}
-              closeModal={onClose}
-            />
-          ))}
-          {filteredTxItems.length === 0 && (
-            <Text className={styles.noTxItem}>
-              No {selectedTab.toLowerCase()} transactions.
-            </Text>
-          )}
-        </div>
-      )}
-    </GenericModal>
-    {alert && <GenericAlert {...alert} />}
-    {externalLinkAlert && <GenericAlert {...externalLinkAlert} />}
-  </>);
+  return (
+    <>
+      <GenericModal
+        onClose={onClose}
+        title="Pending balances"
+        contentOverrideStyles={modalContentOverrideStyles}
+        accessoryView={
+          <Button
+            textClassName={styles.fullLengthButtonStyle}
+            onClick={() => {
+              createPOIDisclaimerAlert(
+                'About Pending Balances',
+                getPOIBalancesDisclaimerMessage(),
+                setAlert,
+                setExternalLinkAlert,
+                dispatch,
+                remoteConfig?.current?.poiDocumentation,
+                undefined, "Okay",
+              );
+            }}
+          >
+            What is this?
+          </Button>
+        }
+      >
+        <PendingBalancesTabs
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          showRestrictedTab={showRestrictedTab}
+        />
+        {isLoading && (
+          <div className={styles.loadingContainer}>
+            <Spinner size={44} />
+          </div>
+        )}
+        {!isLoading && (
+          <div className={styles.itemList}>
+            {filteredTxItems.map((txItem, index) => (
+              <PendingBalancesItem
+                txItem={txItem}
+                syncProofs={syncProofs}
+                key={index}
+                closeModal={onClose}
+              />
+            ))}
+            {filteredTxItems.length === 0 && (
+              <Text className={styles.noTxItem}>
+                No {selectedTab.toLowerCase()} transactions.
+              </Text>
+            )}
+          </div>
+        )}
+      </GenericModal>
+      {alert && <GenericAlert {...alert} />}
+      {externalLinkAlert && <GenericAlert {...externalLinkAlert} />}
+    </>
+  );
 };

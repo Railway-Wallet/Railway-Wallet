@@ -217,49 +217,51 @@ export const RecipientAddressInput: React.FC<Props> = ({
     addressResolverStatus === AddressResolverStatus.Error ||
     invalidResolvedRecipient;
 
-  return (<>
-    <ScanQRCodeModal
-      show={showScanQRCodeModal}
-      onDismiss={onDismissQRCodeModal}
-    />
-    <TextEntry
-      viewStyles={[
-        styles.addressInput,
-        hasError ? styles.addressInputError : undefined,
-      ]}
-      label={labelText()}
-      value={addressText}
-      onChangeText={setAddressText}
-      autoCapitalize="none"
-      multiline
-      placeholder={placeholder}
-      iconButtons={[
-        {
-          icon: 'content-save-outline',
-          onTap: onTapSaveWallet,
-          disabled:
-            !hasValidRecipient ||
-            addressResolverStatus === AddressResolverStatus.Error ||
-            !shouldEnableSaveWallet,
-        },
-        { icon: 'qrcode-scan', onTap: onTapQrCode },
-        {
-          icon: 'wallet-outline',
-          onTap: onTapWallets,
-          disabled: !hasWalletOptions,
-        },
-      ]}
-      autoComplete="off"
-      labelIcon={
-        addressText.length && hasValidRecipient ? 'check-bold' : undefined
-      }
-      labelIconColor={styleguide.colors.txGreen()}
-      labelIconSize={18}
-      reference={addressEntryRef}
-      textContentType="none"
-      onFocus={() => setAddressFocused(true)}
-      onBlur={() => setAddressFocused(false)}
-    />
-    {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
-  </>);
+  return (
+    <>
+      <ScanQRCodeModal
+        show={showScanQRCodeModal}
+        onDismiss={onDismissQRCodeModal}
+      />
+      <TextEntry
+        viewStyles={[
+          styles.addressInput,
+          hasError ? styles.addressInputError : undefined,
+        ]}
+        label={labelText()}
+        value={addressText}
+        onChangeText={setAddressText}
+        autoCapitalize="none"
+        multiline
+        placeholder={placeholder}
+        iconButtons={[
+          {
+            icon: 'content-save-outline',
+            onTap: onTapSaveWallet,
+            disabled:
+              !hasValidRecipient ||
+              addressResolverStatus === AddressResolverStatus.Error ||
+              !shouldEnableSaveWallet,
+          },
+          { icon: 'qrcode-scan', onTap: onTapQrCode },
+          {
+            icon: 'wallet-outline',
+            onTap: onTapWallets,
+            disabled: !hasWalletOptions,
+          },
+        ]}
+        autoComplete="off"
+        labelIcon={
+          addressText.length && hasValidRecipient ? 'check-bold' : undefined
+        }
+        labelIconColor={styleguide.colors.txGreen()}
+        labelIconSize={18}
+        reference={addressEntryRef}
+        textContentType="none"
+        onFocus={() => setAddressFocused(true)}
+        onBlur={() => setAddressFocused(false)}
+      />
+      {isDefined(errorModal) && <ErrorDetailsModal {...errorModal} />}
+    </>
+  );
 };

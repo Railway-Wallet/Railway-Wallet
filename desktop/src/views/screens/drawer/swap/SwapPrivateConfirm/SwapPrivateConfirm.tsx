@@ -159,13 +159,13 @@ export const SwapPrivateConfirm = ({
 
   if (isDefined(recipeError) || !isDefined(lockedRecipeOutput)) {
     return (
-      (<RecipeLoadingView
+      <RecipeLoadingView
         recipeError={recipeError}
         recipeName={getRecipeName()}
         goBack={() => {
           drawerEventsBus.dispatch(EVENT_CLOSE_DRAWER);
         }}
-      />)
+      />
     );
   }
 

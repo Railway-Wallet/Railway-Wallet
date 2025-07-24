@@ -75,85 +75,87 @@ export const AppErrorScreen: React.FC<AppErrorScreenProps> = ({
   const showElectronUpdate =
     appStatus === AppStatus.VersionOutdated && isElectron();
 
-  return (<>
-    <div className={styles.textWrapper}>
-      {!isDefined(error) && (
-        <Text className={styles.loadingText}>Launching Railway...</Text>
-      )}
+  return (
+    <>
+      <div className={styles.textWrapper}>
+        {!isDefined(error) && (
+          <Text className={styles.loadingText}>Launching Railway...</Text>
+        )}
+        {isDefined(error) && (
+          <>
+            <Text className={styles.errorText}>{error.message}</Text>
+            <div className={styles.buttonContainer}>
+              {showElectronUpdate && (
+                <Button
+                  startIcon={IconType.Download}
+                  children="Download newest version"
+                  onClick={handleUpdateVersion}
+                  buttonClassName={styles.buttonStyles}
+                />
+              )}
+              {appStatus === AppStatus.Maintenance && (
+                <Button
+                  startIcon={IconType.Refresh}
+                  children="Reload"
+                  onClick={retry}
+                  buttonClassName={styles.buttonStyles}
+                />
+              )}
+              {appStatus === AppStatus.Error && (
+                <Button
+                  startIcon={IconType.Refresh}
+                  children="Retry"
+                  onClick={retry}
+                  buttonClassName={styles.buttonStyles}
+                />
+              )}
+            </div>
+            {hasWallets && (
+              <div className={styles.recoveryButtonContainer}>
+                <Button
+                  startIcon={IconType.Wallet}
+                  children="View Wallets"
+                  onClick={() => setShowRecoveryMode(true)}
+                  buttonClassName={styles.buttonStyles}
+                />
+              </div>
+            )}
+            {hasNetworks && (
+              <div className={styles.recoveryButtonContainer}>
+                <Button
+                  startIcon={IconType.Settings}
+                  children="View Networks"
+                  onClick={() => setShowNetworkSettings(true)}
+                  buttonClassName={styles.buttonStyles}
+                />
+              </div>
+            )}
+          </>
+        )}
+      </div>
       {isDefined(error) && (
+        <Text className={styles.footerText}>
+          Railway • Version {appVersionNumber}
+        </Text>
+      )}
+      {showRecoveryMode && (
         <>
-          <Text className={styles.errorText}>{error.message}</Text>
-          <div className={styles.buttonContainer}>
-            {showElectronUpdate && (
-              <Button
-                startIcon={IconType.Download}
-                children="Download newest version"
-                onClick={handleUpdateVersion}
-                buttonClassName={styles.buttonStyles}
-              />
-            )}
-            {appStatus === AppStatus.Maintenance && (
-              <Button
-                startIcon={IconType.Refresh}
-                children="Reload"
-                onClick={retry}
-                buttonClassName={styles.buttonStyles}
-              />
-            )}
-            {appStatus === AppStatus.Error && (
-              <Button
-                startIcon={IconType.Refresh}
-                children="Retry"
-                onClick={retry}
-                buttonClassName={styles.buttonStyles}
-              />
-            )}
-          </div>
-          {hasWallets && (
-            <div className={styles.recoveryButtonContainer}>
-              <Button
-                startIcon={IconType.Wallet}
-                children="View Wallets"
-                onClick={() => setShowRecoveryMode(true)}
-                buttonClassName={styles.buttonStyles}
-              />
-            </div>
-          )}
-          {hasNetworks && (
-            <div className={styles.recoveryButtonContainer}>
-              <Button
-                startIcon={IconType.Settings}
-                children="View Networks"
-                onClick={() => setShowNetworkSettings(true)}
-                buttonClassName={styles.buttonStyles}
-              />
-            </div>
-          )}
+          {}
+          <RecoveryWalletsModal
+            onClose={() => {
+              setShowRecoveryMode(false);
+            }}
+          />
         </>
       )}
-    </div>
-    {isDefined(error) && (
-      <Text className={styles.footerText}>
-        Railway • Version {appVersionNumber}
-      </Text>
-    )}
-    {showRecoveryMode && (
-      <>
-        {}
-        <RecoveryWalletsModal
+      {showNetworkSettings && (
+        <SettingsNetworksModal
           onClose={() => {
-            setShowRecoveryMode(false);
+            setShowNetworkSettings(false);
           }}
         />
-      </>
-    )}
-    {showNetworkSettings && (
-      <SettingsNetworksModal
-        onClose={() => {
-          setShowNetworkSettings(false);
-        }}
-      />
-    )}
-    {alert && <GenericAlert {...alert} />}
-  </>);
+      )}
+      {alert && <GenericAlert {...alert} />}
+    </>
+  );
 };
