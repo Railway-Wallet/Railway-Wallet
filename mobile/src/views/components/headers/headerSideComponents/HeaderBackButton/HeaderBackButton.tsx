@@ -35,7 +35,6 @@ export const HeaderBackButton: React.FC<HeaderBackButtonProps> = ({
       style={styles.backButtonStyle}
       onPress={onPress}
       label={label}
-      labelVisible={isDefined(label)}
       labelStyle={styles.label}
       testID="HeaderBackButton-NativeHeaderBackButton"
     />

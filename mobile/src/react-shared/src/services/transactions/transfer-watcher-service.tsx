@@ -5,7 +5,7 @@ import {
   NFTTokenType,
   RailgunWalletBalanceBucket,
 } from '@railgun-community/shared-models';
-import { EventFilter, id, JsonRpcProvider, Log } from 'ethers';
+import { EventFilter, Filter, id, JsonRpcProvider, Log } from 'ethers';
 import { ReactConfig } from '../../config';
 import { SharedConstants } from '../../config/shared-constants';
 import { ToastType } from '../../models/toast';
@@ -18,6 +18,7 @@ import { AvailableWallet, FrontendWallet } from '../../models/wallet';
 import { updateERC20BalancesNetwork } from '../../redux-store/reducers/erc20-balance-reducer-network';
 import { enqueueAsyncToast } from '../../redux-store/reducers/toast-reducer';
 import { AppDispatch, store } from '../../redux-store/store';
+import { MerkletreeType } from '../../redux-store/reducers/merkletree-history-scan-reducer';
 import { padAddressForTopicFilter } from '../../utils/address';
 import { getNFTAmountDisplayName } from '../../utils/nft';
 import {
@@ -30,16 +31,17 @@ import {
   getDecimalBalanceString,
   shortenWalletAddress,
 } from '../../utils/util';
+import { logDev } from '../../utils/logging';
 import { ProviderService } from '../providers/provider-service';
 import { getERC20Decimals } from '../token';
 import { getWalletBaseTokenBalance } from '../token/base-token';
-import {
-  pullNFTBalancesNetwork,
-  pullWalletBalancesNetwork,
-} from '../wallet/wallet-balance-service';
+import { pullNFTBalancesNetwork, updateSingleERC20BalanceNetwork } from '../wallet/wallet-balance-service';
+import { BalanceUpdateScheduler } from './balance-update-scheduler';
 
 let watchedProvider: Optional<JsonRpcProvider>;
-let baseTokenPollTimer: Optional<ReturnType<typeof setTimeout>>;
+let baseTokenPollTimer: Optional<ReturnType<typeof setInterval>>;
+let receiveWatcherEnabled = true;
+let balanceUpdateScheduler: Optional<BalanceUpdateScheduler>;
 
 const removeTokenWatchers = async () => {
   if (watchedProvider) {
@@ -50,6 +52,26 @@ const removeTokenWatchers = async () => {
   if (baseTokenPollTimer) {
     clearInterval(baseTokenPollTimer);
     baseTokenPollTimer = undefined;
+  }
+  if (balanceUpdateScheduler) {
+    balanceUpdateScheduler.destroy();
+    balanceUpdateScheduler = undefined;
+  }
+};
+
+export const setReceiveTransferWatcherEnabled = async (
+  enabled: boolean,
+  wallet?: Optional<FrontendWallet>,
+  network?: Optional<Network>,
+  dispatch?: Optional<AppDispatch>,
+) => {
+  receiveWatcherEnabled = enabled;
+  if (!enabled) {
+    await removeTokenWatchers();
+    return;
+  }
+  if (wallet && network && dispatch) {
+    await refreshReceivedTransactionWatchers(wallet, network, dispatch);
   }
 };
 
@@ -83,7 +105,11 @@ const txReceiveSuccess = async (
     }),
   );
   if (shouldUpdateAllBalances) {
-    await pullWalletBalancesNetwork(dispatch, wallet, network);
+    if (balanceUpdateScheduler) {
+      balanceUpdateScheduler.enqueue(token);
+    } else {
+      await updateSingleERC20BalanceNetwork(dispatch, wallet, network, token);
+    }
   }
 };
 
@@ -107,28 +133,65 @@ const nftReceiveSuccess = async (
   );
 };
 
+const ADDRESS_CHUNK_SIZE = 20;
+
 const setUpTransferWatcher = async (
   dispatch: AppDispatch,
   wallet: AvailableWallet,
   network: Network,
 ) => {
-  const filter: EventFilter = {
-    topics: [
-      id('Transfer(address,address,uint256)'),
-      null,
-      padAddressForTopicFilter(wallet.ethAddress),
-    ],
-  };
+  const scanState =
+    store.getState().merkletreeHistoryScan.forNetwork[network.name]?.forType[
+      MerkletreeType.UTXO
+    ];
+  const progress = scanState?.progress ?? 0;
+  if (progress < 0.9) {
+    logDev(
+      `Delaying transfer watcher start until UTXO scan >= 0.90 (current ${progress.toFixed(
+        2,
+      )})`,
+    );
+    setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      setUpTransferWatcher(dispatch, wallet, network);
+    }, 15_000);
+    return;
+  }
 
-  await watchedProvider?.on(filter, (log: Log) => {
-    if (log.topics.length === 4 && log.data === '0x') {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      receivedNFT(dispatch, wallet, network, log);
-    } else if (log.topics.length === 3) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      receivedERC20(dispatch, wallet, network, log);
-    }
-  });
+  const addedTokens = wallet.addedTokens[network.name] ?? [];
+  const erc20Addresses = Array.from(
+    new Set(
+      addedTokens
+        .filter(t => !(t.isBaseToken ?? false))
+        .map(t => t.address.toLowerCase()),
+    ),
+  );
+  if (!erc20Addresses.length) {
+    return;
+  }
+
+  const topics = [
+    id('Transfer(address,address,uint256)'),
+    null,
+    padAddressForTopicFilter(wallet.ethAddress),
+  ];
+
+  for (let i = 0; i < erc20Addresses.length; i += ADDRESS_CHUNK_SIZE) {
+    const addrChunk = erc20Addresses.slice(i, i + ADDRESS_CHUNK_SIZE);
+    const filter: EventFilter = {
+      topics: topics as any,
+      address: addrChunk,
+    } as EventFilter;
+    await watchedProvider?.on(filter, (log: Log) => {
+      if (log.topics.length === 3) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        receivedERC20(dispatch, wallet, network, log);
+      } else if (log.topics.length === 4 && log.data === '0x') {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        receivedNFT(dispatch, wallet, network, log);
+      }
+    });
+  }
 };
 
 const receivedERC20 = async (
@@ -208,7 +271,6 @@ const receivedNFT = async (
   if (!ReactConfig.ENABLE_NFTS) {
     return;
   }
-  await pullNFTBalancesNetwork(dispatch, wallet, network);
   const nftAmount: NFTAmount = {
     nftAddress: log.address.toLowerCase(),
     tokenSubID: log.topics[3],
@@ -318,6 +380,9 @@ export const refreshReceivedTransactionWatchers = async (
 ): Promise<void> => {
   await removeTokenWatchers();
 
+  if (!receiveWatcherEnabled) {
+    return;
+  }
   if (wallet && !wallet.isViewOnlyWallet) {
     const pollingIntervalInMs = 10000;
     watchedProvider = await ProviderService.getPollingProvider(
@@ -327,6 +392,75 @@ export const refreshReceivedTransactionWatchers = async (
 
     pollBaseToken(dispatch, wallet, network);
 
+    balanceUpdateScheduler = new BalanceUpdateScheduler(
+      dispatch,
+      wallet,
+      network,
+      {
+        burstWindowMs: 500,
+        tokenCooldownMs: 15000,
+        multicallThreshold: 3,
+        maxBatchSize: 25,
+      },
+    );
+
     await setUpTransferWatcher(dispatch, wallet, network);
   }
+};
+
+export const scanUnknownTokenReceives = async (
+  dispatch: AppDispatch,
+  wallet: Optional<FrontendWallet>,
+  network: Network,
+): Promise<void> => {
+  if (!wallet || wallet.isViewOnlyWallet) {
+    return;
+  }
+  const provider = await ProviderService.getFirstProvider(network.name);
+  const latest = await provider.getBlockNumber();
+  const fromBlock = Math.max(
+    latest - SharedConstants.UNKNOWN_TRANSFER_SCAN_BLOCKS,
+    0,
+  );
+  const filter: Filter = {
+    topics: [
+      id('Transfer(address,address,uint256)'),
+      null,
+      padAddressForTopicFilter(wallet.ethAddress),
+    ],
+    fromBlock,
+    toBlock: latest,
+  } as Filter;
+
+  const addedTokens = wallet.addedTokens[network.name] ?? [];
+  const known = new Set(
+    addedTokens
+      .filter(t => !(t.isBaseToken ?? false))
+      .map(t => t.address.toLowerCase()),
+  );
+  const processed = new Set<string>();
+
+  const logs = await provider.getLogs(filter);
+  for (const log of logs) {
+    if (log.topics.length === 3) {
+      const tokenAddress = log.address.toLowerCase();
+      if (known.has(tokenAddress)) continue;
+      if (processed.has(tokenAddress)) continue;
+      processed.add(tokenAddress);
+      // eslint-disable-next-line no-await-in-loop
+      await receivedUnknownERC20(
+        dispatch,
+        wallet,
+        network,
+        tokenAddress,
+        log.data,
+      );
+    } else if (log.topics.length === 4 && ReactConfig.ENABLE_NFTS) {
+      // eslint-disable-next-line no-await-in-loop
+      await receivedNFT(dispatch, wallet, network, log);
+    }
+  }
+  logDev(
+    `Unknown token scan ${network.shortPublicName}: scannedLogs=${logs.length} windowBlocks=${SharedConstants.UNKNOWN_TRANSFER_SCAN_BLOCKS}`,
+  );
 };

@@ -7,7 +7,6 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 import { GenericAlert } from '@components/alerts/GenericAlert/GenericAlert';
-import { BroadcasterStatusPanelIndicator } from '@components/BroadcasterStatusPanelIndicator/BroadcasterStatusPanelIndicator';
 import { WalletInfoCallout } from '@components/InfoCallout/WalletInfoCallout/WalletInfoCallout';
 import { MainPagePaddedContainer } from '@components/MainPagePaddedContainer/MainPagePaddedContainer';
 import { useMainScreenAlertMessage } from '@hooks/useMainScreenAlertMessage';
@@ -21,7 +20,8 @@ import {
   useBalancePriceRefresh,
   useMemoCustomCompare,
   useReduxSelector,
-  WalletCardSlideItem} from '@react-shared';
+  WalletCardSlideItem,
+} from '@react-shared';
 import {
   ErrorDetailsModal,
   ErrorDetailsModalProps,
@@ -56,7 +56,6 @@ export const WalletsScreen = ({
   setIsRailgun,
   setShowWalletSelectorModal,
 }: Props) => {
-  
   const { wallets } = useReduxSelector('wallets');
   const { network } = useReduxSelector('network');
   const { txidVersion } = useReduxSelector('txidVersion');
@@ -65,21 +64,26 @@ export const WalletsScreen = ({
   const { proofBatcher } = useReduxSelector('proofBatcher');
 
   const { isRailgun } = slideItem;
-  const balanceBucketFilter = useMemo(() => 
-    [RailgunWalletBalanceBucket.Spendable], 
-    []
+  const balanceBucketFilter = useMemo(
+    () => [RailgunWalletBalanceBucket.Spendable],
+    [],
   );
 
   const [scanProgress, setScanProgress] = useState({
     balance: 0,
     txid: 0,
-    batchList: ''
+    batchList: '',
   });
 
-
   useEffect(() => {
-    const utxoData = merkletreeHistoryScan.forNetwork[network.current.name]?.forType[MerkletreeType.UTXO];
-    const txidData = merkletreeHistoryScan.forNetwork[network.current.name]?.forType[MerkletreeType.TXID];
+    const utxoData =
+      merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+        MerkletreeType.UTXO
+      ];
+    const txidData =
+      merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+        MerkletreeType.TXID
+      ];
     const newBalanceProgress = utxoData?.progress ?? 0;
     const newTxidProgress = Math.floor((txidData?.progress ?? 0) / 5) * 5;
     const newBatchProgress = proofBatcher?.status ?? '';
@@ -92,30 +96,41 @@ export const WalletsScreen = ({
       setScanProgress({
         balance: newBalanceProgress,
         txid: newTxidProgress,
-        batchList: newBatchProgress
+        batchList: newBatchProgress,
       });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }}, [merkletreeHistoryScan, network.current.name, proofBatcher?.status]);
-  
+  }, [merkletreeHistoryScan, network.current.name, proofBatcher?.status]);
+
   const scanStatus = useMemoCustomCompare(
     {
-      railgunBalancesUpdating: 
-        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[MerkletreeType.UTXO]?.status === MerkletreeScanStatus.Started ||
-        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[MerkletreeType.UTXO]?.status === MerkletreeScanStatus.Updated,
+      railgunBalancesUpdating:
+        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+          MerkletreeType.UTXO
+        ]?.status === MerkletreeScanStatus.Started ||
+        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+          MerkletreeType.UTXO
+        ]?.status === MerkletreeScanStatus.Updated,
       txidsUpdating:
-        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[MerkletreeType.TXID]?.status === MerkletreeScanStatus.Started ||
-        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[MerkletreeType.TXID]?.status === MerkletreeScanStatus.Updated,
+        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+          MerkletreeType.TXID
+        ]?.status === MerkletreeScanStatus.Started ||
+        merkletreeHistoryScan.forNetwork[network.current.name]?.forType[
+          MerkletreeType.TXID
+        ]?.status === MerkletreeScanStatus.Updated,
       batchListUpdating:
         isDefined(proofBatcher) &&
         isDefined(proofBatcher.status) &&
         proofBatcher.status !== '' &&
-        !proofBatcher.status?.includes('100.00%')
+        !proofBatcher.status?.includes('100.00%'),
     },
     (prev, next) => {
-      return prev.railgunBalancesUpdating === next.railgunBalancesUpdating &&
-             prev.txidsUpdating === next.txidsUpdating &&
-             prev.batchListUpdating === next.batchListUpdating;
-    }
+      return (
+        prev.railgunBalancesUpdating === next.railgunBalancesUpdating &&
+        prev.txidsUpdating === next.txidsUpdating &&
+        prev.batchListUpdating === next.batchListUpdating
+      );
+    },
   );
 
   const {
@@ -190,7 +205,7 @@ export const WalletsScreen = ({
     setIsRefreshing(true);
     await pullPrices();
 
-    if (isDefined(wallets.active)) {      
+    if (isDefined(wallets.active)) {
       await pullBalances();
     }
     setIsRefreshing(false);
@@ -203,9 +218,6 @@ export const WalletsScreen = ({
     }
   };
 
-  const hideBroadcasterStatus =
-    isDefined(wallets.active) && wallets.active.isViewOnlyWallet;
-
   return (
     <div className={styles.walletScreenContainer}>
       <WalletStatusBar
@@ -215,7 +227,6 @@ export const WalletsScreen = ({
         setShowWalletSelectorModal={setShowWalletSelectorModal}
       />
       <div className={cn(styles.container, 'hide-scroll')}>
-        {!hideBroadcasterStatus && <BroadcasterStatusPanelIndicator />}
         <div className={styles.innerContainer}>
           <WalletInfoCallout balanceBucketFilter={balanceBucketFilter} />
           <WalletInfoButtonsCard
@@ -240,17 +251,19 @@ export const WalletsScreen = ({
               progress={scanProgress.balance}
             />
           )}
-          {!scanStatus.railgunBalancesUpdating && scanStatus.txidsUpdating && isRailgun && (
-            <ERC20TokenListLoading
-              title="RAILGUN TXIDs updating"
-              progress={scanProgress.txid}
-            />
-          )}
-          {!scanStatus.railgunBalancesUpdating && !scanStatus.txidsUpdating && scanStatus.batchListUpdating && (
-            <ERC20TokenListLoading 
-              title={scanProgress.batchList} 
-            />
-          )}
+          {!scanStatus.railgunBalancesUpdating &&
+            scanStatus.txidsUpdating &&
+            isRailgun && (
+              <ERC20TokenListLoading
+                title="RAILGUN TXIDs updating"
+                progress={scanProgress.txid}
+              />
+            )}
+          {!scanStatus.railgunBalancesUpdating &&
+            !scanStatus.txidsUpdating &&
+            scanStatus.batchListUpdating && (
+              <ERC20TokenListLoading title={scanProgress.batchList} />
+            )}
         </MainPagePaddedContainer>
         <ERC20BasicList
           isRailgun={isRailgun}

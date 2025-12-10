@@ -2,9 +2,22 @@
 
 .broadcasterStatusPanelIndicatorContainer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100%;
-  padding-right: 24px;
+  padding: 24px 0;
+}
+
+.broadcasterStatusPanelIndicatorContainerSmall {
+  height: 44px;
+  width: 44px;
+  padding: 0px;
+  background-color: gray3();
+  border-radius: 4px;
+
+  &:hover {
+    border-color: gray8(0.6);
+    background-color: gray2(0.72);
+  }
 }
 
 .clickable {
@@ -14,7 +27,7 @@
 
 .textContainer {
   display: flex;
-  width: fit-content;
+  align-items: center;
 }
 
 .statusIndicator {
@@ -22,13 +35,14 @@
   width: 8px;
   border-radius: 4px;
   margin-right: 10px;
-  position: relative;
-  top: 4px;
+}
+
+.smallStatusIndicator {
+  margin: 0px;
 }
 
 .text {
-  padding-right: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: $labelSecondary;
 }

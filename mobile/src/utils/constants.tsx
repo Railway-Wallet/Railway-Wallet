@@ -12,7 +12,7 @@ export class Constants {
 
   static readonly ENABLE_MEMO_FIELD = true;
 
-  static readonly ENABLE_SWAPS_PROD_IOS = false;
+  static readonly ENABLE_SWAPS_PROD_IOS = true;
 
   static readonly RAILWAY_SUPPORT_TELEGRAM = 'https://t.me/railwaywallet';
   static readonly ABOUT_RAILGUN_URL = 'https://railgun.org';

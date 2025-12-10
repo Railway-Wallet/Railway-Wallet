@@ -17,14 +17,11 @@ import { DAppSettings } from '@models/DApps';
 import { DAppsStackParamList } from '@models/navigation-models';
 import { NavigationProp } from '@react-navigation/native';
 import {
-  ReactConfig,
   styleguide,
   useReduxSelector,
   useShouldEnableSwaps,
 } from '@react-shared';
 import { HapticSurface, triggerHaptic } from '@services/util/haptic-service';
-import { isIOS } from '@services/util/platform-os-service';
-import { Constants } from '@utils/constants';
 import { calculateFloatingHeaderOpacityFromPageContentOffset } from '../WalletsScreen/WalletFloatingHeader/WalletFloatingHeader';
 import { styles } from './styles';
 
@@ -48,11 +45,7 @@ export const DAppsScreen: React.FC<DAppsScreenProps> = ({ navigation }) => {
     setHeaderOpacity(opacity);
   };
 
-  const swapsUnavailableOnPlatform =
-    isIOS() && !Constants.ENABLE_SWAPS_PROD_IOS && !ReactConfig.IS_DEV;
-  const { shouldEnableSwaps } = useShouldEnableSwaps(
-    swapsUnavailableOnPlatform,
-  );
+  const { shouldEnableSwaps } = useShouldEnableSwaps();
 
   const dApps: DAppSettings[] = [
     {

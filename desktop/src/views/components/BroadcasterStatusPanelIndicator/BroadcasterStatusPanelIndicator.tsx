@@ -12,9 +12,13 @@ import {
 } from '@react-shared';
 import styles from './BroadcasterStatusPanelIndicator.module.scss';
 
-type Props = {};
+type Props = {
+  isSmallView: boolean;
+};
 
-export const BroadcasterStatusPanelIndicator: React.FC<Props> = () => {
+export const BroadcasterStatusPanelIndicator: React.FC<Props> = ({
+  isSmallView = false,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [alert, setAlert] = useState<Optional<AlertProps>>(undefined);
 
@@ -44,26 +48,31 @@ export const BroadcasterStatusPanelIndicator: React.FC<Props> = () => {
   return (
     <>
       {alert && <GenericAlert {...alert} />}
-      <div className={styles.broadcasterStatusPanelIndicatorContainer}>
-        <div
-          className={cn(styles.textContainer, {
-            [styles.clickable]: isDisconnected,
-          })}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={showReconnectionModal}
-        >
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={showReconnectionModal}
+        className={cn(styles.broadcasterStatusPanelIndicatorContainer, {
+          [styles.clickable]: isDisconnected,
+          [styles.broadcasterStatusPanelIndicatorContainerSmall]: isSmallView,
+        })}
+      >
+        <div className={styles.textContainer}>
           <div
-            className={styles.statusIndicator}
+            className={cn(styles.statusIndicator, {
+              [styles.smallStatusIndicator]: isSmallView,
+            })}
             style={{ backgroundColor: indicatorColor }}
           />
-          <Text
-            className={cn(styles.text, {
-              [styles.hovered]: isDisconnected && isHovered,
-            })}
-          >
-            {statusText}
-          </Text>
+          {!isSmallView && (
+            <Text
+              className={cn(styles.text, {
+                [styles.hovered]: isDisconnected && isHovered,
+              })}
+            >
+              {statusText}
+            </Text>
+          )}
         </div>
       </div>
     </>

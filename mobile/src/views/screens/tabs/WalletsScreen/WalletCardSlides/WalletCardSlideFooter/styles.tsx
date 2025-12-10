@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 8,
     marginTop: 24,
     height: 52,
     width: '100%',
@@ -20,6 +19,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    paddingHorizontal: 8,
   },
   footerIconText: {
     display: 'flex',

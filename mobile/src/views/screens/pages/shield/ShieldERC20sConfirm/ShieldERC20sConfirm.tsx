@@ -97,7 +97,7 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
             {
               text: 'Okay',
               onPress: () => {
-                navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+                navigation.dispatch(CommonActions.navigate('Tabs'));
               },
             },
           ],
@@ -108,7 +108,7 @@ export const ShieldERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
       return;
     }
 
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate('Tabs'));
   };
 
   const getShieldPrivateKey = async (pKey: string): Promise<string> => {

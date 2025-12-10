@@ -46,6 +46,7 @@ import {
 import { drawerEventsBus } from '@services/navigation/drawer-events';
 import { IconType } from '@services/util/icon-service';
 import { isSmallDevice } from '@utils/platform';
+import { BroadcasterStatusPanelIndicator } from '../BroadcasterStatusPanelIndicator/BroadcasterStatusPanelIndicator';
 import { TabOption, TabOptionType } from './TabOption/TabOption';
 import styles from './SidebarMenu.module.scss';
 
@@ -62,6 +63,7 @@ type TXIDOption = {
 export const SidebarMenu = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const windowSize = useWindowSize();
+  const { wallets } = useReduxSelector('wallets');
   const { network } = useReduxSelector('network');
   const { txidVersion } = useReduxSelector('txidVersion');
   const { pendingTransactionCount } = usePendingTransactionCount();
@@ -96,6 +98,8 @@ export const SidebarMenu = (): JSX.Element => {
   const initialNetworkOption =
     networkOptions.find(n => n.value === network.current.name) ??
     networkOptions[0];
+  const hideBroadcasterStatus =
+    isDefined(wallets.active) && wallets.active.isViewOnlyWallet;
 
   const [currentNetworkOption, setCurrentNetworkOption] =
     useState(initialNetworkOption);
@@ -294,11 +298,17 @@ export const SidebarMenu = (): JSX.Element => {
             className={styles.swirl}
             style={{ backgroundImage: `url(${ImageSwirl()})` }}
           />
+          {!hideBroadcasterStatus && !isSmallMenu && (
+            <BroadcasterStatusPanelIndicator isSmallView={isSmallMenu} />
+          )}
           <div
             className={cn(styles.footerButtonsContainer, {
               [styles.footerButtonsContainerSmall]: isSmallMenu,
             })}
           >
+            {!hideBroadcasterStatus && isSmallMenu && (
+              <BroadcasterStatusPanelIndicator isSmallView={isSmallMenu} />
+            )}
             <Button
               children={isSmallMenu ? undefined : 'Settings'}
               iconOnly={isSmallMenu}

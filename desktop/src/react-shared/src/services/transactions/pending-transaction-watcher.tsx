@@ -37,7 +37,12 @@ import {
 import { SavedTransactionStore } from '../history/saved-transaction-store';
 import { TransactionReceiptDetailsService } from '../history/transaction-receipt-details-service';
 import { ProviderService } from '../providers/provider-service';
-import { pullActiveWalletBalancesForNetwork } from '../wallet/wallet-balance-service';
+import {
+  getBaseTokenForNetwork,
+  pullActiveWalletBalancesForNetwork,
+  updateSingleERC20BalanceNetwork,
+} from '../wallet/wallet-balance-service';
+import { store } from '../../redux-store/store';
 import { storeShieldCountdownTx } from './poi-shield-countdown';
 
 type RelayAdaptErrorGetter = (
@@ -361,29 +366,52 @@ export class PendingTransactionWatcher {
     }
 
     logDev(
-      `[TransactionWatcher] Transaction succeeded. Pulling balanaces Tx hash: ${txHash}`,
+      `[TransactionWatcher] Transaction succeeded. Updating balances Tx hash: ${txHash}`,
     );
 
-    await Promise.all([
-      pullActiveWalletBalancesForNetwork(this.dispatch, network),
-
-      this.scanRailgunHistoryTrigger(network.chain, undefined),
-    ]);
-
-    const toastSubtext = `${network.publicName} | ${shortenWalletAddress(
-      tx.walletAddress,
-    )}`;
     const firstToken = tx.tokenAmounts.length
       ? tx.tokenAmounts[0].token
       : undefined;
 
+    const { wallets } = store.getState();
+    const activeWallet = wallets.active;
+    const tasks: Promise<any>[] = [];
+    if (activeWallet) {
+      if (firstToken) {
+        tasks.push(
+          updateSingleERC20BalanceNetwork(
+            this.dispatch,
+            activeWallet,
+            network,
+            firstToken,
+          ),
+        );
+      }
+      const baseToken = getBaseTokenForNetwork(activeWallet, network);
+      if (baseToken) {
+        tasks.push(
+          updateSingleERC20BalanceNetwork(
+            this.dispatch,
+            activeWallet,
+            network,
+            baseToken,
+          ),
+        );
+      }
+    }
+    tasks.push(this.scanRailgunHistoryTrigger(network.chain, undefined));
+    await Promise.all(tasks);
+
+    const toastSubtext = `${network.publicName} | ${shortenWalletAddress(
+      tx.walletAddress,
+    )}`;
     const isRailgun = transactionShouldNavigateToPrivateBalance(tx);
     const toastActionData = firstToken
       ? createNavigateToTokenInfoActionData(
           networkName,
           firstToken,
           isRailgun,
-          [RailgunWalletBalanceBucket.Spendable],
+          isRailgun ? [RailgunWalletBalanceBucket.Spendable] : [],
         )
       : undefined;
 

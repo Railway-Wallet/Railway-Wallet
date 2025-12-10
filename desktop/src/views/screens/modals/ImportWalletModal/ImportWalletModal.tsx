@@ -68,7 +68,7 @@ export const ImportWalletModal = ({
   const updateMnemonic = (e: React.BaseSyntheticEvent) => {
     const { value } = e.target;
     setMnemonic(value);
-    setHasValidMnemonic(validateMnemonic(value.trim()));
+    setHasValidMnemonic(validateMnemonic(String(value).trim()));
   };
 
   const updateDerivationIndex = (e: React.BaseSyntheticEvent) => {
@@ -176,7 +176,7 @@ export const ImportWalletModal = ({
             dateFormat="MMMM d, yyyy"
             locale={AppSettingsService.locale}
             calendarClassName="date-picker-calendar"
-            formatWeekDay={nameOfDay => nameOfDay.slice(0, 1)}
+            formatWeekDay={(nameOfDay: string) => nameOfDay.slice(0, 1)}
             placeholderText="Original creation date (optional)"
           />
           {walletCreationDateIsSelected && (

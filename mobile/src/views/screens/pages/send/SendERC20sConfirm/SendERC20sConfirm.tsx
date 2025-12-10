@@ -78,7 +78,7 @@ export const SendERC20sConfirm: React.FC<Props> = ({ navigation, route }) => {
   const { railWalletID } = activeWallet;
 
   const onSuccess = () => {
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate('Tabs'));
   };
 
   const generateProof = async (

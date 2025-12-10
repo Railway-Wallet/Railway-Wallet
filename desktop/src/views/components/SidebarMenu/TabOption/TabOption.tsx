@@ -85,10 +85,10 @@ export const TabOption = ({
         {!small && (
           <div className={cn(styles.link, { [styles.disabled]: disabled })}>
             <Text
-              className={cn(
-                styles.text,
-                disabled ? styles.disabledText : styles.enabledText,
-              )}
+              className={cn(styles.text, {
+                [styles.enabledText]: !disabled && selected,
+                [styles.disabledText]: disabled,
+              })}
             >
               {tab}
               {isDefined(selectedDAppRoute) && (

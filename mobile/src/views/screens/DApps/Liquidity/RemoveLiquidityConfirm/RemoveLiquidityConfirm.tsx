@@ -216,7 +216,7 @@ export const RemoveLiquidityConfirm: React.FC<Props> = ({
 
   const onSuccess = () => {
     navigation.dispatch(StackActions.pop(2));
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate('Tabs'));
   };
 
   const handleSlippagePercent = (percent: number) => {

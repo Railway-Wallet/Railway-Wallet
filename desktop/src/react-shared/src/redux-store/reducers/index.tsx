@@ -27,5 +27,6 @@ export * from './toast-reducer';
 export * from './transaction-history-status-reducer';
 export * from './transactions-missing-timestamp-reducer';
 export * from './txid-version-reducer';
+export * from './ui-tabs-reducer';
 export * from './vaults-reducer';
 export * from './wallets-reducer';

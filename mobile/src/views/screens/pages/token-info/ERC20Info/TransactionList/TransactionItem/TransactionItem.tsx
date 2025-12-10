@@ -199,6 +199,13 @@ export const TransactionItem: React.FC<Props> = ({
           );
         },
       },
+      {
+        name: `View on PPOI.info`,
+        action: async () => {
+          const link = `https://ppoi.info/${network.current.name}/tx/${transaction.id}`;
+          await openInAppBrowserLink(link, dispatch);
+        },
+      },
     ];
 
     let unknownERC20Tokens: ERC20Token[] = [];

@@ -74,6 +74,10 @@ import {
   pullOwnedNFTMetadata,
 } from '../api/alchemy/alchemy-nft';
 import { StorageService } from '../storage/storage-service';
+import { JsonRpcProvider } from 'ethers';
+import { ProviderService } from '../providers/provider-service';
+import { multicallERC20BalanceOf } from '../providers/multicall';
+import { getWalletBaseTokenBalance } from '../token/base-token';
 import { getERC20Balance } from '../token/erc20';
 import { OmittedPrivateTokensService } from '../token/omitted-private-tokens-service';
 
@@ -141,6 +145,49 @@ export const getBaseTokenForNetwork = (
   return tokens.find(token => token.isBaseToken);
 };
 
+export const updateSingleERC20BalanceNetwork = async (
+  dispatch: AppDispatch,
+  wallet: Optional<FrontendWallet>,
+  network: Network,
+  token: ERC20Token,
+) => {
+  if (!wallet) {
+    return;
+  }
+  if (wallet.isViewOnlyWallet) {
+    return;
+  }
+  const networkName = network.name;
+  let balance: Optional<bigint>;
+  if (token.isBaseToken === true) {
+    balance = await getWalletBaseTokenBalance(networkName, wallet.ethAddress);
+  } else {
+    balance = await getERC20Balance(
+      dispatch,
+      network,
+      wallet.ethAddress,
+      token,
+    );
+  }
+  if (!isDefined(balance)) {
+    return;
+  }
+  const updatedBalances: ERC20Balance[] = [
+    {
+      isBaseToken: token.isBaseToken === true,
+      tokenAddress: token.address,
+      balanceString: balance.toString(),
+    },
+  ];
+  dispatch(
+    updateERC20BalancesNetwork({
+      networkName,
+      walletID: wallet.id,
+      updatedTokenBalances: updatedBalances,
+    }),
+  );
+};
+
 export const pullActiveWalletBalancesForNetwork = (
   dispatch: AppDispatch,
   network: Network,
@@ -156,15 +203,46 @@ const pullERC20BalancesNetwork = async (
 ) => {
   const networkName = network.name;
   const walletTokens = getERC20TokensForNetwork(wallet, networkName);
-  const promises: Promise<Optional<bigint>>[] = [];
-  for (const token of walletTokens) {
-    promises.push(getERC20Balance(dispatch, network, wallet.ethAddress, token));
-  }
+  let tokenBalances: Optional<ERC20Balance>[] = [];
 
-  const results: Optional<bigint>[] = await Promise.all(promises);
+  try {
+    const firstProvider = (await ProviderService.getFirstProvider(
+      networkName,
+    )) as JsonRpcProvider;
+    const erc20Addresses = walletTokens
+      .filter(t => !(t.isBaseToken ?? false))
+      .map(t => t.address);
+    const balancesMap = await multicallERC20BalanceOf(
+      firstProvider,
+      networkName,
+      wallet.ethAddress,
+      erc20Addresses,
+    );
+    if (isDefined(balancesMap)) {
+      tokenBalances = walletTokens.map(token => {
+        if (token.isBaseToken ?? false) {
+          return undefined;
+        }
+        const bal = balancesMap[token.address.toLowerCase()];
+        if (!isDefined(bal)) return undefined;
+        return {
+          isBaseToken: false,
+          tokenAddress: token.address,
+          balanceString: bal.toString(),
+        } as ERC20Balance;
+      });
+    }
+  } catch {}
 
-  const tokenBalances: Optional<ERC20Balance>[] = results.map(
-    (balance: Optional<bigint>, index: number) => {
+  if (!tokenBalances.length || tokenBalances.every(b => !isDefined(b))) {
+    const promises: Promise<Optional<bigint>>[] = [];
+    for (const token of walletTokens) {
+      promises.push(
+        getERC20Balance(dispatch, network, wallet.ethAddress, token),
+      );
+    }
+    const results: Optional<bigint>[] = await Promise.all(promises);
+    tokenBalances = results.map((balance: Optional<bigint>, index: number) => {
       if (!isDefined(balance)) {
         return undefined;
       }
@@ -173,9 +251,9 @@ const pullERC20BalancesNetwork = async (
         isBaseToken: token.isBaseToken === true,
         tokenAddress: token.address,
         balanceString: balance.toString(),
-      };
-    },
-  );
+      } as ERC20Balance;
+    });
+  }
   const tokenBalancesRemoveNulls: ERC20Balance[] =
     removeUndefineds(tokenBalances);
 

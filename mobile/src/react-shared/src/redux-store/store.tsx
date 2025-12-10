@@ -29,6 +29,7 @@ import {
   transactionHistoryStatusReducer,
   transactionsMissingTimestampReducer,
   txidVersionReducer,
+  uiTabsReducer,
   vaultsReducer,
   walletsReducer,
 } from './reducers';
@@ -46,6 +47,7 @@ export const store = configureStore({
     nftBalancesNetwork: nftBalanceNetworkReducer,
     nftBalancesRailgun: nftBalanceRailgunReducer,
     nftsMetadata: nftsMetadataReducer,
+    uiTabs: uiTabsReducer,
     savedAddresses: savedAddressesReducer,
     toast: toastReducer,
     savedTransactions: savedTransactionsReducer,

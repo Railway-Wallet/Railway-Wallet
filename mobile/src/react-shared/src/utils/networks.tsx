@@ -16,6 +16,16 @@ import { NetworkStoredSettingsService } from '../services/network/network-stored
 import { logDev, logDevError } from './logging';
 import { getNetworkFrontendConfig } from './networks-frontend';
 
+type ProviderConfigCacheEntry = {
+  ts: number;
+  cfg: Optional<FallbackProviderJsonConfig>;
+};
+const providerConfigCache: Map<string, ProviderConfigCacheEntry> = new Map();
+const providerConfigInFlight: Map<
+  string,
+  Promise<Optional<FallbackProviderJsonConfig>>
+> = new Map();
+
 const getNetworkProvidersConfig = (providerNodeType: ProviderNodeType) => {
   const remoteConfig = store.getState().remoteConfig;
   switch (providerNodeType) {
@@ -27,6 +37,42 @@ const getNetworkProvidersConfig = (providerNodeType: ProviderNodeType) => {
 };
 
 export const getNetworkFallbackProviderJsonConfig = async (
+  networkName: NetworkName,
+  providerNodeType: ProviderNodeType,
+): Promise<Optional<FallbackProviderJsonConfig>> => {
+  const storedSettings =
+    await NetworkStoredSettingsService.getSettingsForNetwork(networkName);
+  const rpcUrls = storedSettings.rpcCustomURLs ?? [];
+  const settingsSig = `${storedSettings.useDefaultRailwayRPCsAsBackup ? 1 : 0}:${rpcUrls.join(',')}`;
+
+  const cacheKey = `${networkName}:${providerNodeType}:${settingsSig}`;
+  const CACHE_MS = 30_000;
+  const cached = providerConfigCache.get(cacheKey);
+  const now = Date.now();
+  if (cached !== undefined && now - cached.ts < CACHE_MS) {
+    return cached.cfg;
+  }
+  const existing = providerConfigInFlight.get(cacheKey);
+  if (existing !== undefined) {
+    return existing;
+  }
+  const promise = (async () => {
+    try {
+      const result = await getNetworkFallbackProviderJsonConfigUncached(
+        networkName,
+        providerNodeType,
+      );
+      providerConfigCache.set(cacheKey, { ts: Date.now(), cfg: result });
+      return result;
+    } finally {
+      providerConfigInFlight.delete(cacheKey);
+    }
+  })();
+  providerConfigInFlight.set(cacheKey, promise);
+  return promise;
+};
+
+const getNetworkFallbackProviderJsonConfigUncached = async (
   networkName: NetworkName,
   providerNodeType: ProviderNodeType,
 ): Promise<Optional<FallbackProviderJsonConfig>> => {

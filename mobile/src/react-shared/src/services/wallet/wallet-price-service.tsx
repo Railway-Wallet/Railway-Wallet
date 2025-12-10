@@ -22,8 +22,15 @@ import {
   paprikaPriceLookup,
   populateCoinPaprikaInfoCache,
 } from '../api/coinpaprika';
+import { defillamaPriceLookup } from '../api/defillama';
 import { AppSettingsService } from '../settings';
 import { getERC20TokensForNetwork } from './wallet-balance-service';
+
+type TokenPrice = {
+  price: number;
+  tokenAddress: string;
+  updatedAt: number;
+};
 
 const pullingPricesForNetwork: MapType<MapType<boolean>> = {};
 
@@ -119,6 +126,50 @@ export const pullERC20TokenPricesForNetwork = async (
 
   const tokenAddresses = walletTokens.map(t => t.address);
 
+  let lastError: Error | unknown;
+
+  try {
+    const defillamaPrices = await defillamaPriceLookup(
+      networkName,
+      tokenAddresses,
+    );
+    if (defillamaPrices.length > 0) {
+      pullingPricesNetwork[currency.code] = false;
+      dispatch(
+        updateTokenPrices({
+          networkName,
+          updatedTokenPrices: defillamaPrices.map((tp: TokenPrice) => ({
+            tokenAddress: tp.tokenAddress,
+            price: tp.price,
+          })),
+        }),
+      );
+      return;
+    }
+  } catch (defiErr) {
+    lastError = defiErr;
+  }
+
+  try {
+    const tokenPricesByAddress = await priceLookup(
+      network.coingeckoId,
+      tokenAddresses,
+      currency.coingeckoID,
+    );
+    if (tokenPricesByAddress.length > 0) {
+      pullingPricesNetwork[currency.code] = false;
+      dispatch(
+        updateTokenPrices({
+          networkName,
+          updatedTokenPrices: tokenPricesByAddress,
+        }),
+      );
+      return;
+    }
+  } catch (coingeckoErr) {
+    lastError = coingeckoErr;
+  }
+
   try {
     const paprikaQueries = walletTokens.map(t => {
       const allToken = t as ERC20TokenFullInfo;
@@ -138,33 +189,35 @@ export const pullERC20TokenPricesForNetwork = async (
     if (fallbackSuccess === true) {
       return;
     }
-  } catch (err) {
-    const tokenPricesByAddress = await priceLookup(
-      network.coingeckoId,
-      tokenAddresses,
-      currency.coingeckoID,
-    );
-    pullingPricesNetwork[currency.code] = false;
-    dispatch(
-      updateTokenPrices({
-        networkName,
-        updatedTokenPrices: tokenPricesByAddress,
-      }),
-    );
+  } catch (paprikaErr) {
+    lastError = paprikaErr;
+  }
+
+  pullingPricesNetwork[currency.code] = false;
+  if (lastError !== undefined) {
     logDevError(
       new Error(`Error pulling ERC20 token prices for ${networkName}`, {
-        cause: err,
+        cause: lastError,
       }),
     );
-    if (!(err instanceof Error)) {
-      throw err;
+    if (!(lastError instanceof Error)) {
+      throw lastError;
     }
-    if (err.message.includes('provider destroyed')) return;
+    if (lastError.message.includes('provider destroyed')) return;
 
-    if (window.navigator.onLine) {
+    if (typeof window !== 'undefined' && window.navigator.onLine) {
       dispatch(
         showImmediateToast({
-          message: `Could not load current token prices. ${err.message}`,
+          message: `Could not load current token prices. ${lastError.message}`,
+          type: ToastType.Error,
+        }),
+      );
+    }
+  } else {
+    if (typeof window !== 'undefined' && window.navigator.onLine) {
+      dispatch(
+        showImmediateToast({
+          message: `Could not load current token prices. All price services returned no results.`,
           type: ToastType.Error,
         }),
       );

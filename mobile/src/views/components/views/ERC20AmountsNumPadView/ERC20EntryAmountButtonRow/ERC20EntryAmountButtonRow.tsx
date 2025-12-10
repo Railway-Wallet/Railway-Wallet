@@ -35,6 +35,7 @@ export const ERC20EntryAmountButtonRow: React.FC<Props> = ({
         placeholder={placeholder}
         keyboardType="decimal-pad"
         inputMode="decimal"
+        textAlign="center"
         style={styles.input}
       />
       {rightView()}

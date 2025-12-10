@@ -39,6 +39,7 @@ export class SharedConstants {
   static readonly SAVED_TRANSACTION_CURRENT_VERSION = '2.9';
 
   static readonly RAILGUN_CAT_COLLECTION_NFT_ADDRESS_LOWERCASE = 'TODO';
+  static readonly UNKNOWN_TRANSFER_SCAN_BLOCKS = 3000;
 
   static readonly SELECTED_NETWORK = 'SELECTED_NETWORK';
   static readonly TRANSACTIONS = 'TRANSACTIONS';

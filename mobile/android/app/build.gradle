@@ -6,6 +6,8 @@ react {
     autolinkLibrariesWithApp()
 
     hermesEnabled = true
+
+    autolinkLibrariesWithApp()
 }
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
@@ -85,7 +87,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
-    implementation 'com.facebook.fresco:fresco:2.0.0'
+    implementation 'com.facebook.fresco:fresco:3.1.3'
     implementation 'com.facebook.fresco:animated-gif:2.6.0'
 
     if (hermesEnabled.toBoolean()) {
@@ -93,6 +95,14 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+}
+
+configurations.all {
+    exclude group: 'com.android.support', module: 'support-compat'
+    exclude group: 'com.android.support', module: 'support-media-compat'
+    exclude group: 'com.android.support', module: 'support-v4'
+    exclude group: 'com.android.support', module: 'appcompat-v7'
+    resolutionStrategy.activateDependencyLocking()
 }
 
 afterEvaluate {
@@ -105,6 +115,3 @@ afterEvaluate {
     }
 }
 
-configurations.all {
-    resolutionStrategy.activateDependencyLocking()
-}

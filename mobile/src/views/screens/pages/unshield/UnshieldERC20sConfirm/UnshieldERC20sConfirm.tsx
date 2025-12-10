@@ -93,7 +93,7 @@ export const UnshieldERC20sConfirm: React.FC<Props> = ({
       : undefined;
 
   const onSuccess = () => {
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate('Tabs'));
   };
 
   const generateProof = async (

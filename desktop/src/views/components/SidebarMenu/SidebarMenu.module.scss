@@ -128,7 +128,6 @@
   justify-content: center;
   z-index: 2;
   gap: 12px;
-  padding: 0 24px;
 }
 
 .footerButtonsContainer.footerButtonsContainerSmall {
@@ -160,7 +159,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 10vh;
+  bottom: 20vh;
   background-size: cover;
   background-repeat: none;
 }

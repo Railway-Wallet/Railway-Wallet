@@ -2066,9 +2066,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/engine@npm:9.4.0":
-  version: 9.4.0
-  resolution: "@railgun-community/engine@npm:9.4.0"
+"@railgun-community/engine@npm:9.5.0":
+  version: 9.5.0
+  resolution: "@railgun-community/engine@npm:9.5.0"
   dependencies:
     "@noble/ciphers": "npm:^0.4.0"
     "@noble/ed25519": "npm:^1.7.1"
@@ -2087,7 +2087,7 @@ __metadata:
     fast-text-encoding: "npm:^1.0.6"
     levelup: "npm:^5.1.1"
     msgpack-lite: "npm:^0.1.26"
-  checksum: 10/180cd5998576a48b836268ed28c244760f1369483f3148a678d085b32e1ef482331454c48dd6202d6bc58bab57c06c562c3c4845deab01636c08024f9e843420
+  checksum: 10/28cbb78119cfe55c88e82572c55f99a164c9c85ded5ae55eb185c159ab3224eb2d8be4f2d587874241f331f949dfa4c5ad990c2f96a3167bfbe15c07d13790bb
   languageName: node
   linkType: hard
 
@@ -2114,27 +2114,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/shared-models@npm:7.5.0":
-  version: 7.5.0
-  resolution: "@railgun-community/shared-models@npm:7.5.0"
+"@railgun-community/shared-models@npm:8.0.0, @railgun-community/shared-models@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@railgun-community/shared-models@npm:8.0.0"
   peerDependencies:
     ethers: 6.13.1
-  checksum: 10/cd1da730cbf2a5a7ea4364141b49f4447e48e68a6312827f1bb218d87e662c4e1a135c6690244dd7e4db4ecf21fe86f4657e445c1ac99e5e1bafd28f05bbfd04
+  checksum: 10/45b14b1389cc02dfab5607bdc3b1a92a399f493a77f20d8ed6b9b54e79bbdf7f797fafb6028e5e6058f0b636c11a6d11de67f554ed36a5dca86c4dd1be927b5c
   languageName: node
   linkType: hard
 
-"@railgun-community/shared-models@npm:^7.6.1":
-  version: 7.6.1
-  resolution: "@railgun-community/shared-models@npm:7.6.1"
-  peerDependencies:
-    ethers: 6.13.1
-  checksum: 10/591d5c98275c4595deff6bae5234a85856f9f18109c7dc5b183987f7872e64c21e913472d5c1df0de3b332706d70c21180bda61435ff018a9ccd6de1e0f6e019
-  languageName: node
-  linkType: hard
-
-"@railgun-community/waku-broadcaster-client-node@npm:^8.2.7":
-  version: 8.2.7
-  resolution: "@railgun-community/waku-broadcaster-client-node@npm:8.2.7"
+"@railgun-community/waku-broadcaster-client-node@npm:^8.4.0":
+  version: 8.4.0
+  resolution: "@railgun-community/waku-broadcaster-client-node@npm:8.4.0"
   dependencies:
     "@libp2p/tcp": "npm:9.1.5"
     "@multiformats/multiaddr": "npm:12.3.1"
@@ -2143,15 +2134,15 @@ __metadata:
     "@waku/relay": "npm:0.0.16"
     patch-package: "npm:^8.0.0"
   peerDependencies:
-    "@railgun-community/shared-models": ^7.6.1
-    "@railgun-community/wallet": ^10.4.0
-  checksum: 10/a8a43b636358e67a6739b8f969003e2b28c79e7097d84b52b55e7e6af05134b6409a7a2e38c3fb685ff6cf1e479cf0c016d33ab733081847aacae5817a76261b
+    "@railgun-community/shared-models": ^8.0.0
+    "@railgun-community/wallet": ^10.8.0
+  checksum: 10/da4ab48f15579d940a71b9b695ddd948d74ce160acb2b06bb066e3978ef20c9df4940321539bc1bb00d8a08a203ba129294b138f665ea4759c54e440ee61ae29
   languageName: node
   linkType: hard
 
-"@railgun-community/wallet@npm:^10.4.1":
-  version: 10.4.1
-  resolution: "@railgun-community/wallet@npm:10.4.1"
+"@railgun-community/wallet@npm:10.8.0":
+  version: 10.8.0
+  resolution: "@railgun-community/wallet@npm:10.8.0"
   dependencies:
     "@graphql-mesh/cache-localforage": "npm:^0.7.20"
     "@graphql-mesh/cross-helpers": "npm:^0.3.4"
@@ -2164,8 +2155,8 @@ __metadata:
     "@graphql-mesh/types": "npm:^0.91.14"
     "@graphql-mesh/utils": "npm:^0.43.22"
     "@noble/ed25519": "npm:^1.7.1"
-    "@railgun-community/engine": "npm:9.4.0"
-    "@railgun-community/shared-models": "npm:7.5.0"
+    "@railgun-community/engine": "npm:9.5.0"
+    "@railgun-community/shared-models": "npm:8.0.0"
     "@whatwg-node/fetch": "npm:^0.8.4"
     assert: "npm:2.0.0"
     axios: "npm:1.7.2"
@@ -2177,16 +2168,16 @@ __metadata:
     events: "npm:3.3.0"
     graphql: "npm:^16.6.0"
     stream-browserify: "npm:3.0.0"
-  checksum: 10/f711dc5bbf99963fd57fa10593c47981ff3413d5e7756ec31f1ffbca291462b5d447ddf5ce9696ae6d8249ebf2444a8ff15330eff041ae72887225bd2caff257
+  checksum: 10/34b6f5a8e75fdb8d210f415506af2ce181de763ff5fa8d517e724f38f46592526a3f65b11cd73dd487ece5221287848e766e4f99635585a522b8eeeca86da0a9
   languageName: node
   linkType: hard
 
-"@railgun-privacy/native-prover@https://ipfs-lb.com/ipfs/QmUYS6on1AtrUssaV9UWGqspz8mRocc8wgZWaag5wa8vq6/railgun-privacy-native-prover-4.0.2.tgz":
-  version: 4.0.2
-  resolution: "@railgun-privacy/native-prover@https://ipfs-lb.com/ipfs/QmUYS6on1AtrUssaV9UWGqspz8mRocc8wgZWaag5wa8vq6/railgun-privacy-native-prover-4.0.2.tgz"
+"@railgun-privacy/native-prover@https://ipfs-lb.com/ipfs/QmZL6Njoxfh42u1MMjMSsDd6uWeqTKepf1WRLELM8DCSLy/railgun-privacy-native-prover-4.0.3.tgz":
+  version: 4.0.3
+  resolution: "@railgun-privacy/native-prover@https://ipfs-lb.com/ipfs/QmZL6Njoxfh42u1MMjMSsDd6uWeqTKepf1WRLELM8DCSLy/railgun-privacy-native-prover-4.0.3.tgz"
   dependencies:
     node-gyp-build: "npm:^4.5.0"
-  checksum: 10/4745fadf74d5528f50fa89d9d7d0f02cc891d268c6ffb77f6a87f8a743e4cad94394cce14d2b88900990886b64df2fd20a8165d4e46ceef29dee7d3c6b39925b
+  checksum: 10/dc6d8e6735e3323d80c4f3a75cecf3b0aec137e6e68e4faa3411c4a5bd7eabb75aa246ddc3d72fe93a9ceb6459d530a618d197ada964e60baee9c2c6b79ed58c
   languageName: node
   linkType: hard
 
@@ -9896,10 +9887,10 @@ __metadata:
     "@ethersproject/shims": "npm:^5.7.0"
     "@railgun-community/curve25519-scalarmult-rsjs": "npm:0.2.4"
     "@railgun-community/poseidon-hash-rsjs": "npm:1.0.1"
-    "@railgun-community/shared-models": "npm:^7.6.1"
-    "@railgun-community/waku-broadcaster-client-node": "npm:^8.2.7"
-    "@railgun-community/wallet": "npm:^10.4.1"
-    "@railgun-privacy/native-prover": "https://ipfs-lb.com/ipfs/QmUYS6on1AtrUssaV9UWGqspz8mRocc8wgZWaag5wa8vq6/railgun-privacy-native-prover-4.0.2.tgz"
+    "@railgun-community/shared-models": "npm:^8.0.0"
+    "@railgun-community/waku-broadcaster-client-node": "npm:^8.4.0"
+    "@railgun-community/wallet": "npm:10.8.0"
+    "@railgun-privacy/native-prover": "https://ipfs-lb.com/ipfs/QmZL6Njoxfh42u1MMjMSsDd6uWeqTKepf1WRLELM8DCSLy/railgun-privacy-native-prover-4.0.3.tgz"
     "@types/chai": "npm:4.3.5"
     "@types/chai-as-promised": "npm:^7.1.5"
     "@types/leveldown": "npm:^4.0.3"

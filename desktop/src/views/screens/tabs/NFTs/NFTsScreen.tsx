@@ -14,6 +14,7 @@ import {
 import {
   pullWalletNFTsNetwork,
   refreshRailgunBalances,
+  setNFTTabActive,
   useAppDispatch,
   useBalancePriceRefresh,
   useFilteredNFTBalances,
@@ -65,8 +66,12 @@ export const NFTsScreen: React.FC<Props> = ({
   const activeWallet = wallets.active;
 
   useEffect(() => {
+    dispatch(setNFTTabActive(true));
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
       pullWalletNFTsNetwork(dispatch, activeWallet, currentNetwork);
+    return () => {
+      dispatch(setNFTTabActive(false));
+    };
   }, [currentNetwork.name, activeWallet?.id]);
 
   const onActionSendNFT = (nftAmount: NFTAmount) => {

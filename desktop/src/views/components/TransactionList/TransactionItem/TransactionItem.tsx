@@ -88,7 +88,7 @@ export const TransactionItem: React.FC<Props> = ({
     return null;
   }
 
-  const promptExternalSite = () => {
+  const promptTransactionScannerExternalSite = () => {
     const url = transactionLinkOnExternalScanSite(
       network.current.name,
       transaction.id,
@@ -101,6 +101,17 @@ export const TransactionItem: React.FC<Props> = ({
         ExternalSiteAlertMessages.OPEN_EXTERNAL_TRANSACTION,
       );
     }
+  };
+
+  const promptPPOIExternalSite = () => {
+    const url = `https://ppoi.info/${network.current.name}/tx/${transaction.id}`;
+
+    createExternalSiteAlert(
+      url,
+      setAlert,
+      dispatch,
+      ExternalSiteAlertMessages.OPEN_EXTERNAL_TRANSACTION,
+    );
   };
 
   const cancelTransaction = async (e: SyntheticEvent) => {
@@ -206,11 +217,16 @@ export const TransactionItem: React.FC<Props> = ({
     let buttons: TextActionButton[] = [];
     buttons.push({
       text: `View on ${getExternalScanSiteName(network.current.name)}`,
-      action: promptExternalSite,
+      action: promptTransactionScannerExternalSite,
     });
     buttons.push({
       text: `Copy transaction hash`,
       action: handleCopyTransactionHash,
+    });
+
+    buttons.push({
+      text: `View on PPOI.info`,
+      action: promptPPOIExternalSite,
     });
 
     if (

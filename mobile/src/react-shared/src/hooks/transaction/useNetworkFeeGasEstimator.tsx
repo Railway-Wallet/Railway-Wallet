@@ -5,7 +5,6 @@ import {
   getEVMGasTypeForTransaction,
   isDefined,
   NFTAmountRecipient,
-  type RailgunWalletBalanceBucket,
   SelectedBroadcaster,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
@@ -59,7 +58,6 @@ export const useNetworkFeeGasEstimator = (
   gasEstimateProgressCallback: (progress: number) => void,
   selectedFeeToken: ERC20Token,
   recipeOutput: Optional<RecipeOutput>,
-  balanceBucketFilter: RailgunWalletBalanceBucket[],
 ) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
@@ -245,9 +243,7 @@ export const useNetworkFeeGasEstimator = (
   }, [networkFeeSelection, validGasDetailsForNetworkFeeSelection]);
 
   const { gasTokenBalanceError } = useGasTokenBalanceError(
-    selectedFeeToken,
-    sendWithPublicWallet,
-    balanceBucketFilter,
+    requiresProofGeneration,
     selectedGasDetails,
   );
 

@@ -45,7 +45,7 @@ export const NewWalletSuccess: React.FC<NewWalletSuccessProps> = ({
 
   const onSubmit = () => {
     triggerHaptic(HapticSurface.NavigationButton);
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate('Tabs'));
   };
 
   const onTapQrCodeButton = (isRailgun: boolean, walletType: string) => {

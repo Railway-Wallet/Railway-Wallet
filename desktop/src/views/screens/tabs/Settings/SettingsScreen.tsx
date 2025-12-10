@@ -19,6 +19,7 @@ import {
   refreshRailgunBalances,
   rescanFullUTXOMerkletreesAndWallets,
   resetFullTXIDMerkletreesV2,
+  scanUnknownTokenReceives,
   showImmediateToast,
   ToastType,
   useAppDispatch,
@@ -88,6 +89,33 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
         await rescanPrivateBalances();
       },
     });
+  };
+
+  const scanUnknownTokens = async () => {
+    if (!wallets.active) {
+      return;
+    }
+    setLoadingText('Scanning for unknown tokens...');
+    try {
+      await scanUnknownTokenReceives(dispatch, wallets.active, network.current);
+      setLoadingText(undefined);
+      dispatch(
+        showImmediateToast({
+          type: ToastType.Success,
+          message: `Scan complete on ${network.current.shortPublicName}.`,
+        }),
+      );
+    } catch (cause) {
+      const error = new Error('Unknown token scan failed. Please try again.', {
+        cause,
+      });
+      setLoadingText(undefined);
+      logDevError(error);
+      setErrorModal({
+        error,
+        onDismiss: () => setErrorModal(undefined),
+      });
+    }
   };
 
   const promptGenerateAllPOIs = () => {
@@ -346,6 +374,19 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
             right={() => (
               <div className={styles.rightContainer}>
                 {renderIcon(IconType.ChevronRight, 18)}
+              </div>
+            )}
+          />
+          <ListItem
+            title="Scan for unknown tokens"
+            description="Check recent transfers not in your token list"
+            className={styles.listItem}
+            titleClassName={styles.itemTitle}
+            descriptionClassName={styles.itemDescription}
+            onPress={scanUnknownTokens}
+            right={() => (
+              <div className={styles.rightContainer}>
+                {renderIcon(IconType.Search, 18)}
               </div>
             )}
           />

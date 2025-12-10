@@ -140,7 +140,7 @@ export const SelectBroadcasterList: React.FC<Props> = ({
       contentContainerStyle={styles.contentContainer}
       data={allBroadcasters}
       renderItem={renderBroadcaster}
-      keyExtractor={item => item.railgunAddress}
+      keyExtractor={(item, index) => item.railgunAddress + index}
       ListHeaderComponent={
         noBroadcasters ? undefined : renderRandomBroadcasterRow
       }

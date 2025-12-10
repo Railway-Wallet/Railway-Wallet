@@ -1,0 +1,477 @@
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/types.js b/node_modules/@react-navigation/bottom-tabs/lib/module/types.js
+index 049b69b..d6c58dc 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/types.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/types.js
+@@ -1,4 +1,20 @@
+ "use strict";
+ 
+ export {};
++"use strict";
++
++// POI TYPES
++export var POIProofEventStatus;
++(function (POIProofEventStatus) {
++  POIProofEventStatus["LoadingNextBatch"] = "LoadingNextBatch";
++  POIProofEventStatus["InProgress"] = "InProgress";
++  POIProofEventStatus["Error"] = "Error";
++  POIProofEventStatus["AllProofsCompleted"] = "AllProofsCompleted";
++})(POIProofEventStatus || (POIProofEventStatus = {}));
++
++export var POIProofEventStatusUI;
++(function (POIProofEventStatusUI) {
++  POIProofEventStatusUI["NewTransactionLoading"] = "NewTransactionLoading";
++})(POIProofEventStatusUI || (POIProofEventStatusUI = {}));
++
+ //# sourceMappingURL=types.js.map
+\ No newline at end of file
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabView.js b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabView.js
+index 39d48b8..81a4d24 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabView.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabView.js
+@@ -11,6 +11,7 @@ import { BottomTabBarHeightContext } from "../utils/BottomTabBarHeightContext.js
+ import { useAnimatedHashMap } from "../utils/useAnimatedHashMap.js";
+ import { BottomTabBar, getTabBarHeight } from "./BottomTabBar.js";
+ import { MaybeScreen, MaybeScreenContainer } from "./ScreenFallback.js";
++import RailwayPOIProgress from "./RailwayPOIProgress.js";
+ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+ const EPSILON = 1e-5;
+ const STATE_INACTIVE = 0;
+@@ -133,17 +134,34 @@ export function BottomTabView(props) {
+     style: descriptors[state.routes[state.index].key].options.tabBarStyle
+   }));
+   const renderTabBar = () => {
++    const shouldShowAllProofsCompleted = descriptors[state.routes[state.index].key].options.shouldShowAllProofsCompleted;
++    const poiProgressData = descriptors[state.routes[state.index].key].options.poiProgressData;
++    const onTapPOIData = descriptors[state.routes[state.index].key].options.onTapPOIData;
++    const POIModal = descriptors[state.routes[state.index].key].options.POIModal;
++    const POISuccessIcon = descriptors[state.routes[state.index].key].options.POISuccessIcon;
++
+     return /*#__PURE__*/_jsx(SafeAreaInsetsContext.Consumer, {
+-      children: insets => tabBar({
+-        state: state,
+-        descriptors: descriptors,
+-        navigation: navigation,
+-        insets: {
+-          top: safeAreaInsets?.top ?? insets?.top ?? 0,
+-          right: safeAreaInsets?.right ?? insets?.right ?? 0,
+-          bottom: safeAreaInsets?.bottom ?? insets?.bottom ?? 0,
+-          left: safeAreaInsets?.left ?? insets?.left ?? 0
+-        }
++      children: insets => /*#__PURE__*/_jsxs(React.Fragment, {
++        children: [
++          /*#__PURE__*/_jsx(RailwayPOIProgress, {
++            POIModal: POIModal,
++            onTapPOIData: onTapPOIData,
++            POISuccessIcon: POISuccessIcon,
++            poiProgressData: poiProgressData,
++            shouldShowAllProofsCompleted: shouldShowAllProofsCompleted
++          }),
++          tabBar({
++            state: state,
++            descriptors: descriptors,
++            navigation: navigation,
++            insets: {
++              top: safeAreaInsets?.top ?? insets?.top ?? 0,
++              right: safeAreaInsets?.right ?? insets?.right ?? 0,
++              bottom: safeAreaInsets?.bottom ?? insets?.bottom ?? 0,
++              left: safeAreaInsets?.left ?? insets?.left ?? 0
++            }
++          })
++        ]
+       })
+     });
+   };
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/views/RailwayPOIProgress.js b/node_modules/@react-navigation/bottom-tabs/lib/module/views/RailwayPOIProgress.js
+new file mode 100644
+index 0000000..4b009bd
+--- /dev/null
++++ b/node_modules/@react-navigation/bottom-tabs/lib/module/views/RailwayPOIProgress.js
+@@ -0,0 +1,117 @@
++"use strict";
++
++import * as React from 'react';
++import { ActivityIndicator, Animated, Easing, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
++import { POIProofEventStatus, POIProofEventStatusUI } from '../types.js';
++import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
++
++const IS_ANDROID = Platform.OS === 'android';
++const isDefined = (a) => {
++  return typeof a !== 'undefined' && a !== null;
++};
++
++const RailwayPOIProgress = ({
++  poiProgressData,
++  shouldShowAllProofsCompleted,
++  onTapPOIData,
++  POIModal,
++  POISuccessIcon
++}) => {
++  const newTrxProcessing = poiProgressData?.status === POIProofEventStatusUI.NewTransactionLoading;
++  const loadingNextBatch = poiProgressData?.status === POIProofEventStatus.LoadingNextBatch;
++  const inProgress = poiProgressData?.status === POIProofEventStatus.InProgress;
++  const error = poiProgressData?.errMessage;
++  const progress = poiProgressData?.progress ?? 0;
++  const totalPOIs = poiProgressData?.totalCount ?? 0;
++  const currentPOIIndex = poiProgressData?.index ?? 0;
++  const [animatedProgress] = React.useState(new Animated.Value(progress));
++
++  React.useEffect(() => {
++    Animated.timing(animatedProgress, {
++      toValue: progress,
++      duration: 400,
++      easing: Easing.linear,
++      useNativeDriver: false
++    }).start();
++  }, [animatedProgress, progress]);
++
++  const shouldShowPOIToast = () => {
++    if (shouldShowAllProofsCompleted || newTrxProcessing) {
++      return true;
++    }
++
++    if (poiProgressData) {
++      if (inProgress && poiProgressData.totalCount === 0) {
++        return false;
++      }
++      return true;
++    }
++    return false;
++  };
++
++  if (!shouldShowPOIToast()) {
++    return null;
++  }
++
++  return _jsxs(View, {
++    style: styles.container,
++    children: [
++      _jsx(TouchableOpacity, {
++        style: [styles.textContainer, isDefined(error) && styles.textContainerError],
++        onPress: onTapPOIData,
++        children: loadingNextBatch || newTrxProcessing ? _jsx(ActivityIndicator, {
++          size: "small"
++        }) : shouldShowAllProofsCompleted ? POISuccessIcon : _jsx(Text, {
++          style: styles.progressText,
++          children: `PPOI ${isDefined(poiProgressData?.index) ? currentPOIIndex + 1 : 0}/${totalPOIs}`
++        })
++      }),
++      _jsx(Animated.View, {
++        style: [styles.progressBar, {
++          width: animatedProgress.interpolate({
++            inputRange: [0, 100],
++            outputRange: ['0%', '100%']
++          })
++        }, isDefined(error) && styles.progressBarError]
++      }),
++      POIModal
++    ]
++  });
++};
++
++const styles = StyleSheet.create({
++  container: {
++    flexDirection: 'row',
++    width: '100%',
++    position: 'relative',
++    backgroundColor: IS_ANDROID ? 'rgb(44, 44, 46)' : 'rgb(23, 23, 23)',
++    height: 5,
++    alignItems: 'center'
++  },
++  textContainer: {
++    backgroundColor: IS_ANDROID ? 'rgb(44, 44, 46)' : 'rgb(23, 23, 23)',
++    padding: 8,
++    position: 'absolute',
++    top: IS_ANDROID ? -42 : -40,
++    left: 5,
++    borderRadius: 5,
++    borderColor: '#cccccc50',
++    borderWidth: 1
++  },
++  progressBar: {
++    height: 5,
++    backgroundColor: 'rgba(5, 158, 121, 1)'
++  },
++  progressText: {
++    color: 'white',
++    fontSize: 15
++  },
++  progressBarError: {
++    backgroundColor: '#ff0000'
++  },
++  textContainerError: {
++    borderColor: '#ff0000'
++  }
++});
++
++export default RailwayPOIProgress;
+\ No newline at end of file
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/types.tsx b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+index 2438b03..02ba68b 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/types.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+@@ -106,6 +106,31 @@ export type TabBarVisibilityAnimationConfig =
+   | TimingKeyboardAnimationConfig
+   | SpringKeyboardAnimationConfig;
+ 
++// POI TYPES
++export type Optional<T> = T | undefined;
++
++export type POIProofProgress = {
++  status: POIProofEventStatus | POIProofEventStatusUI;
++  progress: number;
++  listKey: string;
++  txid: string;
++  railgunTxid: string;
++  index: number;
++  totalCount: number;
++  errMessage: Optional<string>;
++};
++
++export enum POIProofEventStatus {
++  LoadingNextBatch = 'LoadingNextBatch',
++  InProgress = 'InProgress',
++  Error = 'Error',
++  AllProofsCompleted = 'AllProofsCompleted',
++}
++
++export enum POIProofEventStatusUI {
++  NewTransactionLoading = 'NewTransactionLoading',
++}
++
+ export type TabAnimationName = 'none' | 'fade' | 'shift';
+ 
+ export type BottomTabNavigationOptions = HeaderOptions & {
+@@ -114,6 +139,13 @@ export type BottomTabNavigationOptions = HeaderOptions & {
+    */
+   title?: string;
+ 
++  // Props for the POI Progress Bar.
++  poiProgressData?: POIProofProgress;
++  onTapPOIData?: () => void;
++  POIModal?: React.ReactNode;
++  POISuccessIcon?: React.ReactNode;
++  shouldShowAllProofsCompleted?: boolean;
++
+   /**
+    * Title string of a tab displayed in the tab bar
+    * or a function that given { focused: boolean, color: string, position: 'below-icon' | 'beside-icon', children: string } returns a React.Node to display in tab bar.
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabView.tsx b/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabView.tsx
+index c2b6316..9698e44 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabView.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabView.tsx
+@@ -32,6 +32,7 @@ import { BottomTabBarHeightContext } from '../utils/BottomTabBarHeightContext';
+ import { useAnimatedHashMap } from '../utils/useAnimatedHashMap';
+ import { BottomTabBar, getTabBarHeight } from './BottomTabBar';
+ import { MaybeScreen, MaybeScreenContainer } from './ScreenFallback';
++import RailwayPOIProgress from './RailwayPOIProgress';
+ 
+ type Props = BottomTabNavigationConfig & {
+   state: TabNavigationState<ParamListBase>;
+@@ -202,21 +203,36 @@ export function BottomTabView(props: Props) {
+   );
+ 
+   const renderTabBar = () => {
++    const shouldShowAllProofsCompleted = descriptors[state.routes[state.index].key].options.shouldShowAllProofsCompleted;
++    const poiProgressData = descriptors[state.routes[state.index].key].options.poiProgressData;
++    const onTapPOIData = descriptors[state.routes[state.index].key].options.onTapPOIData;
++    const POIModal = descriptors[state.routes[state.index].key].options.POIModal;
++    const POISuccessIcon = descriptors[state.routes[state.index].key].options.POISuccessIcon;
++
+     return (
+       <SafeAreaInsetsContext.Consumer>
+-        {(insets) =>
+-          tabBar({
+-            state: state,
+-            descriptors: descriptors,
+-            navigation: navigation,
+-            insets: {
+-              top: safeAreaInsets?.top ?? insets?.top ?? 0,
+-              right: safeAreaInsets?.right ?? insets?.right ?? 0,
+-              bottom: safeAreaInsets?.bottom ?? insets?.bottom ?? 0,
+-              left: safeAreaInsets?.left ?? insets?.left ?? 0,
+-            },
+-          })
+-        }
++        {(insets) => (
++          <>
++            <RailwayPOIProgress 
++              POIModal={POIModal}
++              onTapPOIData={onTapPOIData}
++              POISuccessIcon={POISuccessIcon}
++              poiProgressData={poiProgressData}
++              shouldShowAllProofsCompleted={shouldShowAllProofsCompleted}
++            />
++            {tabBar({
++              state: state,
++              descriptors: descriptors,
++              navigation: navigation,
++              insets: {
++                top: safeAreaInsets?.top ?? insets?.top ?? 0,
++                right: safeAreaInsets?.right ?? insets?.right ?? 0,
++                bottom: safeAreaInsets?.bottom ?? insets?.bottom ?? 0,
++                left: safeAreaInsets?.left ?? insets?.left ?? 0,
++              },
++            })}
++          </>
++        )}
+       </SafeAreaInsetsContext.Consumer>
+     );
+   };
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/views/RailwayPOIProgress.tsx b/node_modules/@react-navigation/bottom-tabs/src/views/RailwayPOIProgress.tsx
+new file mode 100644
+index 0000000..8f3eda1
+--- /dev/null
++++ b/node_modules/@react-navigation/bottom-tabs/src/views/RailwayPOIProgress.tsx
+@@ -0,0 +1,152 @@
++import * as React from 'react';
++import {
++  ActivityIndicator,
++  Animated,
++  Easing,
++  Platform,
++  StyleSheet,
++  Text,
++  TouchableOpacity,
++  View,
++} from 'react-native';
++import {
++  POIProofEventStatus,
++  POIProofEventStatusUI,
++  POIProofProgress,
++} from '../types';
++
++type Props = {
++  poiProgressData?: POIProofProgress;
++  shouldShowAllProofsCompleted?: boolean;
++  onTapPOIData?: () => void;
++  POIModal?: React.ReactNode;
++  POISuccessIcon?: React.ReactNode;
++};
++
++const IS_ANDROID = Platform.OS === 'android';
++const isDefined = (a: any) => {
++  return typeof a !== 'undefined' && a !== null;
++};
++
++const RailwayPOIProgress = ({
++  poiProgressData,
++  shouldShowAllProofsCompleted,
++  onTapPOIData,
++  POIModal,
++  POISuccessIcon,
++}: Props) => {
++  const newTrxProcessing =
++    poiProgressData?.status ===
++    POIProofEventStatusUI.NewTransactionLoading;
++  const loadingNextBatch =
++    poiProgressData?.status === POIProofEventStatus.LoadingNextBatch;
++  const inProgress = poiProgressData?.status === POIProofEventStatus.InProgress;
++  const error = poiProgressData?.errMessage;
++  const progress = poiProgressData?.progress ?? 0;
++  const totalPOIs = poiProgressData?.totalCount ?? 0;
++  const currentPOIIndex = poiProgressData?.index ?? 0;
++
++  const [animatedProgress] = React.useState(new Animated.Value(progress));
++  
++  React.useEffect(() => {
++    Animated.timing(animatedProgress, {
++      toValue: progress,
++      duration: 400,
++      easing: Easing.linear,
++      useNativeDriver: false,
++    }).start();
++  }, [animatedProgress, progress]);
++
++  const shouldShowPOIToast = () => {
++    if (shouldShowAllProofsCompleted || newTrxProcessing) {
++      return true;
++    }
++
++    if (poiProgressData) {
++      if (inProgress && poiProgressData.totalCount === 0) {
++        return false;
++      }
++      return true;
++    }
++    return false;
++  };
++
++  if (!shouldShowPOIToast()) {
++    return null;
++  }
++
++  return (
++    <View style={styles.container}>
++      <TouchableOpacity
++        style={[
++          styles.textContainer,
++          isDefined(error) && styles.textContainerError,
++        ]}
++        onPress={onTapPOIData}
++      >
++        {(loadingNextBatch || newTrxProcessing) ? (
++          <ActivityIndicator size="small" />
++        ) : shouldShowAllProofsCompleted ? (
++          POISuccessIcon
++        ) : (
++          <Text
++            style={styles.progressText}
++          >{`PPOI ${isDefined(poiProgressData?.index) ? currentPOIIndex + 1 : 0}/${totalPOIs}`}</Text>
++        )}
++      </TouchableOpacity>
++      <Animated.View
++        style={[
++          styles.progressBar,
++          {
++            width: animatedProgress.interpolate({
++              inputRange: [0, 100],
++              outputRange: ['0%', '100%'],
++            }),
++          },
++          isDefined(error) && styles.progressBarError,
++        ]}
++      />
++      {POIModal}
++    </View>
++  );
++};
++
++const styles = StyleSheet.create({
++  container: {
++    flexDirection: 'row',
++    width: '100%',
++    // borderTopWidth: 1,
++    // borderColor: '#cccccc50',
++    // backgroundColor: 'transparent',
++    position: 'relative',
++    backgroundColor: IS_ANDROID ? 'rgb(44, 44, 46)' : 'rgb(23, 23, 23)',
++    height: 5,
++    alignItems: 'center',
++  },
++  textContainer: {
++    backgroundColor: IS_ANDROID ? 'rgb(44, 44, 46)' : 'rgb(23, 23, 23)',
++    padding: 8,
++    position: 'absolute',
++    top: IS_ANDROID ? -42 : -40,
++    left: 5,
++    borderRadius: 5,
++    borderColor: '#cccccc50',
++    borderWidth: 1,
++  },
++  progressBar: {
++    height: 5,
++    backgroundColor: 'rgba(5, 158, 121, 1)',
++  },
++  progressText: {
++    color: 'white',
++    fontSize: 15,
++  },
++  progressBarError: {
++    backgroundColor: '#ff0000',
++  },
++  textContainerError: {
++    borderColor: '#ff0000',
++  },
++});
++
++export default RailwayPOIProgress;

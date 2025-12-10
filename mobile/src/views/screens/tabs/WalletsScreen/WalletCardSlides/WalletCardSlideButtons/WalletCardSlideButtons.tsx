@@ -11,7 +11,6 @@ import {
   useWalletTokenVaultsFilter,
   WalletCardSlideItem,
 } from '@react-shared';
-import { isIOS } from '@services/util/platform-os-service';
 import { styles } from './styles';
 
 type Props = {
@@ -46,10 +45,7 @@ export const WalletCardSlideButtons: React.FC<Props> = ({
 
   const activeWallet = wallets.active;
 
-  const swapsUnavailableOnPlatform = isIOS();
-  const { shouldEnableSwaps: shouldEnableDEX } = useShouldEnableSwaps(
-    swapsUnavailableOnPlatform,
-  );
+  const { shouldEnableSwaps: shouldEnableDEX } = useShouldEnableSwaps();
 
   const isMintableTestToken =
     !token || token.address === MINTABLE_TEST_TOKEN_ROPSTEN.address;

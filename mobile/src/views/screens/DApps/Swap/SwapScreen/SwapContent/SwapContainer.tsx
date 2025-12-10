@@ -139,7 +139,7 @@ export const SwapContainer: React.FC<Props> = ({
 
   const returnBackFromCompletedOrder = () => {
     navigation.dispatch(StackActions.pop(1));
-    navigation.dispatch(CommonActions.navigate('WalletsScreen'));
+    navigation.dispatch(CommonActions.navigate('Tabs'));
     setResetCount(resetCount + 1);
   };
 

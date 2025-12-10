@@ -5,7 +5,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, '13.4'
+platform :ios, '15.1'
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -25,11 +25,6 @@ target 'Railway' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'RailwayTests' do
-    inherit! :complete
-
-  end
-
   post_install do |installer|
 
     react_native_post_install(
@@ -38,5 +33,12 @@ target 'Railway' do
       :mac_catalyst_enabled => false,
 
     )
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['OTHER_CFLAGS'] ||= ['$(inherited)']
+        config.build_settings['OTHER_CFLAGS'] << '-DRCT_IMAGE_PRESERVE_COLOR_SPACE=1'
+      end
+    end
   end
 end

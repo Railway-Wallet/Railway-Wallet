@@ -65,11 +65,7 @@ export const ERC20AmountRowView: React.FC<Props> = ({
   const rightView = () => {
     return (
       <View style={styles.tokenListBalances}>
-        <Text
-          style={styles.tokenListBalance}
-          adjustsFontSizeToFit
-          numberOfLines={1}
-        >
+        <Text style={styles.tokenListBalance} numberOfLines={1}>
           {formatUnitFromHexStringToLocale(
             tokenAmount.amountString,
             tokenAmount.token.decimals,

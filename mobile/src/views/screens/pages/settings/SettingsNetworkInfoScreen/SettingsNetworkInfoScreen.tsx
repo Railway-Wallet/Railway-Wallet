@@ -51,6 +51,8 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
 
   const [networkStoredSettings, setNetworkStoredSettings] =
     useState<Optional<SettingsForNetwork>>();
+  const [alreadyAddedNewRpcUrl, setAlreadyAddedNewRpcUrl] =
+    useState<boolean>(false);
   const [errorModal, setErrorModal] =
     useState<Optional<ErrorDetailsModalProps>>(undefined);
 
@@ -65,12 +67,18 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
   }, [network.name]);
 
   useEffect(() => {
-    if (isDefined(newRpcUrl)) {
+    if (
+      isDefined(newRpcUrl) &&
+      isDefined(networkStoredSettings) &&
+      !networkStoredSettings.rpcCustomURLs.includes(newRpcUrl) &&
+      !alreadyAddedNewRpcUrl
+    ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       addRPCCustomURL(newRpcUrl);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newRpcUrl]);
+  }, [newRpcUrl, networkStoredSettings]);
 
   const addRPCCustomURL = async (rpcCustomURL: string) => {
     if (!networkStoredSettings) {
@@ -86,6 +94,7 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
       rpcCustomURLs: [...networkStoredSettings.rpcCustomURLs, rpcCustomURL],
     };
     await updateSettings(settings);
+    setAlreadyAddedNewRpcUrl(true);
     await reloadProviders();
   };
 
@@ -169,6 +178,7 @@ export const SettingsNetworkInfoScreen: React.FC<Props> = ({
       logDev('No networkStoredSettings');
       return;
     }
+
     const settings: SettingsForNetwork = {
       ...networkStoredSettings,
       rpcCustomURLs: networkStoredSettings.rpcCustomURLs.filter(

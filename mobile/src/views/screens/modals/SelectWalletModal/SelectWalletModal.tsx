@@ -59,11 +59,12 @@ export const SelectWalletModal: React.FC<Props> = ({
   const handleGoToWalletSettings = () => {
     triggerHaptic(HapticSurface.NavigationButton);
     closeModal();
-    navigation.dispatch(TabActions.jumpTo('Settings'));
     navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [{ name: 'SettingsScreen' }, { name: 'SettingsWallets' }],
+      CommonActions.navigate('Tabs', {
+        screen: 'Settings',
+        params: {
+          screen: 'SettingsWallets',
+        },
       }),
     );
   };

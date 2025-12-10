@@ -26,6 +26,21 @@ type Props = {
   feeToken: ERC20Token;
 };
 
+const getStatusTextAddOn = (
+  broadcasterConnectionStatus: BroadcasterConnectionStatus,
+) => {
+  switch (broadcasterConnectionStatus) {
+    case BroadcasterConnectionStatus.Searching:
+      return 'Please wait...';
+    case BroadcasterConnectionStatus.Error:
+    case BroadcasterConnectionStatus.Disconnected:
+    case BroadcasterConnectionStatus.AllUnavailable:
+      return 'Please refresh and try again.';
+    case BroadcasterConnectionStatus.Connected:
+      return '';
+  }
+};
+
 export const SelectBroadcasterModal: React.FC<Props> = ({
   onDismiss,
   onRandomBroadcaster,
@@ -53,28 +68,12 @@ export const SelectBroadcasterModal: React.FC<Props> = ({
   const broadcastersNotConnected =
     broadcasterConnectionStatus !== BroadcasterConnectionStatus.Connected;
 
-  const statusTextAddOn = useMemo(() => {
-    switch (broadcasterConnectionStatus) {
-      case BroadcasterConnectionStatus.Searching:
-        return 'Please wait...';
-      case BroadcasterConnectionStatus.Error:
-      case BroadcasterConnectionStatus.Disconnected:
-      case BroadcasterConnectionStatus.AllUnavailable:
-        return 'Please refresh and try again.';
-      case BroadcasterConnectionStatus.Connected:
-        return '';
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusText, broadcasterConnectionStatus]);
-
+  const statusTextAddOn = getStatusTextAddOn(broadcasterConnectionStatus);
   const sortedBroadcasters = sortBroadcasters(allBroadcasters);
 
   return (
     <>
-      <GenericModal
-        onClose={() => onDismiss()}
-        title={'Select public broadcaster'}
-      >
+      <GenericModal onClose={onDismiss} title="Select public broadcaster">
         <div className={styles.wrapper}>
           {broadcastersNotConnected && (
             <Text className={styles.placeholder}>

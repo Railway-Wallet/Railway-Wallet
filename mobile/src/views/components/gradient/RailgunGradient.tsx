@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { styleguide } from '@react-shared';
 
@@ -34,17 +34,18 @@ export const RailgunGradient: React.FC<Props> = ({
   gradient = styleguide.colors.gradients.railgun,
 }) => {
   return (
-    <LinearGradient
-      style={style}
-      colors={gradient.colors}
-      start={gradient.start}
-      end={gradient.end}
-      locations={gradient.locations}
-      useAngle={gradient.useAngle}
-      angleCenter={gradient.angleCenter}
-      angle={gradient.angle}
-    >
+    <View style={style}>
+      <LinearGradient
+        style={StyleSheet.absoluteFill}
+        colors={gradient.colors}
+        start={gradient.start}
+        end={gradient.end}
+        locations={gradient.locations}
+        useAngle={gradient.useAngle}
+        angleCenter={gradient.angleCenter}
+        angle={gradient.angle}
+      />
       {children}
-    </LinearGradient>
+    </View>
   );
 };

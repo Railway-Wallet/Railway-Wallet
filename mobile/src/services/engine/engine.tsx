@@ -190,6 +190,22 @@ export const handleMerkletreeScanUpdate = async (
     return;
   }
 
+  if (
+    isDefined(currentMerkletreeStatus) &&
+    currentMerkletreeStatus.status === MerkletreeScanStatus.Updated
+  ) {
+    const incomingTruncatedProgress = Math.trunc(progress * 100) / 100;
+    const currentTruncatedProgress =
+      Math.trunc(currentMerkletreeStatus.progress * 100) / 100;
+
+    if (
+      incomingTruncatedProgress <= currentTruncatedProgress &&
+      Math.abs(incomingTruncatedProgress - currentTruncatedProgress) < 0.01
+    ) {
+      return;
+    }
+  }
+
   dispatch(
     setMerkletreeHistoryScanStatus({
       merkletreeType,

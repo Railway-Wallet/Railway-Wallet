@@ -62,6 +62,8 @@ export const UnshieldConfirm = ({
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
   const { txidVersion } = useReduxSelector('txidVersion');
+  const { uiTabs } = useReduxSelector('uiTabs');
+  const { isNFTTabActive } = uiTabs;
 
   const dispatch = useAppDispatch();
 
@@ -322,11 +324,13 @@ export const UnshieldConfirm = ({
         broadcasterRailgunAddress,
         nonce,
       );
-      await refreshNFTsMetadataAfterShieldUnshield(
-        dispatch,
-        network.current.name,
-        nftAmountRecipients,
-      );
+      if (isNFTTabActive === true) {
+        await refreshNFTsMetadataAfterShieldUnshield(
+          dispatch,
+          network.current.name,
+          nftAmountRecipients,
+        );
+      }
 
       if (!isDefined(unshieldToOriginShieldTxid)) {
         const poiRequired = await getPOIRequiredForNetwork(

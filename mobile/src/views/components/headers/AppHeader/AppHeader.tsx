@@ -64,6 +64,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     <NativeHeader
       title={title}
       headerTitle={props => titleView({ ...props, allowFontScaling })}
+      headerTitleAlign="center"
       modal={isModal}
       headerStyle={[
         styles.headerStyle,

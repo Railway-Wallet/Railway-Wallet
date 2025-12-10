@@ -223,13 +223,17 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       detachInactiveScreens={false}
-      screenOptions={({ route }) => ({
+      screenOptions={({
+        route,
+      }: {
+        route: RouteProp<ParamListBase, string>;
+      }) => ({
         poiProgressData: poiProofProgressStatus,
         shouldShowAllProofsCompleted,
         onTapPOIData,
         POISuccessIcon,
         POIModal,
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ color, size }: { color: string; size: number }) => {
           return getTabBarIcon(color, size, route);
         },
         tabBarActiveTintColor: '#fff',
@@ -263,13 +267,11 @@ const TabNavigator = () => {
         component={WalletsNavigator}
         listeners={hapticOnTabPress}
       />
-      {isAndroid() && (
-        <Tab.Screen
-          name={NavigationTabName.dApps}
-          component={DAppsNavigator}
-          listeners={hapticOnTabPress}
-        />
-      )}
+      <Tab.Screen
+        name={NavigationTabName.dApps}
+        component={DAppsNavigator}
+        listeners={hapticOnTabPress}
+      />
       {false && (
         <Tab.Screen
           name={NavigationTabName.NFTs}

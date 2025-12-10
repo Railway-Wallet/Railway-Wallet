@@ -382,7 +382,6 @@ export const ReviewTransactionView: React.FC<Props> = ({
     updateGasEstimateProgress,
     selectedFeeToken,
     recipeOutput,
-    balanceBucketFilter
   );
 
   useEffect(() => {

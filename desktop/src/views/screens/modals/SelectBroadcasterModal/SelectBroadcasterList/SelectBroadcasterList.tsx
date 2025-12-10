@@ -62,13 +62,16 @@ export const SelectBroadcasterList: React.FC<Props> = ({
 
     if (isDefined(tokenPrices)) {
       const currentTokenPrice = tokenPrices[broadcaster.tokenAddress];
+
       if (isDefined(currentTokenPrice)) {
         const baseTokenPrice =
           tokenPrices[network.current.baseToken.wrappedAddress];
+
         if (isDefined(baseTokenPrice)) {
           const feeTokenRatio =
             (currentTokenPrice * parseFloat(formattedParsedFee)) /
             baseTokenPrice;
+
           if (feeTokenRatio < 0.6 || feeTokenRatio > 2.1) {
             return undefined;
           }

@@ -11,9 +11,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+    position: 'absolute',
   },
   pageWrapper: {
     flex: 1,
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     paddingTop: useSmall ? 60 : 180,
     backgroundColor: styleguide.colors.screenBackground + ALPHA_HEX,

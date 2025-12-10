@@ -59,6 +59,8 @@ export const ShieldConfirm = ({
   const { wallets } = useReduxSelector('wallets');
   const { txidVersion } = useReduxSelector('txidVersion');
   const { merkletreeHistoryScan } = useReduxSelector('merkletreeHistoryScan');
+  const { uiTabs } = useReduxSelector('uiTabs');
+  const { isNFTTabActive } = uiTabs;
 
   const [alert, setAlert] = useState<AlertProps | undefined>(undefined);
 
@@ -182,11 +184,13 @@ export const ShieldConfirm = ({
         isBaseTokenShield,
         txResponse.nonce,
       );
-      await refreshNFTsMetadataAfterShieldUnshield(
-        dispatch,
-        network.current.name,
-        nftAmountRecipients,
-      );
+      if (isNFTTabActive === true) {
+        await refreshNFTsMetadataAfterShieldUnshield(
+          dispatch,
+          network.current.name,
+          nftAmountRecipients,
+        );
+      }
       success();
       return txResponse.hash;
     } catch (cause) {

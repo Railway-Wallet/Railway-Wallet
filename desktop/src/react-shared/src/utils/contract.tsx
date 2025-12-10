@@ -9,7 +9,10 @@ export const isSmartContract = async (
   try {
     const provider = await ProviderService.getProvider(networkName);
     const code = await provider.getCode(address);
-    return isDefined(code) && code !== '' && code !== '0x';
+    if (!isDefined(code) || code === '') return false;
+    const withoutPrefix = code.startsWith('0x') ? code.slice(2) : code;
+    const nonZero = withoutPrefix.replace(/0/g, '');
+    return nonZero.length > 0;
   } catch (e) {
     return false;
   }

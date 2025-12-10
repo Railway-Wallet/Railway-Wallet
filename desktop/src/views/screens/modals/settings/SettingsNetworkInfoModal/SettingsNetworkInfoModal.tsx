@@ -145,6 +145,8 @@ export const SettingsNetworkInfoModal = ({
           type: ToastType.Info,
         }),
       );
+      await ProviderLoader.unloadEngineProvider(selectedNetwork.name);
+      await ProviderService.destroy(selectedNetwork.name);
 
       await ProviderService.loadFrontendProviderForNetwork(
         selectedNetwork.name,

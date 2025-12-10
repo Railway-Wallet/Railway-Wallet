@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { RecoveryType } from '@models/RecoveryType';
+import { SafeAreaProviderCompat } from '@react-navigation/elements';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { AppStatus, styleguide } from '@react-shared';
 import { SecurityModal } from '@screens/modals/SecurityModal/SecurityModal';
@@ -46,35 +47,37 @@ export const AppView: React.FC<Props> = ({
   };
 
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={{
-        ...DefaultTheme,
-        colors: {
-          ...DefaultTheme.colors,
-          background: styleguide.colors.black,
-        },
-      }}
-    >
-      <SecurityModal show={showInactiveSecurityLockScreen} />
-      {appStatus === AppStatus.Loading && <View style={styles.appWrapper} />}
-      {isErrorStatus() && (
-        <AppErrorScreen
-          retry={runInit}
-          appStatus={appStatus}
-          error={error}
-          setRecoveryMode={setRecoveryMode}
-        />
-      )}
-      {appStatus === AppStatus.Ready && (
-        <AppReadyView needsLockScreenOnLaunch={needsLockScreenOnLaunch} />
-      )}
-      {appStatus === AppStatus.Recovery && recoveryType && (
-        <AppRecoveryView
-          resetRecoveryMode={resetRecoveryMode}
-          recoveryType={recoveryType}
-        />
-      )}
-    </NavigationContainer>
+    <SafeAreaProviderCompat>
+      <NavigationContainer
+        ref={navigationRef}
+        theme={{
+          ...DefaultTheme,
+          colors: {
+            ...DefaultTheme.colors,
+            background: styleguide.colors.black,
+          },
+        }}
+      >
+        <SecurityModal show={showInactiveSecurityLockScreen} />
+        {appStatus === AppStatus.Loading && <View style={styles.appWrapper} />}
+        {isErrorStatus() && (
+          <AppErrorScreen
+            retry={runInit}
+            appStatus={appStatus}
+            error={error}
+            setRecoveryMode={setRecoveryMode}
+          />
+        )}
+        {appStatus === AppStatus.Ready && (
+          <AppReadyView needsLockScreenOnLaunch={needsLockScreenOnLaunch} />
+        )}
+        {appStatus === AppStatus.Recovery && recoveryType && (
+          <AppRecoveryView
+            resetRecoveryMode={resetRecoveryMode}
+            recoveryType={recoveryType}
+          />
+        )}
+      </NavigationContainer>
+    </SafeAreaProviderCompat>
   );
 };

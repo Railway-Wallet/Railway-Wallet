@@ -157,7 +157,7 @@ export const fetchBeefyVaults = async (
   const beefyVaultData = await BeefyAPI.getFilteredBeefyVaults(
     networkName,
     skipCache,
-    false,
+    true,
   );
   return beefyVaultData.map(beefyVaultToFrontendVault);
 };
