@@ -1,6 +1,6 @@
 {
   "name": "railway-reactjs",
-  "version": "5.23.7",
+  "version": "5.24.4",
   "private": true,
   "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
   "license": "AGPL-3.0-only",
@@ -127,8 +127,8 @@
     "craco-alias": "^3.0.1",
     "crypto-browserify": "^3.12.0",
     "cypress": "12.12.0",
-    "electron": "24.3.0",
-    "electron-builder": "^23.6.0",
+    "electron": "28.3.3",
+    "electron-builder": "^24.13.3",
     "esbuild-loader": "^3.0.1",
     "eslint": "8.40.0",
     "eslint-config-prettier": "^8.5.0",
