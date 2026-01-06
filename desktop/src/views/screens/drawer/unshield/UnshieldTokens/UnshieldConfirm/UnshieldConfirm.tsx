@@ -20,10 +20,13 @@ import {
   ERC20Amount,
   ERC20AmountRecipient,
   executeWithoutBroadcaster,
- getBroadcasterFilterPeerCount , getBroadcasterLightPushPeerCount ,   getBroadcasterMeshPeerCount,
-getBroadcasterPubSubPeerCount,    getOverallBatchMinGasPrice,
+  getBroadcasterFilterPeerCount,
+  getBroadcasterLightPushPeerCount,
+  getBroadcasterMeshPeerCount,
+  getBroadcasterPubSubPeerCount,
+  getOverallBatchMinGasPrice,
   getPOIRequiredForNetwork,
-hasBlockedAddress,
+  hasBlockedAddress,
   logDev,
   PerformGenerateProofType,
   POIProofEventStatusUI,
@@ -33,7 +36,8 @@ hasBlockedAddress,
   UnauthenticatedWalletService,
   updatePOIProofProgressStatus,
   useAppDispatch,
-  useReduxSelector } from '@react-shared';
+  useReduxSelector,
+} from '@react-shared';
 import { ReviewTransactionView } from '@screens/drawer/review-transaction/ReviewTransactionView';
 import { drawerEventsBus } from '@services/navigation/drawer-events';
 import { WalletSecureStorageWeb } from '@services/wallet/wallet-secure-service-web';
@@ -183,7 +187,9 @@ export const UnshieldConfirm = ({
   ): Promise<Optional<string>> => {
     if (!isDefined(unshieldToOriginShieldTxid)) {
       if (!selectedBroadcaster && !publicWalletOverride) {
-        error(new Error('No public broadcaster or self broadcast wallet selected.'));
+        error(
+          new Error('No public broadcaster or self broadcast wallet selected.'),
+        );
         return;
       }
       if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
@@ -302,7 +308,9 @@ export const UnshieldConfirm = ({
           isBaseTokenUnshield, populateResponse.preTransactionPOIsPerTxidLeafPerList,
         );
       } else {
-        throw new Error('Must send with public broadcaster or self broadcast wallet');
+        throw new Error(
+          'Must send with public broadcaster or self broadcast wallet',
+        );
       }
 
       const transactionService = new SavedTransactionService(dispatch);
@@ -372,17 +380,7 @@ export const UnshieldConfirm = ({
     sendWithPublicWallet: boolean,
   ) => {
     if (isBaseTokenUnshield) {
-      return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldBaseToken(
-        txidVersion,
-        networkName,
-        railWalletID,
-        memoText,
-        erc20AmountRecipients,
-        nftAmountRecipients,
-        originalGasDetails,
-        feeTokenDetails,
-        sendWithPublicWallet,
-      );
+      return Promise.resolve(5_000_000n);
     }
     if (isDefined(unshieldToOriginShieldTxid)) {
       return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldToOrigin(

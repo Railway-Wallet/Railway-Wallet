@@ -224,6 +224,8 @@ export const SwapPrivateConfirm = ({
     ? 'Swap'
     : 'Swap and transfer';
 
+  lockedRecipeOutput.minGasLimit = 5_000_000n;
+
   return (
     <>
       <CrossContractReviewTransactionView

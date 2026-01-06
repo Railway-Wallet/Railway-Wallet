@@ -58,7 +58,9 @@ bridgeRegisterCall<BroadcasterStartParams, BroadcasterActionData>(
     peerDiscoveryTimeout,
     poiActiveListKeys,
   }) => {
+    const trustedFeeSigner = '';
     const broadcasterOptions: BroadcasterOptions = {
+      trustedFeeSigner,
       pubSubTopic,
       additionalDirectPeers,
       peerDiscoveryTimeout,

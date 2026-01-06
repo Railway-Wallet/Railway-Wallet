@@ -242,6 +242,8 @@ export const RemoveLiquidityConfirm = ({
   const infoCalloutText = `Removing liquidity from ${liquidityPool.name} and redeeming ${liquidityPool.pairTokenSymbol} tokens.`;
   const processingText = `Removing liquidity from ${liquidityPool.name}...`;
 
+  recipeOutput.minGasLimit = 5_000_000n;
+
   return (
     <CrossContractReviewTransactionView
       goBack={goBack}

@@ -18,7 +18,6 @@ import { AvailableWallet, FrontendWallet } from '../../models/wallet';
 import { updateERC20BalancesNetwork } from '../../redux-store/reducers/erc20-balance-reducer-network';
 import { enqueueAsyncToast } from '../../redux-store/reducers/toast-reducer';
 import { AppDispatch, store } from '../../redux-store/store';
-import { MerkletreeType } from '../../redux-store/reducers/merkletree-history-scan-reducer';
 import { padAddressForTopicFilter } from '../../utils/address';
 import { getNFTAmountDisplayName } from '../../utils/nft';
 import {
@@ -140,24 +139,6 @@ const setUpTransferWatcher = async (
   wallet: AvailableWallet,
   network: Network,
 ) => {
-  const scanState =
-    store.getState().merkletreeHistoryScan.forNetwork[network.name]?.forType[
-      MerkletreeType.UTXO
-    ];
-  const progress = scanState?.progress ?? 0;
-  if (progress < 0.9) {
-    logDev(
-      `Delaying transfer watcher start until UTXO scan >= 0.90 (current ${progress.toFixed(
-        2,
-      )})`,
-    );
-    setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      setUpTransferWatcher(dispatch, wallet, network);
-    }, 15_000);
-    return;
-  }
-
   const addedTokens = wallet.addedTokens[network.name] ?? [];
   const erc20Addresses = Array.from(
     new Set(

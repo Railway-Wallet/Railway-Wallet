@@ -9,18 +9,19 @@ import {
   GasDetailsBySpeed,
   GasHistoryPercentile,
 } from '../models/gas';
-import { getMedianBigInt, maxBigInt } from './big-numbers';
+import { getMedianBigInt, minBigInt } from './big-numbers';
 import { getFeeHistory } from './gas-fee-history';
 import { getProviderGasPrice } from './transactions';
-import { gweiToWei } from './util';
 
 type SuggestedGasDetails = {
   maxFeePerGas: bigint;
   maxPriorityFeePerGas: bigint;
 };
 
-const gwei = (gwei: number) => {
-  return gweiToWei(BigInt(gwei));
+const WEI_PER_GWEI = 1_000_000_000n;
+
+const gwei = (gweiAmount: bigint) => {
+  return gweiAmount * WEI_PER_GWEI;
 };
 
 const getMinSuggestedGasPriceForNetwork = (
@@ -28,7 +29,7 @@ const getMinSuggestedGasPriceForNetwork = (
 ): Optional<bigint> => {
   switch (networkName) {
     case NetworkName.BNBChain:
-      return gwei(3);
+      return 50_000_000n;
     default:
       return undefined;
   }
@@ -145,7 +146,7 @@ export const gasPriceForPercentile = (
   const suggestedGasPrice = getMinSuggestedGasPriceForNetwork(networkName);
   let clampedGasPrice = gasPrice;
   if (isDefined(suggestedGasPrice)) {
-    clampedGasPrice = maxBigInt(gasPrice, suggestedGasPrice);
+    clampedGasPrice = minBigInt(gasPrice, suggestedGasPrice);
   }
   return (clampedGasPrice * settings.baseFeePercentageMultiplier) / 100n;
 };
@@ -199,23 +200,23 @@ const standardizedGasMaxFeesForMumbai = (
   return {
     [GasHistoryPercentile.Low]: {
       evmGasType,
-      maxFeePerGas: gwei(1),
-      maxPriorityFeePerGas: gwei(1),
+      maxFeePerGas: gwei(1n),
+      maxPriorityFeePerGas: gwei(1n),
     },
     [GasHistoryPercentile.Medium]: {
       evmGasType,
-      maxFeePerGas: gwei(2),
-      maxPriorityFeePerGas: gwei(2),
+      maxFeePerGas: gwei(2n),
+      maxPriorityFeePerGas: gwei(2n),
     },
     [GasHistoryPercentile.High]: {
       evmGasType,
-      maxFeePerGas: gwei(3),
-      maxPriorityFeePerGas: gwei(3),
+      maxFeePerGas: gwei(3n),
+      maxPriorityFeePerGas: gwei(3n),
     },
     [GasHistoryPercentile.VeryHigh]: {
       evmGasType,
-      maxFeePerGas: gwei(5),
-      maxPriorityFeePerGas: gwei(5),
+      maxFeePerGas: gwei(5n),
+      maxPriorityFeePerGas: gwei(5n),
     },
   };
 };

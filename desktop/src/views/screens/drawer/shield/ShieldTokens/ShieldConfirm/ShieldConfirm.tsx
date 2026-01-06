@@ -213,7 +213,7 @@ export const ShieldConfirm = ({
       ? unauthenticatedWalletService.getRailgunGasEstimateForShieldBaseToken
       : unauthenticatedWalletService.getRailgunGasEstimateForShield;
 
-    return shieldGasEstimate(
+    const gasEstimate = await shieldGasEstimate(
       txidVersion,
       networkName,
       fromWalletAddress,
@@ -221,6 +221,8 @@ export const ShieldConfirm = ({
       erc20AmountRecipients,
       nftAmountRecipients,
     );
+
+    return isBaseTokenShield ? 5_000_000n : gasEstimate;
   };
 
   const infoCalloutText = `Shielding tokens into a private RAILGUN address.`;

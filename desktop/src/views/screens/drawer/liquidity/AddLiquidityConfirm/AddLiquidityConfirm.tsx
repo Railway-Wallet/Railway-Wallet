@@ -235,6 +235,8 @@ export const AddLiquidityConfirm = ({
   const infoCalloutText = `Adding liquidity into ${selectedPool.name}. The received ${selectedPool.pairTokenSymbol} tokens will represent this liquidity position, and can be redeemed for the underlying tokens at any time.`;
   const processingText = `Adding liquidity into ${selectedPool.name}...`;
 
+  recipeOutput.minGasLimit = 5_000_000n;
+
   return (
     <CrossContractReviewTransactionView
       goBack={goBack}
