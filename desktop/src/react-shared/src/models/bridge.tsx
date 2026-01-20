@@ -532,6 +532,7 @@ export type BroadcasterStartParams = {
   additionalDirectPeers: Optional<string[]>;
   peerDiscoveryTimeout: Optional<number>;
   poiActiveListKeys: string[];
+  trustedFeeSigner: string | string[];
 };
 
 export type BroadcasterSetAddressFiltersParams = {

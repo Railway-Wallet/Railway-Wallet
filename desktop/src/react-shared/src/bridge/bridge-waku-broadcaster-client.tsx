@@ -27,6 +27,7 @@ export const startWakuBroadcasterClient = async (
   additionalDirectPeers: Optional<string[]>,
   peerDiscoveryTimeout: Optional<number>,
   poiActiveListKeys: string[],
+  trustedFeeSigner: string | string[],
 ): Promise<void> => {
   await bridgeCall<BroadcasterStartParams, BroadcasterActionData>(
     BridgeCallEvent.BroadcasterStart,
@@ -36,6 +37,7 @@ export const startWakuBroadcasterClient = async (
       additionalDirectPeers,
       peerDiscoveryTimeout,
       poiActiveListKeys,
+      trustedFeeSigner,
     },
   );
 };

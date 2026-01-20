@@ -32,8 +32,12 @@ export class AppStartService {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     networkService.loadProviderForNetwork(network);
 
-    const { wakuPubSubTopic, additionalDirectPeers, wakuPeerDiscoveryTimeout } =
-      remoteConfig;
+    const {
+      wakuPubSubTopic,
+      additionalDirectPeers,
+      wakuPeerDiscoveryTimeout,
+      trustedFeeSigner,
+    } = remoteConfig;
 
     const poiActiveListKeys = POI_REQUIRED_LISTS.map(list => list.key);
 
@@ -45,6 +49,7 @@ export class AppStartService {
       additionalDirectPeers,
       wakuPeerDiscoveryTimeout,
       poiActiveListKeys,
+      trustedFeeSigner,
     );
 
     const blockedBroadcasterService = new BlockedBroadcasterService(

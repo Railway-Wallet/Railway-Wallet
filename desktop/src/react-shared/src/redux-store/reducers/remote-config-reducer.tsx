@@ -12,6 +12,7 @@ export type RemoteConfig = {
   minVersionNumberIOS: string;
   minVersionNumberAndroid: string;
   minVersionNumberWeb: string;
+  trustedFeeSigner: string | string[];
   'bootstrapPeers-': string[];
   wakuPubSubTopic: string;
   additionalDirectPeers: Optional<string[]>;

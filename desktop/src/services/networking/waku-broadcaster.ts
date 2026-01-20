@@ -18,6 +18,7 @@ export class WakuBroadcaster {
     additionalDirectPeers: Optional<string[]>,
     peerDiscoveryTimeout: Optional<number>,
     poiActiveListKeys: string[],
+    trustedFeeSigner: string | string[],
   ) {
     bridgeListen(
       BridgeEvent.OnBroadcasterStatusCallback,
@@ -42,6 +43,7 @@ export class WakuBroadcaster {
         additionalDirectPeers,
         peerDiscoveryTimeout,
         poiActiveListKeys,
+        trustedFeeSigner,
       );
     } catch (err) {
       dispatch(
