@@ -140,6 +140,7 @@ export const useNetworkFeeGasEstimator = (
               }
               break;
             case EVMGasType.Type2:
+            case EVMGasType.Type4:
               if (
                 isDefined(customGasTransactionDetails?.maxFeePerGas) &&
                 isDefined(customGasTransactionDetails?.maxPriorityFeePerGas)

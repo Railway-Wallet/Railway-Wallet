@@ -1,6 +1,7 @@
 import {
   isDefined,
   TransactionGasDetailsType2,
+  type TransactionGasDetailsType4,
 } from '@railgun-community/shared-models';
 import { useState } from 'react';
 import { Button } from '@components/Button/Button';
@@ -21,7 +22,7 @@ interface CustomNetworkFeeType2ModalProps {
     customMaxFeePerGas?: bigint,
     customMaxPriorityFeePerGas?: bigint,
   ) => void;
-  defaultGasDetails: TransactionGasDetailsType2;
+  defaultGasDetails: TransactionGasDetailsType2 | TransactionGasDetailsType4;
 }
 
 export const CustomNetworkFeeType2Modal = ({

@@ -35,6 +35,11 @@ function createWindow() {
     darkTheme: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      sandbox: true,
+      contextIsolation: true,
+      nodeIntegration: false,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
     },
     icon: path.join(__dirname, '../public/icon.ico'),
     title: 'Railway: Private DeFi Wallet',
@@ -53,11 +58,29 @@ function createWindow() {
     const { responseHeaders } = details;
     UpsertKeyValue(responseHeaders, 'Access-Control-Allow-Origin', ['*']);
     UpsertKeyValue(responseHeaders, 'Access-Control-Allow-Headers', ['*']);
+    UpsertKeyValue(responseHeaders, 'Content-Security-Policy', [
+      "default-src 'self';" +
+      " script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval';" +
+      " style-src 'self' 'unsafe-inline';" +
+      " connect-src *;" +
+      " img-src 'self' data: https:;" +
+      " font-src 'self' data:",
+    ]);
     cb({ responseHeaders });
   });
 
   win.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url);
+    try {
+      const parsedUrl = new URL(url);
+      if (
+        parsedUrl.protocol === 'http:' ||
+        parsedUrl.protocol === 'https:'
+      ) {
+        shell.openExternal(url);
+      }
+    } catch {
+      // Invalid URL, do not open
+    }
     return { action: 'deny' };
   });
 

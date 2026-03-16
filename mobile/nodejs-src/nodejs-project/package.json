@@ -4,6 +4,9 @@
   "private": true,
   "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
   "license": "AGPL-3.0-only",
+  "resolutions": {
+    "form-data": ">=2.5.4"
+  },
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn clean && yarn lint && yarn tsc",
@@ -21,12 +24,12 @@
     "@ethersproject/shims": "^5.7.0",
     "@railgun-community/curve25519-scalarmult-rsjs": "0.2.4",
     "@railgun-community/poseidon-hash-rsjs": "1.0.1",
-    "@railgun-community/shared-models": "^8.0.0",
-    "@railgun-community/waku-broadcaster-client-node": "^8.4.0",
-    "@railgun-community/wallet": "10.8.0",
+    "@railgun-community/shared-models": "^8.0.1",
+    "@railgun-community/waku-broadcaster-client-node": "^9.0.6",
+    "@railgun-community/wallet": "10.8.4",
     "@railgun-privacy/native-prover": "https://ipfs-lb.com/ipfs/QmZL6Njoxfh42u1MMjMSsDd6uWeqTKepf1WRLELM8DCSLy/railgun-privacy-native-prover-4.0.3.tgz",
     "bindings-noderify-nodejs-mobile": "^10.5.0",
-    "ethers": "6.13.1",
+    "ethers": "6.14.3",
     "leveldown-nodejs-mobile": "6.0.1-1",
     "no-op": "1.0.3",
     "nodejs-mobile-ipc2": "1.1.0",

@@ -27,7 +27,7 @@ export type GasDetails =
       gasPrice: bigint;
     }
   | {
-      evmGasType: EVMGasType.Type2;
+      evmGasType: EVMGasType.Type2 | EVMGasType.Type4;
       maxFeePerGas: bigint;
       maxPriorityFeePerGas: bigint;
     };

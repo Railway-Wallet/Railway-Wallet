@@ -158,7 +158,8 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
         }
         break;
       }
-      case EVMGasType.Type2: {
+      case EVMGasType.Type2:
+      case EVMGasType.Type4: {
         if (
           isDefined(customMaxFeePerGas) &&
           isDefined(customMaxPriorityFeePerGas)
@@ -200,7 +201,8 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
           }
           break;
         }
-        case EVMGasType.Type2: {
+        case EVMGasType.Type2:
+        case EVMGasType.Type4: {
           if (
             isDefined(customMaxFeePerGas) &&
             isDefined(customMaxPriorityFeePerGas)
@@ -229,12 +231,14 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
           />
         );
       case EVMGasType.Type2:
+      case EVMGasType.Type4: {
         return (
           <CustomNetworkFeeType2Modal
             onDismiss={onDismissCustomFeeType2Modal}
             defaultGasDetails={defaultGasDetails}
           />
         );
+      }
     }
   };
 

@@ -27,9 +27,9 @@
     "@0x/contract-addresses": "8.7.0",
     "@ethersproject/shims": "^5.7.0",
     "@expo/react-native-action-sheet": "4.1.1",
-    "@railgun-community/cookbook": "^2.12.0",
-    "@railgun-community/shared-models": "^8.0.0",
-    "@railgun-community/wallet": "10.8.0",
+    "@railgun-community/cookbook": "^2.12.2",
+    "@railgun-community/shared-models": "^8.0.1",
+    "@railgun-community/wallet": "10.8.4",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-clipboard/clipboard": "^1.16.0",
     "@react-native-community/blur": "4.4.1",
@@ -53,7 +53,7 @@
     "dns.js": "^1.0.1",
     "domain-browser": "^4.22.0",
     "eslint-plugin-jest": "^27.2.1",
-    "ethers": "6.13.1",
+    "ethers": "6.14.3",
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
     "node-libs-react-native": "^1.2.1",
@@ -196,7 +196,8 @@
     "FaceID"
   ],
   "resolutions": {
-    "wrap-ansi": "^6.2.0"
+    "wrap-ansi": "^6.2.0",
+    "form-data": ">=2.5.4"
   },
   "engines": {
     "node": ">=18"

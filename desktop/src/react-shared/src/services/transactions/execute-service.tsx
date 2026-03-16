@@ -34,7 +34,8 @@ const setTransactionOptions = (
         transaction.gasPrice = gasDetails.gasPrice;
         break;
       }
-      case EVMGasType.Type2: {
+      case EVMGasType.Type2: 
+      case EVMGasType.Type4: {
         transaction.maxFeePerGas = gasDetails.maxFeePerGas;
         transaction.maxPriorityFeePerGas = gasDetails.maxPriorityFeePerGas;
         break;

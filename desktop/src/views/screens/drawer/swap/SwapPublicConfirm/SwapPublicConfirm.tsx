@@ -152,7 +152,8 @@ export const SwapPublicConfirm = ({
             transactionWithGas.gasPrice = transactionGasDetails.gasPrice;
             break;
           }
-          case EVMGasType.Type2: {
+          case EVMGasType.Type2: 
+          case EVMGasType.Type4: {
             transactionWithGas.maxFeePerGas =
               transactionGasDetails.maxFeePerGas;
             transactionWithGas.maxPriorityFeePerGas =

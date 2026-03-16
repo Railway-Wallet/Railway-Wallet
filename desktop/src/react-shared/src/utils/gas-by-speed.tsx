@@ -195,7 +195,7 @@ const estimateGasPricesBySpeedUsingHeuristic = async (
 };
 
 const standardizedGasMaxFeesForMumbai = (
-  evmGasType: EVMGasType.Type2,
+  evmGasType: EVMGasType.Type2 | EVMGasType.Type4,
 ): GasDetailsBySpeed => {
   return {
     [GasHistoryPercentile.Low]: {
@@ -222,7 +222,7 @@ const standardizedGasMaxFeesForMumbai = (
 };
 
 const estimateGasMaxFeesBySpeedUsingHeuristic = async (
-  evmGasType: EVMGasType.Type2,
+  evmGasType: EVMGasType.Type2 | EVMGasType.Type4,
   networkName: NetworkName,
 ): Promise<GasDetailsBySpeed> => {
   if (networkName === NetworkName.PolygonMumbai_DEPRECATED) {
@@ -339,7 +339,8 @@ export const getGasDetailsBySpeed = async (
     case EVMGasType.Type1: {
       return estimateGasPricesBySpeedUsingHeuristic(evmGasType, networkName);
     }
-    case EVMGasType.Type2: {
+    case EVMGasType.Type2:
+    case EVMGasType.Type4: {
       return estimateGasMaxFeesBySpeedUsingHeuristic(evmGasType, networkName);
     }
   }
@@ -384,7 +385,8 @@ export const extractGasValue = (gasDetails: GasDetails): bigint => {
     case EVMGasType.Type1: {
       return gasDetails.gasPrice;
     }
-    case EVMGasType.Type2: {
+    case EVMGasType.Type2:
+    case EVMGasType.Type4: {
       return gasDetails.maxFeePerGas;
     }
   }
