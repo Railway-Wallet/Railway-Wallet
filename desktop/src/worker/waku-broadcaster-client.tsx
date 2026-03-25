@@ -29,6 +29,26 @@ import { BroadcasterFindRandomBroadcasterForTokenParams } from '../react-shared/
 import { sendWakuError, sendWakuMessage } from './loggers';
 import { bridgeRegisterCall, triggerBridgeEvent } from './worker-ipc-service';
 
+/**
+ * Dials additional direct peers.
+ */
+const dialDirectPeers = async (
+  peerMultiaddrs: string[],
+): Promise<void> => {
+  const waku = WakuBroadcasterClient.getWakuCore();
+  if (!waku || peerMultiaddrs.length === 0) {
+    return;
+  }
+  for (const ma of peerMultiaddrs) {
+    try {
+      await waku.dial(ma);
+      sendWakuMessage(`Connected to direct peer: ${ma}`);
+    } catch (err) {
+      sendWakuError(err instanceof Error ? err : new Error(String(err)));
+    }
+  }
+};
+
 const onBroadcasterStatusCallback = (data: BroadcasterStatusCallbackData) => {
   triggerBridgeEvent(BridgeEvent.OnBroadcasterStatusCallback, data);
 };
@@ -62,7 +82,7 @@ bridgeRegisterCall<BroadcasterStartParams, BroadcasterActionData>(
     const broadcasterOptions: BroadcasterOptions = {
       trustedFeeSigner,
       pubSubTopic,
-      additionalDirectPeers,
+      additionalDirectPeers: [],
       peerDiscoveryTimeout,
       poiActiveListKeys,
     };
@@ -72,6 +92,10 @@ bridgeRegisterCall<BroadcasterStartParams, BroadcasterActionData>(
       statusCallback,
       broadcasterDebugger,
     );
+
+    // Dial the direct peers on top of the already-discovered fleet peers.
+    void dialDirectPeers(additionalDirectPeers ?? []);
+
     return {};
   },
 );
