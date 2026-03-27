@@ -30,15 +30,33 @@ import { sendWakuError, sendWakuMessage } from './loggers';
 import { bridgeRegisterCall, triggerBridgeEvent } from './worker-ipc-service';
 
 /**
- * Dials additional direct peers.
+ * Polls for the Waku core to become available, then dials additional direct
+ * peers. Designed to run concurrently with WakuBroadcasterClient.start() so
+ * that the dialed peers can satisfy waitForPeers if fleet bootstrap fails.
  */
-const dialDirectPeers = async (
+const waitForWakuAndDialPeers = async (
   peerMultiaddrs: string[],
 ): Promise<void> => {
-  const waku = WakuBroadcasterClient.getWakuCore();
-  if (!waku || peerMultiaddrs.length === 0) {
+  if (peerMultiaddrs.length === 0) {
     return;
   }
+
+  const POLL_INTERVAL_MS = 500;
+  const MAX_ATTEMPTS = 240; // 2 minutes max polling
+
+  let waku = WakuBroadcasterClient.getWakuCore();
+  let attempts = 0;
+  while (!waku && attempts < MAX_ATTEMPTS) {
+    await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+    waku = WakuBroadcasterClient.getWakuCore();
+    attempts += 1;
+  }
+
+  if (!waku) {
+    sendWakuError(new Error('Timed out waiting for Waku core to dial direct peers'));
+    return;
+  }
+
   for (const ma of peerMultiaddrs) {
     try {
       await waku.dial(ma);
@@ -86,6 +104,11 @@ bridgeRegisterCall<BroadcasterStartParams, BroadcasterActionData>(
       peerDiscoveryTimeout,
       poiActiveListKeys,
     };
+    // Start dialing direct peers concurrently. The helper polls for the
+    // Waku core (set before waitForPeers blocks), so the dialed peers can
+    // satisfy peer requirements even if fleet bootstrap fails.
+    const dialPromise = waitForWakuAndDialPeers(additionalDirectPeers ?? []);
+
     await WakuBroadcasterClient.start(
       chain,
       broadcasterOptions,
@@ -93,8 +116,8 @@ bridgeRegisterCall<BroadcasterStartParams, BroadcasterActionData>(
       broadcasterDebugger,
     );
 
-    // Dial the direct peers on top of the already-discovered fleet peers.
-    void dialDirectPeers(additionalDirectPeers ?? []);
+    // Ensure any remaining dial attempts complete after start succeeds.
+    await dialPromise.catch(() => {});
 
     return {};
   },
