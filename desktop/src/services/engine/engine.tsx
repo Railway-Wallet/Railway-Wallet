@@ -220,18 +220,19 @@ const handleMerkletreeScanUpdate = debounce(async (
 
   const progressRounded = progress.toFixed(2);
   const currentProgress = merkletreeStatus?.progress ?? 0;
-  const progressDiff = Math.abs(parseFloat(progressRounded) - currentProgress);
-
+  const incomingProgress = parseFloat(progressRounded);
+  const progressDiff = Math.abs(incomingProgress - currentProgress);
 
   logDev(
     `Scan status for ${merkletreeType} merkletree: ${scanStatus}, progress ${progressRounded}. Chain: ${chain.id}`,
   );
   if (
-    (progressDiff - currentProgress) < Constants.MIN_PROGRESS_UPDATE
+    incomingProgress <= currentProgress &&
+    progressDiff < Constants.MIN_PROGRESS_UPDATE
   ) {
     return;
   }
-  
+
 
   if (scanStatus === MerkletreeScanStatus.Updated) {
     dispatch(
