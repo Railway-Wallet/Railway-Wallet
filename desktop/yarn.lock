@@ -5004,9 +5004,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/waku-broadcaster-client-web@npm:^9.0.6":
-  version: 9.0.6
-  resolution: "@railgun-community/waku-broadcaster-client-web@npm:9.0.6"
+"@railgun-community/waku-broadcaster-client-web@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "@railgun-community/waku-broadcaster-client-web@npm:9.1.0"
   dependencies:
     "@waku/discovery": "npm:^0.0.13"
     "@waku/sdk": "npm:^0.0.36"
@@ -5014,7 +5014,7 @@ __metadata:
   peerDependencies:
     "@railgun-community/shared-models": ^8.0.1
     "@railgun-community/wallet": ^10.8.4
-  checksum: 10/0235806a972399e5fb5bb65f82ccd3f39d3bb5ba35f6397a37e613ae522f8725c3f67232f1861dadcdfc0e4eb52bac687befb600d3a9b6c9cb3d79451c91283d
+  checksum: 10/299858ac4f3abf6552d94eb1560af4fe80ade46964d9b398889abe0ba2da8d324978233fd9e1d97b9ef73d1ebe108271b55b7979946a8c3776c2f9aec1dad93d
   languageName: node
   linkType: hard
 
@@ -20179,7 +20179,7 @@ __metadata:
     "@multiformats/multiaddr": "npm:12.1.3"
     "@railgun-community/cookbook": "npm:^2.12.2"
     "@railgun-community/shared-models": "npm:^8.0.1"
-    "@railgun-community/waku-broadcaster-client-web": "npm:^9.0.6"
+    "@railgun-community/waku-broadcaster-client-web": "npm:^9.1.0"
     "@railgun-community/wallet": "npm:10.8.4"
     "@railway-developer/actionsheet-react": "github:railway-developer/actionsheet-react"
     "@reduxjs/toolkit": "npm:1.9.5"
