@@ -4954,9 +4954,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/engine@npm:9.5.3":
-  version: 9.5.3
-  resolution: "@railgun-community/engine@npm:9.5.3"
+"@railgun-community/engine@npm:9.5.4":
+  version: 9.5.4
+  resolution: "@railgun-community/engine@npm:9.5.4"
   dependencies:
     "@noble/ciphers": "npm:^0.4.0"
     "@noble/ed25519": "npm:^1.7.1"
@@ -4975,7 +4975,7 @@ __metadata:
     fast-text-encoding: "npm:^1.0.6"
     levelup: "npm:^5.1.1"
     msgpack-lite: "npm:^0.1.26"
-  checksum: 10/6641395d43600dbe1eb13783f7f416d157e6f7028e12299198f1ae97a9cb31e413f9e5cfc03d503eb132f656a8cc4ae2890fbc81f3a4f7f7ce643ed42348d033
+  checksum: 10/feed47120c02d638258f6255ba680e92fa99aa88da895748507c2bf96c1318caba5ab2d840c8d1e664227780134fb7072c68dceb81400dc450a81e9f09f55fb8
   languageName: node
   linkType: hard
 
@@ -5018,9 +5018,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@railgun-community/wallet@npm:10.8.4":
-  version: 10.8.4
-  resolution: "@railgun-community/wallet@npm:10.8.4"
+"@railgun-community/wallet@npm:10.8.6":
+  version: 10.8.6
+  resolution: "@railgun-community/wallet@npm:10.8.6"
   dependencies:
     "@graphql-mesh/cache-localforage": "npm:^0.7.20"
     "@graphql-mesh/cross-helpers": "npm:^0.3.4"
@@ -5033,7 +5033,7 @@ __metadata:
     "@graphql-mesh/types": "npm:^0.91.14"
     "@graphql-mesh/utils": "npm:^0.43.22"
     "@noble/ed25519": "npm:^1.7.1"
-    "@railgun-community/engine": "npm:^9.5.3"
+    "@railgun-community/engine": "npm:^9.5.4"
     "@railgun-community/shared-models": "npm:^8.0.1"
     "@whatwg-node/fetch": "npm:^0.8.4"
     assert: "npm:2.0.0"
@@ -5046,7 +5046,7 @@ __metadata:
     events: "npm:3.3.0"
     graphql: "npm:^16.6.0"
     stream-browserify: "npm:3.0.0"
-  checksum: 10/1b7a29c72222420b9d7dbcac82b2b965228f99f637a893dd48e1b668cd328adff5d7af1149bf7cf3c81d67a5004c67374a6a4fa16048928c94b3e6a1343a38e5
+  checksum: 10/6125ca65e216f316ffe2f9cc8172302752328deb37f8740f273cd424e0f269116d0d5bebd229b99891c25d17a4b17dfe856082cacf2316362b95459bdc3a4439
   languageName: node
   linkType: hard
 
@@ -20180,7 +20180,7 @@ __metadata:
     "@railgun-community/cookbook": "npm:^2.12.2"
     "@railgun-community/shared-models": "npm:^8.0.1"
     "@railgun-community/waku-broadcaster-client-web": "npm:^9.1.0"
-    "@railgun-community/wallet": "npm:10.8.4"
+    "@railgun-community/wallet": "npm:10.8.6"
     "@railway-developer/actionsheet-react": "github:railway-developer/actionsheet-react"
     "@reduxjs/toolkit": "npm:1.9.5"
     "@simbathesailor/use-what-changed": "npm:^2.0.0"

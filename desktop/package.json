@@ -1,6 +1,6 @@
 {
   "name": "railway-reactjs",
-  "version": "5.24.18",
+  "version": "5.24.21",
   "private": true,
   "author": "Right to Privacy Foundation <mail@righttoprivacy.foundation>",
   "license": "AGPL-3.0-only",
@@ -28,7 +28,7 @@
     "react-shared": ":"
   },
   "resolutions": {
-    "@railgun-community/engine": "9.5.3",
+    "@railgun-community/engine": "9.5.4",
     "form-data": ">=2.5.4"
   },
   "dependencies": {
@@ -38,7 +38,7 @@
     "@railgun-community/cookbook": "^2.12.2",
     "@railgun-community/shared-models": "^8.0.1",
     "@railgun-community/waku-broadcaster-client-web": "^9.1.0",
-    "@railgun-community/wallet": "10.8.4",
+    "@railgun-community/wallet": "10.8.6",
     "@railway-developer/actionsheet-react": "github:railway-developer/actionsheet-react",
     "@reduxjs/toolkit": "1.9.5",
     "@simbathesailor/use-what-changed": "^2.0.0",

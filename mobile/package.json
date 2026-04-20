@@ -29,7 +29,7 @@
     "@expo/react-native-action-sheet": "4.1.1",
     "@railgun-community/cookbook": "^2.12.2",
     "@railgun-community/shared-models": "^8.0.1",
-    "@railgun-community/wallet": "10.8.4",
+    "@railgun-community/wallet": "10.8.6",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-clipboard/clipboard": "^1.16.0",
     "@react-native-community/blur": "4.4.1",
