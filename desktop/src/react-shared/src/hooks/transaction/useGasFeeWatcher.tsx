@@ -1,5 +1,5 @@
 import {
-  calculateMaximumGas,
+  calculateTotalGas,
   isDefined,
   TransactionGasDetails,
 } from '@railgun-community/shared-models';
@@ -15,9 +15,9 @@ export const useGasFeeWatcher = (
 
   useEffect(() => {
     if (selectedBroadcasterLocked && gasDetails) {
-      const maximumGas = calculateMaximumGas(gasDetails);
+      const totalGas = calculateTotalGas(gasDetails);
       const threshold =
-        maximumGas * 10000n + BigInt(changeThresholdBasisPoints) / 10000n;
+        totalGas * 10000n + BigInt(changeThresholdBasisPoints) / 10000n;
       setSavedMaximumGasThreshold(threshold);
       return;
     }
@@ -29,8 +29,8 @@ export const useGasFeeWatcher = (
     if (!isDefined(savedMaximumGasThreshold) || !gasDetails) {
       return false;
     }
-    const maximumGas = calculateMaximumGas(gasDetails);
-    if (maximumGas >= savedMaximumGasThreshold) {
+    const totalGas = calculateTotalGas(gasDetails);
+    if (totalGas >= savedMaximumGasThreshold) {
       return true;
     }
     return false;

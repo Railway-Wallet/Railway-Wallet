@@ -20,6 +20,7 @@ import {
   ERC20Amount,
   ERC20AmountRecipient,
   executeWithoutBroadcaster,
+  gasDetailsWithMinimumEstimate,
   getBroadcasterFilterPeerCount,
   getBroadcasterLightPushPeerCount,
   getBroadcasterMeshPeerCount,
@@ -52,6 +53,8 @@ type Props = {
   balanceBucketFilter: RailgunWalletBalanceBucket[];
   unshieldToOriginShieldTxid?: string;
 };
+
+const BASE_TOKEN_UNSHIELD_EXECUTION_GAS_ESTIMATE = 5_000_000n;
 
 export const UnshieldConfirm = ({
   goBack,
@@ -231,6 +234,12 @@ export const UnshieldConfirm = ({
         const unshieldCall = isBaseTokenUnshield
           ? unauthenticatedWalletService.populateRailgunProvedUnshieldBaseToken
           : unauthenticatedWalletService.populateRailgunProvedUnshield;
+        const transactionGasDetailsForExecution = isBaseTokenUnshield
+          ? gasDetailsWithMinimumEstimate(
+              transactionGasDetails,
+              BASE_TOKEN_UNSHIELD_EXECUTION_GAS_ESTIMATE,
+            )
+          : transactionGasDetails;
         const [populateUnshieldResponse] = await Promise.all([
           unshieldCall(
             txidVersion.current,
@@ -242,7 +251,7 @@ export const UnshieldConfirm = ({
             broadcasterFeeERC20Amount,
             sendWithPublicWallet,
             overallBatchMinGasPrice,
-            transactionGasDetails,
+            transactionGasDetailsForExecution,
           ),
           delay(1000),
         ]);
@@ -380,7 +389,20 @@ export const UnshieldConfirm = ({
     sendWithPublicWallet: boolean,
   ) => {
     if (isBaseTokenUnshield) {
-      return Promise.resolve(5_000_000n);
+      if (sendWithPublicWallet) {
+        return Promise.resolve(BASE_TOKEN_UNSHIELD_EXECUTION_GAS_ESTIMATE);
+      }
+      return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldBaseToken(
+        txidVersion,
+        networkName,
+        railWalletID,
+        memoText,
+        erc20AmountRecipients,
+        nftAmountRecipients,
+        originalGasDetails,
+        feeTokenDetails,
+        sendWithPublicWallet,
+      );
     }
     if (isDefined(unshieldToOriginShieldTxid)) {
       return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldToOrigin(
