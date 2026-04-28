@@ -63,6 +63,17 @@ export const getProofTypeFromTransactionType = (
   }
 };
 
+export const gasDetailsWithMinimumEstimate = (
+  gasDetails: TransactionGasDetails,
+  minimumGasEstimate: bigint,
+): TransactionGasDetails => ({
+  ...gasDetails,
+  gasEstimate:
+    gasDetails.gasEstimate > minimumGasEstimate
+      ? gasDetails.gasEstimate
+      : minimumGasEstimate,
+});
+
 export const isShieldedFromToAddress = (
   transactionType: TransactionType,
   isPrivateTransaction: boolean,
@@ -460,8 +471,8 @@ export const broadcasterFeeInfoText = (
   const tokenFeePerUnitGas = BigInt(selectedBroadcaster.tokenFee.feePerUnitGas);
 
   const oneUnitGas = 10n ** 18n;
-  const maximumGas = calculateMaximumGas(gasDetails);
-  const tokenFee = (tokenFeePerUnitGas * maximumGas) / oneUnitGas;
+  const totalGas = calculateTotalGas(gasDetails);
+  const tokenFee = (tokenFeePerUnitGas * totalGas) / oneUnitGas;
   const tokenFeeString = formatUnits(tokenFee, selectedFeeToken.decimals);
   const priceText = formattedFeeTokenPrice(
     network,

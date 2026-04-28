@@ -30,6 +30,7 @@ import {
   ERC20Amount,
   ERC20AmountRecipient,
   executeWithoutBroadcaster,
+  gasDetailsWithMinimumEstimate,
   getBroadcasterFilterPeerCount,
   getBroadcasterLightPushPeerCount,
   getBroadcasterMeshPeerCount,
@@ -94,6 +95,9 @@ type Props = {
   setSlippagePercent?: (slippage: number) => void;
   slippagePercent?: number;
 };
+
+// The wallet SDK subtracts 150k when encoding RelayAdapt's internal min gas.
+const RELAY_ADAPT_FEE_ESTIMATE_MIN_GAS_LIMIT = 150_000n;
 
 export const CrossContractReviewTransactionView: React.FC<Props> = ({
   authKey,
@@ -237,6 +241,10 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       isDefined(selectedBroadcaster),
       transactionGasDetails,
     );
+    const transactionGasDetailsForExecution = gasDetailsWithMinimumEstimate(
+      transactionGasDetails,
+      recipeOutput.minGasLimit,
+    );
 
     const broadcasterFeeERC20AmountRecipient =
       createBroadcasterFeeERC20AmountRecipient(
@@ -259,7 +267,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
           broadcasterFeeERC20AmountRecipient,
           sendWithPublicWallet,
           overallBatchMinGasPrice,
-          transactionGasDetails,
+          transactionGasDetailsForExecution,
         ),
         delay(1000),
       ]);
@@ -381,7 +389,9 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       originalGasDetails,
       feeTokenDetails,
       sendWithPublicWallet,
-      recipeOutput.minGasLimit,
+      sendWithPublicWallet
+        ? recipeOutput.minGasLimit
+        : RELAY_ADAPT_FEE_ESTIMATE_MIN_GAS_LIMIT,
     );
   };
 
