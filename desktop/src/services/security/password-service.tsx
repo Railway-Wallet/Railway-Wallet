@@ -10,6 +10,7 @@ import {
 } from '@react-shared';
 import { WalletSecureStorageWeb } from '@services/wallet/wallet-secure-service-web';
 import { Constants } from '@utils/constants';
+import { deleteBiometricKey } from './biometric-service';
 import { hashPasswordString } from './hash-service';
 
 export const setPassword = async (password: string): Promise<string> => {
@@ -40,6 +41,7 @@ export const removePassword = async () => {
   await Promise.all([
     StorageService.removeItem(Constants.PASSWORD_HASH_STORED),
     StorageService.removeItem(Constants.PASSWORD_SALT),
+    deleteBiometricKey(),
   ]);
 };
 
@@ -103,6 +105,7 @@ export const changePassword = async (
       throw new Error('Password incorrect');
     }
 
+    await deleteBiometricKey();
     const newAuthKey = await setPassword(newPassword);
     const currentWalletSecureService = new WalletSecureStorageWeb(
       dbEncryptionKey,

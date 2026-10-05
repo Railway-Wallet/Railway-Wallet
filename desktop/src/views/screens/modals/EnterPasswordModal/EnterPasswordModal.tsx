@@ -1,5 +1,11 @@
 import { isDefined } from '@railgun-community/shared-models';
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import React, {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import cn from 'classnames';
 import {
   AlertProps,
@@ -16,6 +22,10 @@ import {
   useAppDispatch,
   usePinLockout,
 } from '@react-shared';
+import {
+  getBiometricStatus,
+  retrieveBiometricKey,
+} from '@services/security/biometric-service';
 import { hashPasswordString } from '@services/security/hash-service';
 import { wipeDevice_DESTRUCTIVE } from '@services/security/wipe-device-service';
 import { IconType } from '@services/util/icon-service';
@@ -36,12 +46,14 @@ export const EnterPasswordModal: React.FC<Props> = ({
   const [password, setPassword] = useState('');
   const [error, setError] = useState<Optional<Error>>();
   const [isLoading, setIsLoading] = useState(false);
+  const [touchIDEnabled, setTouchIDEnabled] = useState(false);
   const [wipeAlert, setWipeAlert] = useState<AlertProps | undefined>(undefined);
   const [settingsAlert, setSettingsAlert] = useState<AlertProps | undefined>(
     undefined,
   );
 
   const dispatch = useAppDispatch();
+  const attemptedAutomaticTouchID = useRef(false);
 
   const wipeDevice = async () => {
     if (Constants.SHOULD_WIPE_DEVICES) {
@@ -60,6 +72,41 @@ export const EnterPasswordModal: React.FC<Props> = ({
     secondsUntilLockoutExpiration,
     numFailedAttempts,
   } = usePinLockout(wipeDevice);
+
+  const unlockWithTouchID = useCallback(async () => {
+    setIsLoading(true);
+    const result = await retrieveBiometricKey();
+    setIsLoading(false);
+
+    if (result.success && isDefined(result.key)) {
+      await resetFailedPinAttempts();
+      success(result.key);
+      return;
+    }
+
+    if (result.error !== 'cancelled') {
+      setError(new Error('Touch ID failed. Enter your password to continue.'));
+    }
+  }, [resetFailedPinAttempts, success]);
+
+  useEffect(() => {
+    let active = true;
+    const loadTouchID = async () => {
+      const status = await getBiometricStatus();
+      if (!active || !status.available || !status.enrolled) return;
+
+      setTouchIDEnabled(true);
+      if (!attemptedAutomaticTouchID.current) {
+        attemptedAutomaticTouchID.current = true;
+        await unlockWithTouchID();
+      }
+    };
+
+    void loadTouchID();
+    return () => {
+      active = false;
+    };
+  }, [unlockWithTouchID]);
 
   useEffect(() => {
     if (secondsUntilLockoutExpiration <= 0) {
@@ -166,6 +213,19 @@ export const EnterPasswordModal: React.FC<Props> = ({
           Submit
         </Button>
       </form>
+      {touchIDEnabled && (
+        <div className={styles.actionButtonContainer}>
+          <Button
+            buttonClassName={styles.actionButton}
+            startIcon={IconType.Fingerprint}
+            iconSize={20}
+            onClick={() => void unlockWithTouchID()}
+            disabled={isLoading}
+          >
+            Use Touch ID
+          </Button>
+        </div>
+      )}
       <div className={styles.statusTextContainer}>
         {error && (
           <Text className={cn(styles.statusText, styles.statusTextError)}>

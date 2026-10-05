@@ -37,6 +37,8 @@ import { SettingsDefaultsModal } from '@screens/modals/settings/SettingsDefaults
 import { SettingsNetworksModal } from '@screens/modals/settings/SettingsNetworksModal/SettingsNetworksModal';
 import { SettingsSavedAddressesModal } from '@screens/modals/settings/SettingsSavedAddressesModal/SettingsSavedAddressesModal';
 import { SettingsWalletsModal } from '@screens/modals/settings/SettingsWalletsModal/SettingsWalletsModal';
+import { TouchIDSettingsModal } from '@screens/modals/settings/TouchIDSettingsModal/TouchIDSettingsModal';
+import { isTouchIDPlatform } from '@services/security/biometric-service';
 import { wipeDevice_DESTRUCTIVE } from '@services/security/wipe-device-service';
 import { IconType, renderIcon } from '@services/util/icon-service';
 import { Constants } from '@utils/constants';
@@ -64,6 +66,7 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
   const [wipeDeviceDataOpen, setWipeDeviceDataOpen] = useState(false);
   const [changePasswordSettingsOpen, setChangePasswordSettingsOpen] =
     useState(false);
+  const [touchIDSettingsOpen, setTouchIDSettingsOpen] = useState(false);
 
   const [alert, setAlert] = useState<Optional<AlertProps>>();
   const [errorModal, setErrorModal] = useState<
@@ -437,6 +440,21 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
             descriptionClassName={styles.itemDescription}
             onPress={() => {}}
           />
+          {isTouchIDPlatform() && (
+            <ListItem
+              title="Touch ID"
+              description="Unlock Railway with your fingerprint"
+              className={styles.listItem}
+              titleClassName={styles.itemTitle}
+              descriptionClassName={styles.itemDescription}
+              onPress={() => setTouchIDSettingsOpen(true)}
+              right={() => (
+                <div className={styles.rightContainer}>
+                  {renderIcon(IconType.Fingerprint, 18)}
+                </div>
+              )}
+            />
+          )}
         </div>
 
         <div>
@@ -745,6 +763,11 @@ export const SettingsScreen: React.FC<Props> = ({ onClose }) => {
               onClose();
             }
           }}
+        />
+      )}
+      {touchIDSettingsOpen && (
+        <TouchIDSettingsModal
+          onClose={() => setTouchIDSettingsOpen(false)}
         />
       )}
       {alert && <GenericAlert {...alert} />}

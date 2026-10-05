@@ -18,8 +18,9 @@
     "lint": "yarn run eslint; yarn run tsc;",
     "tsc": "tsc --noEmit",
     "prettier": "git prettier ./src --write",
-    "electron:start": "concurrently \"yarn run start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build:mac": "rm -rf dist && REACT_APP_VERSION=$npm_package_version yarn run build-electron && electron-builder --mac --x64 --arm64",
+    "build-macos-biometric-helper": "node ./scripts/build-macos-biometric-helper.js",
+    "electron:start": "yarn run build-macos-biometric-helper && concurrently \"yarn run start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build:mac": "rm -rf dist && REACT_APP_VERSION=$npm_package_version yarn run build-electron && yarn run build-macos-biometric-helper && electron-builder --mac --x64 --arm64",
     "electron:build:windows": "rm -rf dist && REACT_APP_VERSION=$npm_package_version yarn run build-electron && electron-builder --windows --x64",
     "electron:build:linux": "rm -rf dist && REACT_APP_VERSION=$npm_package_version yarn run build-electron && electron-builder --linux --x64",
     "electron:build:linuxpluswindows": "rm -rf dist && REACT_APP_VERSION=$npm_package_version yarn run build-electron && electron-builder --windows --linux --x64",
@@ -169,8 +170,15 @@
     "mac": {
       "target": "dmg",
       "category": "public.app-category.finance",
+      "extraFiles": [
+        {
+          "from": "dist/native/RailwayBiometricKeychain",
+          "to": "MacOS/RailwayBiometricKeychain"
+        }
+      ],
       "entitlements": "./entitlements.plist",
       "entitlementsInherit": "./entitlements.plist",
+      "sign": "./signHook.js",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "type": "distribution",
@@ -234,6 +242,8 @@
     },
     "files": [
       "build/**/*",
+      "electron/auth-key.js",
+      "electron/biometric-keychain.js",
       "electron/main.js",
       "electron/preload.js",
       "package.json"

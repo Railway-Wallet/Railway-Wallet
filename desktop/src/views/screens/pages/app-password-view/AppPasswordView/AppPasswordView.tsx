@@ -1,5 +1,11 @@
 import { isDefined } from '@railgun-community/shared-models';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import cn from 'classnames';
 import {
   AlertProps,
@@ -17,8 +23,13 @@ import {
   useAppDispatch,
   usePinLockout,
 } from '@react-shared';
+import {
+  getBiometricStatus,
+  retrieveBiometricKey,
+} from '@services/security/biometric-service';
 import { hashPasswordString } from '@services/security/hash-service';
 import { wipeDevice_DESTRUCTIVE } from '@services/security/wipe-device-service';
+import { IconType } from '@services/util/icon-service';
 import { Constants } from '@utils/constants';
 import styles from './AppPasswordView.module.scss';
 
@@ -30,12 +41,14 @@ export const AppPasswordView: React.FC<Props> = ({ success }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<Optional<Error>>();
   const [isLoading, setIsLoading] = useState(false);
+  const [touchIDEnabled, setTouchIDEnabled] = useState(false);
   const [alert, setAlert] = useState<AlertProps | undefined>(undefined);
   const [settingsAlert, setSettingsAlert] = useState<AlertProps | undefined>(
     undefined,
   );
 
   const dispatch = useAppDispatch();
+  const attemptedAutomaticTouchID = useRef(false);
 
   const wipeDevice = async () => {
     if (Constants.SHOULD_WIPE_DEVICES) {
@@ -69,6 +82,42 @@ export const AppPasswordView: React.FC<Props> = ({ success }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secondsUntilLockoutExpiration]);
+
+  const unlockWithTouchID = useCallback(async () => {
+    setIsLoading(true);
+    const result = await retrieveBiometricKey();
+    setIsLoading(false);
+
+    if (result.success && isDefined(result.key)) {
+      await resetFailedPinAttempts();
+      success(result.key);
+      return;
+    }
+
+    if (result.error !== 'cancelled') {
+      setError(new Error('Touch ID failed. Enter your password to continue.'));
+    }
+  }, [resetFailedPinAttempts, success]);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadTouchID = async () => {
+      const status = await getBiometricStatus();
+      if (!active || !status.available || !status.enrolled) return;
+
+      setTouchIDEnabled(true);
+      if (!attemptedAutomaticTouchID.current) {
+        attemptedAutomaticTouchID.current = true;
+        await unlockWithTouchID();
+      }
+    };
+
+    void loadTouchID();
+    return () => {
+      active = false;
+    };
+  }, [unlockWithTouchID]);
 
   const corrupted = () => {
     setError(new Error('Please refresh.'));
@@ -158,6 +207,19 @@ export const AppPasswordView: React.FC<Props> = ({ success }) => {
             }
           />
         </form>
+        {touchIDEnabled && (
+          <div className={styles.touchIDButtonContainer}>
+            <Button
+              buttonClassName={styles.touchIDButton}
+              startIcon={IconType.Fingerprint}
+              iconSize={20}
+              onClick={() => void unlockWithTouchID()}
+              disabled={isLoading}
+            >
+              Use Touch ID
+            </Button>
+          </div>
+        )}
         {isDefined(error) && (
           <div className={styles.errorTextContainer}>
             <Text className={styles.errorText}>{error.message}</Text>

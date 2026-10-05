@@ -1,0 +1,31 @@
+@import "@scss/styleguide";
+
+.container {
+  padding: 8px 8px 16px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 24px;
+  margin: 12px 0 28px;
+}
+
+.actionButton {
+  min-width: 190px;
+  height: 42px;
+  justify-content: center;
+}
+
+.message,
+.error {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.message {
+  color: txGreen();
+}
+
+.error {
+  color: error();
+}

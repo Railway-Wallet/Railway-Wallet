@@ -15,4 +15,9 @@ contextBridge.exposeInMainWorld('electronBridge', {
   wipeDeviceData: () => {
     ipcRenderer.send('wipe-device-data');
   },
+  getBiometricStatus: () => ipcRenderer.invoke('get-biometric-status'),
+  enrollBiometricKey: authKey =>
+    ipcRenderer.invoke('enroll-biometric-key', authKey),
+  retrieveBiometricKey: () => ipcRenderer.invoke('retrieve-biometric-key'),
+  deleteBiometricKey: () => ipcRenderer.invoke('delete-biometric-key'),
 });

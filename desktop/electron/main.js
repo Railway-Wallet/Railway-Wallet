@@ -10,8 +10,10 @@ const {
 
 const isDev = require('electron-is-dev');
 const path = require('path');
+const biometricKeychain = require('./biometric-keychain');
 const isWin = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
+let mainWindow;
 
 function UpsertKeyValue(obj, keyToChange, value) {
   const keyToChangeLower = keyToChange.toLowerCase();
@@ -44,6 +46,8 @@ function createWindow() {
     icon: path.join(__dirname, '../public/icon.ico'),
     title: 'Railway: Private DeFi Wallet',
   });
+
+  mainWindow = win;
 
   win.webContents.session.webRequest.onBeforeSendHeaders((details, cb) => {
     const { requestHeaders } = details;
@@ -94,6 +98,9 @@ function createWindow() {
   win.once('ready-to-show', () => win?.show());
 
   win.on('closed', () => {
+    if (mainWindow === win) {
+      mainWindow = null;
+    }
     win = null;
   });
 
@@ -107,17 +114,49 @@ function createWindow() {
   });
 }
 
-const wipeDeviceData = () => {
+const wipeDeviceData = async () => {
   const userDataPath = `${app.getPath('appData')}${
     isWin ? '\\' : '/'
   }railway-reactjs`;
 
-  shell.trashItem(userDataPath);
+  await biometricKeychain.deleteKey();
+  await shell.trashItem(userDataPath);
   app.relaunch();
   app.quit();
 };
 
-ipcMain.on('wipe-device-data', wipeDeviceData);
+const isTrustedRenderer = event =>
+  mainWindow && event.senderFrame === mainWindow.webContents.mainFrame;
+
+ipcMain.on('wipe-device-data', event => {
+  if (isTrustedRenderer(event)) {
+    void wipeDeviceData();
+  }
+});
+ipcMain.handle('get-biometric-status', event => {
+  if (!isTrustedRenderer(event)) {
+    return { available: false, enrolled: false };
+  }
+  return biometricKeychain.getStatus();
+});
+ipcMain.handle('enroll-biometric-key', (event, authKey) => {
+  if (!isTrustedRenderer(event)) {
+    return { success: false, error: 'untrusted-renderer' };
+  }
+  return biometricKeychain.enrollKey(authKey);
+});
+ipcMain.handle('retrieve-biometric-key', event => {
+  if (!isTrustedRenderer(event)) {
+    return { success: false, error: 'untrusted-renderer' };
+  }
+  return biometricKeychain.retrieveKey();
+});
+ipcMain.handle('delete-biometric-key', event => {
+  if (!isTrustedRenderer(event)) {
+    return { success: false, error: 'untrusted-renderer' };
+  }
+  return biometricKeychain.deleteKey();
+});
 
 // Menu
 const defaultMenuOptions = [
@@ -230,7 +269,7 @@ const addedMenuOptions = [
             })
             .then(result => {
               if (result.response === 0) {
-                wipeDeviceData();
+                void wipeDeviceData();
               }
             });
         },
