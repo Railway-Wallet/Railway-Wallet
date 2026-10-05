@@ -29,7 +29,7 @@ export const ZeroXPrivateSwapContent: React.FC<SwapContentProps> = ({
       sellERC20Amount,
       buyERC20,
       slippagePercentage,
-      undefined,
+      undefined, undefined,
     );
 
   const recipeAmounts = recipe?.getBuySellAmountsFromRecipeOutput(recipeOutput);

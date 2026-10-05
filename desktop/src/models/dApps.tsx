@@ -9,4 +9,10 @@ export type DApp = {
   enabled: boolean;
 };
 
-export const dAppsRoutes = [TabRoute.Swap, TabRoute.Farm, TabRoute.Liquidity];
+export const dAppsRoutes = [
+  TabRoute.Swap,
+  TabRoute.Farm,
+  TabRoute.Liquidity,
+  TabRoute.FxMint,
+  TabRoute.MorphoVaults,
+];

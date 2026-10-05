@@ -18,6 +18,7 @@ import {
   TransactionType,
   useAdjustedRecipeUnshieldERC20Amount,
   useAppDispatch,
+  useCurrentEphemeralAddress,
   useMemoCustomCompare,
   useReduxSelector,
   useUpdatingERC20Amount,
@@ -45,6 +46,8 @@ export const SwapPrivateConfirm = ({
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
   const { txidVersion } = useReduxSelector('txidVersion');
+
+  const ephemeralAddress = useCurrentEphemeralAddress(authKey);
 
   const [buyERC20, setBuyERC20] = useState(originalBuyERC20);
   const [slippagePercent, setSlippagePercent] = useState(
@@ -133,6 +136,7 @@ export const SwapPrivateConfirm = ({
     buyERC20,
     slippagePercent,
     swapDestinationAddress,
+    ephemeralAddress,
   );
 
   const relayAdaptUnshieldERC20Amounts: ERC20Amount[] = useMemoCustomCompare(
@@ -224,7 +228,7 @@ export const SwapPrivateConfirm = ({
     ? 'Swap'
     : 'Swap and transfer';
 
-  lockedRecipeOutput.minGasLimit = 5_000_000n;
+  lockedRecipeOutput.minGasLimit = 0n;
 
   return (
     <>

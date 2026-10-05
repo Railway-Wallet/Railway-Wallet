@@ -76,7 +76,8 @@ export class ProviderLoader {
 
   static async pauseAllBridgePollingProviders() {
     await bridgeCall<
-      Record<string, never>, void
+      Record<string, never>,
+      void
     >(BridgeCallEvent.PauseAllPollingProviders, {});
   }
 

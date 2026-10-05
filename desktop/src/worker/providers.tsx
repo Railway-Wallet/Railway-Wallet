@@ -34,7 +34,8 @@ bridgeRegisterCall<UnloadProviderParams, void>(
 );
 
 bridgeRegisterCall<
-  Record<string, never>, void
+  Record<string, never>,
+  void
 >(BridgeCallEvent.PauseAllPollingProviders, async () => {
   return pauseAllPollingProviders();
 });

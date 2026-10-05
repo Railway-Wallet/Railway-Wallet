@@ -16,6 +16,7 @@ type Props = {
   rightView?: () => ReactNode;
   leftView?: () => ReactNode;
   onSelect?: () => void;
+  onDoubleClick?: () => void;
   hasCursor?: boolean;
   height?: number;
   error?: boolean;
@@ -32,6 +33,7 @@ export const ListRow: React.FC<Props> = ({
   selected,
   disabled = false,
   onSelect,
+  onDoubleClick,
   rightView,
   leftView,
   hasCursor = false,
@@ -51,6 +53,7 @@ export const ListRow: React.FC<Props> = ({
     >
       <ListItem
         onPress={!disabled ? onSelect : undefined}
+        onDoubleClick={!disabled ? onDoubleClick : undefined}
         disabled={disabled}
         titleStyle={{ color: titleTextColor }}
         descriptionStyle={{ color: descriptionTextColor }}

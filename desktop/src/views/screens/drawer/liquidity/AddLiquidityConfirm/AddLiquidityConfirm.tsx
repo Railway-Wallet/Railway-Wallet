@@ -19,6 +19,7 @@ import {
   useAddLiquidityRecipe,
   useAdjustedRecipeUnshieldERC20Amount,
   useAppDispatch,
+  useCurrentEphemeralAddress,
   useMemoCustomCompare,
   useMountTimer,
   useReduxSelector,
@@ -65,13 +66,20 @@ export const AddLiquidityConfirm = ({
     onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
+  const ephemeralAddress = useCurrentEphemeralAddress(authKey);
+
   const {
     isLoadingRecipeOutput,
     recipeError,
     recipeOutput,
     tokenUnshieldAmountB,
     lpMinimum,
-  } = useAddLiquidityRecipe(selectedPool, tokenAmountA, slippagePercent);
+  } = useAddLiquidityRecipe(
+    selectedPool,
+    tokenAmountA,
+    slippagePercent,
+    ephemeralAddress,
+  );
 
   const amountRecipientTokenA: ERC20AmountRecipient = useMemo(
     () => ({
@@ -235,7 +243,7 @@ export const AddLiquidityConfirm = ({
   const infoCalloutText = `Adding liquidity into ${selectedPool.name}. The received ${selectedPool.pairTokenSymbol} tokens will represent this liquidity position, and can be redeemed for the underlying tokens at any time.`;
   const processingText = `Adding liquidity into ${selectedPool.name}...`;
 
-  recipeOutput.minGasLimit = 5_000_000n;
+  recipeOutput.minGasLimit = 0n;
 
   return (
     <CrossContractReviewTransactionView

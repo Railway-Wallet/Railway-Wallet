@@ -61,6 +61,9 @@ export const loadSearchableERC20s = (
   case NetworkName.Hardhat:
     coinsArr = [];
     break;
+  case NetworkName.Base:
+    coinsArr = [];
+    break;
   }
 
   return coinsArr;

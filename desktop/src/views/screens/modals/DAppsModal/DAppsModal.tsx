@@ -39,6 +39,20 @@ export const DAppsModal: React.FC<Props> = ({ onClose }) => {
       description: 'Manage DEX liquidity',
       enabled: true,
     },
+    {
+      name: 'fxMINT',
+      href: TabRoute.FxMint,
+      icon: IconType.Calculator,
+      description: 'Open and manage f(x) leveraged positions',
+      enabled: true,
+    },
+    {
+      name: 'Morpho Vaults',
+      href: TabRoute.MorphoVaults,
+      icon: IconType.Save,
+      description: 'Deposit into and redeem from Morpho vaults',
+      enabled: true,
+    },
   ];
   const enabledDapps = dApps.filter(dapp => dapp.enabled);
 

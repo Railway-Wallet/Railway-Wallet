@@ -21,7 +21,8 @@ bridgeRegisterCall<LoadProviderParams, LoadProviderResponse>(
 );
 
 bridgeRegisterCall<
-  Record<string, never>, void
+  Record<string, never>,
+  void
 >(BridgeCallEvent.PauseAllPollingProviders, async () => {
   return pauseAllPollingProviders();
 });

@@ -12,7 +12,10 @@ import {
   ErrorDetailsModalProps,
 } from '@screens/modals/ErrorDetailsModal/ErrorDetailsModal';
 import { ActivityScreen } from '@screens/tabs/Activity/ActivityScreen';
+import { EphemeralAccountsScreen } from '@screens/tabs/EphemeralAccounts/EphemeralAccountsScreen';
 import { FarmScreen } from '@screens/tabs/Farm/FarmScreen';
+import { FxMintScreen } from '@screens/tabs/FxMint/FxMintScreen';
+import { MorphoVaultsScreen } from '@screens/tabs/MorphoVaults/MorphoVaultsScreen';
 import { NFTsScreenContainer } from '@screens/tabs/NFTs/NFTsScreenContainer';
 import { SwapScreen } from '@screens/tabs/Swap/SwapScreen';
 import { WalletsScreenContainer } from '@screens/tabs/Wallets/WalletsScreenContainer';
@@ -31,10 +34,13 @@ export enum Tab {
   Activity = 'Activity',
   NFTs = 'NFTs',
   DApps = 'dApps',
+  EphemeralAccounts = 'Ephemeral Accounts',
 
   RailwayDEX = 'Railway DEX',
   Liquidity = 'Liquidity',
   Farm = 'Farm',
+  FxMint = 'fxMINT',
+  MorphoVaults = 'Morpho Vaults',
 }
 
 export const TabNavigator: React.FC = () => {
@@ -96,6 +102,15 @@ export const TabNavigator: React.FC = () => {
         )}
         <TabContainer childTab={Tab.Liquidity}>
           <LiquidityScreen />
+        </TabContainer>
+        <TabContainer childTab={Tab.EphemeralAccounts}>
+          <EphemeralAccountsScreen />
+        </TabContainer>
+        <TabContainer childTab={Tab.FxMint}>
+          <FxMintScreen />
+        </TabContainer>
+        <TabContainer childTab={Tab.MorphoVaults}>
+          <MorphoVaultsScreen />
         </TabContainer>
         {shouldEnableNFTs && (
           <TabContainer childTab={Tab.NFTs}>

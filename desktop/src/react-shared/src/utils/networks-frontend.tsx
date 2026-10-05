@@ -71,6 +71,7 @@ export const getNetworkFrontendConfig = (
     case NetworkName.EthereumGoerli_DEPRECATED:
     case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.ArbitrumGoerli_DEPRECATED:
+    case NetworkName.Base:
     case NetworkName.Hardhat:
       return {
         backgroundColor: styleguide.colors.tokenBackgrounds.testnet(),

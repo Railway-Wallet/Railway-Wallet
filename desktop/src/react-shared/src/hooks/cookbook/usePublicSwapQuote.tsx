@@ -4,7 +4,7 @@ import {
   RecipeERC20Info,
   SwapQuoteData,
 } from '@railgun-community/cookbook';
-import { delay } from '@railgun-community/shared-models';
+import { delay, isDefined } from '@railgun-community/shared-models';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ERC20Amount, ERC20Token } from '../../models/token';
 import { logDevError } from '../../utils';
@@ -60,9 +60,12 @@ export const usePublicSwapQuote = (
           return;
         }
 
-        const activeWalletAddress = wallets.available.find(
+        const recipient = wallets.available.find(
           wallet => wallet.isActive,
         )?.ethAddress;
+        if (!isDefined(recipient)) {
+          throw new Error('No active wallet address for swap quote.');
+        }
 
         const quote = await getSwapQuote({
           networkName: network.current.name,
@@ -70,7 +73,7 @@ export const usePublicSwapQuote = (
           buyERC20Info,
           slippageBasisPoints,
           isRailgun: false,
-          activeWalletAddress,
+          recipient,
         });
         if (currentQuoteID === latestQuoteID.current) {
           setQuote(quote);

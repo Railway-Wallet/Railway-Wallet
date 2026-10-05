@@ -10,12 +10,18 @@ import {
   CancelTransactionData,
   DrawerEventData,
   DrawerName,
+  EphemeralReclaimData,
   ERC20InfoData,
   EVENT_CLOSE_DRAWER,
   EVENT_OPEN_DRAWER_WITH_DATA,
   FarmVaultData,
+  FxMintCloseData,
+  FxMintOpenData,
+  FxMintTopupData,
   LiquidityData,
   MintERC20sData,
+  MorphoVaultDepositData,
+  MorphoVaultRedeemData,
   ReceiveTokensData,
   SwapPrivateData,
   SwapPublicData,
@@ -35,8 +41,14 @@ import {
 import { AddTokens } from '@screens/drawer/add-tokens/AddTokens';
 import { ApproveERC20Confirm } from '@screens/drawer/approve/ApproveERC20Confirm/ApproveERC20Confirm';
 import { CancelTransactionConfirm } from '@screens/drawer/cancel/CancelTransaction/CancelTransactionConfirm/CancelTransactionConfirm';
+import { EphemeralReclaimFlow } from '@screens/drawer/ephemeral-reclaim/EphemeralReclaimFlow/EphemeralReclaimFlow';
 import { ExportTransactions } from '@screens/drawer/export-transactions/ExportTransactions';
+import { FxMintCloseFlow } from '@screens/drawer/fx-mint/FxMintCloseFlow/FxMintCloseFlow';
+import { FxMintOpenFlow } from '@screens/drawer/fx-mint/FxMintOpenFlow/FxMintOpenFlow';
+import { FxMintTopupFlow } from '@screens/drawer/fx-mint/FxMintTopupFlow/FxMintTopupFlow';
 import { MintERC20sConfirm } from '@screens/drawer/mint/MintERC20s/MintERC20sConfirm/MintERC20sConfirm';
+import { MorphoVaultDepositFlow } from '@screens/drawer/morpho-vaults/MorphoVaultDepositFlow/MorphoVaultDepositFlow';
+import { MorphoVaultRedeemFlow } from '@screens/drawer/morpho-vaults/MorphoVaultRedeemFlow/MorphoVaultRedeemFlow';
 import { ReceiveTokens } from '@screens/drawer/receive/ReceiveTokens/ReceiveTokens';
 import { SendERC20s } from '@screens/drawer/send/SendTokens/SendERC20s';
 import { SendNFTs } from '@screens/drawer/send/SendTokens/SendNFTs';
@@ -82,6 +94,18 @@ export const DrawerManager = ({ isRailgun }: Props) => {
     useState<Optional<ApproveSpenderData>>();
   const [swapPrivateData, setSwapPrivateData] =
     useState<Optional<SwapPrivateData>>();
+  const [ephemeralReclaimData, setEphemeralReclaimData] =
+    useState<Optional<EphemeralReclaimData>>();
+  const [fxMintOpenData, setFxMintOpenData] =
+    useState<Optional<FxMintOpenData>>();
+  const [fxMintTopupData, setFxMintTopupData] =
+    useState<Optional<FxMintTopupData>>();
+  const [fxMintCloseData, setFxMintCloseData] =
+    useState<Optional<FxMintCloseData>>();
+  const [morphoVaultDepositData, setMorphoVaultDepositData] =
+    useState<Optional<MorphoVaultDepositData>>();
+  const [morphoVaultRedeemData, setMorphoVaultRedeemData] =
+    useState<Optional<MorphoVaultRedeemData>>();
   const [swapPublicData, setSwapPublicData] =
     useState<Optional<SwapPublicData>>();
   const [addTokensData, setAddTokensData] = useState<Optional<AddTokensData>>();
@@ -176,6 +200,36 @@ export const DrawerManager = ({ isRailgun }: Props) => {
       case DrawerName.SwapPublic: {
         const extraData = data.extraData as SwapPublicData;
         setSwapPublicData(extraData);
+        break;
+      }
+      case DrawerName.EphemeralReclaim: {
+        const extraData = data.extraData as EphemeralReclaimData;
+        setEphemeralReclaimData(extraData);
+        break;
+      }
+      case DrawerName.FxMintOpen: {
+        const extraData = data.extraData as FxMintOpenData;
+        setFxMintOpenData(extraData);
+        break;
+      }
+      case DrawerName.FxMintTopup: {
+        const extraData = data.extraData as FxMintTopupData;
+        setFxMintTopupData(extraData);
+        break;
+      }
+      case DrawerName.FxMintClose: {
+        const extraData = data.extraData as FxMintCloseData;
+        setFxMintCloseData(extraData);
+        break;
+      }
+      case DrawerName.MorphoVaultDeposit: {
+        const extraData = data.extraData as MorphoVaultDepositData;
+        setMorphoVaultDepositData(extraData);
+        break;
+      }
+      case DrawerName.MorphoVaultRedeem: {
+        const extraData = data.extraData as MorphoVaultRedeemData;
+        setMorphoVaultRedeemData(extraData);
         break;
       }
       case DrawerName.ExportTransactions: {
@@ -406,6 +460,60 @@ export const DrawerManager = ({ isRailgun }: Props) => {
         isRailgun={true}
       >
         {swapPrivateData && <SwapPrivateFlow {...swapPrivateData} />}
+      </Drawer>
+      <Drawer
+        isOpen={openDrawer === DrawerName.EphemeralReclaim}
+        onRequestClose={closeDrawerWarnIfValidProof}
+        headerText="Reclaim to RAILGUN"
+        isRailgun={true}
+      >
+        {ephemeralReclaimData && (
+          <EphemeralReclaimFlow {...ephemeralReclaimData} />
+        )}
+      </Drawer>
+      <Drawer
+        isOpen={openDrawer === DrawerName.FxMintOpen}
+        onRequestClose={closeDrawerWarnIfValidProof}
+        headerText="Open f(x) position"
+        isRailgun={true}
+      >
+        {fxMintOpenData && <FxMintOpenFlow {...fxMintOpenData} />}
+      </Drawer>
+      <Drawer
+        isOpen={openDrawer === DrawerName.FxMintTopup}
+        onRequestClose={closeDrawerWarnIfValidProof}
+        headerText="Add to f(x) position"
+        isRailgun={true}
+      >
+        {fxMintTopupData && <FxMintTopupFlow {...fxMintTopupData} />}
+      </Drawer>
+      <Drawer
+        isOpen={openDrawer === DrawerName.FxMintClose}
+        onRequestClose={closeDrawerWarnIfValidProof}
+        headerText="Close f(x) position"
+        isRailgun={true}
+      >
+        {fxMintCloseData && <FxMintCloseFlow {...fxMintCloseData} />}
+      </Drawer>
+      <Drawer
+        isOpen={openDrawer === DrawerName.MorphoVaultDeposit}
+        onRequestClose={closeDrawerWarnIfValidProof}
+        headerText="Deposit into Morpho vault"
+        isRailgun={true}
+      >
+        {morphoVaultDepositData && (
+          <MorphoVaultDepositFlow {...morphoVaultDepositData} />
+        )}
+      </Drawer>
+      <Drawer
+        isOpen={openDrawer === DrawerName.MorphoVaultRedeem}
+        onRequestClose={closeDrawerWarnIfValidProof}
+        headerText="Redeem from Morpho vault"
+        isRailgun={true}
+      >
+        {morphoVaultRedeemData && (
+          <MorphoVaultRedeemFlow {...morphoVaultRedeemData} />
+        )}
       </Drawer>
       <Drawer
         isOpen={openDrawer === DrawerName.SwapPublic}

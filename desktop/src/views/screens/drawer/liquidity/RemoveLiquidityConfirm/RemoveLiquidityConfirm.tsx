@@ -19,6 +19,7 @@ import {
   TransactionType,
   useAdjustedRecipeUnshieldERC20Amount,
   useAppDispatch,
+  useCurrentEphemeralAddress,
   useMemoCustomCompare,
   useMountTimer,
   useReduxSelector,
@@ -69,6 +70,8 @@ export const RemoveLiquidityConfirm = ({
     onERC20AmountUpdate: onBroadcasterFeeUpdate,
   } = useUpdatingERC20Amount();
 
+  const ephemeralAddress = useCurrentEphemeralAddress(authKey);
+
   const {
     isLoadingRecipeOutput,
     recipeError,
@@ -76,7 +79,12 @@ export const RemoveLiquidityConfirm = ({
     removeLiquidityData,
     tokenAMinimum,
     tokenBMinimum,
-  } = useRemoveLiquidityRecipe(liquidityPool, tokenAmount, slippagePercent);
+  } = useRemoveLiquidityRecipe(
+    liquidityPool,
+    tokenAmount,
+    slippagePercent,
+    ephemeralAddress,
+  );
 
   const tokenLP: ERC20Token = {
     name: liquidityPool.pairTokenName,
@@ -242,7 +250,7 @@ export const RemoveLiquidityConfirm = ({
   const infoCalloutText = `Removing liquidity from ${liquidityPool.name} and redeeming ${liquidityPool.pairTokenSymbol} tokens.`;
   const processingText = `Removing liquidity from ${liquidityPool.name}...`;
 
-  recipeOutput.minGasLimit = 5_000_000n;
+  recipeOutput.minGasLimit = 0n;
 
   return (
     <CrossContractReviewTransactionView

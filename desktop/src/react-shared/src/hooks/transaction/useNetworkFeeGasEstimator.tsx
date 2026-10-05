@@ -58,6 +58,7 @@ export const useNetworkFeeGasEstimator = (
   gasEstimateProgressCallback: (progress: number) => void,
   selectedFeeToken: ERC20Token,
   recipeOutput: Optional<RecipeOutput>,
+  is7702: boolean,
 ) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
@@ -97,10 +98,12 @@ export const useNetworkFeeGasEstimator = (
         return undefined;
       }
 
-      const evmGasType = getEVMGasTypeForTransaction(
-        network.current.name,
-        sendWithPublicWallet,
-      );
+      const evmGasType = is7702
+        ? EVMGasType.Type4
+        : getEVMGasTypeForTransaction(
+            network.current.name,
+            sendWithPublicWallet,
+          );
 
       switch (feeSelection) {
         case NetworkFeeSelection.Slower: {
@@ -169,6 +172,7 @@ export const useNetworkFeeGasEstimator = (
       isMounted,
       network,
       sendWithPublicWallet,
+      is7702,
       customGasTransactionDetails.gasPrice,
       customGasTransactionDetails.maxFeePerGas,
       customGasTransactionDetails.maxPriorityFeePerGas,
@@ -436,10 +440,9 @@ export const useNetworkFeeGasEstimator = (
 
         const { name: networkName } = network.current;
 
-        const evmGasType = getEVMGasTypeForTransaction(
-          networkName,
-          sendWithPublicWallet,
-        );
+        const evmGasType = is7702
+          ? EVMGasType.Type4
+          : getEVMGasTypeForTransaction(networkName, sendWithPublicWallet);
 
         if (
           gasDetailsBySpeed &&

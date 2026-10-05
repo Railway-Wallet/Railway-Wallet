@@ -1,4 +1,5 @@
 import {
+  FxMintPoolName,
   RecipeOutput,
   SwapQuoteData,
   SwapRecipe,
@@ -17,6 +18,7 @@ import {
   ERC20AmountRecipient,
   ERC20Token,
   FrontendLiquidityPair,
+  MorphoVaultVersion,
   SavedTransaction,
   Vault,
 } from '@react-shared';
@@ -37,7 +39,13 @@ export type DrawerExtraData =
   | SwapPrivateData
   | SwapPublicData
   | FarmVaultData
-  | LiquidityData;
+  | LiquidityData
+  | EphemeralReclaimData
+  | FxMintOpenData
+  | FxMintTopupData
+  | FxMintCloseData
+  | MorphoVaultDepositData
+  | MorphoVaultRedeemData;
 
 export type DrawerEventData = {
   drawerName: DrawerName;
@@ -63,7 +71,70 @@ export enum DrawerName {
   ExportTransactions = 'ExportTransactions',
   FarmVault = 'FarmVault',
   Liquidity = 'Liquidity',
+  EphemeralReclaim = 'EphemeralReclaim',
+  FxMintOpen = 'FxMintOpen',
+  FxMintTopup = 'FxMintTopup',
+  FxMintClose = 'FxMintClose',
+  MorphoVaultDeposit = 'MorphoVaultDeposit',
+  MorphoVaultRedeem = 'MorphoVaultRedeem',
 }
+
+export type EphemeralReclaimData = {
+  ephemeralAddress: string;
+  erc20Tokens: {
+    address: string;
+    symbol: string;
+    decimals: number;
+    amountString: string;
+  }[];
+  nativeWeiString?: string;
+  ephemeralIndex?: number;
+};
+
+export type FxMintOpenData = {
+  pool: FxMintPoolName;
+  sellERC20Amount: ERC20Amount;
+  targetDebtString: string
+  slippagePercentage: number;
+};
+
+export type FxMintTopupData = {
+  pool: FxMintPoolName;
+  positionId: string
+  positionNFT: NFTAmount
+  sellERC20Amount: ERC20Amount;
+  additionalDebtString: string
+  slippagePercentage: number;
+};
+
+export type FxMintCloseData = {
+  pool: FxMintPoolName;
+  positionId: string
+  positionNFT: NFTAmount
+  buyERC20: ERC20Token
+  slippagePercentage: number;
+};
+
+export type MorphoVaultDepositData = {
+  vaultAddress: string;
+  vaultVersion: MorphoVaultVersion;
+  assetAddress: string;
+  assetDecimals: number;
+  shareDecimals: number;
+  sellERC20Amount: ERC20Amount;
+  slippagePercentage: number;
+};
+
+export type MorphoVaultRedeemData = {
+  vaultAddress: string;
+  vaultVersion: MorphoVaultVersion;
+  assetAddress: string;
+  assetDecimals: number;
+  shareDecimals: number;
+  sharesAmountString: string
+  buyERC20: ERC20Token
+  slippagePercentage: number;
+};
 
 export type ERC20InfoData = {
   erc20: ERC20Token;

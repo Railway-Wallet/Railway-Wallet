@@ -6,6 +6,7 @@ type Props = {
   description: string;
   selected?: boolean;
   onSelect?: () => void;
+  onDoubleClick?: () => void;
   rightView: () => ReactNode;
 };
 
@@ -14,6 +15,7 @@ export const NetworkFeeOption: React.FC<Props> = ({
   description,
   selected,
   onSelect,
+  onDoubleClick,
   rightView,
 }) => {
   return (
@@ -23,6 +25,7 @@ export const NetworkFeeOption: React.FC<Props> = ({
       selected={selected}
       rightView={rightView}
       onSelect={onSelect}
+      onDoubleClick={onDoubleClick}
       defaultNoBorder
     />
   );

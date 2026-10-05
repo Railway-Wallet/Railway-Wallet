@@ -11,6 +11,7 @@ import {
   RailgunERC20Recipient,
   RailgunNFTAmount,
   RailgunNFTAmountRecipient,
+  RailgunPopulateTransactionResponse,
   TransactionGasDetails,
   TransactionReceiptLog,
   TXIDVersion,
@@ -85,6 +86,12 @@ export enum BridgeCallEvent {
   GasEstimateForUnprovenCrossContractCalls = 'GasEstimateForUnprovenCrossContractCalls',
   GenerateCrossContractCallsProof = 'GenerateCrossContractCallsProof',
   GetRelayAdaptTransactionError = 'GetRelayAdaptTransactionError',
+  GetCurrentEphemeralAddress = 'GetCurrentEphemeralAddress',
+  RatchetEphemeralAddress = 'RatchetEphemeralAddress',
+  SyncEphemeralIndex = 'SyncEphemeralIndex',
+  GetEphemeralKeyIndex = 'GetEphemeralKeyIndex',
+  GetEphemeralAddressesForRange = 'GetEphemeralAddressesForRange',
+  GetEphemeralPrivateKey = 'GetEphemeralPrivateKey',
   BroadcasterStart = 'Broadcaster.Start',
   BroadcasterTryReconnect = 'Broadcaster.TryReconnect',
   BroadcasterSetAddressFilters = 'Broadcaster.SetAddressFilters',
@@ -293,6 +300,8 @@ export type PopulateShieldBaseTokenParams = {
   shieldPrivateKey: string;
   wrappedTokenAmount: RailgunERC20Amount;
   transactionGasDetails: TransactionGasDetails;
+  railWalletID?: string
+  encryptionKey?: string;
 };
 
 export type GasEstimateForShieldParams = {
@@ -311,6 +320,8 @@ export type GasEstimateForShieldBaseTokenParams = {
   shieldPrivateKey: string;
   fromWalletAddress: string;
   wrappedTokenAmount: RailgunERC20Amount;
+  railWalletID?: string
+  encryptionKey?: string;
 };
 
 export type GenerateTransferProofParams = {
@@ -448,6 +459,7 @@ export type GasEstimateForUnprovenCrossContractCallsParams = {
   feeTokenDetails: Optional<FeeTokenDetails>;
   sendWithPublicWallet: boolean;
   minGasLimit: bigint;
+  ephemeralIndex?: number
 };
 
 export type PopulateCrossContractCallsParams = {
@@ -479,11 +491,49 @@ export type GenerateCrossContractCallsProofParams = {
   sendWithPublicWallet: boolean;
   overallBatchMinGasPrice: Optional<bigint>;
   minGasLimit: bigint;
+  ephemeralIndex?: number;
 };
 
 export type GetRelayAdaptTransactionErrorParams = {
   txidVersion: TXIDVersion;
   receiptLogs: TransactionReceiptLog[];
+};
+
+export type GetCurrentEphemeralAddressParams = {
+  networkName: NetworkName;
+  railWalletID: string;
+  encryptionKey: string;
+};
+
+export type RatchetEphemeralAddressParams = {
+  networkName: NetworkName;
+  railWalletID: string;
+};
+
+export type SyncEphemeralIndexParams = {
+  chain: Chain;
+  railWalletID: string;
+  encryptionKey: string;
+};
+
+export type GetEphemeralKeyIndexParams = {
+  railWalletID: string;
+  chainId: number;
+};
+
+export type GetEphemeralAddressesForRangeParams = {
+  railWalletID: string;
+  encryptionKey: string;
+  chainId: number;
+  fromIndex: number;
+  toIndex: number;
+};
+
+export type GetEphemeralPrivateKeyParams = {
+  railWalletID: string;
+  encryptionKey: string;
+  chainId: number;
+  index: number;
 };
 
 export type LoadRailgunWalletByIDParams = {
@@ -563,6 +613,29 @@ export type BroadcasterFindAllBroadcastersForChainParams = {
   useRelayAdapt: boolean;
 };
 
+export type SerializedEIP7702Authorization = {
+  address: string;
+  nonce: bigint;
+  chainId: bigint;
+  r: string;
+  s: string;
+  yParity: 0 | 1;
+};
+
+export type Type4FeeOverrides = {
+  gasLimit: bigint;
+  maxFeePerGas: bigint;
+  maxPriorityFeePerGas: bigint;
+};
+
+export type RelayAdapt7702PopulateFields = {
+  relayAdapt7702Authorization?: SerializedEIP7702Authorization;
+  type4FeeOverrides?: Type4FeeOverrides;
+};
+
+export type RelayAdapt7702PopulateResponse =
+  RailgunPopulateTransactionResponse & RelayAdapt7702PopulateFields;
+
 export type BroadcasterBroadcastTransactionParams = {
   txidVersionForInputs: TXIDVersion;
   to: string;
@@ -574,6 +647,8 @@ export type BroadcasterBroadcastTransactionParams = {
   overallBatchMinGasPrice: bigint;
   useRelayAdapt: boolean;
   preTransactionPOIsPerTxidLeafPerList: PreTransactionPOIsPerTxidLeafPerList;
+  authorization?: SerializedEIP7702Authorization
+  type4FeeOverrides?: Type4FeeOverrides;
 };
 
 export type BroadcasterSupportsERC20TokenParams = {

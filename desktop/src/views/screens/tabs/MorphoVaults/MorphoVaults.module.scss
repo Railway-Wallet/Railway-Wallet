@@ -1,0 +1,169 @@
+@import '@scss/styleguide';
+
+.pageContainer {
+  box-sizing: border-box;
+  padding: 24px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: $cardSurface;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.headerRow {
+  margin-top: 48px;
+  margin-bottom: 24px;
+}
+
+.headerText {
+  @include heading1;
+  color: text();
+  margin-bottom: 12px;
+}
+
+.headerSubtext {
+  @include paragraph;
+  color: $textSecondary;
+}
+
+.callout {
+  margin-bottom: 24px;
+}
+
+.finderRow {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.modeSelector {
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.modeSelectorControl {
+  height: 100%;
+}
+
+.formCard {
+  padding: 16px 16px 20px;
+  background-color: gray5();
+  border-radius: 4px;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.formLabel {
+  @include label;
+  display: block;
+  margin: 20px 0 10px;
+  color: $labelSecondary;
+}
+
+.hintText {
+  @include caption;
+  display: block;
+  margin-top: 8px;
+  color: $textSecondary;
+  overflow-wrap: break-word;
+}
+
+.errorText {
+  @include label;
+  display: block;
+  margin-top: 8px;
+  color: error();
+}
+
+.slippageCard {
+  width: fit-content;
+  margin-top: 20px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  background-color: gray6(0.5);
+  border: 1px solid gray9();
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: $darkItemHover;
+  }
+}
+
+.slippageRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slippageText {
+  @include label;
+  color: $labelSecondary;
+}
+
+.actionsRow {
+  display: flex;
+  margin-top: 24px;
+}
+
+.actionButton {
+  width: 100%;
+}
+
+.qualityToggle {
+  margin-top: 16px;
+}
+
+.vaultList {
+  margin-top: 12px;
+  max-height: 260px;
+  overflow-y: auto;
+  border-radius: 4px;
+  background: $gray6_50;
+}
+
+.vaultRow {
+  padding: 12px 14px;
+  cursor: pointer;
+
+  & + & {
+    border-top: 1px solid $buttonBorder;
+  }
+
+  &:hover {
+    background: $darkItemHover;
+  }
+}
+
+.vaultRowSelected {
+  background: txGreen(0.12);
+}
+
+.vaultRowName {
+  @include paragraph;
+  display: block;
+  color: text();
+}
+
+.vaultRowMeta {
+  @include caption;
+  display: block;
+  margin-top: 2px;
+  color: $labelSecondary;
+}
+
+.inputInsetButton {
+  justify-content: center;
+  width: fit-content;
+  height: 32px;
+}
+
+.bottomButtonLabel {
+  @include label;
+  text-transform: none;
+  white-space: nowrap;
+}

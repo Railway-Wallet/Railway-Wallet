@@ -4,7 +4,7 @@ import {
   RecipeERC20Info,
   UniV2LikeAddLiquidityRecipe,
 } from '@railgun-community/cookbook';
-import { isDefined } from '@railgun-community/shared-models';
+import { isDefined, NETWORK_CONFIG } from '@railgun-community/shared-models';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Provider } from 'ethers';
 import { ERC20Amount } from '../../models/token';
@@ -22,6 +22,7 @@ export const useAddLiquidityRecipe = (
   liquidityPool: LiquidityV2Pool,
   tokenUnshieldAmountA: Optional<ERC20Amount>,
   slippagePercentage: Optional<number>,
+  ephemeralAddress: Optional<string>,
 ) => {
   const { wallets } = useReduxSelector('wallets');
   const { network } = useReduxSelector('network');
@@ -52,6 +53,12 @@ export const useAddLiquidityRecipe = (
         return undefined;
       }
 
+      const { supports7702, relayAdaptContract } = NETWORK_CONFIG[networkName];
+      const recipient = supports7702 ? ephemeralAddress : relayAdaptContract;
+      if (!isDefined(recipient)) {
+        return undefined;
+      }
+
       const slippageBasisPoints = getSlippageBasisPoints(slippagePercentage);
 
       const erc20InfoA: RecipeERC20Info = {
@@ -70,8 +77,15 @@ export const useAddLiquidityRecipe = (
         erc20InfoB,
         slippageBasisPoints,
         provider,
+        recipient,
       );
-    }, [liquidityPool, provider, slippagePercentage]);
+    }, [
+      liquidityPool,
+      provider,
+      slippagePercentage,
+      ephemeralAddress,
+      networkName,
+    ]);
 
   useEffect(() => {
     const updateAmountBInfo = async () => {

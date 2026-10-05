@@ -60,6 +60,7 @@ import {
   getOverallBatchMinGasPrice,
   getShieldingPOIDisclaimerMessage,
   getTransferPOIDisclaimerMessage,
+  is7702Network,
   isShieldedFromToAddress,
   logDevError,
   NetworkFeeSelection,
@@ -124,6 +125,7 @@ type Props = {
   erc20AmountRecipients: ERC20AmountRecipient[];
   nftAmountRecipients: NFTAmountRecipient[];
   infoCalloutText: string;
+  actionSteps?: string[]
   processingText: string;
   hideTokenAmounts?: boolean;
   transactionType: TransactionType;
@@ -138,6 +140,7 @@ type Props = {
   useRelayAdapt: boolean;
   showCustomNonce: boolean;
   isBaseTokenUnshield?: boolean;
+  isBaseTokenShield?: boolean;
   relayAdaptUnshieldERC20Amounts?: ERC20Amount[];
   relayAdaptUnshieldNFTAmounts?: NFTAmount[];
   relayAdaptShieldERC20Recipients?: RailgunERC20Recipient[];
@@ -153,6 +156,9 @@ type Props = {
   vault?: Vault;
   receivedMinimumAmounts?: ERC20Amount[];
   requireSelfSigned?: boolean;
+
+  displayERC20Amounts?: ERC20Amount[]
+  sourceAddress?: string;
 
   pool?: LiquidityV2Pool
   setSlippagePercent?: (slippage: number) => void;
@@ -172,6 +178,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
   erc20AmountRecipients,
   nftAmountRecipients,
   infoCalloutText,
+  actionSteps,
   processingText,
   hideTokenAmounts,
   transactionType,
@@ -188,6 +195,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
   useRelayAdapt,
   showCustomNonce,
   isBaseTokenUnshield = false,
+  isBaseTokenShield = false,
   relayAdaptUnshieldERC20Amounts,
   relayAdaptUnshieldNFTAmounts,
   relayAdaptShieldERC20Recipients,
@@ -195,6 +203,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
   crossContractCalls,
   receivedMinimumAmounts,
   requireSelfSigned,
+  displayERC20Amounts,
+  sourceAddress,
   onBroadcasterFeeUpdate,
   onTransactionGasDetailsUpdate,
   setSlippagePercent,
@@ -352,6 +362,10 @@ export const ReviewTransactionView: React.FC<Props> = ({
     requiresBroadcaster && requireSelfSigned !== true && !publicWalletOverride;
   const sendWithPublicWallet = !isBroadcasterTransaction;
 
+  const is7702 =
+    is7702Network(network.current.name) &&
+    (isDefined(recipeOutput) || isBaseTokenUnshield || isBaseTokenShield);
+
   const updateGasEstimateProgress = (amount: number) => {
     setGasEstimateProgress(amount);
   };
@@ -382,6 +396,7 @@ export const ReviewTransactionView: React.FC<Props> = ({
     updateGasEstimateProgress,
     selectedFeeToken,
     recipeOutput,
+    is7702,
   );
 
   useEffect(() => {
@@ -398,7 +413,11 @@ export const ReviewTransactionView: React.FC<Props> = ({
   }, [onSuccessCallback, showProcessModal, transactionSuccessTxid]);
 
   const overallBatchMinGasPrice: Optional<bigint> = selectedGasDetails
-    ? getOverallBatchMinGasPrice(isBroadcasterTransaction, selectedGasDetails)
+    ? getOverallBatchMinGasPrice(
+        isBroadcasterTransaction,
+        selectedGasDetails,
+        is7702,
+      )
     : undefined;
 
   const {
@@ -662,7 +681,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
     if (
       poiRequired &&
       !hasSeenPOIShieldDisclaimer.current &&
-      transactionType === TransactionType.Shield
+      (transactionType === TransactionType.Shield ||
+        transactionType === TransactionType.Ephemeral)
     ) {
       showLearnMorePOIShield(
         onTapSend,
@@ -808,7 +828,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
     const frontendConfig = getNetworkFrontendConfig(network.current.name);
 
     switch (transactionType) {
-      case TransactionType.Shield: {
+      case TransactionType.Shield:
+      case TransactionType.Ephemeral: {
         const text = `Shielded tokens have a temporary unshield-only standby period of ${getMaxShieldPendingTimeText(
           network.current,
         )}.`;
@@ -1183,6 +1204,19 @@ export const ReviewTransactionView: React.FC<Props> = ({
       <div className={styles.reviewTransactionViewContainer}>
         <div className={styles.reviewTransactionViewContainer}>
           {infoCallout()}
+          {isDefined(actionSteps) && actionSteps.length > 0 && (
+            <div className={styles.actionSteps}>
+              <Text className={styles.actionStepsTitle}>
+                This transaction will
+              </Text>
+              {actionSteps.map((step, index) => (
+                <div key={index} className={styles.actionStep}>
+                  <Text className={styles.actionStepNum}>{index + 1}</Text>
+                  <Text className={styles.actionStepText}>{step}</Text>
+                </div>
+              ))}
+            </div>
+          )}
           {warningInfoCallout()}
           <ReviewTransactionReviewSection
             transactionType={transactionType}
@@ -1207,6 +1241,8 @@ export const ReviewTransactionView: React.FC<Props> = ({
             slippagePercent={slippagePercent}
             vault={vault}
             pool={pool}
+            displayERC20Amounts={displayERC20Amounts}
+            sourceAddress={sourceAddress}
           />
           {!isDefined(signerType) &&
             isBroadcasterTransaction &&

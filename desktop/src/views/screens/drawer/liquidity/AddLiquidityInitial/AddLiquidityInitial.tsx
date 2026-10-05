@@ -133,6 +133,7 @@ export const AddLiquidityInitial = ({
     selectedPool ?? liquidityPoolList[0],
     selectedTokenAmount,
     slippagePercentage,
+    undefined,
   );
 
   useEffect(() => {

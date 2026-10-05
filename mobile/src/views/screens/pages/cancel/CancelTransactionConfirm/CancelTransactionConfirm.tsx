@@ -56,8 +56,9 @@ export const CancelTransactionConfirm: React.FC<Props> = ({
   if (!isDefined(txResponse)) {
     return (
       // eslint-disable-next-line react-native/no-inline-styles
-      <Text style={{ margin: 24 }}>Nothing to cancel. Transaction not found.
-              </Text>
+      <Text style={{ margin: 24 }}>
+        Nothing to cancel. Transaction not found.
+      </Text>
     );
   }
 

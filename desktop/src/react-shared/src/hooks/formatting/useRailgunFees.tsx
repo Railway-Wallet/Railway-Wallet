@@ -30,6 +30,7 @@ export const useRailgunFees = (
     switch (transactionType) {
       case TransactionType.Shield:
       case TransactionType.Unshield:
+      case TransactionType.Ephemeral:
         return true;
       case TransactionType.Send:
       case TransactionType.FarmDeposit:

@@ -83,6 +83,7 @@ const alchemySubdomain = (networkName: NetworkName) => {
       return 'eth-sepolia';
     case NetworkName.BNBChain:
     case NetworkName.PolygonAmoy:
+    case NetworkName.Base:
     case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.EthereumRopsten_DEPRECATED:
@@ -101,6 +102,7 @@ const alchemyNetworkSupportsFilters = (networkName: NetworkName) => {
     case NetworkName.EthereumSepolia:
     case NetworkName.BNBChain:
     case NetworkName.PolygonAmoy:
+    case NetworkName.Base:
     case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:
@@ -285,6 +287,7 @@ const manuallyApprovedLowercaseNFTCollectionAddresses = (
     case NetworkName.Hardhat:
     case NetworkName.EthereumSepolia:
     case NetworkName.PolygonAmoy:
+    case NetworkName.Base:
     case NetworkName.PolygonMumbai_DEPRECATED:
     case NetworkName.ArbitrumGoerli_DEPRECATED:
     case NetworkName.EthereumGoerli_DEPRECATED:

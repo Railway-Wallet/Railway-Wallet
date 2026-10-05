@@ -17,6 +17,9 @@ export enum TabRoute {
   Swap = '/swap',
   Farm = '/farm',
   Liquidity = '/liquidity',
+  EphemeralAccounts = '/ephemeral',
+  FxMint = '/fxmint',
+  MorphoVaults = '/morphovaults',
 }
 
 export const getTabFromTabRoute = (route: TabRoute) => {
@@ -36,6 +39,12 @@ export const getTabFromTabRoute = (route: TabRoute) => {
       return Tab.Farm;
     case TabRoute.Liquidity:
       return Tab.Liquidity;
+    case TabRoute.EphemeralAccounts:
+      return Tab.EphemeralAccounts;
+    case TabRoute.FxMint:
+      return Tab.FxMint;
+    case TabRoute.MorphoVaults:
+      return Tab.MorphoVaults;
   }
 };
 

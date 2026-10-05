@@ -20,7 +20,7 @@ export const SeedPhraseTextBox: React.FC<Props> = ({
       <View style={styles.box}>
         <Text style={styles.text}>{text}</Text>
         {blur && !isAndroid() && (
-            (<BlurView style={styles.blur} blurAmount={6} />)
+            <BlurView style={styles.blur} blurAmount={6} />
           )}
       </View>
     </TouchableHighlight>

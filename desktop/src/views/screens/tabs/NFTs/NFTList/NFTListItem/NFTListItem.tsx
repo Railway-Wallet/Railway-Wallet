@@ -132,6 +132,7 @@ export const NFTListItem = ({
           </div>
         </div>
       )}
+
       {}
       {metadata && (
         <div

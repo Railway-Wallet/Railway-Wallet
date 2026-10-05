@@ -28,8 +28,12 @@ import {
   GetGasEstimateSelfSigned,
   getShieldPrivateKeySignatureMessage,
   hasOnlyBaseToken,
+  hydrateRelayAdapt7702Authorization,
+  is7702Network,
+  logDev,
   MerkletreeType,
   refreshNFTsMetadataAfterShieldUnshield,
+  RelayAdapt7702PopulateResponse,
   SavedTransactionService,
   StorageService,
   TransactionType,
@@ -137,20 +141,28 @@ export const ShieldConfirm = ({
     const pKey = await walletSecureService.getWallet0xPKey(activeWallet);
     const shieldPrivateKey = await getShieldPrivateKey(pKey);
 
-    let populateResponse: Optional<RailgunPopulateTransactionResponse>;
+    let populateResponse: Optional<RelayAdapt7702PopulateResponse>;
     try {
-      const shieldCall = isBaseTokenShield
-        ? unauthenticatedWalletService.populateRailgunShieldBaseToken
-        : unauthenticatedWalletService.populateRailgunShield;
       const [populateShieldResponse] = await Promise.all([
-        shieldCall(
-          txidVersion.current,
-          network.current.name,
-          shieldPrivateKey,
-          finalAdjustedERC20AmountRecipientGroup.inputs,
-          nftAmountRecipients,
-          transactionGasDetails,
-        ),
+        isBaseTokenShield
+          ? unauthenticatedWalletService.populateRailgunShieldBaseToken(
+              txidVersion.current,
+              network.current.name,
+              shieldPrivateKey,
+              finalAdjustedERC20AmountRecipientGroup.inputs,
+              nftAmountRecipients,
+              transactionGasDetails,
+              activeWallet.railWalletID,
+              authKey,
+            )
+          : unauthenticatedWalletService.populateRailgunShield(
+              txidVersion.current,
+              network.current.name,
+              shieldPrivateKey,
+              finalAdjustedERC20AmountRecipientGroup.inputs,
+              nftAmountRecipients,
+              transactionGasDetails,
+            ),
         delay(1000),
       ]);
       populateResponse = populateShieldResponse;
@@ -164,6 +176,12 @@ export const ShieldConfirm = ({
         network.current.name,
         fromWalletAddress,
       );
+      if (isDefined(populateResponse.relayAdapt7702Authorization)) {
+        hydrateRelayAdapt7702Authorization(
+          populateResponse.transaction,
+          populateResponse.relayAdapt7702Authorization,
+        );
+      }
       const txResponse = await executeWithoutBroadcaster(
         fromWalletAddress,
         pKey,
@@ -184,6 +202,18 @@ export const ShieldConfirm = ({
         isBaseTokenShield,
         txResponse.nonce,
       );
+
+      if (isBaseTokenShield && is7702Network(network.current.name)) {
+        try {
+          await unauthenticatedWalletService.ratchetEphemeralAddress(
+            network.current.name,
+            activeWallet.railWalletID,
+          );
+        } catch (err) {
+          logDev('Failed to ratchet ephemeral address after shield', err);
+        }
+      }
+
       if (isNFTTabActive === true) {
         await refreshNFTsMetadataAfterShieldUnshield(
           dispatch,
@@ -209,20 +239,26 @@ export const ShieldConfirm = ({
     const pKey = await walletSecureService.getWallet0xPKey(activeWallet);
     const shieldPrivateKey = await getShieldPrivateKey(pKey);
 
-    const shieldGasEstimate = isBaseTokenShield
-      ? unauthenticatedWalletService.getRailgunGasEstimateForShieldBaseToken
-      : unauthenticatedWalletService.getRailgunGasEstimateForShield;
+    const gasEstimate = isBaseTokenShield
+      ? await unauthenticatedWalletService.getRailgunGasEstimateForShieldBaseToken(
+          txidVersion,
+          networkName,
+          fromWalletAddress,
+          shieldPrivateKey,
+          erc20AmountRecipients,
+          activeWallet.railWalletID,
+          authKey,
+        )
+      : await unauthenticatedWalletService.getRailgunGasEstimateForShield(
+          txidVersion,
+          networkName,
+          fromWalletAddress,
+          shieldPrivateKey,
+          erc20AmountRecipients,
+          nftAmountRecipients,
+        );
 
-    const gasEstimate = await shieldGasEstimate(
-      txidVersion,
-      networkName,
-      fromWalletAddress,
-      shieldPrivateKey,
-      erc20AmountRecipients,
-      nftAmountRecipients,
-    );
-
-    return isBaseTokenShield ? 5_000_000n : gasEstimate;
+    return gasEstimate;
   };
 
   const infoCalloutText = `Shielding tokens into a private RAILGUN address.`;
@@ -248,6 +284,7 @@ export const ShieldConfirm = ({
         processingText={processingText}
         transactionType={transactionType}
         useRelayAdapt={isBaseTokenShield}
+        isBaseTokenShield={isBaseTokenShield}
         showCustomNonce={true}
       />
       {alert && <GenericAlert {...alert} />}

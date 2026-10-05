@@ -66,6 +66,7 @@ import {
 } from 'react-icons/md';
 import {
   TbChefHat as ChefHatIcon,
+  TbKey as KeyIcon,
   TbPuzzle as DAppsIcon,
   TbTractor as TractorIcon,
 } from 'react-icons/tb';
@@ -115,6 +116,7 @@ export enum IconType {
   ArrowLeft = 'ArrowLeftIcon',
   Swap = 'Swap',
   DApps = 'DApps',
+  Key = 'Key',
   NFT = 'NFT',
   Window = 'Window',
   Mail = 'Mail',
@@ -230,6 +232,8 @@ export const renderIcon = (
       return <SwapIcon {...props} />;
     case IconType.DApps:
       return <DAppsIcon {...props} />;
+    case IconType.Key:
+      return <KeyIcon {...props} />;
     case IconType.NFT:
       return <NFTIcon {...props} />;
     case IconType.Window:

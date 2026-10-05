@@ -538,4 +538,5 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       isBaseToken: true,
     },
   ],
+  [NetworkName.Base]: [],
 };

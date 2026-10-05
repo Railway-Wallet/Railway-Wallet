@@ -18,6 +18,8 @@ import {
   GenerateCrossContractCallsProofParams,
   GetRelayAdaptTransactionErrorParams,
   PopulateCrossContractCallsParams,
+  SerializedEIP7702Authorization,
+  Type4FeeOverrides,
 } from '../models/bridge';
 import { ERC20Amount, ERC20AmountRecipient } from '../models/token';
 import {
@@ -27,6 +29,11 @@ import {
   createRailgunNFTAmounts,
 } from '../utils/tokens';
 import { bridgeCall } from './ipc';
+
+export type PopulateCrossContractCallsResponse = RailgunPopulateTransactionResponse & {
+  relayAdapt7702Authorization?: SerializedEIP7702Authorization;
+  type4FeeOverrides?: Type4FeeOverrides;
+};
 
 export const getRelayAdaptTransactionError = (
   txidVersion: TXIDVersion,
@@ -54,7 +61,7 @@ export const populateCrossContractCalls = (
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   transactionGasDetails: TransactionGasDetails,
-): Promise<RailgunPopulateTransactionResponse> => {
+): Promise<PopulateCrossContractCallsResponse> => {
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
     relayAdaptUnshieldERC20Amounts,
   );
@@ -69,7 +76,7 @@ export const populateCrossContractCalls = (
 
   return bridgeCall<
     PopulateCrossContractCallsParams,
-    RailgunPopulateTransactionResponse
+    PopulateCrossContractCallsResponse
   >(BridgeCallEvent.PopulateCrossContractCalls, {
     txidVersion,
     networkName,
@@ -101,6 +108,7 @@ export const generateCrossContractCallsProof = (
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   minGasLimit: Optional<bigint>,
+  ephemeralIndex?: number,
 ): Promise<void> => {
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
     relayAdaptUnshieldERC20Amounts,
@@ -135,6 +143,7 @@ export const generateCrossContractCallsProof = (
       sendWithPublicWallet,
       overallBatchMinGasPrice,
       minGasLimit,
+      ephemeralIndex,
     },
   );
 };
@@ -153,6 +162,7 @@ export const gasEstimateForUnprovenCrossContractCalls = async (
   feeTokenDetails: Optional<FeeTokenDetails>,
   sendWithPublicWallet: boolean,
   minGasLimit: bigint,
+  ephemeralIndex?: number,
 ): Promise<bigint> => {
   const relayAdaptUnshieldERC20AmountsRailgun = createRailgunERC20Amounts(
     relayAdaptUnshieldERC20Amounts,
@@ -181,6 +191,7 @@ export const gasEstimateForUnprovenCrossContractCalls = async (
     feeTokenDetails,
     sendWithPublicWallet,
     minGasLimit,
+    ephemeralIndex,
   });
   return gasEstimate;
 };

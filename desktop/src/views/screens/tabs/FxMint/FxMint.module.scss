@@ -1,0 +1,176 @@
+@import '@scss/styleguide';
+
+.pageContainer {
+  box-sizing: border-box;
+  padding: 24px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: $cardSurface;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.headerRow {
+  margin-top: 48px;
+  margin-bottom: 24px;
+}
+
+.headerText {
+  @include heading1;
+  color: text();
+  margin-bottom: 12px;
+}
+
+.headerSubtext {
+  @include paragraph;
+  color: $textSecondary;
+}
+
+.callout {
+  margin-bottom: 24px;
+}
+
+.formCard {
+  padding: 16px 16px 20px;
+  background-color: gray5();
+  border-radius: 4px;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.sectionHeader {
+  @include heading3;
+  display: block;
+  margin-bottom: 16px;
+  color: text();
+}
+
+.formLabel {
+  @include label;
+  display: block;
+  margin: 20px 0 10px;
+  color: $labelSecondary;
+}
+
+.poolPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.poolPill {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: $gray6_50;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: $darkItemHover;
+  }
+}
+
+.poolPillSelected {
+  border-color: txGreen();
+  background: txGreen(0.12);
+}
+
+.poolPillText {
+  @include paragraph;
+  color: text();
+}
+
+.slippageCard {
+  width: fit-content;
+  margin-top: 20px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  background-color: gray6(0.5);
+  border: 1px solid gray9();
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: $darkItemHover;
+  }
+}
+
+.slippageRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slippageText {
+  @include label;
+  color: $labelSecondary;
+}
+
+.debtPreview {
+  @include paragraphSmall;
+  display: block;
+  margin-top: 12px;
+  color: $labelSecondary;
+}
+
+.actionsRow {
+  display: flex;
+  margin-top: 24px;
+}
+
+.actionButton {
+  width: 100%;
+}
+
+.emptyText {
+  @include paragraphSmall;
+  display: block;
+  padding: 8px 4px 20px;
+  color: $textSecondary;
+}
+
+.positionBlock {
+  & + & {
+    border-top: 1px solid $buttonBorder;
+  }
+}
+
+.positionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.positionPool {
+  @include paragraph;
+  display: block;
+  color: text();
+}
+
+.positionId {
+  @include caption;
+  display: block;
+  margin-top: 2px;
+  color: $labelSecondary;
+}
+
+.positionActions {
+  display: flex;
+  gap: 8px;
+}
+
+.positionActionButton {
+  width: fit-content;
+  min-width: 92px;
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+
+.topupForm {
+  padding: 4px 0 16px;
+}

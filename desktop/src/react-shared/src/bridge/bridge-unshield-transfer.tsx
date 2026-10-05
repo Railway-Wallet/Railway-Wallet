@@ -22,6 +22,7 @@ import {
   PopulateProvedUnshieldBaseTokenParams,
   PopulateProvedUnshieldParams,
   PopulateProvedUnshieldToOriginParams,
+  RelayAdapt7702PopulateResponse,
 } from '../models/bridge';
 import { ERC20Amount, ERC20AmountRecipient } from '../models/token';
 import { logDev } from '../utils/logging';
@@ -133,7 +134,7 @@ export const populateProvedUnshieldBaseToken = async (
   sendWithPublicWallet: boolean,
   overallBatchMinGasPrice: Optional<bigint>,
   transactionGasDetails: TransactionGasDetails,
-): Promise<RailgunPopulateTransactionResponse> => {
+): Promise<RelayAdapt7702PopulateResponse> => {
   if (erc20AmountRecipients.length > 1) {
     throw new Error(
       'You must unshield base token in a transaction by itself. Please remove other tokens from this transaction.',
@@ -158,7 +159,7 @@ export const populateProvedUnshieldBaseToken = async (
 
   return bridgeCall<
     PopulateProvedUnshieldBaseTokenParams,
-    RailgunPopulateTransactionResponse
+    RelayAdapt7702PopulateResponse
   >(BridgeCallEvent.PopulateProvedUnshieldBaseToken, {
     txidVersion,
     networkName,

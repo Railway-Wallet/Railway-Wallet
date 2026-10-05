@@ -251,7 +251,7 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
           </View>
           {networkStoredSettings && hasCustomRPCs && (
             // eslint-disable-next-line react-native/no-inline-styles
-            (<View style={[styles.itemRow, { marginBottom: 20 }]}>
+            <View style={[styles.itemRow, { marginBottom: 20 }]}>
               <View style={styles.items}>
                 <SettingsListItem
                   title="Default RPCs"
@@ -263,7 +263,7 @@ export const RPCsSetUpModal = ({ onClose, selectedNetwork }: Props) => {
                   }
                 />
               </View>
-            </View>)
+            </View>
           )}
           <WideButtonTextOnly
             onPress={onClose}

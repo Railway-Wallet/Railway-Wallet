@@ -4,6 +4,7 @@ import {
   ZeroXConfig,
   ZeroXV2SwapRecipe,
 } from '@railgun-community/cookbook';
+import { isDefined, NETWORK_CONFIG } from '@railgun-community/shared-models';
 import { useEffect, useMemo, useState } from 'react';
 import { CookbookSwapRecipeType } from '../../models/cookbook';
 import { ERC20Amount, ERC20Token } from '../../models/token';
@@ -11,9 +12,11 @@ import {
   compareRecipeERC20Info,
   getRecipeERC20Info,
   getSlippageBasisPoints,
+  is7702Network,
 } from '../../utils';
 import { useReduxSelector } from '../hooks-redux';
 import { useMemoCustomCompare } from '../react-extensions';
+import { Ephemeral7702ZeroXV2SwapRecipe } from './ephemeral-7702-zero-x-v2-swap-recipe';
 import { useRecipe } from './useRecipe';
 
 export const useSwapRecipe = (
@@ -22,8 +25,10 @@ export const useSwapRecipe = (
   buyERC20: Optional<ERC20Token>,
   slippagePercentage: number,
   swapDestinationAddress: Optional<string>,
+  ephemeralAddress: Optional<string>,
 ) => {
   const { remoteConfig } = useReduxSelector('remoteConfig');
+  const { network } = useReduxSelector('network');
 
   ZeroXConfig.PROXY_API_DOMAIN = remoteConfig.current?.proxyApiUrl;
   const slippageBasisPoints = useMemo(
@@ -51,11 +56,23 @@ export const useSwapRecipe = (
     );
     switch (swapRecipeType) {
       case CookbookSwapRecipeType.ZeroX:
+        if (isDefined(ephemeralAddress) &&
+        is7702Network(network.current.name)) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return new Ephemeral7702ZeroXV2SwapRecipe(
+            sellERC20Info,
+            buyERC20Info,
+            slippageBasisPointsNumber,
+            swapDestinationAddress,
+            ephemeralAddress,
+          );
+        }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
         return new ZeroXV2SwapRecipe(
           sellERC20Info,
           buyERC20Info,
           slippageBasisPointsNumber,
+          NETWORK_CONFIG[network.current.name].relayAdaptContract,
           swapDestinationAddress,
         );
     }
@@ -65,6 +82,8 @@ export const useSwapRecipe = (
     swapRecipeType,
     slippageBasisPoints,
     swapDestinationAddress,
+    ephemeralAddress,
+    network,
   ]);
 
   const unshieldERC20Amounts = sellERC20Amount ? [sellERC20Amount] : [];

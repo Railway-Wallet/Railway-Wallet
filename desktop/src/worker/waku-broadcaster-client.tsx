@@ -77,7 +77,8 @@ bridgeRegisterCall<BroadcasterStartParams, BroadcasterActionData>(
 );
 
 bridgeRegisterCall<
-  Record<string, never>, BroadcasterActionData
+  Record<string, never>,
+  BroadcasterActionData
 >(BridgeCallEvent.BroadcasterTryReconnect, async () => {
   try {
     await WakuBroadcasterClient.tryReconnect();
@@ -157,26 +158,30 @@ bridgeRegisterCall<
 );
 
 bridgeRegisterCall<
-  Record<string, never>, number
+  Record<string, never>,
+  number
 >(BridgeCallEvent.BroadcasterGetMeshPeerCount, async () => {
   return WakuBroadcasterClient.getMeshPeerCount();
 });
 
 bridgeRegisterCall<
-  Record<string, never>, number
+  Record<string, never>,
+  number
 >(BridgeCallEvent.BroadcasterGetPubSubPeerCount, async () => {
   return WakuBroadcasterClient.getPubSubPeerCount();
 });
 
 bridgeRegisterCall<
-  Record<string, never>, number
+  Record<string, never>,
+  number
 >(BridgeCallEvent.BroadcasterGetLightPushPeerCount, async () => {
   const peerCount = await WakuBroadcasterClient.getLightPushPeerCount();
   return peerCount;
 });
 
 bridgeRegisterCall<
-  Record<string, never>, number
+  Record<string, never>,
+  number
 >(BridgeCallEvent.BroadcasterGetFilterPeerCount, async () => {
   const peerCount = await WakuBroadcasterClient.getFilterPeerCount();
   return peerCount;
@@ -198,6 +203,8 @@ bridgeRegisterCall<
     overallBatchMinGasPrice,
     useRelayAdapt,
     preTransactionPOIsPerTxidLeafPerList,
+    authorization,
+    type4FeeOverrides,
   }) => {
     const broadcasterTransaction = await BroadcasterTransaction.create(
       txidVersionForInputs,
@@ -210,6 +217,8 @@ bridgeRegisterCall<
       overallBatchMinGasPrice,
       useRelayAdapt,
       preTransactionPOIsPerTxidLeafPerList,
+      authorization,
+      type4FeeOverrides,
     );
     const txHash = await broadcasterTransaction.send();
     return { txHash };

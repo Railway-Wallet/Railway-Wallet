@@ -66,6 +66,8 @@ type Props = {
   setSlippagePercent?: (slippage: number) => void;
   slippagePercent?: number;
   receivedMinimumAmounts: Optional<ERC20Amount[]>;
+  displayERC20Amounts?: ERC20Amount[]
+  sourceAddress?: string;
 };
 
 export const ReviewTransactionReviewSection: React.FC<Props> = ({
@@ -91,6 +93,8 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
   isBaseTokenUnshield = false,
   vault,
   pool,
+  displayERC20Amounts,
+  sourceAddress,
 }) => {
   const { network } = useReduxSelector('network');
   const { wallets } = useReduxSelector('wallets');
@@ -355,6 +359,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
       case TransactionType.RemoveLiquidity:
       case TransactionType.FarmDeposit:
       case TransactionType.FarmRedeem:
+      case TransactionType.Ephemeral:
         return IconType.ArrowDown;
       case TransactionType.Swap:
         return isDefined(swapDestinationAddress)
@@ -384,6 +389,7 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
       case TransactionType.RemoveLiquidity:
       case TransactionType.FarmDeposit:
       case TransactionType.FarmRedeem:
+      case TransactionType.Ephemeral:
         return true;
     }
   };
@@ -576,30 +582,73 @@ export const ReviewTransactionReviewSection: React.FC<Props> = ({
         />
       )}
       <div className={styles.reviewSection}>
-        <div className={styles.walletNameIconWrapper}>
-          {walletIcon(isShieldedFromAddress)}
-          <Text className={styles.walletNameText}>
-            {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
-          </Text>
-        </div>
-        <div className={styles.tokenAmountsWrapper}>
-          {recipeFinalERC20Amounts
-            ? inputERC20AmountRecipients.map((tokenAmount, index) => {
-                return reviewTokenAmount(tokenAmount, index);
-              })
-            : adjustedERC20AmountRecipients.map(
-                (adjustedTokenAmount, index) => {
-                  return reviewTokenAmount(
-                    adjustedTokenAmount.input,
-                    index,
-                    adjustedTokenAmount.fee,
-                  );
-                },
-              )}
-          {nftAmountRecipients.map((nftAmount, index) =>
-            reviewNFTAmount(nftAmount, index),
-          )}
-        </div>
+        {!isDefined(displayERC20Amounts) && (
+          <div className={styles.walletNameIconWrapper}>
+            {walletIcon(isShieldedFromAddress)}
+            <Text className={styles.walletNameText}>
+              {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
+            </Text>
+          </div>
+        )}
+        {isDefined(sourceAddress) && (
+          <div className={styles.walletNameIconWrapper}>
+            {walletIcon(false)}
+            <Text className={styles.walletNameText}>
+              {`Ephemeral account (${shortenWalletAddress(sourceAddress)})`}
+            </Text>
+          </div>
+        )}
+        {isDefined(displayERC20Amounts) && (
+          <div className={styles.tokenAmountsWrapper}>
+            {displayERC20Amounts.map((tokenAmount, index) =>
+              reviewTokenAmount(tokenAmount, index),
+            )}
+          </div>
+        )}
+        {isDefined(displayERC20Amounts) && (
+          <div className={styles.arrowIconWrapper}>
+            {renderIcon(transactionIcon(), 24)}
+          </div>
+        )}
+        {isDefined(displayERC20Amounts) && (
+          <div className={styles.walletNameIconWrapper}>
+            {walletIcon(isShieldedFromAddress)}
+            <Text className={styles.walletNameText}>
+              {wallets.active.name} ({shortenWalletAddress(fromWalletAddress)})
+            </Text>
+          </div>
+        )}
+        {isDefined(displayERC20Amounts) && (
+          <div className={styles.tokenAmountsWrapper}>
+            {displayERC20Amounts.map((tokenAmount, index) =>
+              reviewTokenAmount(
+                tokenAmount,
+                index,
+                undefined, true,
+              ),
+            )}
+          </div>
+        )}
+        {!isDefined(displayERC20Amounts) && (
+          <div className={styles.tokenAmountsWrapper}>
+            {recipeFinalERC20Amounts
+              ? inputERC20AmountRecipients.map((tokenAmount, index) => {
+                  return reviewTokenAmount(tokenAmount, index);
+                })
+              : adjustedERC20AmountRecipients.map(
+                  (adjustedTokenAmount, index) => {
+                    return reviewTokenAmount(
+                      adjustedTokenAmount.input,
+                      index,
+                      adjustedTokenAmount.fee,
+                    );
+                  },
+                )}
+            {nftAmountRecipients.map((nftAmount, index) =>
+              reviewNFTAmount(nftAmount, index),
+            )}
+          </div>
+        )}
         {showReceiverWallets() &&
           outputTokenRecipientGroups.map(tokenRecipientGroup => {
             return (

@@ -22,8 +22,10 @@ import {
   PopulateProvedUnshieldBaseTokenParams,
   PopulateProvedUnshieldParams,
   PopulateProvedUnshieldToOriginParams,
+  RelayAdapt7702PopulateResponse,
 } from '@react-shared';
 import { bridgeRegisterCall } from '../worker-ipc-service';
+import { extractRelayAdapt7702Fields } from './relay-adapt-7702-fields';
 
 bridgeRegisterCall<
   PopulateProvedUnshieldParams,
@@ -57,7 +59,7 @@ bridgeRegisterCall<
 
 bridgeRegisterCall<
   PopulateProvedUnshieldBaseTokenParams,
-  RailgunPopulateTransactionResponse
+  RelayAdapt7702PopulateResponse
 >(
   BridgeCallEvent.PopulateProvedUnshieldBaseToken,
   async ({
@@ -71,7 +73,7 @@ bridgeRegisterCall<
     overallBatchMinGasPrice,
     transactionGasDetails,
   }) => {
-    return populateProvedUnshieldBaseToken(
+    const response = await populateProvedUnshieldBaseToken(
       txidVersion,
       networkName,
       publicWalletAddress,
@@ -82,6 +84,10 @@ bridgeRegisterCall<
       overallBatchMinGasPrice,
       transactionGasDetails,
     );
+    return {
+      ...response,
+      ...extractRelayAdapt7702Fields(response.transaction),
+    };
   },
 );
 

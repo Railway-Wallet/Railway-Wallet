@@ -1,5 +1,9 @@
 import { populateCrossContractCalls } from '../../bridge/bridge-cross-contract-calls';
 import {
+  getEphemeralKeyIndex as bridgeGetEphemeralKeyIndex,
+  ratchetEphemeralAddress as bridgeRatchetEphemeralAddress,
+} from '../../bridge/bridge-ephemeral';
+import {
   gasEstimateForShield,
   gasEstimateForShieldBaseToken,
   populateShield,
@@ -20,4 +24,6 @@ export class UnauthenticatedWalletService {
   populateRailgunShieldBaseToken = populateShieldBaseToken;
   getRailgunGasEstimateForShield = gasEstimateForShield;
   getRailgunGasEstimateForShieldBaseToken = gasEstimateForShieldBaseToken;
+  ratchetEphemeralAddress = bridgeRatchetEphemeralAddress;
+  getEphemeralKeyIndex = bridgeGetEphemeralKeyIndex;
 }

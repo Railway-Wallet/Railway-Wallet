@@ -50,6 +50,7 @@ export class ProviderService {
       case NetworkName.PolygonMumbai_DEPRECATED:
       case NetworkName.EthereumGoerli_DEPRECATED:
       case NetworkName.EthereumRopsten_DEPRECATED:
+      case NetworkName.Base:
       case NetworkName.Hardhat:
         throw new Error('No Archive Nodes available for this network.');
     }

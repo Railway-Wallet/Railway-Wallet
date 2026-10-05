@@ -16,6 +16,10 @@ import { NetworkStoredSettingsService } from '../services/network/network-stored
 import { logDev, logDevError } from './logging';
 import { getNetworkFrontendConfig } from './networks-frontend';
 
+export const is7702Network = (networkName: NetworkName): boolean => {
+  return NETWORK_CONFIG[networkName]?.supports7702 ?? false;
+};
+
 type ProviderConfigCacheEntry = {
   ts: number;
   cfg: Optional<FallbackProviderJsonConfig>;
@@ -43,7 +47,9 @@ export const getNetworkFallbackProviderJsonConfig = async (
   const storedSettings =
     await NetworkStoredSettingsService.getSettingsForNetwork(networkName);
   const rpcUrls = storedSettings.rpcCustomURLs ?? [];
-  const settingsSig = `${storedSettings.useDefaultRailwayRPCsAsBackup ? 1 : 0}:${rpcUrls.join(',')}`;
+  const settingsSig = `${
+    storedSettings.useDefaultRailwayRPCsAsBackup ? 1 : 0
+  }:${rpcUrls.join(',')}`;
 
   const cacheKey = `${networkName}:${providerNodeType}:${settingsSig}`;
   const CACHE_MS = 30_000;
@@ -207,6 +213,7 @@ export const shouldEnableKoinlyTaxExport = (
     return true;
   case NetworkName.EthereumSepolia:
   case NetworkName.PolygonAmoy:
+  case NetworkName.Base:
   case NetworkName.EthereumRopsten_DEPRECATED:
   case NetworkName.EthereumGoerli_DEPRECATED:
   case NetworkName.PolygonMumbai_DEPRECATED:

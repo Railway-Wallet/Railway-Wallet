@@ -1,4 +1,5 @@
 import {
+  Chain,
   FeeTokenDetails,
   isDefined,
   NetworkName,
@@ -13,6 +14,12 @@ import {
   gasEstimateForUnprovenCrossContractCalls,
   generateCrossContractCallsProof,
 } from '../../bridge/bridge-cross-contract-calls';
+import {
+  getCurrentEphemeralAddress as bridgeGetCurrentEphemeralAddress,
+  getEphemeralAddressesForRange as bridgeGetEphemeralAddressesForRange,
+  getEphemeralPrivateKey as bridgeGetEphemeralPrivateKey,
+  syncEphemeralIndex as bridgeSyncEphemeralIndex,
+} from '../../bridge/bridge-ephemeral';
 import {
   generateTransferProof,
   generateUnshieldBaseTokenProof,
@@ -52,6 +59,56 @@ export class AuthenticatedWalletService {
     }
   };
 
+  getCurrentEphemeralAddress = async (
+    networkName: NetworkName,
+    railWalletID: string,
+  ): Promise<string> => {
+    const dbEncryptionKey = await this.loadDbEncryptionKey();
+    return bridgeGetCurrentEphemeralAddress(
+      networkName,
+      railWalletID,
+      dbEncryptionKey,
+    );
+  };
+
+  syncEphemeralIndex = async (
+    chain: Chain,
+    railWalletID: string,
+  ): Promise<number> => {
+    const dbEncryptionKey = await this.loadDbEncryptionKey();
+    return bridgeSyncEphemeralIndex(chain, railWalletID, dbEncryptionKey);
+  };
+
+  getEphemeralAddressesForRange = async (
+    railWalletID: string,
+    chainId: number,
+    fromIndex: number,
+    toIndex: number,
+  ): Promise<string[]> => {
+    const dbEncryptionKey = await this.loadDbEncryptionKey();
+    return bridgeGetEphemeralAddressesForRange(
+      railWalletID,
+      dbEncryptionKey,
+      chainId,
+      fromIndex,
+      toIndex,
+    );
+  };
+
+  getEphemeralPrivateKey = async (
+    railWalletID: string,
+    chainId: number,
+    index: number,
+  ): Promise<string> => {
+    const dbEncryptionKey = await this.loadDbEncryptionKey();
+    return bridgeGetEphemeralPrivateKey(
+      railWalletID,
+      dbEncryptionKey,
+      chainId,
+      index,
+    );
+  };
+
   getGasEstimatesForUnprovenCrossContractCalls = async (
     txidVersion: TXIDVersion,
     networkName: NetworkName,
@@ -65,6 +122,7 @@ export class AuthenticatedWalletService {
     feeTokenDetails: Optional<FeeTokenDetails>,
     sendWithPublicWallet: boolean,
     minGasLimit: bigint,
+    ephemeralIndex?: number,
   ): Promise<bigint> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return gasEstimateForUnprovenCrossContractCalls(
@@ -81,6 +139,7 @@ export class AuthenticatedWalletService {
       feeTokenDetails,
       sendWithPublicWallet,
       minGasLimit,
+      ephemeralIndex,
     );
   };
 
@@ -202,6 +261,7 @@ export class AuthenticatedWalletService {
     sendWithPublicWallet: boolean,
     overallBatchMinGasPrice: Optional<bigint>,
     minGasLimit: bigint,
+    ephemeralIndex?: number,
   ): Promise<void> => {
     const dbEncryptionKey = await this.loadDbEncryptionKey();
     return generateCrossContractCallsProof(
@@ -218,6 +278,7 @@ export class AuthenticatedWalletService {
       sendWithPublicWallet,
       overallBatchMinGasPrice,
       minGasLimit,
+      ephemeralIndex,
     );
   };
 

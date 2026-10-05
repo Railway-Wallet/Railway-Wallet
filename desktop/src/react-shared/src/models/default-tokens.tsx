@@ -416,4 +416,5 @@ export const DEFAULT_WALLET_TOKENS_FOR_NETWORK: {
       decimals: 18,
     },
   ],
+  [NetworkName.Base]: [],
 };

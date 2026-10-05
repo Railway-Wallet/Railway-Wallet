@@ -37,9 +37,12 @@ import {
   GetGasEstimateProofRequired,
   getOverallBatchMinGasPrice,
   getPOIRequiredForNetwork,
+  hydrateRelayAdapt7702Authorization,
+  is7702Network,
   logDev,
   PerformGenerateProofType,
   POIProofEventStatusUI,
+  PopulateCrossContractCallsResponse,
   TransactionType,
   UnauthenticatedWalletService,
   updatePOIProofProgressStatus,
@@ -68,6 +71,7 @@ type Props = {
   relayAdaptShieldERC20Recipients: RailgunERC20Recipient[];
   relayAdaptShieldNFTRecipients: NFTAmountRecipient[];
   infoCalloutText: string;
+  actionSteps?: string[];
   processingText: string;
   confirmButtonText: string;
   backButtonText: Optional<string>;
@@ -78,6 +82,10 @@ type Props = {
 
   recipeOutput: RecipeOutput;
   isRefreshingRecipeOutput: boolean;
+  ephemeralIndex?: number;
+
+  displayERC20Amounts?: ERC20Amount[]
+  sourceAddress?: string;
 
   receivedMinimumAmounts?: ERC20Amount[];
 
@@ -103,11 +111,15 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
   transactionType,
   recipeOutput,
   isRefreshingRecipeOutput,
+  ephemeralIndex,
+  displayERC20Amounts,
+  sourceAddress,
   relayAdaptUnshieldERC20Amounts,
   relayAdaptUnshieldNFTAmounts,
   relayAdaptShieldERC20Recipients,
   relayAdaptShieldNFTRecipients,
   infoCalloutText,
+  actionSteps,
   processingText,
   confirmButtonText,
   backButtonText,
@@ -199,6 +211,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
           sendWithPublicWallet,
           overallBatchMinGasPrice,
           recipeOutput.minGasLimit,
+          ephemeralIndex,
         ),
         delay(1000),
       ]);
@@ -223,7 +236,9 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
     error: (err: Error, isBroadcasterError?: boolean) => void,
   ) => {
     if (!selectedBroadcaster && !publicWalletOverride) {
-      error(new Error('No public broadcaster or self broadcast wallet selected.'));
+      error(
+        new Error('No public broadcaster or self broadcast wallet selected.'),
+      );
       return;
     }
     if (!broadcasterFeeERC20Amount && !publicWalletOverride) {
@@ -236,6 +251,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
     const overallBatchMinGasPrice = getOverallBatchMinGasPrice(
       isDefined(selectedBroadcaster),
       transactionGasDetails,
+      is7702Network(network.current.name),
     );
 
     const broadcasterFeeERC20AmountRecipient =
@@ -244,7 +260,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
         broadcasterFeeERC20Amount,
       );
 
-    let populateResponse: Optional<RailgunPopulateTransactionResponse>;
+    let populateResponse: Optional<PopulateCrossContractCallsResponse>;
     try {
       const [populateCrossContractCallsResponse] = await Promise.all([
         unauthenticatedWalletService.populateRailgunCrossContractCalls(
@@ -277,6 +293,12 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
         const pKey = await walletSecureService.getWallet0xPKey(
           publicWalletOverride,
         );
+        if (isDefined(populateResponse.relayAdapt7702Authorization)) {
+          hydrateRelayAdapt7702Authorization(
+            populateResponse.transaction,
+            populateResponse.relayAdapt7702Authorization,
+          );
+        }
         const txResponse = await executeWithoutBroadcaster(
           publicWalletOverride.ethAddress,
           pKey,
@@ -314,6 +336,8 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
           nullifiers,
           overallBatchMinGasPrice,
           true, populateResponse.preTransactionPOIsPerTxidLeafPerList,
+          populateResponse.relayAdapt7702Authorization,
+          populateResponse.type4FeeOverrides,
         );
       } else {
         throw new Error(
@@ -333,6 +357,17 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
         broadcasterRailgunAddress,
         nonce,
       );
+
+      if (is7702Network(network.current.name)) {
+        try {
+          await unauthenticatedWalletService.ratchetEphemeralAddress(
+            network.current.name,
+            railWalletID,
+          );
+        } catch (err) {
+          logDev('Failed to ratchet ephemeral address after broadcast', err);
+        }
+      }
 
       const poiRequired = await getPOIRequiredForNetwork(network.current.name);
       if (poiRequired) {
@@ -382,6 +417,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
       feeTokenDetails,
       sendWithPublicWallet,
       recipeOutput.minGasLimit,
+      ephemeralIndex,
     );
   };
 
@@ -403,6 +439,7 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
         erc20AmountRecipients={relayAdaptUnshieldERC20AmountRecipients}
         nftAmountRecipients={nftAmountRecipientsRef.current}
         infoCalloutText={infoCalloutText}
+        actionSteps={actionSteps}
         processingText={processingText}
         transactionType={transactionType}
         swapQuote={swapQuote}
@@ -425,6 +462,8 @@ export const CrossContractReviewTransactionView: React.FC<Props> = ({
         pool={pool}
         setSlippagePercent={setSlippagePercent}
         slippagePercent={slippagePercent}
+        displayERC20Amounts={displayERC20Amounts}
+        sourceAddress={sourceAddress}
       />
       {isRefreshingRecipeOutput && (
         <FullScreenSpinner text="Updating Recipe..." />

@@ -22,6 +22,9 @@ export const PPOIToastManager: React.FC = () => {
       case Tab.Activity:
       case Tab.Liquidity:
       case Tab.DApps:
+      case Tab.EphemeralAccounts:
+      case Tab.FxMint:
+      case Tab.MorphoVaults:
         return true;
 
       case Tab.NFTs:

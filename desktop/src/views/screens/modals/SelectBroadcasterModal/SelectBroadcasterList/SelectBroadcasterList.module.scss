@@ -29,6 +29,7 @@
 
 .descriptionContainer {
   display: flex;
+  flex-direction: column;
 }
 
 .descriptionStyle {
@@ -36,7 +37,7 @@
 }
 
 .descriptionTextStyle {
-  margin-top: 5px;
+  margin-top: 2px;
   color: $labelSecondary;
   @include labelSmall;
 }

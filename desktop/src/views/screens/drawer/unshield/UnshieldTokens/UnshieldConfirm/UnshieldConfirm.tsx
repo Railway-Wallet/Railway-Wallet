@@ -27,10 +27,13 @@ import {
   getOverallBatchMinGasPrice,
   getPOIRequiredForNetwork,
   hasBlockedAddress,
+  hydrateRelayAdapt7702Authorization,
+  is7702Network,
   logDev,
   PerformGenerateProofType,
   POIProofEventStatusUI,
   refreshNFTsMetadataAfterShieldUnshield,
+  RelayAdapt7702PopulateResponse,
   SavedTransactionService,
   TransactionType,
   UnauthenticatedWalletService,
@@ -203,6 +206,7 @@ export const UnshieldConfirm = ({
     const overallBatchMinGasPrice = getOverallBatchMinGasPrice(
       isDefined(selectedBroadcaster),
       transactionGasDetails,
+      is7702Network(network.current.name) && isBaseTokenUnshield,
     );
 
     const toAddresses = finalAdjustedERC20AmountRecipientGroup.outputs.map(
@@ -212,7 +216,7 @@ export const UnshieldConfirm = ({
       throw new Error('One or more of the recipient addresses is blocked.');
     }
 
-    let populateResponse: RailgunPopulateTransactionResponse;
+    let populateResponse: RelayAdapt7702PopulateResponse;
     try {
       if (isDefined(unshieldToOriginShieldTxid)) {
         const [populateUnshieldResponse] = await Promise.all([
@@ -269,6 +273,12 @@ export const UnshieldConfirm = ({
         const pKey = await walletSecureService.getWallet0xPKey(
           publicWalletOverride,
         );
+        if (isDefined(populateResponse.relayAdapt7702Authorization)) {
+          hydrateRelayAdapt7702Authorization(
+            populateResponse.transaction,
+            populateResponse.relayAdapt7702Authorization,
+          );
+        }
         const txResponse = await executeWithoutBroadcaster(
           publicWalletOverride.ethAddress,
           pKey,
@@ -306,6 +316,8 @@ export const UnshieldConfirm = ({
           nullifiers,
           overallBatchMinGasPrice,
           isBaseTokenUnshield, populateResponse.preTransactionPOIsPerTxidLeafPerList,
+          populateResponse.relayAdapt7702Authorization,
+          populateResponse.type4FeeOverrides,
         );
       } else {
         throw new Error(
@@ -332,6 +344,18 @@ export const UnshieldConfirm = ({
         broadcasterRailgunAddress,
         nonce,
       );
+
+      if (isBaseTokenUnshield && is7702Network(network.current.name)) {
+        try {
+          await unauthenticatedWalletService.ratchetEphemeralAddress(
+            network.current.name,
+            railWalletID,
+          );
+        } catch (err) {
+          logDev('Failed to ratchet ephemeral address after broadcast', err);
+        }
+      }
+
       if (isNFTTabActive === true) {
         await refreshNFTsMetadataAfterShieldUnshield(
           dispatch,
@@ -380,7 +404,17 @@ export const UnshieldConfirm = ({
     sendWithPublicWallet: boolean,
   ) => {
     if (isBaseTokenUnshield) {
-      return Promise.resolve(5_000_000n);
+      return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldBaseToken(
+        txidVersion,
+        networkName,
+        railWalletID,
+        memoText,
+        erc20AmountRecipients,
+        nftAmountRecipients,
+        originalGasDetails,
+        feeTokenDetails,
+        sendWithPublicWallet,
+      );
     }
     if (isDefined(unshieldToOriginShieldTxid)) {
       return authenticatedWalletService.getGasEstimatesForUnprovenUnshieldToOrigin(

@@ -2,6 +2,7 @@ export * from './bridge-artifacts';
 export * from './bridge-cross-contract-calls';
 export * from './bridge-crypto';
 export * from './bridge-engine';
+export * from './bridge-ephemeral';
 export * from './bridge-ethers';
 export * from './bridge-poi';
 export * from './bridge-proofs';

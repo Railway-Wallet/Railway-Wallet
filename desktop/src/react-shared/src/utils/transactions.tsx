@@ -51,6 +51,7 @@ export const getProofTypeFromTransactionType = (
     case TransactionType.FarmRedeem:
     case TransactionType.AddLiquidity:
     case TransactionType.RemoveLiquidity:
+    case TransactionType.Ephemeral:
       return ProofType.CrossContractCalls;
     case TransactionType.ApproveShield:
     case TransactionType.ApproveSpender:
@@ -77,6 +78,11 @@ export const isShieldedFromToAddress = (
       return {
         isShieldedFromAddress: isPrivateTransaction,
         isShieldedToAddress: isPrivateTransaction,
+      };
+    case TransactionType.Ephemeral:
+      return {
+        isShieldedFromAddress: true,
+        isShieldedToAddress: true,
       };
     case TransactionType.Unshield:
       return {
@@ -220,6 +226,7 @@ export const adjustERC20AmountRecipientForTransaction = (
     case TransactionType.FarmRedeem:
     case TransactionType.AddLiquidity:
     case TransactionType.RemoveLiquidity:
+    case TransactionType.Ephemeral:
     case TransactionType.ApproveSpender:
     case TransactionType.Mint:
     case TransactionType.Cancel:

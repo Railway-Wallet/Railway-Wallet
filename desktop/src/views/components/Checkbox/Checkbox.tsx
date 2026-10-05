@@ -59,7 +59,6 @@ export function Checkbox({
           readOnly
           type="checkbox"
           checked={checked}
-          onChange={handleCheck}
           className={cn(styles.checkbox, {
             [styles.medium]: medium,
             [styles.big]: big,

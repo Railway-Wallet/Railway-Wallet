@@ -237,6 +237,11 @@ export const SidebarMenu = (): JSX.Element => {
         tab: Tab.DApps,
         icon: IconType.DApps,
       },
+      {
+        tab: Tab.EphemeralAccounts,
+        href: TabRoute.EphemeralAccounts,
+        icon: IconType.Key,
+      },
     ],
     [pendingTransactionCount, shouldEnableNFTs],
   );

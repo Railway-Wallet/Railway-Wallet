@@ -18,6 +18,7 @@ export class SharedConstants {
 
   static readonly GAS_PRICE_TIMEOUT = 20000;
   static readonly GAS_ESTIMATE_TIMEOUT = 60000;
+  static readonly MIN_GAS_LIMIT_EPHEMERAL_RECLAIM = BigInt(3_200_000);
 
   static readonly NETWORK_GAS_PRICE_CHANGE_THRESHOLD = 0.1;
   static readonly BROADCASTER_FEE_CHANGE_THRESHOLD = 0.05;

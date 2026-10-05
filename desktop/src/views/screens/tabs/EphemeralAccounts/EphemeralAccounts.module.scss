@@ -1,0 +1,376 @@
+@import '@scss/styleguide';
+
+.pageContainer {
+  box-sizing: border-box;
+  padding: 24px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: $cardSurface;
+  justify-content: center;
+
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.headerRow {
+  margin-top: 48px;
+}
+
+.headerText {
+  @include heading1;
+  color: text();
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.headerSubtext {
+  @include paragraph;
+  color: $textSecondary;
+}
+
+.infoCallout {
+  margin-top: 32px;
+}
+
+.introNote {
+  @include paragraphSmall;
+  margin-top: 24px;
+  padding-left: 12px;
+  border-left: 2px solid $labelSecondary;
+  color: $offWhiteText;
+}
+
+.privacyNote {
+  @include caption;
+  display: block;
+  margin-top: 24px;
+  color: $textSecondary;
+}
+
+.sectionHeader {
+  @include heading3;
+  display: block;
+  margin: 32px 0 12px;
+  color: text();
+}
+
+.lockedCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 32px;
+  padding: 16px;
+  border-radius: 4px;
+  background: gray5();
+  border: 1px solid $buttonBorder;
+}
+
+.lockedText {
+  @include paragraphSmall;
+  color: $labelSecondary;
+}
+
+.unlockButton {
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.actionsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actionButton {
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.actionsNote {
+  @include caption;
+  display: block;
+  margin-top: 12px;
+  color: $textSecondary;
+}
+
+.accountList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.slot {
+  border-radius: 4px;
+  background: gray5();
+  border: 1px solid $buttonBorder;
+  overflow: hidden;
+}
+
+.slotCurrent {
+  border-color: txGreen(0.6);
+}
+
+.slotHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  background: transparent;
+  color: text();
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: $darkItemHover;
+  }
+
+  &:focus-visible {
+    outline: 2px solid txGreen();
+    outline-offset: -2px;
+  }
+}
+
+.slotMain {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.slotTopLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.slotIdentity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.slotBadges {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.slotAddress {
+  @include paragraphSmall;
+  font-family: $inconsolataMono;
+  color: $offWhiteText;
+}
+
+.slotTagCurrent {
+  @include labelSmall;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: $white;
+  background: txGreen(0.85);
+}
+
+.slotIndex {
+  @include caption;
+  font-family: $inconsolataMono;
+  color: $labelSecondary;
+}
+
+.slotSubline {
+  @include caption;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: $textSecondary;
+}
+
+.slotBody {
+  padding: 12px 16px 16px;
+  border-top: 1px solid $buttonBorder;
+}
+
+.addressRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: gray6();
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: $darkItemHover;
+  }
+
+  &:focus-visible {
+    outline: 2px solid txGreen();
+    outline-offset: 2px;
+  }
+}
+
+.addressText {
+  @include paragraphSmall;
+  flex: 1;
+  font-family: $inconsolataMono;
+  color: $offWhiteText;
+  word-break: break-all;
+}
+
+.copyIcon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.strandedPill {
+  @include labelSmall;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: $offWhiteText;
+  background: gray3();
+}
+
+.balanceList {
+  margin-top: 16px;
+}
+
+.balanceLabel {
+  @include labelSmall;
+  color: $labelSecondary;
+}
+
+.balanceValue {
+  @include paragraphSmall;
+  font-family: $inconsolataMono;
+  color: $offWhiteText;
+}
+
+.tradedRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tokenChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.tokenChip {
+  @include caption;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: $inconsolataMono;
+  color: $offWhiteText;
+  background: gray3();
+}
+
+.txList {
+  margin-top: 16px;
+}
+
+.chevron {
+  display: flex;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.txListItems {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.activityLine {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 16px;
+  border-radius: 4px;
+  background: gray6();
+}
+
+.activityTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.activityStatus {
+  @include labelSmall;
+}
+
+.activityTime {
+  @include caption;
+  flex-shrink: 0;
+  color: $textSecondary;
+}
+
+.activityDesc {
+  @include caption;
+  color: $offWhiteText;
+}
+
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cardScanButton {
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.cardReclaimButton {
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.cardKeyButton {
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.emptyText {
+  @include paragraphSmall;
+  display: block;
+  padding: 12px 4px;
+  color: $textSecondary;
+}
+
+.loadingRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+}
+
+.loadingText {
+  @include paragraphSmall;
+  color: $labelSecondary;
+}

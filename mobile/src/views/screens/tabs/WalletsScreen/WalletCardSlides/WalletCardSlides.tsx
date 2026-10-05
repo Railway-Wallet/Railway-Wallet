@@ -92,7 +92,7 @@ export const WalletCardSlides: React.FC<Props> = ({
     <View style={styles.cardsWrapper}>
       {}
       {isAndroid() ? (
-        (<CarouselBeta
+        <CarouselBeta
           data={slideItems}
           renderItem={(slide: { item: WalletCardSlideItem }) =>
             walletCardSlide(slide.item)
@@ -102,9 +102,9 @@ export const WalletCardSlides: React.FC<Props> = ({
           onSnapToItem={onSlideBecameActive}
           enableSnap={true}
           vertical={false}
-        />)
+        />
       ) : (
-        (<CarouselStable
+        <CarouselStable
           data={slideItems}
           renderItem={(slide: { item: WalletCardSlideItem }) =>
             walletCardSlide(slide.item)
@@ -114,7 +114,7 @@ export const WalletCardSlides: React.FC<Props> = ({
           onSnapToItem={onSlideBecameActive}
           enableSnap={true}
           activeAnimationType="spring"
-        />)
+        />
       )}
     </View>
   );

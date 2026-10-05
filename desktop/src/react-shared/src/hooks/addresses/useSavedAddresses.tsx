@@ -38,6 +38,7 @@ export const useSavedAddresses = (
           case TransactionType.AddLiquidity:
           case TransactionType.RemoveLiquidity:
           case TransactionType.Swap:
+          case TransactionType.Ephemeral:
             return true;
           case TransactionType.Send:
             return !w.isActive;

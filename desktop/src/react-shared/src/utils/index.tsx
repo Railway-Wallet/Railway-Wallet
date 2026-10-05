@@ -15,6 +15,7 @@ export * from './nft';
 export * from './overall-batch-min-gas-price';
 export * from './poi';
 export * from './promises';
+export * from './relay-adapt-7702';
 export * from './remote-config';
 export * from './saved-transactions';
 export * from './time';

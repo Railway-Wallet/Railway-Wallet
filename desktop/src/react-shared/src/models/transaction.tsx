@@ -49,7 +49,8 @@ export enum TransactionType {
   FarmDeposit = 'Farm Deposit',
   FarmRedeem = 'Farm Redeem',
   AddLiquidity = 'Add Liquidity',
-  RemoveLiquidity = 'Remove Liquidity'
+  RemoveLiquidity = 'Remove Liquidity',
+  Ephemeral = 'Ephemeral'
 }
 
 export type TransactionReceiptTransfer = {

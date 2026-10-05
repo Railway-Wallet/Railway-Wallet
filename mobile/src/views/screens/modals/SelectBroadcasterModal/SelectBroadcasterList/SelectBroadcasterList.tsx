@@ -9,6 +9,7 @@ import {
   AppSettingsService,
   IconPublic,
   renderBroadcasterReliability,
+  shortenWalletAddress,
   styleguide,
   useReduxSelector,
 } from '@react-shared';
@@ -63,6 +64,7 @@ export const SelectBroadcasterList: React.FC<Props> = ({
     const reliabilityDescription = isDefined(reliability)
       ? reliability
       : 'New broadcaster';
+    const shortenedAddress = shortenWalletAddress(broadcaster.railgunAddress);
 
     if (isDefined(tokenPrices)) {
       const currentTokenPrice = tokenPrices[broadcaster.tokenAddress];
@@ -97,9 +99,12 @@ export const SelectBroadcasterList: React.FC<Props> = ({
           )})`}</Text>
         }
         description={
-          <Text
-            style={styles.descriptionTextStyle}
-          >{`Reliability: ${reliabilityDescription}`}</Text>
+          <View>
+            <Text
+              style={styles.descriptionTextStyle}
+            >{`Reliability: ${reliabilityDescription}`}</Text>
+            <Text style={styles.descriptionTextStyle}>{shortenedAddress}</Text>
+          </View>
         }
         selected={selected}
         leftView={leftView}

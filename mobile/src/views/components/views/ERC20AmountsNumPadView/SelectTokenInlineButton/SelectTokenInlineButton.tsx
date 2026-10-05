@@ -31,10 +31,10 @@ export const SelectTokenInlineButton: React.FC<Props> = ({
       onPress={onTapTokenSelector}
     />
   ) : (
-    (<ButtonWithTextAndIconVerticalIOS
+    <ButtonWithTextAndIconVerticalIOS
       title={tokenDisplayName}
       icon="chevron-down"
       onPress={onTapTokenSelector}
-    />)
+    />
   );
 };

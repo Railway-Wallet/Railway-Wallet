@@ -18,6 +18,7 @@ export const useUpdatingSwapRecipe = (
   buyERC20: ERC20Token,
   slippagePercentage: number,
   swapDestinationAddress: Optional<string>,
+  ephemeralAddress: Optional<string>,
 ) => {
   if (!sellERC20Amount) {
     throw new Error('Requires sell amount for swap confirm');
@@ -49,6 +50,7 @@ export const useUpdatingSwapRecipe = (
     buyERC20,
     slippagePercentage,
     swapDestinationAddress,
+    ephemeralAddress,
   );
 
   const { quoteSignificantlyChanged } = useSwapQuoteSignificantlyChanged(

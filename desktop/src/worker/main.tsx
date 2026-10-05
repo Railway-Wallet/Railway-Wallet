@@ -4,6 +4,7 @@ import { sendError, sendMessage } from './loggers';
 import './artifacts';
 import './crypto';
 import './engine';
+import './ephemeral';
 import './ethers';
 import './providers';
 import './transactions/cross-contract-calls';

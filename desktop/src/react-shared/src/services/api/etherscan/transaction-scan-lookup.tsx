@@ -39,6 +39,7 @@ export const baseUrlExternalScanSite = (
       return SCAN_BASE_URL.Mumbaiscan;
     case NetworkName.ArbitrumGoerli_DEPRECATED:
       return SCAN_BASE_URL.ArbiscanGoerli;
+    case NetworkName.Base:
     case NetworkName.Hardhat:
       return;
   }
@@ -84,6 +85,7 @@ export const getExternalScanSiteName = (networkName: NetworkName): string => {
       return 'Polygonscan (Mumbai)';
     case NetworkName.ArbitrumGoerli_DEPRECATED:
       return 'Arbiscan (Görli)';
+    case NetworkName.Base:
     case NetworkName.Hardhat:
       return SCAN_SITE_NOT_FOUND_TEXT;
   }

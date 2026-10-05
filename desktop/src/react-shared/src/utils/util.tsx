@@ -193,6 +193,7 @@ export const requiresTokenApproval = (
     case TransactionType.AddLiquidity:
     case TransactionType.RemoveLiquidity:
     case TransactionType.Cancel:
+    case TransactionType.Ephemeral:
       return false;
   }
 };

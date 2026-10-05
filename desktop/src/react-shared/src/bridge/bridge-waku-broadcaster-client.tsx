@@ -18,6 +18,8 @@ import {
   BroadcasterSetChainParams,
   BroadcasterStartParams,
   BroadcasterSupportsERC20TokenParams,
+  SerializedEIP7702Authorization,
+  Type4FeeOverrides,
 } from '../models/bridge';
 import { bridgeCall } from './ipc';
 
@@ -44,7 +46,8 @@ export const startWakuBroadcasterClient = async (
 
 export const tryReconnectWakuBroadcasterClient = async (): Promise<void> => {
   await bridgeCall<
-    Record<string, never>, BroadcasterActionData
+    Record<string, never>,
+    BroadcasterActionData
   >(BridgeCallEvent.BroadcasterTryReconnect, {});
 };
 
@@ -130,28 +133,32 @@ export const findAllBroadcastersForChain = async (
 
 export const getBroadcasterMeshPeerCount = async (): Promise<number> => {
   const meshPeerCount = await bridgeCall<
-    Record<string, never>, number
+    Record<string, never>,
+    number
   >(BridgeCallEvent.BroadcasterGetMeshPeerCount, {});
   return meshPeerCount;
 };
 
 export const getBroadcasterPubSubPeerCount = async (): Promise<number> => {
   const peerCount = await bridgeCall<
-    Record<string, never>, number
+    Record<string, never>,
+    number
   >(BridgeCallEvent.BroadcasterGetPubSubPeerCount, {});
   return peerCount;
 };
 
 export const getBroadcasterFilterPeerCount = async (): Promise<number> => {
   const peerCount = await bridgeCall<
-    Record<string, never>, number
+    Record<string, never>,
+    number
   >(BridgeCallEvent.BroadcasterGetFilterPeerCount, {});
   return peerCount;
 };
 
 export const getBroadcasterLightPushPeerCount = async (): Promise<number> => {
   const peerCount = await bridgeCall<
-    Record<string, never>, number
+    Record<string, never>,
+    number
   >(BridgeCallEvent.BroadcasterGetLightPushPeerCount, {});
   return peerCount;
 };
@@ -167,6 +174,8 @@ export const broadcastTransaction = async (
   overallBatchMinGasPrice: bigint,
   useRelayAdapt: boolean,
   preTransactionPOIsPerTxidLeafPerList: PreTransactionPOIsPerTxidLeafPerList,
+  authorization?: SerializedEIP7702Authorization,
+  type4FeeOverrides?: Type4FeeOverrides,
 ): Promise<string> => {
   const response = await bridgeCall<
     BroadcasterBroadcastTransactionParams,
@@ -182,6 +191,8 @@ export const broadcastTransaction = async (
     overallBatchMinGasPrice,
     useRelayAdapt,
     preTransactionPOIsPerTxidLeafPerList,
+    authorization,
+    type4FeeOverrides,
   });
   if (isDefined(response.error)) {
     throw response.error;

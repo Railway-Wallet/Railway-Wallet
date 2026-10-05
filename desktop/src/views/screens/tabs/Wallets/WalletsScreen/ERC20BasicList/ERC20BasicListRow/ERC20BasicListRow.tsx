@@ -18,7 +18,7 @@ import styles from './ERC20BasicListRow.module.scss';
 type Props = {
   tokenBalance: ERC20TokenBalance;
   hideBalance?: boolean;
-  onSelect: () => void;
+  onSelect?: () => void;
   hasPendingBalance: boolean;
 };
 

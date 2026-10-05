@@ -14,6 +14,7 @@ import {
   GasEstimateForShieldParams,
   PopulateShieldBaseTokenParams,
   PopulateShieldParams,
+  RelayAdapt7702PopulateResponse,
 } from '../models/bridge';
 import {
   compareTokenAddress,
@@ -64,7 +65,9 @@ export const populateShieldBaseToken = async (
   erc20AmountRecipients: ERC20AmountRecipient[],
   _nftAmountRecipients: NFTAmountRecipient[],
   transactionGasDetails: TransactionGasDetails,
-): Promise<RailgunPopulateTransactionResponse> => {
+  railWalletID?: string,
+  encryptionKey?: string,
+): Promise<RelayAdapt7702PopulateResponse> => {
   if (erc20AmountRecipients.length > 1) {
     throw new Error(
       'You must shield base token in a transaction by itself. Please remove other tokens from this transaction.',
@@ -91,7 +94,7 @@ export const populateShieldBaseToken = async (
 
   return bridgeCall<
     PopulateShieldBaseTokenParams,
-    RailgunPopulateTransactionResponse
+    RelayAdapt7702PopulateResponse
   >(BridgeCallEvent.PopulateShieldBaseToken, {
     txidVersion,
     networkName,
@@ -99,6 +102,8 @@ export const populateShieldBaseToken = async (
     shieldPrivateKey,
     wrappedTokenAmount: wrappedTokenAmountSerialized,
     transactionGasDetails,
+    railWalletID,
+    encryptionKey,
   });
 };
 
@@ -136,6 +141,8 @@ export const gasEstimateForShieldBaseToken = async (
   fromWalletAddress: string,
   shieldPrivateKey: string,
   erc20AmountRecipients: ERC20AmountRecipient[],
+  railWalletID?: string,
+  encryptionKey?: string,
 ): Promise<bigint> => {
   if (erc20AmountRecipients.length > 1) {
     throw new Error(
@@ -176,6 +183,8 @@ export const gasEstimateForShieldBaseToken = async (
     fromWalletAddress,
     shieldPrivateKey,
     wrappedTokenAmount: wrappedTokenAmountSerialized,
+    railWalletID,
+    encryptionKey,
   });
   return gasEstimate;
 };

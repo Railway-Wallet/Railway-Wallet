@@ -30,6 +30,7 @@ export const useRemoteConfigNetworkError = (
     switch (transactionType) {
       case TransactionType.ApproveShield:
       case TransactionType.Shield:
+      case TransactionType.Ephemeral:
         if (!networkConfig.canShield) {
           return new Error(
             `Shielding is not available on ${publicName} at the moment. Please try again later.`,

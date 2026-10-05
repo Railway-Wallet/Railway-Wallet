@@ -270,7 +270,12 @@ export const singleERC20TransactionText = (
           activeWallet,
         )
       ) {
-        const senderAddress = transaction.walletAddress;
+        const senderAddress =
+          transaction.isPrivate &&
+          transaction.needsRelayAdaptSuccessCheck === true &&
+          isDefined(transaction.publicExecutionWalletAddress)
+            ? transaction.publicExecutionWalletAddress
+            : transaction.walletAddress;
         const senderWalletName = getWalletNameForAddress(
           networkName,
           senderAddress,
@@ -667,6 +672,43 @@ export const transactionText = (
       }`;
     }
   }
+};
+
+export const ephemeralAccountTransactionText = (
+  transaction: SavedTransaction,
+  ephemeralAddress: string,
+  network: Network,
+  activeWallet: Optional<FrontendWallet>,
+  availableWallets: AvailableWallet[],
+): string => {
+  if (
+    transaction.action === TransactionAction.shield &&
+    transaction.isPrivate &&
+    transaction.publicExecutionWalletAddress?.toLowerCase() ===
+      ephemeralAddress.toLowerCase() &&
+    transaction.tokenAmounts.length > 0 &&
+    (transaction.nftAmountRecipients?.length ?? 0) === 0
+  ) {
+    return transaction.tokenAmounts
+      .map(
+        amount =>
+          `Shield ${getAmountStringSerialized(amount)} ${getTokenDisplayName(
+            amount.token,
+            availableWallets,
+            transaction.network,
+          )} from ${shortenWalletAddress(
+            ephemeralAddress,
+          )} into your private balance.`,
+      )
+      .join(' ');
+  }
+  return transactionText(
+    transaction,
+    false,
+    network,
+    activeWallet,
+    availableWallets,
+  );
 };
 
 export const transactionSyncedHistoryDescription = (

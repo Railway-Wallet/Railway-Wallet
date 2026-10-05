@@ -59,6 +59,7 @@ export const useBestBroadcaster = (
       case TransactionType.Swap:
         return isPrivate;
       case TransactionType.Unshield:
+      case TransactionType.Ephemeral:
         return true;
     }
   }, [transactionType, isPrivate]);

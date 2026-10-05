@@ -66,6 +66,15 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
     setSelectedOption(option);
   };
 
+  const saveWithOption = (option: NetworkFeeSelection) => {
+    const customGasTransactionDetails: CustomGasTransactionDetails = {
+      gasPrice: customGasPrice,
+      maxFeePerGas: customMaxFeePerGas,
+      maxPriorityFeePerGas: customMaxPriorityFeePerGas,
+    };
+    onDismiss(option, customGasTransactionDetails);
+  };
+
   const networkFeeOptionRightView = (gasDetails: TransactionGasDetails) => {
     if (!isDefined(gasDetails)) {
       return null;
@@ -95,7 +104,8 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
         showExactCurrencyGasPrice,
       );
       gasTextFormatted = {
-        networkFeeText: broadcasterFeeInfo?.broadcasterFeeText ?? 'Updating gas fee',
+        networkFeeText:
+          broadcasterFeeInfo?.broadcasterFeeText ?? 'Updating gas fee',
         networkFeePriceText:
           broadcasterFeeInfo?.broadcasterFeeSubtext ?? 'Please wait...',
       };
@@ -283,6 +293,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
               onSelect={() =>
                 onSelectNetworkFeeOption(NetworkFeeSelection.Slower)
               }
+              onDoubleClick={() => saveWithOption(NetworkFeeSelection.Slower)}
               rightView={() =>
                 networkFeeOptionRightView(
                   gasDetailsMap[NetworkFeeSelection.Slower],
@@ -296,6 +307,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
               onSelect={() =>
                 onSelectNetworkFeeOption(NetworkFeeSelection.Standard)
               }
+              onDoubleClick={() => saveWithOption(NetworkFeeSelection.Standard)}
               rightView={() =>
                 networkFeeOptionRightView(
                   gasDetailsMap[NetworkFeeSelection.Standard],
@@ -309,6 +321,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
               onSelect={() =>
                 onSelectNetworkFeeOption(NetworkFeeSelection.Faster)
               }
+              onDoubleClick={() => saveWithOption(NetworkFeeSelection.Faster)}
               rightView={() =>
                 networkFeeOptionRightView(
                   gasDetailsMap[NetworkFeeSelection.Faster],
@@ -321,6 +334,9 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
               selected={selectedOption === NetworkFeeSelection.Aggressive}
               onSelect={() =>
                 onSelectNetworkFeeOption(NetworkFeeSelection.Aggressive)
+              }
+              onDoubleClick={() =>
+                saveWithOption(NetworkFeeSelection.Aggressive)
               }
               rightView={() =>
                 networkFeeOptionRightView(
@@ -338,14 +354,7 @@ export const SelectNetworkFeeModal: React.FC<Props> = ({
           </div>
         </div>
         <Button
-          onClick={() => {
-            const customGasTransactionDetails: CustomGasTransactionDetails = {
-              gasPrice: customGasPrice,
-              maxFeePerGas: customMaxFeePerGas,
-              maxPriorityFeePerGas: customMaxPriorityFeePerGas,
-            };
-            onDismiss(selectedOption, customGasTransactionDetails);
-          }}
+          onClick={() => saveWithOption(selectedOption)}
           children="Save"
           buttonClassName={styles.saveButton}
           textClassName={styles.saveButtonText}

@@ -219,7 +219,7 @@ export const FarmVaultConfirm = ({
     ? `Depositing tokens into ${vaultDisplayName}...`
     : `Redeeming tokens from ${vaultDisplayName}...`;
 
-  recipeOutput.minGasLimit = 5_000_000n;
+  recipeOutput.minGasLimit = 0n;
 
   return (
     <CrossContractReviewTransactionView

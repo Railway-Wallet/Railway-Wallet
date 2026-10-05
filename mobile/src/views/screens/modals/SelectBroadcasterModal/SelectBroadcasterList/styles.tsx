@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     color: styleguide.colors.text(),
   },
   descriptionTextStyle: {
-    marginTop: 6,
+    marginTop: 2,
     ...styleguide.typography.labelSmall,
     color: styleguide.colors.labelSecondary,
   },

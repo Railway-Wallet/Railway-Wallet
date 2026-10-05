@@ -372,6 +372,42 @@ export class SavedTransactionService {
     return tx;
   }
 
+  async saveEphemeralReclaimTransaction(
+    txidVersion: TXIDVersion,
+    id: string,
+    fromWalletAddress: string,
+    ephemeralAddress: string,
+    shieldERC20AmountRecipients: ERC20AmountRecipient[],
+    network: Network,
+    sentViaBroadcaster: boolean,
+    broadcasterFeeERC20Amount: Optional<ERC20Amount>,
+    broadcasterRailgunAddress: Optional<string>,
+    nonce: Optional<number>,
+  ): Promise<SavedTransaction> {
+    const now = Date.now();
+    const tx: SavedTransaction = {
+      txidVersion,
+      id,
+      walletAddress: fromWalletAddress,
+      publicExecutionWalletAddress: ephemeralAddress,
+      tokenAmounts: shieldERC20AmountRecipients,
+      nftAmountRecipients: undefined,
+      network: network.name,
+      timestamp: now / 1000,
+      action: TransactionAction.shield,
+      status: TransactionStatus.pending,
+      sentViaBroadcaster,
+      isPrivate: true,
+      broadcasterFeeTokenAmount: broadcasterFeeERC20Amount,
+      nonce,
+      needsRelayAdaptSuccessCheck: true,
+      broadcasterRailgunAddress,
+    };
+
+    await this.storeNewTransaction(tx, network);
+    return tx;
+  }
+
   private createShieldDestinationTokenAmounts = (
     outputERC20AmountRecipients: ERC20AmountRecipient[],
     isBaseTokenDeposit: boolean,

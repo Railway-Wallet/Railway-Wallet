@@ -31,6 +31,7 @@ type Props = {
   left?: (props: { color: string; className: string }) => React.ReactNode;
   right?: (props: { color: string; className?: string }) => React.ReactNode;
   onPress?: React.MouseEventHandler<HTMLDivElement>;
+  onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
   className?: string;
   titleClassName?: string;
   descriptionClassName?: string;
@@ -51,6 +52,7 @@ export const ListItem = ({
   title,
   description,
   onPress,
+  onDoubleClick,
   className,
   titleClassName,
   titleEllipsizeMode,
@@ -108,7 +110,11 @@ export const ListItem = ({
   const descriptionColor = styleguide.colors.text();
 
   return (
-    <div className={cn(styles.container, className)} onClick={onPress}>
+    <div
+      className={cn(styles.container, className)}
+      onClick={onPress}
+      onDoubleClick={onDoubleClick}
+    >
       <div className={styles.row}>
         <div className={styles.leftContainer}>
           {left
