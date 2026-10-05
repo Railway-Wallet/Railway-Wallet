@@ -21,7 +21,7 @@ import { setTransactions } from '../../redux-store/reducers/saved-transactions-r
 import { enqueueAsyncToast } from '../../redux-store/reducers/toast-reducer';
 import { AppDispatch } from '../../redux-store/store';
 import { logDev, logDevError } from '../../utils/logging';
-import { poll } from '../../utils/promises';
+import { delay, poll } from '../../utils/promises';
 import {
   getSavedTransactionTXIDVersion,
   transactionShouldNavigateToPrivateBalance,
@@ -237,6 +237,7 @@ export class PendingTransactionWatcher {
       logDev(
         `[TransactionWatcher] Retrying transaction watcher. Tx hash: ${txHash}`,
       );
+      await delay(SharedConstants.RETRY_DELAY_SEC_GET_TX_FROM_HASH * 1000);
       return this.watchPendingTransaction(network, tx);
     }
 
