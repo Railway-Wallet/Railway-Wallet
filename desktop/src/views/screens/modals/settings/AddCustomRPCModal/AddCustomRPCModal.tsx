@@ -58,7 +58,8 @@ export const AddCustomRPCModal = ({ onClose, network }: Props) => {
         '(\\#[-a-z\\d_]*)?$',
       'i',
     );
-    return !!pattern.test(str);
+    var localhost_pattern = new RegExp( "^http:\\/\\/localhost" + '(\\:\\d+)?' );
+    return !!pattern.test(str) || !!localhost_pattern.test(str);
   };
 
   const isValidUrlWithProtocol = (str: string) => {
@@ -68,7 +69,7 @@ export const AddCustomRPCModal = ({ onClose, network }: Props) => {
     } catch (e) {
       return false;
     }
-    return url.protocol === 'wss:' || url.protocol === 'https:';
+    return url.protocol === 'wss:' || url.protocol === 'https:' || url.protocol === 'http:';
   };
 
   const validateEntries = (url: string) => {
